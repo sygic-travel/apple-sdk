@@ -1,0 +1,704 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		D6B2A1311E530B11005509E8 /* API.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0701E4DE7B400EBB54F /* API.h */; };
+		D6B2A1321E530B11005509E8 /* API.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0711E4DE7B400EBB54F /* API.m */; };
+		D6B2A1331E530B11005509E8 /* APIConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D06A1E4DE76A00EBB54F /* APIConnection.h */; };
+		D6B2A1341E530B11005509E8 /* APIConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D06B1E4DE76A00EBB54F /* APIConnection.m */; };
+		D6B2A1351E530B11005509E8 /* Foundation+TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0741E4DF75C00EBB54F /* Foundation+TravelKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1361E530B11005509E8 /* Foundation+TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0751E4DF75C00EBB54F /* Foundation+TravelKit.m */; };
+		D6B2A1371E530B11005509E8 /* MapWorkers.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */; };
+		D6B2A1381E530B11005509E8 /* MapWorkers.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */; };
+		D6B2A1391E530B11005509E8 /* NSObject+Parsing.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A13A1E530B11005509E8 /* NSObject+Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */; };
+		D6B2A13B1E530B11005509E8 /* TKMapRegion.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0871E51A09200EBB54F /* TKMapRegion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A13C1E530B11005509E8 /* TKMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0881E51A09200EBB54F /* TKMapRegion.m */; };
+		D6B2A13D1E530B11005509E8 /* TKMedium.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A13E1E530B11005509E8 /* TKMedium.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0611E4DDE2D00EBB54F /* TKMedium.m */; };
+		D6B2A13F1E530B11005509E8 /* TKPlace.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0581E4DDAE500EBB54F /* TKPlace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1401E530B11005509E8 /* TKPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0591E4DDAE500EBB54F /* TKPlace.m */; };
+		D6B2A1411E530B11005509E8 /* TKPlacesQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1421E530B11005509E8 /* TKPlacesQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */; };
+		D6B2A1431E530B11005509E8 /* TKReference.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1441E530B11005509E8 /* TKReference.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D05D1E4DDE0A00EBB54F /* TKReference.m */; };
+		D6B2A1451E530B18005509E8 /* TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D04F1E4DD36200EBB54F /* TravelKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1461E530B18005509E8 /* TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0851E5196CB00EBB54F /* TravelKit.m */; };
+		D6B2A15C1E531097005509E8 /* API.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0701E4DE7B400EBB54F /* API.h */; };
+		D6B2A15D1E531097005509E8 /* API.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0711E4DE7B400EBB54F /* API.m */; };
+		D6B2A15E1E531097005509E8 /* APIConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D06A1E4DE76A00EBB54F /* APIConnection.h */; };
+		D6B2A15F1E531097005509E8 /* APIConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D06B1E4DE76A00EBB54F /* APIConnection.m */; };
+		D6B2A1601E531097005509E8 /* Foundation+TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0741E4DF75C00EBB54F /* Foundation+TravelKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1611E531097005509E8 /* Foundation+TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0751E4DF75C00EBB54F /* Foundation+TravelKit.m */; };
+		D6B2A1621E531097005509E8 /* MapWorkers.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */; };
+		D6B2A1631E531097005509E8 /* MapWorkers.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */; };
+		D6B2A1641E531097005509E8 /* NSObject+Parsing.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1651E531097005509E8 /* NSObject+Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */; };
+		D6B2A1661E531097005509E8 /* TKMapRegion.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0871E51A09200EBB54F /* TKMapRegion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1671E531097005509E8 /* TKMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0881E51A09200EBB54F /* TKMapRegion.m */; };
+		D6B2A1681E531097005509E8 /* TKMedium.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1691E531097005509E8 /* TKMedium.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0611E4DDE2D00EBB54F /* TKMedium.m */; };
+		D6B2A16A1E531097005509E8 /* TKPlace.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0581E4DDAE500EBB54F /* TKPlace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A16B1E531097005509E8 /* TKPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0591E4DDAE500EBB54F /* TKPlace.m */; };
+		D6B2A16C1E531097005509E8 /* TKPlacesQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A16D1E531097005509E8 /* TKPlacesQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */; };
+		D6B2A16E1E531097005509E8 /* TKReference.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A16F1E531097005509E8 /* TKReference.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D05D1E4DDE0A00EBB54F /* TKReference.m */; };
+		D6B2A1701E53109B005509E8 /* TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D04F1E4DD36200EBB54F /* TravelKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B2A1741E532002005509E8 /* TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0851E5196CB00EBB54F /* TravelKit.m */; };
+		D6C3D0511E4DD36200EBB54F /* TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D04F1E4DD36200EBB54F /* TravelKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6C3D05A1E4DDAE500EBB54F /* TKPlace.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0581E4DDAE500EBB54F /* TKPlace.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6C3D05B1E4DDAE500EBB54F /* TKPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0591E4DDAE500EBB54F /* TKPlace.m */; };
+		D6C3D05E1E4DDE0A00EBB54F /* TKReference.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6C3D05F1E4DDE0A00EBB54F /* TKReference.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D05D1E4DDE0A00EBB54F /* TKReference.m */; };
+		D6C3D0621E4DDE2D00EBB54F /* TKMedium.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6C3D0631E4DDE2D00EBB54F /* TKMedium.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0611E4DDE2D00EBB54F /* TKMedium.m */; };
+		D6C3D0661E4DE29C00EBB54F /* NSObject+Parsing.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6C3D0671E4DE29C00EBB54F /* NSObject+Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */; };
+		D6C3D06E1E4DE76A00EBB54F /* APIConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D06A1E4DE76A00EBB54F /* APIConnection.h */; };
+		D6C3D06F1E4DE76A00EBB54F /* APIConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D06B1E4DE76A00EBB54F /* APIConnection.m */; };
+		D6C3D0721E4DE7B400EBB54F /* API.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0701E4DE7B400EBB54F /* API.h */; };
+		D6C3D0731E4DE7B400EBB54F /* API.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0711E4DE7B400EBB54F /* API.m */; };
+		D6C3D0761E4DF75C00EBB54F /* Foundation+TravelKit.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0741E4DF75C00EBB54F /* Foundation+TravelKit.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6C3D0771E4DF75C00EBB54F /* Foundation+TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0751E4DF75C00EBB54F /* Foundation+TravelKit.m */; };
+		D6C3D07A1E4DFACB00EBB54F /* MapWorkers.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */; };
+		D6C3D07B1E4DFACB00EBB54F /* MapWorkers.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */; };
+		D6C3D07E1E4DFCA700EBB54F /* TKPlacesQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6C3D07F1E4DFCA700EBB54F /* TKPlacesQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */; };
+		D6C3D0861E5196CB00EBB54F /* TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0851E5196CB00EBB54F /* TravelKit.m */; };
+		D6C3D0891E51A09200EBB54F /* TKMapRegion.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0871E51A09200EBB54F /* TKMapRegion.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6C3D08A1E51A09200EBB54F /* TKMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0881E51A09200EBB54F /* TKMapRegion.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		D6B2A1291E530AFD005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6B2A1541E530F60005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C3D04C1E4DD36200EBB54F /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D6C3D04F1E4DD36200EBB54F /* TravelKit.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TravelKit.h; sourceTree = "<group>"; };
+		D6C3D0501E4DD36200EBB54F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D6C3D0581E4DDAE500EBB54F /* TKPlace.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPlace.h; sourceTree = "<group>"; };
+		D6C3D0591E4DDAE500EBB54F /* TKPlace.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPlace.m; sourceTree = "<group>"; };
+		D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKReference.h; sourceTree = "<group>"; };
+		D6C3D05D1E4DDE0A00EBB54F /* TKReference.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKReference.m; sourceTree = "<group>"; };
+		D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMedium.h; sourceTree = "<group>"; };
+		D6C3D0611E4DDE2D00EBB54F /* TKMedium.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMedium.m; sourceTree = "<group>"; };
+		D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+Parsing.h"; sourceTree = "<group>"; };
+		D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+Parsing.m"; sourceTree = "<group>"; };
+		D6C3D06A1E4DE76A00EBB54F /* APIConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = APIConnection.h; sourceTree = "<group>"; };
+		D6C3D06B1E4DE76A00EBB54F /* APIConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = APIConnection.m; sourceTree = "<group>"; };
+		D6C3D0701E4DE7B400EBB54F /* API.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = API.h; sourceTree = "<group>"; };
+		D6C3D0711E4DE7B400EBB54F /* API.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = API.m; sourceTree = "<group>"; };
+		D6C3D0741E4DF75C00EBB54F /* Foundation+TravelKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation+TravelKit.h"; sourceTree = "<group>"; };
+		D6C3D0751E4DF75C00EBB54F /* Foundation+TravelKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+TravelKit.m"; sourceTree = "<group>"; };
+		D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapWorkers.h; sourceTree = "<group>"; };
+		D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapWorkers.m; sourceTree = "<group>"; };
+		D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPlacesQuery.h; sourceTree = "<group>"; };
+		D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPlacesQuery.m; sourceTree = "<group>"; };
+		D6C3D0851E5196CB00EBB54F /* TravelKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelKit.m; sourceTree = "<group>"; };
+		D6C3D0871E51A09200EBB54F /* TKMapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapRegion.h; sourceTree = "<group>"; };
+		D6C3D0881E51A09200EBB54F /* TKMapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapRegion.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		D6B2A1251E530AFD005509E8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6B2A1501E530F60005509E8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6C3D0481E4DD36200EBB54F /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		D6C3D0421E4DD36200EBB54F = {
+			isa = PBXGroup;
+			children = (
+				D6C3D04E1E4DD36200EBB54F /* TravelKit */,
+				D6C3D04D1E4DD36200EBB54F /* Products */,
+				D6C3D0801E4DFE2800EBB54F /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		D6C3D04D1E4DD36200EBB54F /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				D6C3D04C1E4DD36200EBB54F /* TravelKit.framework */,
+				D6B2A1291E530AFD005509E8 /* TravelKit.framework */,
+				D6B2A1541E530F60005509E8 /* TravelKit.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D6C3D04E1E4DD36200EBB54F /* TravelKit */ = {
+			isa = PBXGroup;
+			children = (
+				D6C3D0571E4DDAD200EBB54F /* Sources */,
+				D6C3D04F1E4DD36200EBB54F /* TravelKit.h */,
+				D6C3D0851E5196CB00EBB54F /* TravelKit.m */,
+				D6C3D0501E4DD36200EBB54F /* Info.plist */,
+			);
+			path = TravelKit;
+			sourceTree = "<group>";
+		};
+		D6C3D0571E4DDAD200EBB54F /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				D6C3D0701E4DE7B400EBB54F /* API.h */,
+				D6C3D0711E4DE7B400EBB54F /* API.m */,
+				D6C3D06A1E4DE76A00EBB54F /* APIConnection.h */,
+				D6C3D06B1E4DE76A00EBB54F /* APIConnection.m */,
+				D6C3D0741E4DF75C00EBB54F /* Foundation+TravelKit.h */,
+				D6C3D0751E4DF75C00EBB54F /* Foundation+TravelKit.m */,
+				D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */,
+				D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */,
+				D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */,
+				D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */,
+				D6C3D0871E51A09200EBB54F /* TKMapRegion.h */,
+				D6C3D0881E51A09200EBB54F /* TKMapRegion.m */,
+				D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */,
+				D6C3D0611E4DDE2D00EBB54F /* TKMedium.m */,
+				D6C3D0581E4DDAE500EBB54F /* TKPlace.h */,
+				D6C3D0591E4DDAE500EBB54F /* TKPlace.m */,
+				D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */,
+				D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */,
+				D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */,
+				D6C3D05D1E4DDE0A00EBB54F /* TKReference.m */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		D6C3D0801E4DFE2800EBB54F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		D6B2A1261E530AFD005509E8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6B2A13D1E530B11005509E8 /* TKMedium.h in Headers */,
+				D6B2A1351E530B11005509E8 /* Foundation+TravelKit.h in Headers */,
+				D6B2A1331E530B11005509E8 /* APIConnection.h in Headers */,
+				D6B2A1451E530B18005509E8 /* TravelKit.h in Headers */,
+				D6B2A1431E530B11005509E8 /* TKReference.h in Headers */,
+				D6B2A13B1E530B11005509E8 /* TKMapRegion.h in Headers */,
+				D6B2A13F1E530B11005509E8 /* TKPlace.h in Headers */,
+				D6B2A1391E530B11005509E8 /* NSObject+Parsing.h in Headers */,
+				D6B2A1311E530B11005509E8 /* API.h in Headers */,
+				D6B2A1411E530B11005509E8 /* TKPlacesQuery.h in Headers */,
+				D6B2A1371E530B11005509E8 /* MapWorkers.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6B2A1511E530F60005509E8 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6B2A1681E531097005509E8 /* TKMedium.h in Headers */,
+				D6B2A1601E531097005509E8 /* Foundation+TravelKit.h in Headers */,
+				D6B2A15E1E531097005509E8 /* APIConnection.h in Headers */,
+				D6B2A1701E53109B005509E8 /* TravelKit.h in Headers */,
+				D6B2A16E1E531097005509E8 /* TKReference.h in Headers */,
+				D6B2A1661E531097005509E8 /* TKMapRegion.h in Headers */,
+				D6B2A16A1E531097005509E8 /* TKPlace.h in Headers */,
+				D6B2A1641E531097005509E8 /* NSObject+Parsing.h in Headers */,
+				D6B2A15C1E531097005509E8 /* API.h in Headers */,
+				D6B2A16C1E531097005509E8 /* TKPlacesQuery.h in Headers */,
+				D6B2A1621E531097005509E8 /* MapWorkers.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6C3D0491E4DD36200EBB54F /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6C3D0621E4DDE2D00EBB54F /* TKMedium.h in Headers */,
+				D6C3D07A1E4DFACB00EBB54F /* MapWorkers.h in Headers */,
+				D6C3D0721E4DE7B400EBB54F /* API.h in Headers */,
+				D6C3D0661E4DE29C00EBB54F /* NSObject+Parsing.h in Headers */,
+				D6C3D06E1E4DE76A00EBB54F /* APIConnection.h in Headers */,
+				D6C3D0761E4DF75C00EBB54F /* Foundation+TravelKit.h in Headers */,
+				D6C3D0511E4DD36200EBB54F /* TravelKit.h in Headers */,
+				D6C3D05A1E4DDAE500EBB54F /* TKPlace.h in Headers */,
+				D6C3D07E1E4DFCA700EBB54F /* TKPlacesQuery.h in Headers */,
+				D6C3D0891E51A09200EBB54F /* TKMapRegion.h in Headers */,
+				D6C3D05E1E4DDE0A00EBB54F /* TKReference.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		D6B2A1281E530AFD005509E8 /* TravelKit-tvOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6B2A12E1E530AFD005509E8 /* Build configuration list for PBXNativeTarget "TravelKit-tvOS" */;
+			buildPhases = (
+				D6B2A1241E530AFD005509E8 /* Sources */,
+				D6B2A1251E530AFD005509E8 /* Frameworks */,
+				D6B2A1261E530AFD005509E8 /* Headers */,
+				D6B2A1271E530AFD005509E8 /* Resources */,
+				D6B2A14E1E530F29005509E8 /* Normalize Framework headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TravelKit-tvOS";
+			productName = "TravelKit-tvOS";
+			productReference = D6B2A1291E530AFD005509E8 /* TravelKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D6B2A1531E530F60005509E8 /* TravelKit-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6B2A1591E530F60005509E8 /* Build configuration list for PBXNativeTarget "TravelKit-macOS" */;
+			buildPhases = (
+				D6B2A14F1E530F60005509E8 /* Sources */,
+				D6B2A1501E530F60005509E8 /* Frameworks */,
+				D6B2A1511E530F60005509E8 /* Headers */,
+				D6B2A1521E530F60005509E8 /* Resources */,
+				D6B2A1731E531279005509E8 /* Normalize Framework headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TravelKit-macOS";
+			productName = travelkit;
+			productReference = D6B2A1541E530F60005509E8 /* TravelKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		D6C3D04B1E4DD36200EBB54F /* TravelKit-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = D6C3D0541E4DD36200EBB54F /* Build configuration list for PBXNativeTarget "TravelKit-iOS" */;
+			buildPhases = (
+				D6C3D0471E4DD36200EBB54F /* Sources */,
+				D6C3D0481E4DD36200EBB54F /* Frameworks */,
+				D6C3D0491E4DD36200EBB54F /* Headers */,
+				D6C3D04A1E4DD36200EBB54F /* Resources */,
+				D6B2A14C1E530E15005509E8 /* Normalize Framework headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "TravelKit-iOS";
+			productName = TravelKit;
+			productReference = D6C3D04C1E4DD36200EBB54F /* TravelKit.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		D6C3D0431E4DD36200EBB54F /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0830;
+				ORGANIZATIONNAME = Tripomatic;
+				TargetAttributes = {
+					D6B2A1281E530AFD005509E8 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+					D6B2A1531E530F60005509E8 = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+					D6C3D04B1E4DD36200EBB54F = {
+						CreatedOnToolsVersion = 8.2.1;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = D6C3D0461E4DD36200EBB54F /* Build configuration list for PBXProject "TravelKit" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = D6C3D0421E4DD36200EBB54F;
+			productRefGroup = D6C3D04D1E4DD36200EBB54F /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				D6B2A1531E530F60005509E8 /* TravelKit-macOS */,
+				D6C3D04B1E4DD36200EBB54F /* TravelKit-iOS */,
+				D6B2A1281E530AFD005509E8 /* TravelKit-tvOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		D6B2A1271E530AFD005509E8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6B2A1521E530F60005509E8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6C3D04A1E4DD36200EBB54F /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		D6B2A14C1E530E15005509E8 /* Normalize Framework headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Normalize Framework headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$BUILT_PRODUCTS_DIR\"\ncd \"$PRODUCT_NAME.framework\"\ncd \"Headers\"\nfor i in $(ls | grep \".h\"); do\n    sed -i \"\" \"s/#import \\\"/#import <$PRODUCT_NAME\\//g\" $i\n    sed -i \"\" \"s/.h\\\"/.h>/g\" $i\ndone\n";
+		};
+		D6B2A14E1E530F29005509E8 /* Normalize Framework headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Normalize Framework headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$BUILT_PRODUCTS_DIR\"\ncd \"$PRODUCT_NAME.framework\"\ncd \"Headers\"\nfor i in $(ls | grep \".h\"); do\n    sed -i \"\" \"s/#import \\\"/#import <$PRODUCT_NAME\\//g\" $i\n    sed -i \"\" \"s/.h\\\"/.h>/g\" $i\ndone\n";
+		};
+		D6B2A1731E531279005509E8 /* Normalize Framework headers */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Normalize Framework headers";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cd \"$BUILT_PRODUCTS_DIR\"\ncd \"$PRODUCT_NAME.framework\"\ncd \"Headers\"\nfor i in $(ls | grep \".h\"); do\n    sed -i \"\" \"s/#import \\\"/#import <$PRODUCT_NAME\\//g\" $i\n    sed -i \"\" \"s/.h\\\"/.h>/g\" $i\ndone\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		D6B2A1241E530AFD005509E8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6B2A1441E530B11005509E8 /* TKReference.m in Sources */,
+				D6B2A1401E530B11005509E8 /* TKPlace.m in Sources */,
+				D6B2A1421E530B11005509E8 /* TKPlacesQuery.m in Sources */,
+				D6B2A1341E530B11005509E8 /* APIConnection.m in Sources */,
+				D6B2A13C1E530B11005509E8 /* TKMapRegion.m in Sources */,
+				D6B2A13A1E530B11005509E8 /* NSObject+Parsing.m in Sources */,
+				D6B2A1321E530B11005509E8 /* API.m in Sources */,
+				D6B2A1381E530B11005509E8 /* MapWorkers.m in Sources */,
+				D6B2A13E1E530B11005509E8 /* TKMedium.m in Sources */,
+				D6B2A1461E530B18005509E8 /* TravelKit.m in Sources */,
+				D6B2A1361E530B11005509E8 /* Foundation+TravelKit.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6B2A14F1E530F60005509E8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6B2A16F1E531097005509E8 /* TKReference.m in Sources */,
+				D6B2A16B1E531097005509E8 /* TKPlace.m in Sources */,
+				D6B2A16D1E531097005509E8 /* TKPlacesQuery.m in Sources */,
+				D6B2A15F1E531097005509E8 /* APIConnection.m in Sources */,
+				D6B2A1671E531097005509E8 /* TKMapRegion.m in Sources */,
+				D6B2A1651E531097005509E8 /* NSObject+Parsing.m in Sources */,
+				D6B2A15D1E531097005509E8 /* API.m in Sources */,
+				D6B2A1631E531097005509E8 /* MapWorkers.m in Sources */,
+				D6B2A1691E531097005509E8 /* TKMedium.m in Sources */,
+				D6B2A1741E532002005509E8 /* TravelKit.m in Sources */,
+				D6B2A1611E531097005509E8 /* Foundation+TravelKit.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D6C3D0471E4DD36200EBB54F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D6C3D0731E4DE7B400EBB54F /* API.m in Sources */,
+				D6C3D07F1E4DFCA700EBB54F /* TKPlacesQuery.m in Sources */,
+				D6C3D06F1E4DE76A00EBB54F /* APIConnection.m in Sources */,
+				D6C3D07B1E4DFACB00EBB54F /* MapWorkers.m in Sources */,
+				D6C3D0671E4DE29C00EBB54F /* NSObject+Parsing.m in Sources */,
+				D6C3D05F1E4DDE0A00EBB54F /* TKReference.m in Sources */,
+				D6C3D0861E5196CB00EBB54F /* TravelKit.m in Sources */,
+				D6C3D0631E4DDE2D00EBB54F /* TKMedium.m in Sources */,
+				D6C3D0771E4DF75C00EBB54F /* Foundation+TravelKit.m in Sources */,
+				D6C3D05B1E4DDAE500EBB54F /* TKPlace.m in Sources */,
+				D6C3D08A1E51A09200EBB54F /* TKMapRegion.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D6B2A12F1E530AFD005509E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Debug;
+		};
+		D6B2A1301E530AFD005509E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SDKROOT = appletvos;
+				TARGETED_DEVICE_FAMILY = 3;
+			};
+			name = Release;
+		};
+		D6B2A15A1E530F60005509E8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		D6B2A15B1E530F60005509E8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				COMBINE_HIDPI_IMAGES = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		D6C3D0521E4DD36200EBB54F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEFINES_MODULE = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "$(PRODUCT_NAME:c99extidentifier)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MACH_O_TYPE = mh_dylib;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tripomatic.travelkit;
+				PRODUCT_NAME = TravelKit;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Debug;
+		};
+		D6C3D0531E4DD36200EBB54F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEFINES_MODULE = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				INFOPLIST_FILE = "$(PRODUCT_NAME:c99extidentifier)/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.2;
+				MACH_O_TYPE = mh_dylib;
+				MACOSX_DEPLOYMENT_TARGET = 10.9;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_BUNDLE_IDENTIFIER = com.tripomatic.travelkit;
+				PRODUCT_NAME = TravelKit;
+				SKIP_INSTALL = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				VALIDATE_PRODUCT = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+				VERSION_INFO_PREFIX = "";
+				WATCHOS_DEPLOYMENT_TARGET = 2.2;
+			};
+			name = Release;
+		};
+		D6C3D0551E4DD36200EBB54F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEAD_CODE_STRIPPING = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		D6C3D0561E4DD36200EBB54F /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEAD_CODE_STRIPPING = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		D6B2A12E1E530AFD005509E8 /* Build configuration list for PBXNativeTarget "TravelKit-tvOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6B2A12F1E530AFD005509E8 /* Debug */,
+				D6B2A1301E530AFD005509E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D6B2A1591E530F60005509E8 /* Build configuration list for PBXNativeTarget "TravelKit-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6B2A15A1E530F60005509E8 /* Debug */,
+				D6B2A15B1E530F60005509E8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D6C3D0461E4DD36200EBB54F /* Build configuration list for PBXProject "TravelKit" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6C3D0521E4DD36200EBB54F /* Debug */,
+				D6C3D0531E4DD36200EBB54F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		D6C3D0541E4DD36200EBB54F /* Build configuration list for PBXNativeTarget "TravelKit-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D6C3D0551E4DD36200EBB54F /* Debug */,
+				D6C3D0561E4DD36200EBB54F /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = D6C3D0431E4DD36200EBB54F /* Project object */;
+}
