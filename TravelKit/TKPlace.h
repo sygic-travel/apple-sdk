@@ -31,6 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *parents;
+@property (nonatomic, copy, nullable) NSArray<NSString *> *flags;
 
 @property (nonatomic, strong, nullable) TKPlaceDetail *detail;
 @property (nonatomic, strong, nullable) NSArray<TKReference *> *references;

@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
 //
 
-#import "API.h"
+#import "TKAPI.h"
 #import "NSObject+Parsing.h"
 
 // Default API key definition
@@ -14,20 +14,20 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 
 #pragma mark API
 
-@interface API ()
+@interface TKAPI ()
 
 @property (nonatomic, copy) NSString *apiURL;
 
 @end
 
-@implementation API
+@implementation TKAPI
 
 #pragma mark -
 #pragma mark Shared instance
 
-+ (API *)sharedAPI
++ (TKAPI *)sharedAPI
 {
-	static API *shared = nil;
+	static TKAPI *shared = nil;
 	static dispatch_once_t once;
 	dispatch_once(&once, ^{ shared = [[self alloc] init]; });
 	return shared;
@@ -38,14 +38,13 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 
 - (void)refreshServerProperties
 {
-	NSString *subdomain = [@API_SUBDOMAIN copy];
 //	NSString *lang = [[UserSettings sharedSettings].appLanguage ?: @"en" lowercaseString];
 	NSString *lang = @"en";
 
-	_apiURL = [NSString stringWithFormat:@"%@://%@.%@/%@/%@",
-	//          http[s]:// [*-]api.   sygictraveldata.com  /  v2.x  /   en
-	//             |         |                 |                |       |
-	    @API_PROTOCOL, subdomain,     @API_BASE_URL,   @API_VERSION,   lang];
+	_apiURL = [NSString stringWithFormat:@"%@://%@/%@/%@",
+	//          http[s]://  sygictraveldata.com  /  v2.x  /   en
+	//             |           |                     |        |
+	    @API_PROTOCOL,   @API_BASE_URL,      @API_VERSION,   lang];
 
 	_APIKey = [self defaultAPIKey];
 //	_isAlphaEnvironment = [_apiURL containsSubstring:@"alpha"];
@@ -55,7 +54,7 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 {
 	if (self = [super init])
 	{
-		if (![self isMemberOfClass:[API class]])
+		if (![self isMemberOfClass:[TKAPI class]])
 			@throw @"API class cannot be inherited";
 
 		[self refreshServerProperties];
@@ -99,19 +98,14 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 	return [NSString stringWithFormat:@"%@/%@%@", _apiURL, APIKey, path];
 }
 
-- (NSString *)URLStringForRequestType:(APIRequestType)type path:(NSString *)path
+- (NSString *)URLStringForRequestType:(TKAPIRequestType)type path:(NSString *)path
 {
 	return [self URLStringForRequestType:type path:path APIKey:nil];
 }
 
-- (NSString *)URLStringForRequestType:(APIRequestType)type path:(NSString *)path APIKey:(NSString *)APIKey
+- (NSString *)URLStringForRequestType:(TKAPIRequestType)type path:(NSString *)path APIKey:(NSString *)APIKey
 {
 	NSMutableString *ret = [_apiURL mutableCopy];
-
-	// Switch to CDN URL if needed
-
-	// Append API key if needed
-	[ret appendFormat:@"/%@", APIKey ?: _APIKey];
 
 	// Append path
 
@@ -125,24 +119,22 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 	return [ret copy];
 }
 
-- (NSString *)pathForRequestType:(APIRequestType)type
+- (NSString *)pathForRequestType:(TKAPIRequestType)type
 {
 	return [self pathForRequestType:type ID:nil];
 }
 
-- (NSString *)pathForRequestType:(APIRequestType)type ID:(NSString *)ID
+- (NSString *)pathForRequestType:(TKAPIRequestType)type ID:(NSString *)ID
 {
 	switch (type) {
 
-	case APIRequestTypePlacesGET: // GET
-//		return @"/places";
-		return @"features";
+	case TKAPIRequestTypePlacesGET: // GET
+		return @"/places";
 
-	case APIRequestTypePlaceGET: // GET
-//		return [NSString stringWithFormat:@"/places/%@", ID];
-		return [NSString stringWithFormat:@"/items/%@", ID];
+	case TKAPIRequestTypePlaceGET: // GET
+		return [NSString stringWithFormat:@"/place-details/%@", ID];
 
-	case APIRequestTypeMediaGET: // GET
+	case TKAPIRequestTypeMediaGET: // GET
 		return [NSString stringWithFormat:@"/media/%@", ID];
 
 	default:
@@ -152,7 +144,7 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 	}
 }
 
-- (NSString *)HTTPMethodForRequestType:(APIRequestType)type
+- (NSString *)HTTPMethodForRequestType:(TKAPIRequestType)type
 {
 	return @"GET";
 }
@@ -169,9 +161,9 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 @property (nonatomic, copy) NSDictionary *HTTPHeaders;
 @property (nonatomic, copy) NSData *data;
 
-@property (nonatomic, strong) APIConnection *connection;
-@property (nonatomic, copy) APIConnectionSuccessBlock successBlock;
-@property (nonatomic, copy) APIConnectionFailureBlock failureBlock;
+@property (nonatomic, strong) TKAPIConnection *connection;
+@property (nonatomic, copy) TKAPIConnectionSuccessBlock successBlock;
+@property (nonatomic, copy) TKAPIConnectionFailureBlock failureBlock;
 
 @end
 
@@ -186,7 +178,7 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 	{
 		_connection = nil;
 		_type = -1;
-		_state = APIRequestStateInit;
+		_state = TKAPIRequestStateInit;
 	}
 
 	return self;
@@ -194,9 +186,9 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 
 - (void)start
 {
-	_state = APIRequestStatePending;
+	_state = TKAPIRequestStatePending;
 
-	API *api = [API sharedAPI];
+	TKAPI *api = [TKAPI sharedAPI];
 
 	NSString *urlString = [api URLStringForRequestType:_type path:_path APIKey:_APIKey];
 	NSURL *url = [NSURL URLWithString:urlString];
@@ -216,7 +208,12 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 	for (NSString *header in _HTTPHeaders.allKeys)
 		[request setValue:_HTTPHeaders[header] forHTTPHeaderField:header];
 
-	_connection = [[APIConnection alloc] initWithURLRequest:request success:_successBlock failure:_failureBlock];
+	NSString *apiKey = _APIKey ?: api.APIKey;
+
+	if (apiKey.length)
+		[request setValue:apiKey forHTTPHeaderField:@"X-API-Key"];
+
+	_connection = [[TKAPIConnection alloc] initWithURLRequest:request success:_successBlock failure:_failureBlock];
 	_connection.identifier = self.typeString;
 	_connection.silent = _silent;
 
@@ -231,7 +228,7 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 
 - (void)cancel
 {
-	_state = APIRequestStateFinished;
+	_state = TKAPIRequestStateFinished;
 	[_connection cancel];
 }
 
@@ -246,9 +243,9 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 {
 	if (self = [super init])
 	{
-		_type = APIRequestTypePlacesGET;
+		_type = TKAPIRequestTypePlacesGET;
 
-		NSMutableString *path = [[[API sharedAPI] pathForRequestType:_type] mutableCopy];
+		NSMutableString *path = [[[TKAPI sharedAPI] pathForRequestType:_type] mutableCopy];
 
 		NSMutableArray<NSURLQueryItem *> *queryItems = [NSMutableArray arrayWithCapacity:10];
 
@@ -316,10 +313,10 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 
 		_path = path;
 
-		_successBlock = ^(APIResponse *response){
+		_successBlock = ^(TKAPIResponse *response){
 
 			NSMutableArray *stored = [NSMutableArray array];
-			NSArray *items = [response.data[@"features"] parsedArray];
+			NSArray *items = [response.data[@"places"] parsedArray];
 
 			for (NSDictionary *dict in items)
 			{
@@ -332,12 +329,12 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 				if (a) [stored addObject:a];
 			}
 
-			_state = APIRequestStateFinished;
+			_state = TKAPIRequestStateFinished;
 
 			if (success) success(stored);
 
-		}; _failureBlock = ^(APIError *error){
-			_state = APIRequestStateFinished;
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
 			if (failure) failure();
 		};
 	}
@@ -356,14 +353,14 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 {
 	if (self = [super init])
 	{
-		_type = APIRequestTypePlaceGET;
-		_path = [[API sharedAPI] pathForRequestType:_type ID:itemID];
+		_type = TKAPIRequestTypePlaceGET;
+		_path = [[TKAPI sharedAPI] pathForRequestType:_type ID:itemID];
 
-		_successBlock = ^(APIResponse *response){
+		_successBlock = ^(TKAPIResponse *response){
 
 			TKPlace *place = nil;
-			NSDictionary *item = [response.data[@"item"] parsedDictionary];
-			NSArray *itemMedia = [response.data[@"item"][@"main_media"][@"media"] parsedArray];
+			NSDictionary *item = [response.data[@"place"] parsedDictionary];
+			NSArray *itemMedia = [response.data[@"place"][@"main_media"][@"media"] parsedArray];
 
 			if (item) place = [[TKPlace alloc] initFromResponse:item];
 
@@ -373,13 +370,13 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 				if (m) [media addObject:m];
 			}
 
-			_state = APIRequestStateFinished;
+			_state = TKAPIRequestStateFinished;
 
 			if (!place && failure) failure();
 			if (place && success) success(place, media);
 
-		}; _failureBlock = ^(APIError *error){
-			_state = APIRequestStateFinished;
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
 			if (failure) failure();
 		};
 	}
@@ -398,12 +395,12 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 {
 	if (self = [super init])
 	{
-		_type = APIRequestTypeMediaGET;
-		_path = [[API sharedAPI] pathForRequestType:_type ID:placeID];
+		_type = TKAPIRequestTypeMediaGET;
+		_path = [[TKAPI sharedAPI] pathForRequestType:_type ID:placeID];
 
-		_successBlock = ^(APIResponse *response){
+		_successBlock = ^(TKAPIResponse *response){
 
-			NSArray *media = arrayOrNil(response.data);
+			NSArray *media = [response.data parsedArray];
 			NSMutableArray *ret = [NSMutableArray arrayWithCapacity:media.count];
 
 			for (NSDictionary *mediumDict in media)
@@ -414,12 +411,12 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 				if (m) [ret addObject:m];
 			}
 
-			_state = APIRequestStateFinished;
+			_state = TKAPIRequestStateFinished;
 
 			if (success) success(ret);
 
-		}; _failureBlock = ^(APIError *error){
-			_state = APIRequestStateFinished;
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
 			if (failure) failure();
 		};
 	}
@@ -437,12 +434,12 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 {
 	if (self = [super init])
 	{
-		_type = APIRequestTypeExchangeRatesGET;
-		_path = [[API sharedAPI] pathForRequestType:_type];
+		_type = TKAPIRequestTypeExchangeRatesGET;
+		_path = [[TKAPI sharedAPI] pathForRequestType:_type];
 
-		_successBlock = ^(APIResponse *response){
+		_successBlock = ^(TKAPIResponse *response){
 
-			_state = APIRequestStateFinished;
+			_state = TKAPIRequestStateFinished;
 
 			NSMutableDictionary<NSString *, NSNumber *> *exchangeRates = [NSMutableDictionary dictionaryWithCapacity:10];
 
@@ -459,8 +456,8 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 
 			if (success) success(exchangeRates);
 
-		}; _failureBlock = ^(APIError *error){
-			_state = APIRequestStateFinished;
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
 			if (failure) failure(error);
 		};
 	}
@@ -475,22 +472,22 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 
 
 - (instancetype)initAsCustomGETRequestWithPath:(NSString *)path
-	success:(void (^)(id))success failure:(APIConnectionFailureBlock)failure
+	success:(void (^)(id))success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
-		_type = APIRequestTypeCustomGET;
+		_type = TKAPIRequestTypeCustomGET;
 		_path = path;
 
-		_successBlock = ^(APIResponse *response){
+		_successBlock = ^(TKAPIResponse *response){
 
-			_state = APIRequestStateFinished;
+			_state = TKAPIRequestStateFinished;
 
 			if (success)
 				success(response.data);
 
-		}; _failureBlock = ^(APIError *error){
-			_state = APIRequestStateFinished;
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
 			if (failure) failure(error);
 		};
 	}
@@ -499,23 +496,23 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 }
 
 - (instancetype)initAsCustomPOSTRequestWithPath:(NSString *)path
-	json:(NSString *)json success:(void (^)(id))success failure:(APIConnectionFailureBlock)failure
+	json:(NSString *)json success:(void (^)(id))success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
-		_type = APIRequestTypeCustomPOST;
+		_type = TKAPIRequestTypeCustomPOST;
 		_path = path;
 		_data = [json dataUsingEncoding:NSUTF8StringEncoding];
 
-		_successBlock = ^(APIResponse *response){
+		_successBlock = ^(TKAPIResponse *response){
 
-			_state = APIRequestStateFinished;
+			_state = TKAPIRequestStateFinished;
 
 			if (success)
 				success(response.data);
 
-		}; _failureBlock = ^(APIError *error){
-			_state = APIRequestStateFinished;
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
 			if (failure) failure(error);
 		};
 	}
@@ -524,23 +521,23 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 }
 
 - (instancetype)initAsCustomPUTRequestWithPath:(NSString *)path json:(NSString *)json
-	success:(void (^)(id))success failure:(APIConnectionFailureBlock)failure
+	success:(void (^)(id))success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
-		_type = APIRequestTypeCustomPUT;
+		_type = TKAPIRequestTypeCustomPUT;
 		_path = path;
 		_data = [json dataUsingEncoding:NSUTF8StringEncoding];
 
-		_successBlock = ^(APIResponse *response){
+		_successBlock = ^(TKAPIResponse *response){
 
-			_state = APIRequestStateFinished;
+			_state = TKAPIRequestStateFinished;
 
 			if (success)
 				success(response.data);
 
-		}; _failureBlock = ^(APIError *error){
-			_state = APIRequestStateFinished;
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
 			if (failure) failure(error);
 		};
 	}
@@ -549,23 +546,23 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 }
 
 - (instancetype)initAsCustomDELETERequestWithPath:(NSString *)path json:(NSString *)json
-	success:(void (^)(id))success failure:(APIConnectionFailureBlock)failure
+	success:(void (^)(id))success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
-		_type = APIRequestTypeCustomDELETE;
+		_type = TKAPIRequestTypeCustomDELETE;
 		_path = path;
 		_data = [json dataUsingEncoding:NSUTF8StringEncoding];
 
-		_successBlock = ^(APIResponse *response){
+		_successBlock = ^(TKAPIResponse *response){
 
-			_state = APIRequestStateFinished;
+			_state = TKAPIRequestStateFinished;
 
 			if (success)
 				success(response.data);
 
-		}; _failureBlock = ^(APIError *error){
-			_state = APIRequestStateFinished;
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
 			if (failure) failure(error);
 		};
 	}
@@ -583,14 +580,14 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		types = @{
-			@(APIRequestTypePlacesGET): @"PLACES_GET",
-			@(APIRequestTypePlaceGET): @"PLACE_GET",
-			@(APIRequestTypeMediaGET): @"MEDIA_GET",
-			@(APIRequestTypeExchangeRatesGET): @"EXCHANGE_RATES_GET",
-			@(APIRequestTypeCustomGET): @"CUSTOM_GET",
-			@(APIRequestTypeCustomPOST): @"CUSTOM_POST",
-			@(APIRequestTypeCustomPUT): @"CUSTOM_PUT",
-			@(APIRequestTypeCustomDELETE): @"CUSTOM_DELETE",
+			@(TKAPIRequestTypePlacesGET): @"PLACES_GET",
+			@(TKAPIRequestTypePlaceGET): @"PLACE_GET",
+			@(TKAPIRequestTypeMediaGET): @"MEDIA_GET",
+			@(TKAPIRequestTypeExchangeRatesGET): @"EXCHANGE_RATES_GET",
+			@(TKAPIRequestTypeCustomGET): @"CUSTOM_GET",
+			@(TKAPIRequestTypeCustomPOST): @"CUSTOM_POST",
+			@(TKAPIRequestTypeCustomPUT): @"CUSTOM_PUT",
+			@(TKAPIRequestTypeCustomDELETE): @"CUSTOM_DELETE",
 		};
 	});
 

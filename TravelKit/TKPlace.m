@@ -84,6 +84,7 @@
 		// Fetch possible categories and tags
 		NSMutableOrderedSet *categories = [NSMutableOrderedSet orderedSetWithCapacity:4];
 		NSMutableOrderedSet *tags = [NSMutableOrderedSet orderedSetWithCapacity:16];
+		NSMutableOrderedSet *flags = [NSMutableOrderedSet orderedSetWithCapacity:4];
 
 		for (NSString *str in [dictionary[@"categories"] parsedArray])
 			if ([str parsedString]) [categories addObject:str];
@@ -92,16 +93,17 @@
 			if ([str parsedString]) [tags addObject:str];
 
 		if ([[dictionary[@"has_fodors_content"] parsedNumber] boolValue])
-			[categories addObject:@"_fodors"];
+			[flags addObject:@"has_fodors_content"];
 
-		if (![[dictionary[@"is_translated"] parsedNumber] boolValue])
-			[categories addObject:@"_translate"];
+		if ([[dictionary[@"is_translated"] parsedNumber] boolValue])
+			[flags addObject:@"is_translated"];
 
 		if ([[dictionary[@"perex_provider"] parsedString] isEqualToString:@"wikipedia"])
-			[categories addObject:@"_wiki"];
+			[categories addObject:@"wikipedia_perex"];
 
 		_categories = [categories array];
 		_tags = [tags array];
+		_flags = [flags array];
     }
 
     return self;

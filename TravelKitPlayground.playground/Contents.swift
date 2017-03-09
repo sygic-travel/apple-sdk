@@ -4,15 +4,18 @@ import Foundation
 import TravelKit
 import PlaygroundSupport
 
+let travelKit = TravelKit.shared()!
 let printLock = NSLock()
+
+travelKit.apiKey = "**REDACTED**"
 
 let destinationsQuery = TKPlacesQuery()
 destinationsQuery.type = .city
 destinationsQuery.limit = 5
 
-TravelKit.places(for: destinationsQuery) { (places, error) in
+travelKit.places(for: destinationsQuery) { (places, error) in
 	printLock.lock()
-	print("Top Destinations:")
+	print("\nTop Destinations:\n")
 	places?.forEach({ (place) in
 		print("\(place)")
 	})
@@ -25,9 +28,9 @@ sightsQuery.type = .POI
 sightsQuery.categories = ["sightseeing"]
 sightsQuery.limit = 10
 
-TravelKit.places(for: sightsQuery) { (places, error) in
+travelKit.places(for: sightsQuery) { (places, error) in
 	printLock.lock()
-	print("Top Sights in London:")
+	print("\nTop Sights in London:\n")
 	places?.forEach({ (place) in
 		print("\(place)")
 	})

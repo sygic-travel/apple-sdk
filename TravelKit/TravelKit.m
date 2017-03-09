@@ -7,12 +7,31 @@
 //
 
 #import "TravelKit.h"
-#import "API.h"
+#import "TKAPI.h"
 
 
 @implementation TravelKit
 
-+ (void)placesForQuery:(TKPlacesQuery *)query completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion
++ (TravelKit *)sharedKit
+{
+	static TravelKit *shared = nil;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		shared = [self new];
+	});
+
+	return shared;
+}
+
+- (void)setAPIKey:(NSString *)APIKey
+{
+	_APIKey = [APIKey copy];
+
+	[TKAPI sharedAPI].APIKey = _APIKey;
+}
+
+- (void)placesForQuery:(TKPlacesQuery *)query completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion
 {
 	static NSCache<NSNumber *, NSArray<TKPlace *> *> *placesCache = nil;
 
@@ -48,7 +67,7 @@
 	}] start];
 }
 
-+ (void)detailedPlaceWithID:(NSString *)placeID completion:(void (^)(TKPlace *, NSError *))completion
+- (void)detailedPlaceWithID:(NSString *)placeID completion:(void (^)(TKPlace *, NSError *))completion
 {
 	static NSCache<NSString *, TKPlace *> *placeCache = nil;
 
@@ -82,7 +101,7 @@
 	}] start];
 }
 
-+ (void)mediaForPlaceWithID:(NSString *)placeID completion:(void (^)(NSArray<TKMedium *> *, NSError *))completion
+- (void)mediaForPlaceWithID:(NSString *)placeID completion:(void (^)(NSArray<TKMedium *> *, NSError *))completion
 {
 	static NSCache<NSString *, NSArray<TKMedium *> *> *mediaCache = nil;
 

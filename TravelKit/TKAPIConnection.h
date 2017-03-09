@@ -10,12 +10,8 @@
 
 FOUNDATION_EXPORT NSString * const TKAPIResponseErrorDomain;
 
-#define APIResponse TKAPIResponse
-#define APIError TKAPIError
-#define APIConnection TKAPIConnection
 
-
-@interface APIResponse: NSObject
+@interface TKAPIResponse: NSObject
 
 @property (assign) NSInteger code;
 @property (nonatomic, copy, readonly) NSString *status;
@@ -28,19 +24,19 @@ FOUNDATION_EXPORT NSString * const TKAPIResponseErrorDomain;
 @end
 
 
-@interface APIError : NSError
+@interface TKAPIError : NSError
 
 @property (nonatomic, strong, readonly) NSString *ID;
-@property (nonatomic, strong, readonly) APIResponse *response;
+@property (nonatomic, strong, readonly) TKAPIResponse *response;
 
 @end
 
 
-typedef void(^APIConnectionSuccessBlock)(APIResponse *);
-typedef void(^APIConnectionFailureBlock)(APIError *);
+typedef void(^TKAPIConnectionSuccessBlock)(TKAPIResponse *);
+typedef void(^TKAPIConnectionFailureBlock)(TKAPIError *);
 
 
-@interface APIConnection : NSObject <NSURLConnectionDelegate>
+@interface TKAPIConnection : NSObject <NSURLConnectionDelegate>
 
 @property (nonatomic, copy) NSString *identifier;
 
@@ -54,7 +50,7 @@ typedef void(^APIConnectionFailureBlock)(APIError *);
 
 // Initializers
 - (instancetype)initWithURLRequest:(NSMutableURLRequest *)request
-	success:(APIConnectionSuccessBlock)success failure:(APIConnectionFailureBlock)failure;
+	success:(TKAPIConnectionSuccessBlock)success failure:(TKAPIConnectionFailureBlock)failure;
 
 // Connection control
 - (BOOL)start;

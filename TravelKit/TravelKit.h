@@ -32,13 +32,19 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
 
 @interface TravelKit : NSObject
 
-+ (void)placesForQuery:(TKPlacesQuery *)query
+@property (nonatomic, copy) NSString *APIKey;
+
+- (instancetype)init __attribute__((unavailable));
+- (instancetype)new __attribute__((unavailable));
++ (TravelKit *)sharedKit NS_SWIFT_NAME(shared());
+
+- (void)placesForQuery:(TKPlacesQuery *)query
 	completion:(void (^)(NSArray<TKPlace *> *places, NSError *error))completion;
 
-+ (void)detailedPlaceWithID:(NSString *)placeID
+- (void)detailedPlaceWithID:(NSString *)placeID
 	completion:(void (^)(TKPlace *place, NSError *error))completion;
 
-+ (void)mediaForPlaceWithID:(NSString *)placeID
+- (void)mediaForPlaceWithID:(NSString *)placeID
 	completion:(void (^)(NSArray<TKMedium *> *media, NSError *error))completion;
 
 @end

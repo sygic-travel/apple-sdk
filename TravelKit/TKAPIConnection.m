@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
 //
 
-#import "APIConnection.h"
+#import "TKAPIConnection.h"
 #import "NSObject+Parsing.h"
 #import "Foundation+TravelKit.h"
 
@@ -16,7 +16,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 #pragma mark API Response
 
 
-@implementation APIResponse
+@implementation TKAPIResponse
 
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
@@ -51,7 +51,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 #pragma mark API Error
 
 
-@implementation APIError
+@implementation TKAPIError
 
 + (instancetype)errorWithError:(NSError *)error
 {
@@ -59,12 +59,12 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 	return [self errorWithDomain:error.domain code:error.code userInfo:error.userInfo];
 }
 
-+ (instancetype)errorWithResponse:(APIResponse *)response
++ (instancetype)errorWithResponse:(TKAPIResponse *)response
 {
 	return [[self alloc] initWithResponse:response];
 }
 
-- (instancetype)initWithResponse:(APIResponse *)response
+- (instancetype)initWithResponse:(TKAPIResponse *)response
 {
 	if (self = [self initWithDomain:TKAPIResponseErrorDomain code:response.code userInfo:nil])
 	{
@@ -82,20 +82,20 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 #pragma mark API Connection
 
 
-@interface APIConnection ()
+@interface TKAPIConnection ()
 
 @property (nonatomic, strong) NSDate *startTimestamp;
-@property (nonatomic, copy) APIConnectionSuccessBlock successBlock;
-@property (nonatomic, copy) APIConnectionFailureBlock failureBlock;
+@property (nonatomic, copy) TKAPIConnectionSuccessBlock successBlock;
+@property (nonatomic, copy) TKAPIConnectionFailureBlock failureBlock;
 
 @end
 
 
-@implementation APIConnection
+@implementation TKAPIConnection
 
 
 - (instancetype)initWithURLRequest:(NSMutableURLRequest *)request
-	success:(APIConnectionSuccessBlock)success failure:(APIConnectionFailureBlock)failure
+	success:(TKAPIConnectionSuccessBlock)success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
@@ -147,10 +147,19 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 		NSLog(@"[API REQUEST] ID:%@ URL:%@  METHOD:%@", _identifier, _URL, _connection.originalRequest.HTTPMethod);
 #endif
 
+	static NSOperationQueue *connectionsQueue;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		connectionsQueue = [NSOperationQueue new];
+		if ([connectionsQueue respondsToSelector:@selector(setQualityOfService:)])
+			connectionsQueue.qualityOfService = NSQualityOfServiceUtility;
+	});
+
 	if (_connection) {
 		_receivedData = [NSMutableData data];
 		_startTimestamp = [NSDate new];
-		[_connection setDelegateQueue:[NSOperationQueue currentQueue]];
+		[_connection setDelegateQueue:connectionsQueue];
 		[_connection start];
 		return YES;
 	}
@@ -210,7 +219,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 	if (error) {
 
 		if (_responseStatus >= 400 || _responseStatus < 100)
-			error = [APIError errorWithDomain:TKAPIResponseErrorDomain code:_responseStatus userInfo:nil];
+			error = [TKAPIError errorWithDomain:TKAPIResponseErrorDomain code:_responseStatus userInfo:nil];
 
 #ifdef LOG_API
 		NSDictionary *info = (error.userInfo.allKeys.count) ? error.userInfo : nil;
@@ -218,12 +227,12 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 		    _identifier, _connection.originalRequest.URL, duration, error.localizedDescription, info);
 #endif
 
-		if (_failureBlock) _failureBlock([APIError errorWithError:error]);
+		if (_failureBlock) _failureBlock([TKAPIError errorWithError:error]);
 
 		return;
 	}
 
-	APIResponse *response = [[APIResponse alloc] initWithDictionary:jsonDictionary];
+	TKAPIResponse *response = [[TKAPIResponse alloc] initWithDictionary:jsonDictionary];
 
 #ifdef LOG_API
 	NSString *responseString = [[NSString alloc] initWithData:_receivedData encoding:NSUTF8StringEncoding];
@@ -236,7 +245,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 	if (![response.status isEqual:@"ok"]) {
 
-		APIError *error = [APIError errorWithResponse:response];
+		TKAPIError *error = [TKAPIError errorWithResponse:response];
 
 		if (_failureBlock) _failureBlock(error);
 
@@ -254,7 +263,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 		_connection.originalRequest.URL.path, error.localizedDescription, error.userInfo);
 #endif
 
-	if (_failureBlock) _failureBlock([APIError errorWithError:error]);
+	if (_failureBlock) _failureBlock([TKAPIError errorWithError:error]);
 }
 
 @end

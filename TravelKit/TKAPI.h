@@ -7,45 +7,41 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "APIConnection.h"
+#import "TKAPIConnection.h"
 
 #import "TKPlace.h"
 #import "TKMedium.h"
 #import "TKPlacesQuery.h"
 
 #define API_PROTOCOL   "https" // Mandatory
-#define API_SUBDOMAIN  "api"
-#define API_BASE_URL   "sygictraveldata.com"
-#define API_VERSION    "v2.2"
+#define API_BASE_URL   "sygictravelapi.com"
+#define API_VERSION    "v1.0"
 
-#define API TKAPI
-#define APIRequest TKAPIRequest
-
-typedef NS_ENUM(NSInteger, APIRequestType)
+typedef NS_ENUM(NSInteger, TKAPIRequestType)
 {
-	APIRequestTypeUnknown = 0,
-	APIRequestTypePlacesGET,
-	APIRequestTypePlaceGET,
-	APIRequestTypeMediaGET,
-	APIRequestTypeExchangeRatesGET,
-	APIRequestTypeCustomGET,
-	APIRequestTypeCustomPOST,
-	APIRequestTypeCustomPUT,
-	APIRequestTypeCustomDELETE,
+	TKAPIRequestTypeUnknown = 0,
+	TKAPIRequestTypePlacesGET,
+	TKAPIRequestTypePlaceGET,
+	TKAPIRequestTypeMediaGET,
+	TKAPIRequestTypeExchangeRatesGET,
+	TKAPIRequestTypeCustomGET,
+	TKAPIRequestTypeCustomPOST,
+	TKAPIRequestTypeCustomPUT,
+	TKAPIRequestTypeCustomDELETE,
 };
 
-typedef NS_ENUM(NSUInteger, APIRequestState)
+typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 {
-	APIRequestStateInit = 0,
-	APIRequestStatePending,
-	APIRequestStateFinished,
+	TKAPIRequestStateInit = 0,
+	TKAPIRequestStatePending,
+	TKAPIRequestStateFinished,
 };
 
 //
 //   Will handle API URLs, connection IDs, ...
 //
 
-@interface API : NSObject
+@interface TKAPI : NSObject
 
 @property (nonatomic, copy) NSString *APIKey;
 @property (nonatomic, copy, readonly) NSString *defaultAPIKey;
@@ -53,12 +49,12 @@ typedef NS_ENUM(NSUInteger, APIRequestState)
 @property (nonatomic, readonly) BOOL isAlphaEnvironment; // Private
 
 /** Shared sigleton */
-+ (API *)sharedAPI;
-- (instancetype)init OBJC_UNAVAILABLE("Use [API sharedAPI].");
++ (TKAPI *)sharedAPI;
+- (instancetype)init OBJC_UNAVAILABLE("Use [TKAPI sharedAPI].");
 
 // Standard supported + custom API calls
-- (NSString *)pathForRequestType:(APIRequestType)type;
-- (NSString *)pathForRequestType:(APIRequestType)type ID:(NSString *)ID;
+- (NSString *)pathForRequestType:(TKAPIRequestType)type;
+- (NSString *)pathForRequestType:(TKAPIRequestType)type ID:(NSString *)ID;
 - (NSString *)URLStringForPath:(NSString *)path;
 
 @end
@@ -67,8 +63,8 @@ typedef NS_ENUM(NSUInteger, APIRequestState)
 @interface APIRequest : NSObject
 
 @property (nonatomic, copy) NSString *APIKey; // Customizable
-@property (atomic) APIRequestType type;
-@property (atomic) APIRequestState state;
+@property (atomic) TKAPIRequestType type;
+@property (atomic) TKAPIRequestState state;
 @property (nonatomic) BOOL silent;
 
 @property (nonatomic, readonly) NSString *typeString;
@@ -115,7 +111,7 @@ typedef NS_ENUM(NSUInteger, APIRequestState)
  * @return         API Request instance
  */
 - (instancetype)initAsCustomGETRequestWithPath:(NSString *)path
-                                     success:(void (^)(id))success failure:(APIConnectionFailureBlock)failure;
+    success:(void (^)(id))success failure:(TKAPIConnectionFailureBlock)failure;
 
 /**
  * Method for easier sending of POST requests by appending just a path
@@ -127,7 +123,7 @@ typedef NS_ENUM(NSUInteger, APIRequestState)
  * @return         API Request instance
  */
 - (instancetype)initAsCustomPOSTRequestWithPath:(NSString *)path
-                json:(NSString *)json success:(void (^)(id))success failure:(APIConnectionFailureBlock)failure;
+    json:(NSString *)json success:(void (^)(id))success failure:(TKAPIConnectionFailureBlock)failure;
 
 /**
  * Method for easier sending of PUT requests by appending just a path
@@ -139,7 +135,7 @@ typedef NS_ENUM(NSUInteger, APIRequestState)
  * @return         API Request instance
  */
 - (instancetype)initAsCustomPUTRequestWithPath:(NSString *)path
-               json:(NSString *)json success:(void (^)(id))success failure:(APIConnectionFailureBlock)failure;
+    json:(NSString *)json success:(void (^)(id))success failure:(TKAPIConnectionFailureBlock)failure;
 
 /**
  * Method for easier sending of DELETE requests by appending just a path
@@ -150,7 +146,7 @@ typedef NS_ENUM(NSUInteger, APIRequestState)
  * @return         API Request instance
  */
 - (instancetype)initAsCustomDELETERequestWithPath:(NSString *)path
-                  json:(NSString *)json success:(void (^)(id))success failure:(APIConnectionFailureBlock)failure;
+    json:(NSString *)json success:(void (^)(id))success failure:(TKAPIConnectionFailureBlock)failure;
 
 // Actions
 
