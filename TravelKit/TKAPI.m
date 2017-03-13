@@ -7,10 +7,9 @@
 //
 
 #import "TKAPI.h"
+#import "TKPlace+Private.h"
 #import "NSObject+Parsing.h"
 
-// Default API key definition
-NSString *const _defaultAPIKey = @"**REDACTED**";
 
 #pragma mark API
 
@@ -38,15 +37,21 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 
 - (void)refreshServerProperties
 {
+	NSString *subdomain = @API_SUBDOMAIN;
+
+	subdomain = [subdomain stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+
+	if (![subdomain hasSuffix:@"."])
+		subdomain = [subdomain stringByAppendingString:@"."];
+
 //	NSString *lang = [[UserSettings sharedSettings].appLanguage ?: @"en" lowercaseString];
 	NSString *lang = @"en";
 
-	_apiURL = [NSString stringWithFormat:@"%@://%@/%@/%@",
-	//          http[s]://  sygictraveldata.com  /  v2.x  /   en
-	//             |           |                     |        |
-	    @API_PROTOCOL,   @API_BASE_URL,      @API_VERSION,   lang];
+	_apiURL = [NSString stringWithFormat:@"%@://%@%@/%@/%@",
+	//          http[s]://  api.      sygictravelapi.com  /    0.x   /   en
+	//             |         |              |                   |        |
+	    @API_PROTOCOL,   subdomain,    @API_BASE_URL,    @API_VERSION,   lang];
 
-	_APIKey = [self defaultAPIKey];
 //	_isAlphaEnvironment = [_apiURL containsSubstring:@"alpha"];
 }
 
@@ -63,19 +68,9 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 	return self;
 }
 
-- (NSString *)defaultAPIKey
-{
-	static NSString *defaultAPIKey = nil;
-	static dispatch_once_t once;
-	dispatch_once(&once, ^{
-		defaultAPIKey = _defaultAPIKey;
-	});
-	return defaultAPIKey;
-}
-
 - (void)setAPIKey:(NSString *)APIKey
 {
-	_APIKey = APIKey ?: [self defaultAPIKey];
+	_APIKey = APIKey;
 }
 
 - (NSString *)hostname
@@ -135,7 +130,7 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 		return [NSString stringWithFormat:@"/place-details/%@", ID];
 
 	case TKAPIRequestTypeMediaGET: // GET
-		return [NSString stringWithFormat:@"/media/%@", ID];
+		return [NSString stringWithFormat:@"/places/%@/media", ID];
 
 	default:
 		@throw [NSException exceptionWithName:@"Unsupported request"
@@ -252,18 +247,43 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 		if (query.searchTerm.length)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"query" value:query.searchTerm]];
 
-		// TODO: Map tile
-		// TODO: Map spread
-
-		if (query.type)
+		if (query.level)
 		{
-			NSString *type = (query.type == TKPlaceTypePOI) ? @"poi" :
-			(query.type == TKPlaceTypeCity) ? @"city" :
-			(query.type == TKPlaceTypeCountry) ? @"country" : nil;
+			NSString * (^levelToString)(TKPlaceLevel level) = ^NSString *(TKPlaceLevel level) {
 
-			if (type) [queryItems addObject:
-				[NSURLQueryItem queryItemWithName:@"type" value:type]];
+				static NSDictionary *levels = nil;
+
+				static dispatch_once_t onceToken;
+				dispatch_once(&onceToken, ^{
+					levels = @{
+						@(TKPlaceLevelPOI): @"poi",
+						@(TKPlaceLevelNeighbourhood): @"neighbourhood",
+						@(TKPlaceLevelLocality): @"locality",
+						@(TKPlaceLevelSettlement): @"settlement",
+						@(TKPlaceLevelVillage): @"village",
+						@(TKPlaceLevelTown): @"town",
+						@(TKPlaceLevelCity): @"city",
+						@(TKPlaceLevelCounty): @"county",
+						@(TKPlaceLevelRegion): @"region",
+						@(TKPlaceLevelIsland): @"island",
+						@(TKPlaceLevelArchipelago): @"archipelago",
+						@(TKPlaceLevelState): @"state",
+						@(TKPlaceLevelCountry): @"country",
+						@(TKPlaceLevelContinent): @"continent",
+					};
+				});
+
+				return levels[@(level)];
+			};
+
+			NSString *level = levelToString(query.level);
+
+			if (level) [queryItems addObject:
+				[NSURLQueryItem queryItemWithName:@"level" value:level]];
 		}
+
+		// TODO: Quadkeys
+		// TODO: Map spread
 
 		if (query.region)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"bounds" value:
@@ -400,7 +420,9 @@ NSString *const _defaultAPIKey = @"**REDACTED**";
 
 		_successBlock = ^(TKAPIResponse *response){
 
-			NSArray *media = [response.data parsedArray];
+			NSDictionary *data = [response.data parsedDictionary];
+
+			NSArray *media = [data[@"media"] parsedArray];
 			NSMutableArray *ret = [NSMutableArray arrayWithCapacity:media.count];
 
 			for (NSDictionary *mediumDict in media)

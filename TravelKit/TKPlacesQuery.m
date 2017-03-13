@@ -14,7 +14,7 @@
 {
 	NSMutableString *key = [NSMutableString string];
 
-	if (_type) [key appendString:[@(_type) stringValue]];
+	if (_level) [key appendString:[@(_level) stringValue]];
 	if (_searchTerm.length) [key appendString:_searchTerm];
 	if (_categories.count) [key appendString:[_categories componentsJoinedByString:@"+"]];
 	if (_tags.count) [key appendString:[_tags componentsJoinedByString:@"+"]];

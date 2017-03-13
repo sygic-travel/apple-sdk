@@ -12,13 +12,32 @@
 #import "TKReference.h"
 #import "TKMedium.h"
 
+typedef NS_ENUM(NSUInteger, TKPlaceLevel) {
+	TKPlaceLevelUnknown = 0,
+	TKPlaceLevelPOI,
+	TKPlaceLevelNeighbourhood,
+	TKPlaceLevelLocality,
+	TKPlaceLevelSettlement,
+	TKPlaceLevelVillage,
+	TKPlaceLevelTown,
+	TKPlaceLevelCity,
+	TKPlaceLevelCounty,
+	TKPlaceLevelRegion,
+	TKPlaceLevelIsland,
+	TKPlaceLevelArchipelago,
+	TKPlaceLevelState,
+	TKPlaceLevelCountry,
+	TKPlaceLevelContinent,
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
-@class TKPlaceDetail;
+@class TKPlaceTag, TKPlaceDetail;
 @interface TKPlace : NSObject
 
 @property (nonatomic, copy) NSString *ID NS_SWIFT_NAME(ID);
-@property (nonatomic, copy, nullable) NSString *name;
+@property (nonatomic, copy) NSString *name;
+@property (atomic) TKPlaceLevel level;
 @property (nonatomic, copy, nullable) NSString *suffix;
 @property (nonatomic, copy, nullable) NSString *perex;
 @property (nonatomic, strong, nullable) CLLocation *location;
@@ -29,20 +48,27 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSNumber *duration;
 @property (nonatomic, copy, nullable) NSString *marker;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
-@property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
+@property (nonatomic, copy, nullable) NSArray<TKPlaceTag *> *tags;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *parents;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *flags;
 
 @property (nonatomic, strong, nullable) TKPlaceDetail *detail;
 @property (nonatomic, strong, nullable) NSArray<TKReference *> *references;
 
-- (instancetype)initFromResponse:(NSDictionary *)response;
+@end
+
+
+@interface TKPlaceTag : NSObject
+
+@property (nonatomic, copy) NSString *key;
+@property (nonatomic, copy, nullable) NSString *name;
 
 @end
 
 
 @interface TKPlaceDetail : NSObject
 
+@property (nonatomic, copy, nullable) NSString *fullDescription;
 @property (nonatomic, copy, nullable) NSString *address;
 @property (nonatomic, copy, nullable) NSString *phone;
 @property (nonatomic, copy, nullable) NSString *email;

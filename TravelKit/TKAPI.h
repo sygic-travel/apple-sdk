@@ -14,8 +14,9 @@
 #import "TKPlacesQuery.h"
 
 #define API_PROTOCOL   "https" // Mandatory
+#define API_SUBDOMAIN  "api"
 #define API_BASE_URL   "sygictravelapi.com"
-#define API_VERSION    "v1.0"
+#define API_VERSION    "0.1"
 
 typedef NS_ENUM(NSInteger, TKAPIRequestType)
 {

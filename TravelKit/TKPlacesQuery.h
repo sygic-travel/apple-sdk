@@ -8,16 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#import "TKPlace.h"
 #import "TKMapRegion.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef NS_ENUM(NSUInteger, TKPlaceType) {
-	TKPlaceTypeUnknown = 0,
-	TKPlaceTypePOI,
-	TKPlaceTypeCity,
-	TKPlaceTypeCountry,
-};
 
 @interface TKPlacesQuery : NSObject
 
@@ -26,10 +21,10 @@ typedef NS_ENUM(NSUInteger, TKPlaceType) {
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
 @property (nonatomic, copy, nullable) NSString *parentID;
-@property (atomic) TKPlaceType type;
+@property (atomic) TKPlaceLevel level;
 @property (atomic) NSUInteger limit;
 
-//@property (nonatomic, copy, nullable) NSArray<NSString *> *quadKeys;
+//roperty (nonatomic, copy, nullable) NSArray<NSString *> *quadKeys;
 
 @end
 

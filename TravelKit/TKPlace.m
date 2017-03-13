@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKPlace.h"
+#import "TKPlace+Private.h"
 #import "NSObject+Parsing.h"
 #import "MapWorkers.h"
 
@@ -41,16 +41,14 @@
 
 		// Activity details
 
-//		_detail = [[TKPlaceDetail alloc] initFromResponse:dictionary];
+		if (dictionary[@"description"])
+			_detail = [[TKPlaceDetail alloc] initFromResponse:dictionary];
 
 		// Properties
 
 		_tier = [dictionary[@"meta"][@"tier"] parsedNumber];
 		_rating = [dictionary[@"rating"] parsedNumber];
-
 		_price = [dictionary[@"price"][@"value"] parsedNumber];
-
-//		_hasPhoto = [dictionary[@"photo_url"] parsedString] != nil;
 		_duration = [dictionary[@"duration"] parsedNumber];
 
 		// URLs
@@ -81,25 +79,24 @@
 		if ([_marker isEqualToString:@"default"])
 			_marker = nil;
 
-		// Fetch possible categories and tags
-		NSMutableOrderedSet *categories = [NSMutableOrderedSet orderedSetWithCapacity:4];
-		NSMutableOrderedSet *tags = [NSMutableOrderedSet orderedSetWithCapacity:16];
-		NSMutableOrderedSet *flags = [NSMutableOrderedSet orderedSetWithCapacity:4];
+		// Fetch possible categories, tags and flags
+		NSMutableOrderedSet<NSString *> *categories = [NSMutableOrderedSet orderedSetWithCapacity:4];
+		NSMutableOrderedSet<TKPlaceTag *> *tags = [NSMutableOrderedSet orderedSetWithCapacity:16];
+		NSMutableOrderedSet<NSString *> *flags = [NSMutableOrderedSet orderedSetWithCapacity:4];
 
 		for (NSString *str in [dictionary[@"categories"] parsedArray])
 			if ([str parsedString]) [categories addObject:str];
 
-		for (NSString *str in [dictionary[@"tags"] parsedArray])
-			if ([str parsedString]) [tags addObject:str];
+		TKPlaceTag *tag;
+		for (NSDictionary *tagDict in [dictionary[@"tags"] parsedArray])
+			if ((tag = [[TKPlaceTag alloc] initFromResponse:tagDict]))
+				[tags addObject:tag];
 
-		if ([[dictionary[@"has_fodors_content"] parsedNumber] boolValue])
-			[flags addObject:@"has_fodors_content"];
+		if ([[dictionary[@"description"][@"is_translated"] parsedNumber] boolValue])
+			[flags addObject:@"translated_description"];
 
-		if ([[dictionary[@"is_translated"] parsedNumber] boolValue])
-			[flags addObject:@"is_translated"];
-
-		if ([[dictionary[@"perex_provider"] parsedString] isEqualToString:@"wikipedia"])
-			[categories addObject:@"wikipedia_perex"];
+		if ([[dictionary[@"description"][@"provider"] parsedString] isEqualToString:@"wikipedia"])
+			[flags addObject:@"wikipedia_description"];
 
 		_categories = [categories array];
 		_tags = [tags array];
@@ -117,8 +114,40 @@
 @end
 
 
+@implementation TKPlaceTag
+
+- (instancetype)initFromResponse:(NSDictionary *)response
+{
+	if (self = [super init])
+	{
+		_key = [response[@"key"] parsedString];
+		_name = [response[@"name"] parsedString];
+
+		if (!_key) return nil;
+	}
+
+	return self;
+}
+
+@end
+
+
 @implementation TKPlaceDetail
 
+- (instancetype)initFromResponse:(NSDictionary *)response
+{
+	if (self = [super init])
+	{
+		_fullDescription = [response[@"description"][@"text"] parsedString];
+		_address = [response[@"address"] parsedString];
+		_phone = [response[@"phone"] parsedString];
+		_email = [response[@"email"] parsedString];
+		_duration = [response[@"duration"] parsedNumber];
+		_openingHours = [response[@"opening_hours"] parsedString];
+		_admission = [response[@"admission"] parsedString];
+	}
 
+	return self;
+}
 
 @end
