@@ -12,7 +12,7 @@
 
 @implementation TKReference
 
-- (instancetype)initFromResponse:(NSDictionary *)response forItemWithID:(NSString *)itemID
+- (instancetype)initFromResponse:(NSDictionary *)response
 {
 	if (!response) return nil;
 
@@ -23,7 +23,6 @@
 		_title = [response[@"title"] parsedString];
 		_type = [response[@"type"] parsedString];
 		_languageID = [response[@"language_id"] parsedString];
-		_itemID = itemID ?: [response[@"item_id"] parsedString];
 
 		NSMutableArray *flags = [NSMutableArray arrayWithCapacity:3];
 
@@ -49,7 +48,7 @@
 
 #pragma clang diagnostic pop
 
-		if (!ID || !_itemID || !_type || !_onlineURL)
+		if (!ID || !_type || !_onlineURL)
 			return nil;
 
 		_supplier = [response[@"supplier"] parsedString];
@@ -69,7 +68,6 @@
 {
 	TKReference *ref = [TKReference new];
 	ref.ID = _ID;
-	ref.itemID = _itemID;
 	ref.title = _title;
 	ref.type = _type;
 	ref.supplier = _supplier;

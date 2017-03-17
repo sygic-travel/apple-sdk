@@ -13,7 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKReference : NSObject
 
 @property (atomic) NSUInteger ID NS_SWIFT_NAME(ID);
-@property (nonatomic, copy, nullable) NSString *itemID;
 @property (nonatomic, copy, nullable) NSString *title;
 @property (nonatomic, copy, nullable) NSString *type;
 @property (nonatomic, copy, nullable) NSString *supplier;
@@ -24,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (atomic) NSInteger priority;
 @property (nonatomic, copy, readonly) NSString *iconName;
 
-- (instancetype)initFromResponse:(NSDictionary *)response forItemWithID:(NSString *)itemID;
+- (instancetype)initFromResponse:(NSDictionary *)response;
 
 @end
 

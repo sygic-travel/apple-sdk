@@ -42,18 +42,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *perex;
 @property (nonatomic, strong, nullable) CLLocation *location;
 @property (nonatomic, copy, nullable) NSString *quadKey;
-@property (nonatomic, strong, nullable) NSNumber *tier;
 @property (nonatomic, strong, nullable) NSNumber *price;
 @property (nonatomic, strong, nullable) NSNumber *rating;
 @property (nonatomic, strong, nullable) NSNumber *duration;
 @property (nonatomic, copy, nullable) NSString *marker;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
-@property (nonatomic, copy, nullable) NSArray<TKPlaceTag *> *tags;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *parents;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *flags;
 
 @property (nonatomic, strong, nullable) TKPlaceDetail *detail;
-@property (nonatomic, strong, nullable) NSArray<TKReference *> *references;
 
 @end
 
@@ -69,6 +66,9 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKPlaceDetail : NSObject
 
 @property (nonatomic, copy, nullable) NSString *fullDescription;
+@property (nonatomic, copy, nullable) NSArray<TKPlaceTag *> *tags;
+@property (nonatomic, copy, nullable) NSArray<TKReference *> *references;
+@property (nonatomic, copy, nullable) NSArray<TKMedium *> *mainMedia; // TODO
 @property (nonatomic, copy, nullable) NSString *address;
 @property (nonatomic, copy, nullable) NSString *phone;
 @property (nonatomic, copy, nullable) NSString *email;

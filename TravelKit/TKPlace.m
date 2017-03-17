@@ -40,38 +40,18 @@
 				_location.coordinate.longitude, 18);
 
 		// Activity details
-
 		if (dictionary[@"description"])
 			_detail = [[TKPlaceDetail alloc] initFromResponse:dictionary];
 
 		// Properties
-
-		_tier = [dictionary[@"meta"][@"tier"] parsedNumber];
 		_rating = [dictionary[@"rating"] parsedNumber];
 		_price = [dictionary[@"price"][@"value"] parsedNumber];
 		_duration = [dictionary[@"duration"] parsedNumber];
-
-		// URLs
-		NSArray *refData = [dictionary[@"references"] parsedArray];
-		NSMutableArray *refs = [NSMutableArray arrayWithCapacity:refData.count];
-		for (NSDictionary *dict in refData) {
-			TKReference *ref = [[TKReference alloc] initFromResponse:dict forItemWithID:_ID];
-			if (ref) [refs addObject:ref];
-		}
-		_references = refs;
 
 		// Parents
 		NSMutableArray *locationIDs = [NSMutableArray array];
 		for (NSString *parentID in [dictionary[@"parent_guids"] parsedArray])
 			if ([parentID parsedString]) [locationIDs addObject:parentID];
-		// Back-compatibility
-		if (!locationIDs.count)
-			for (NSDictionary *r in [dictionary[@"parents"] parsedArray]) {
-				if (![r parsedDictionary]) continue;
-				NSString *locationID = [r[@"guid"] parsedString];
-				if (locationID) [locationIDs addObject:locationID];
-			}
-
 		_parents = locationIDs;
 
 		// Feature marker
@@ -81,16 +61,10 @@
 
 		// Fetch possible categories, tags and flags
 		NSMutableOrderedSet<NSString *> *categories = [NSMutableOrderedSet orderedSetWithCapacity:4];
-		NSMutableOrderedSet<TKPlaceTag *> *tags = [NSMutableOrderedSet orderedSetWithCapacity:16];
 		NSMutableOrderedSet<NSString *> *flags = [NSMutableOrderedSet orderedSetWithCapacity:4];
 
 		for (NSString *str in [dictionary[@"categories"] parsedArray])
 			if ([str parsedString]) [categories addObject:str];
-
-		TKPlaceTag *tag;
-		for (NSDictionary *tagDict in [dictionary[@"tags"] parsedArray])
-			if ((tag = [[TKPlaceTag alloc] initFromResponse:tagDict]))
-				[tags addObject:tag];
 
 		if ([[dictionary[@"description"][@"is_translated"] parsedNumber] boolValue])
 			[flags addObject:@"translated_description"];
@@ -99,7 +73,6 @@
 			[flags addObject:@"wikipedia_description"];
 
 		_categories = [categories array];
-		_tags = [tags array];
 		_flags = [flags array];
     }
 
@@ -138,6 +111,25 @@
 {
 	if (self = [super init])
 	{
+		// Tags
+		NSMutableOrderedSet<TKPlaceTag *> *tags = [NSMutableOrderedSet orderedSetWithCapacity:16];
+
+		TKPlaceTag *tag;
+		for (NSDictionary *tagDict in [response[@"tags"] parsedArray])
+			if ((tag = [[TKPlaceTag alloc] initFromResponse:tagDict]))
+				[tags addObject:tag];
+		_tags = [tags array];
+
+		// References
+		NSArray *refData = [response[@"references"] parsedArray];
+		NSMutableArray *refs = [NSMutableArray arrayWithCapacity:refData.count];
+		for (NSDictionary *dict in refData) {
+			TKReference *ref = [[TKReference alloc] initFromResponse:dict];
+			if (ref) [refs addObject:ref];
+		}
+		_references = refs;
+
+		// Other properties
 		_fullDescription = [response[@"description"][@"text"] parsedString];
 		_address = [response[@"address"] parsedString];
 		_phone = [response[@"phone"] parsedString];
