@@ -79,6 +79,38 @@
     return self;
 }
 
+- (NSArray<NSString *> *)displayableCategories
+{
+	NSMutableArray<NSString *> *ret = [NSMutableArray arrayWithCapacity:_categories.count];
+
+	for (NSString *slug in _categories)
+	{
+		NSString *s = [self displayNameForSlug:slug];
+		if (s) [ret addObject:s];
+	}
+
+	return ret;
+}
+
+- (NSString *)displayNameForSlug:(NSString *)slug
+{
+	NSDictionary *displayNames = @{
+		@"sightseeing": NSLocalizedString(@"Sightseeing", @"Menu entry"),
+		@"shopping": NSLocalizedString(@"Shopping", @"Menu entry"),
+		@"eating": NSLocalizedString(@"Restaurants", @"Menu entry"),
+		@"discovering": NSLocalizedString(@"Museums", @"Menu entry"),
+		@"playing": NSLocalizedString(@"Family", @"Menu entry"),
+		@"traveling": NSLocalizedString(@"Transport", @"Menu entry"),
+		@"going_out": NSLocalizedString(@"Nightlife", @"Menu entry"),
+		@"hiking": NSLocalizedString(@"Outdoors", @"Menu entry"),
+		@"sports": NSLocalizedString(@"Sports", @"Menu entry"),
+		@"relaxing": NSLocalizedString(@"Relaxation", @"Menu entry"),
+		@"sleeping": NSLocalizedString(@"Accommodation", @"Menu entry"),
+	};
+
+	return displayNames[slug];
+}
+
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<TKPlace: %p | ID: %@ | Name: %@>", self, _ID, _name];

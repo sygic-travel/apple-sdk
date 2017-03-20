@@ -52,6 +52,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong, nullable) TKPlaceDetail *detail;
 
+@property (nonatomic, copy, nullable, readonly) NSArray<NSString *> *displayableCategories;
+
 @end
 
 
