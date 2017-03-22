@@ -111,6 +111,25 @@
 	return displayNames[slug];
 }
 
+- (NSUInteger)displayableHexColor
+{
+	NSString *firstCategory = _categories.firstObject;
+
+	if ([firstCategory isEqual:@"sightseeing"]) return 0xF6746C;
+	if ([firstCategory isEqual:@"shopping"])    return 0xE7A41C;
+	if ([firstCategory isEqual:@"eating"])      return 0xF6936C;
+	if ([firstCategory isEqual:@"discovering"]) return 0x898F9A;
+	if ([firstCategory isEqual:@"playing"])     return 0x6CD8F6;
+	if ([firstCategory isEqual:@"traveling"])   return 0x6B91F6;
+	if ([firstCategory isEqual:@"going_out"])   return 0xE76CA0;
+	if ([firstCategory isEqual:@"hiking"])      return 0xD59B6B;
+	if ([firstCategory isEqual:@"sports"])      return 0x68B277;
+	if ([firstCategory isEqual:@"relaxing"])    return 0xA06CF6;
+	if ([firstCategory isEqual:@"sleeping"])    return 0xA4CB69;
+
+	return 0x999999;
+}
+
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<TKPlace: %p | ID: %@ | Name: %@>", self, _ID, _name];
