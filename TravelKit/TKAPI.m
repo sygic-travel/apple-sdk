@@ -150,7 +150,7 @@
 #pragma mark Trip API Request Wrapper
 #pragma mark -
 
-@interface APIRequest ()
+@interface TKAPIRequest () <TKAPIConnectionDelegate>
 
 @property (nonatomic, copy) NSString *path;
 @property (nonatomic, copy) NSDictionary *HTTPHeaders;
@@ -162,7 +162,7 @@
 
 @end
 
-@implementation APIRequest
+@implementation TKAPIRequest
 
 #pragma mark -
 #pragma mark Lifecycle
@@ -210,6 +210,7 @@
 
 	_connection = [[TKAPIConnection alloc] initWithURLRequest:request success:_successBlock failure:_failureBlock];
 	_connection.identifier = self.typeString;
+	_connection.delegate = self;
 	_connection.silent = _silent;
 
 	[_connection start];
@@ -225,6 +226,19 @@
 {
 	_state = TKAPIRequestStateFinished;
 	[_connection cancel];
+}
+
+
+////////////////////
+#pragma mark - Connection delegate
+////////////////////
+
+
+- (void)connectionDidFinish:(TKAPIConnection *)connection
+{
+	_connection = nil;
+	_successBlock = nil;
+	_failureBlock = nil;
 }
 
 
@@ -282,16 +296,20 @@
 				[NSURLQueryItem queryItemWithName:@"level" value:level]];
 		}
 
-		// TODO: Quadkeys
+		// TODO: Multiple quadkeys support not yet implemeneted on API
+		if (query.quadKeys.count)
+			[queryItems addObject:[NSURLQueryItem
+				queryItemWithName:@"map_tile" value:query.quadKeys.firstObject]];
+
 		// TODO: Map spread
 
-		if (query.region)
+		if (query.bounds)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"bounds" value:
 				[NSString stringWithFormat:@"%.6f,%.6f,%.6f,%.6f",
-					query.region.southWestPoint.coordinate.latitude,
-					query.region.southWestPoint.coordinate.longitude,
-					query.region.northEastPoint.coordinate.latitude,
-					query.region.northEastPoint.coordinate.longitude
+					query.bounds.southWestPoint.coordinate.latitude,
+					query.bounds.southWestPoint.coordinate.longitude,
+					query.bounds.northEastPoint.coordinate.latitude,
+					query.bounds.northEastPoint.coordinate.longitude
 				 ]]];
 
 		if (query.categories.count)

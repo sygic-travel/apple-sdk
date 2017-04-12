@@ -20,7 +20,6 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKMedium.h>
 #import <TravelKit/TKMapRegion.h>
 #import <TravelKit/TKPlacesQuery.h>
-#import <TravelKit/Foundation+TravelKit.h>
 #import <TravelKit/NSObject+Parsing.h>
 
 typedef NS_ENUM(NSUInteger, TKErrorCode) {

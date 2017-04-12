@@ -61,7 +61,7 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 @end
 
 
-@interface APIRequest : NSObject
+@interface TKAPIRequest : NSObject
 
 @property (nonatomic, copy) NSString *APIKey; // Customizable
 @property (atomic) TKAPIRequestType type;

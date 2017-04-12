@@ -36,9 +36,19 @@ typedef void(^TKAPIConnectionSuccessBlock)(TKAPIResponse *);
 typedef void(^TKAPIConnectionFailureBlock)(TKAPIError *);
 
 
+@class TKAPIConnection;
+@protocol TKAPIConnectionDelegate <NSObject>
+
+@required
+- (void)connectionDidFinish:(TKAPIConnection *)connection;
+
+@end
+
+
 @interface TKAPIConnection : NSObject <NSURLConnectionDelegate>
 
 @property (nonatomic, copy) NSString *identifier;
+@property (nonatomic, weak) id<TKAPIConnectionDelegate> delegate;
 
 @property (readonly) NSInteger responseStatus;
 @property (nonatomic, strong, readonly) NSURL *URL;

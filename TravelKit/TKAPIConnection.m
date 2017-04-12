@@ -8,7 +8,6 @@
 
 #import "TKAPIConnection.h"
 #import "NSObject+Parsing.h"
-#import "Foundation+TravelKit.h"
 
 NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
@@ -254,6 +253,12 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 	if (_successBlock)
 		_successBlock(response);
+
+	_successBlock = nil;
+	_failureBlock = nil;
+
+	if ([_delegate respondsToSelector:@selector(connectionDidFinish:)])
+		[_delegate connectionDidFinish:self];
 }
 
 - (void)connection:(NSURLConnection *)aConnection didFailWithError:(NSError *)error
@@ -264,6 +269,12 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 #endif
 
 	if (_failureBlock) _failureBlock([TKAPIError errorWithError:error]);
+
+	_successBlock = nil;
+	_failureBlock = nil;
+
+	if ([_delegate respondsToSelector:@selector(connectionDidFinish:)])
+		[_delegate connectionDidFinish:self];
 }
 
 @end

@@ -19,9 +19,9 @@
 	if (_categories.count) [key appendString:[_categories componentsJoinedByString:@"+"]];
 	if (_tags.count) [key appendString:[_tags componentsJoinedByString:@"+"]];
 	if (_parentID.length) [key appendString:_parentID];
-//	if (_quadKeys.count) [key appendString:[_quadKeys componentsJoinedByString:@"+"]];
+	if (_quadKeys.count) [key appendString:[_quadKeys componentsJoinedByString:@"+"]];
 	if (_limit) [key appendString:[@(_limit) stringValue]];
-	if (_region) [key appendString:_region.description];
+	if (_bounds) [key appendString:_bounds.description];
 
 	return key.hash;
 }

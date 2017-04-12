@@ -9,25 +9,26 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
+#import "TKMapRegion.h"
 #import "TKReference.h"
 #import "TKMedium.h"
 
-typedef NS_ENUM(NSUInteger, TKPlaceLevel) {
-	TKPlaceLevelUnknown = 0,
-	TKPlaceLevelPOI,
-	TKPlaceLevelNeighbourhood,
-	TKPlaceLevelLocality,
-	TKPlaceLevelSettlement,
-	TKPlaceLevelVillage,
-	TKPlaceLevelTown,
-	TKPlaceLevelCity,
-	TKPlaceLevelCounty,
-	TKPlaceLevelRegion,
-	TKPlaceLevelIsland,
-	TKPlaceLevelArchipelago,
-	TKPlaceLevelState,
-	TKPlaceLevelCountry,
-	TKPlaceLevelContinent,
+typedef NS_OPTIONS(NSUInteger, TKPlaceLevel) {
+	TKPlaceLevelUnknown           = 0,
+	TKPlaceLevelPOI               = 1 << 0,
+	TKPlaceLevelNeighbourhood     = 1 << 1,
+	TKPlaceLevelLocality          = 1 << 2,
+	TKPlaceLevelSettlement        = 1 << 3,
+	TKPlaceLevelVillage           = 1 << 4,
+	TKPlaceLevelTown              = 1 << 5,
+	TKPlaceLevelCity              = 1 << 6,
+	TKPlaceLevelCounty            = 1 << 7,
+	TKPlaceLevelRegion            = 1 << 8,
+	TKPlaceLevelIsland            = 1 << 9,
+	TKPlaceLevelArchipelago       = 1 << 10,
+	TKPlaceLevelState             = 1 << 11,
+	TKPlaceLevelCountry           = 1 << 12,
+	TKPlaceLevelContinent         = 1 << 13,
 };
 
 NS_ASSUME_NONNULL_BEGIN
@@ -42,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *perex;
 @property (nonatomic, strong, nullable) CLLocation *location;
 @property (nonatomic, copy, nullable) NSString *quadKey;
+@property (nonatomic, strong, nullable) TKMapRegion *boundingBox;
 @property (nonatomic, strong, nullable) NSNumber *price;
 @property (nonatomic, strong, nullable) NSNumber *rating;
 @property (nonatomic, strong, nullable) NSNumber *duration;
@@ -68,10 +70,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TKPlaceDetail : NSObject
 
-@property (nonatomic, copy, nullable) NSString *fullDescription;
+@property (nonatomic, copy, nullable) NSString *fullDescription; // TODO: Other attrs
 @property (nonatomic, copy, nullable) NSArray<TKPlaceTag *> *tags;
 @property (nonatomic, copy, nullable) NSArray<TKReference *> *references;
-@property (nonatomic, copy, nullable) NSArray<TKMedium *> *mainMedia; // TODO
+@property (nonatomic, copy, nullable) NSArray<TKMedium *> *mainMedia;
 @property (nonatomic, copy, nullable) NSString *address;
 @property (nonatomic, copy, nullable) NSString *phone;
 @property (nonatomic, copy, nullable) NSString *email;

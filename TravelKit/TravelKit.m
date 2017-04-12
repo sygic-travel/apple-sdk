@@ -51,7 +51,7 @@
 		return;
 	}
 
-	[[[APIRequest alloc] initAsPlacesRequestForQuery:query success:^(NSArray<TKPlace *> *places) {
+	[[[TKAPIRequest alloc] initAsPlacesRequestForQuery:query success:^(NSArray<TKPlace *> *places) {
 
 		[placesCache setObject:places forKey:@(queryHash)];
 
@@ -85,7 +85,7 @@
 		return;
 	}
 
-	[[[APIRequest alloc] initAsPlaceRequestForItemWithID:placeID success:^(TKPlace *place, NSArray<TKMedium *> *media) {
+	[[[TKAPIRequest alloc] initAsPlaceRequestForItemWithID:placeID success:^(TKPlace *place, NSArray<TKMedium *> *media) {
 
 		[placeCache setObject:place forKey:placeID];
 
@@ -119,7 +119,7 @@
 		return;
 	}
 
-	[[[APIRequest alloc] initAsMediaRequestForPlaceWithID:placeID success:^(NSArray<TKMedium *> *media) {
+	[[[TKAPIRequest alloc] initAsMediaRequestForPlaceWithID:placeID success:^(NSArray<TKMedium *> *media) {
 
 		[mediaCache setObject:media forKey:placeID];
 

@@ -13,6 +13,51 @@
 
 @implementation TKPlace
 
++ (NSArray<NSString *> *)supportedCategories
+{
+	static NSArray *categories = nil;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		categories = @[
+			@"sightseeing", @"shopping", @"eating", @"discovering", @"playing",
+			@"traveling", @"going_out", @"hiking", @"sports", @"relaxing",
+			@"sleeping",
+		];
+	});
+
+	return categories;
+}
+
++ (TKPlaceLevel)levelFromString:(NSString *)str
+{
+	str = str ?: @"";
+
+	static NSDictionary<NSString *, NSNumber *> *levels = nil;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		levels = @{
+			@"poi": @(TKPlaceLevelPOI),
+			@"neighbourhood": @(TKPlaceLevelNeighbourhood),
+			@"locality": @(TKPlaceLevelLocality),
+			@"settlement": @(TKPlaceLevelSettlement),
+			@"village": @(TKPlaceLevelVillage),
+			@"town": @(TKPlaceLevelTown),
+			@"city": @(TKPlaceLevelCity),
+			@"county": @(TKPlaceLevelCounty),
+			@"region": @(TKPlaceLevelRegion),
+			@"island": @(TKPlaceLevelIsland),
+			@"archipelago": @(TKPlaceLevelArchipelago),
+			@"state": @(TKPlaceLevelState),
+			@"country": @(TKPlaceLevelCountry),
+			@"continent": @(TKPlaceLevelContinent),
+		};
+	});
+
+	return [levels[str] unsignedIntegerValue];
+}
+
 - (instancetype)initFromResponse:(NSDictionary *)dictionary
 {
 	if (self = [super init])
@@ -25,6 +70,7 @@
 		if (!_ID || !_name) return nil;
 
 		_perex = [dictionary[@"perex"] parsedString];
+		_level = [TKPlace levelFromString:[dictionary[@"level"] parsedString]];
 
 		// Coordinates
 		NSDictionary *location = [dictionary[@"location"] parsedDictionary];
@@ -38,6 +84,20 @@
 		if (!_quadKey && _location)
 			_quadKey = toQuadKey(_location.coordinate.latitude,
 				_location.coordinate.longitude, 18);
+
+		// Bounding box
+		if ((location = [dictionary[@"bounding_box"] parsedDictionary]))
+		{
+			lat = [dictionary[@"south"] parsedNumber];
+			lng = [dictionary[@"west"] parsedNumber];
+			CLLocation *southWest = (lat && lng) ? [[CLLocation alloc]
+				initWithLatitude:lat.doubleValue longitude:lng.doubleValue] : nil;
+			lat = [dictionary[@"north"] parsedNumber];
+			lng = [dictionary[@"east"] parsedNumber];
+			CLLocation *northEast = (lat && lng) ? [[CLLocation alloc]
+				initWithLatitude:lat.doubleValue longitude:lng.doubleValue] : nil;
+			_boundingBox = [[TKMapRegion alloc] initWithSouthWestPoint:southWest northEastPoint:northEast];
+		}
 
 		// Activity details
 		if (dictionary[@"description"])
@@ -172,13 +232,23 @@
 		_tags = [tags array];
 
 		// References
-		NSArray *refData = [response[@"references"] parsedArray];
-		NSMutableArray *refs = [NSMutableArray arrayWithCapacity:refData.count];
-		for (NSDictionary *dict in refData) {
+		NSArray *arr = [response[@"references"] parsedArray];
+		NSMutableArray *refs = [NSMutableArray arrayWithCapacity:arr.count];
+		for (NSDictionary *dict in arr) {
 			TKReference *ref = [[TKReference alloc] initFromResponse:dict];
 			if (ref) [refs addObject:ref];
 		}
 		_references = refs;
+
+		// Main media
+
+		arr = [response[@"main_media"][@"media"] parsedArray];
+		NSMutableArray *media = [NSMutableArray arrayWithCapacity:arr.count];
+		for (NSDictionary *dict in arr) {
+			TKMedium *medium = [[TKMedium alloc] initFromResponse:dict];
+			if (medium) [media addObject:medium];
+		}
+		_mainMedia = media;
 
 		// Other properties
 		_fullDescription = [response[@"description"][@"text"] parsedString];

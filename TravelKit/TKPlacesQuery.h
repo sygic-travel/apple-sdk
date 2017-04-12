@@ -13,18 +13,16 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
 @interface TKPlacesQuery : NSObject
 
 @property (nonatomic, copy, nullable) NSString *searchTerm;
-@property (nonatomic, strong, nullable) TKMapRegion *region;
+@property (nonatomic, copy, nullable) NSArray<NSString *> *quadKeys; // not fully working yet, only first one is queried
+@property (nonatomic, strong, nullable) TKMapRegion *bounds;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
 @property (nonatomic, copy, nullable) NSString *parentID;
 @property (atomic) TKPlaceLevel level;
 @property (atomic) NSUInteger limit;
-
-//roperty (nonatomic, copy, nullable) NSArray<NSString *> *quadKeys;
 
 @end
 
