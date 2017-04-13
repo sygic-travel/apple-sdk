@@ -24,6 +24,7 @@ UXCam/*.framework
 Skobbler/*.bundle
 Skobbler/*.framework
 Tripomatic_base.sqlite
+Documentation/html/*
 
 # OSX
 .DS_Store
