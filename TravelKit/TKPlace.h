@@ -46,16 +46,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) TKMapRegion *boundingBox;
 @property (nonatomic, strong, nullable) NSNumber *price;
 @property (nonatomic, strong, nullable) NSNumber *rating;
-@property (nonatomic, strong, nullable) NSNumber *duration;
 @property (nonatomic, copy, nullable) NSString *marker;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *parents;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *flags;
+@property (nonatomic, strong, nullable) NSURL *thumbnailURL;
 
 @property (nonatomic, strong, nullable) TKPlaceDetail *detail;
 
 @property (nonatomic, copy, nullable, readonly) NSArray<NSString *> *displayableCategories;
 @property (atomic, readonly) NSUInteger displayableHexColor;
+
++ (NSArray<NSString *> *)supportedCategories;
++ (NSString *)displayNameForCategorySlug:(NSString *)slug;
 
 @end
 

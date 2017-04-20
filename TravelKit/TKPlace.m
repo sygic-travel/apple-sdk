@@ -72,6 +72,12 @@
 		_perex = [dictionary[@"perex"] parsedString];
 		_level = [TKPlace levelFromString:[dictionary[@"level"] parsedString]];
 
+		NSString *thumbnail = [dictionary[@"thumbnail_url"] parsedString];
+		if (thumbnail) {
+			NSURL *thumbURL = [NSURL URLWithString:thumbnail];
+			if (thumbURL) _thumbnailURL = thumbURL;
+		}
+
 		// Coordinates
 		NSDictionary *location = [dictionary[@"location"] parsedDictionary];
 		NSNumber *lat = [location[@"lat"] parsedNumber];
@@ -106,7 +112,6 @@
 		// Properties
 		_rating = [dictionary[@"rating"] parsedNumber];
 		_price = [dictionary[@"price"][@"value"] parsedNumber];
-		_duration = [dictionary[@"duration"] parsedNumber];
 
 		// Parents
 		NSMutableArray *locationIDs = [NSMutableArray array];
@@ -145,27 +150,27 @@
 
 	for (NSString *slug in _categories)
 	{
-		NSString *s = [self displayNameForSlug:slug];
+		NSString *s = [TKPlace displayNameForCategorySlug:slug];
 		if (s) [ret addObject:s];
 	}
 
 	return ret;
 }
 
-- (NSString *)displayNameForSlug:(NSString *)slug
++ (NSString *)displayNameForCategorySlug:(NSString *)slug
 {
 	NSDictionary *displayNames = @{
-		@"sightseeing": NSLocalizedString(@"Sightseeing", @"Menu entry"),
-		@"shopping": NSLocalizedString(@"Shopping", @"Menu entry"),
-		@"eating": NSLocalizedString(@"Restaurants", @"Menu entry"),
-		@"discovering": NSLocalizedString(@"Museums", @"Menu entry"),
-		@"playing": NSLocalizedString(@"Family", @"Menu entry"),
-		@"traveling": NSLocalizedString(@"Transport", @"Menu entry"),
-		@"going_out": NSLocalizedString(@"Nightlife", @"Menu entry"),
-		@"hiking": NSLocalizedString(@"Outdoors", @"Menu entry"),
-		@"sports": NSLocalizedString(@"Sports", @"Menu entry"),
-		@"relaxing": NSLocalizedString(@"Relaxation", @"Menu entry"),
-		@"sleeping": NSLocalizedString(@"Accommodation", @"Menu entry"),
+		@"sightseeing": NSLocalizedString(@"Sightseeing", @"TravelKit - Category name"),
+		@"shopping": NSLocalizedString(@"Shopping", @"TravelKit - Category name"),
+		@"eating": NSLocalizedString(@"Restaurants", @"TravelKit - Category name"),
+		@"discovering": NSLocalizedString(@"Museums", @"TravelKit - Category name"),
+		@"playing": NSLocalizedString(@"Family", @"TravelKit - Category name"),
+		@"traveling": NSLocalizedString(@"Transport", @"TravelKit - Category name"),
+		@"going_out": NSLocalizedString(@"Nightlife", @"TravelKit - Category name"),
+		@"hiking": NSLocalizedString(@"Outdoors", @"TravelKit - Category name"),
+		@"sports": NSLocalizedString(@"Sports", @"TravelKit - Category name"),
+		@"relaxing": NSLocalizedString(@"Relaxation", @"TravelKit - Category name"),
+		@"sleeping": NSLocalizedString(@"Accommodation", @"TravelKit - Category name"),
 	};
 
 	return displayNames[slug];

@@ -302,6 +302,7 @@
 				queryItemWithName:@"map_tile" value:query.quadKeys.firstObject]];
 
 		// TODO: Map spread
+		[queryItems addObject:[NSURLQueryItem queryItemWithName:@"map_spread" value:@"2"]];
 
 		if (query.bounds)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"bounds" value:
