@@ -6,8 +6,7 @@
 	<string>com.tripomatic</string>
 	<key>--ignore</key>
 	<array>
-		<string>TravelKit/TKAPI</string>
-		<string>private</string>
+		<string>Private.h</string>
 		<string>.m</string>
 	</array>
 	<key>--logformat</key>

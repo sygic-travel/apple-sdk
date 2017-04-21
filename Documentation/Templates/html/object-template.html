@@ -6,6 +6,22 @@
 	<title>{{page.title}}</title>
 
 	<link rel="stylesheet" href="../css/style.css">
+	<link rel="stylesheet" href="../css/prism.css">
+	<script src="../js/jquery.min.js"></script>
+	<script src="../js/format.js"></script>
+	<script src="../js/prism.js" data-manual></script>
+	<script>
+		jQuery.noConflict();
+		jQuery( document ).ready(function( $ ) {
+ 			$("pre code").each(function(i, block) {
+				$(this).addClass("language-objectivec")
+				$(this).formatObjectiveC();
+			});
+
+			Prism.highlightAll()
+		});
+	</script>
+
 	<meta name="viewport" content="initial-scale=1, maximum-scale=1.4">
 	{{#strings.appledocData}}<meta name="generator" content="{{tool}} {{version}} (build {{build}})">{{/strings.appledocData}}
 </head>
@@ -98,11 +114,9 @@
                         <!-- display enum values -->
                         {{#constants}}
                         <h4 class="method-subtitle">Definition</h4>
-                        <code>typedef {{enumStyle}}({{enumPrimitive}}, {{nameOfEnum}} ) {<br>
-                            {{#constants}}
-                            &nbsp;&nbsp; <a href="{{htmlLocalReference}}">{{name}}</a>{{#hasAssignedValue}} = {{assignedValue}}{{/hasAssignedValue}},<br>
-                            {{/constants}}
-                            };</code>
+                        <pre><code>typedef {{enumStyle}}({{enumPrimitive}}, {{nameOfEnum}} ) { 
+{{#constants}}	<a href="{{htmlLocalReference}}">{{name}}</a>{{#hasAssignedValue}} = {{assignedValue}}{{/hasAssignedValue}},
+{{/constants}}};</code></pre>
                     {{/constants}}
                     </div>
                     {{#constants}}
@@ -187,7 +201,7 @@ Section Method
 			{{/hasShortDescription}}
 		    {{/comment}}
 
-			<div class="method-subsection method-declaration"><code>{{>MethodDeclaration}}</code></div>
+			<div class="method-subsection method-declaration"><pre><code>{{>MethodDeclaration}}</code></pre></div>
 
 		    {{#comment}}
 			{{#hasMethodParameters}}
