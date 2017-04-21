@@ -7,8 +7,8 @@
 //
 
 #import "TKPlace+Private.h"
+#import "TKMapWorkers+Private.h"
 #import "NSObject+Parsing.h"
-#import "MapWorkers.h"
 
 
 @implementation TKPlace
@@ -88,7 +88,7 @@
 
 		_quadKey = [dictionary[@"quadkey"] parsedString];
 		if (!_quadKey && _location)
-			_quadKey = toQuadKey(_location.coordinate.latitude,
+			_quadKey = TK_toQuadKey(_location.coordinate.latitude,
 				_location.coordinate.longitude, 18);
 
 		// Bounding box

@@ -14,8 +14,8 @@
 		D6B2A1321E530B11005509E8 /* TKAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0711E4DE7B400EBB54F /* TKAPI.m */; };
 		D6B2A1331E530B11005509E8 /* TKAPIConnection+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D06A1E4DE76A00EBB54F /* TKAPIConnection+Private.h */; };
 		D6B2A1341E530B11005509E8 /* TKAPIConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D06B1E4DE76A00EBB54F /* TKAPIConnection.m */; };
-		D6B2A1371E530B11005509E8 /* MapWorkers.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */; };
-		D6B2A1381E530B11005509E8 /* MapWorkers.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */; };
+		D6B2A1371E530B11005509E8 /* TKMapWorkers+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* TKMapWorkers+Private.h */; };
+		D6B2A1381E530B11005509E8 /* TKMapWorkers.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0791E4DFACB00EBB54F /* TKMapWorkers.m */; };
 		D6B2A1391E530B11005509E8 /* NSObject+Parsing.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6B2A13A1E530B11005509E8 /* NSObject+Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */; };
 		D6B2A13B1E530B11005509E8 /* TKMapRegion.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0871E51A09200EBB54F /* TKMapRegion.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -34,8 +34,8 @@
 		D6B2A15D1E531097005509E8 /* TKAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0711E4DE7B400EBB54F /* TKAPI.m */; };
 		D6B2A15E1E531097005509E8 /* TKAPIConnection+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D06A1E4DE76A00EBB54F /* TKAPIConnection+Private.h */; };
 		D6B2A15F1E531097005509E8 /* TKAPIConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D06B1E4DE76A00EBB54F /* TKAPIConnection.m */; };
-		D6B2A1621E531097005509E8 /* MapWorkers.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */; };
-		D6B2A1631E531097005509E8 /* MapWorkers.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */; };
+		D6B2A1621E531097005509E8 /* TKMapWorkers+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* TKMapWorkers+Private.h */; };
+		D6B2A1631E531097005509E8 /* TKMapWorkers.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0791E4DFACB00EBB54F /* TKMapWorkers.m */; };
 		D6B2A1641E531097005509E8 /* NSObject+Parsing.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6B2A1651E531097005509E8 /* NSObject+Parsing.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */; };
 		D6B2A1661E531097005509E8 /* TKMapRegion.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0871E51A09200EBB54F /* TKMapRegion.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -63,8 +63,8 @@
 		D6C3D06F1E4DE76A00EBB54F /* TKAPIConnection.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D06B1E4DE76A00EBB54F /* TKAPIConnection.m */; };
 		D6C3D0721E4DE7B400EBB54F /* TKAPI+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */; };
 		D6C3D0731E4DE7B400EBB54F /* TKAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0711E4DE7B400EBB54F /* TKAPI.m */; };
-		D6C3D07A1E4DFACB00EBB54F /* MapWorkers.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */; };
-		D6C3D07B1E4DFACB00EBB54F /* MapWorkers.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */; };
+		D6C3D07A1E4DFACB00EBB54F /* TKMapWorkers+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* TKMapWorkers+Private.h */; };
+		D6C3D07B1E4DFACB00EBB54F /* TKMapWorkers.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0791E4DFACB00EBB54F /* TKMapWorkers.m */; };
 		D6C3D07E1E4DFCA700EBB54F /* TKPlacesQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6C3D07F1E4DFCA700EBB54F /* TKPlacesQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */; };
 		D6C3D0861E5196CB00EBB54F /* TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0851E5196CB00EBB54F /* TravelKit.m */; };
@@ -91,8 +91,8 @@
 		D6C3D06B1E4DE76A00EBB54F /* TKAPIConnection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKAPIConnection.m; sourceTree = "<group>"; };
 		D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKAPI+Private.h"; sourceTree = "<group>"; };
 		D6C3D0711E4DE7B400EBB54F /* TKAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKAPI.m; sourceTree = "<group>"; };
-		D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapWorkers.h; sourceTree = "<group>"; };
-		D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapWorkers.m; sourceTree = "<group>"; };
+		D6C3D0781E4DFACB00EBB54F /* TKMapWorkers+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKMapWorkers+Private.h"; sourceTree = "<group>"; };
+		D6C3D0791E4DFACB00EBB54F /* TKMapWorkers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapWorkers.m; sourceTree = "<group>"; };
 		D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPlacesQuery.h; sourceTree = "<group>"; };
 		D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPlacesQuery.m; sourceTree = "<group>"; };
 		D6C3D0851E5196CB00EBB54F /* TravelKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelKit.m; sourceTree = "<group>"; };
@@ -158,21 +158,21 @@
 		D6C3D0571E4DDAD200EBB54F /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				D6C3D0781E4DFACB00EBB54F /* MapWorkers.h */,
-				D6C3D0791E4DFACB00EBB54F /* MapWorkers.m */,
 				D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */,
 				D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */,
-				D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */,
 				D6C3D0711E4DE7B400EBB54F /* TKAPI.m */,
-				D6C3D06A1E4DE76A00EBB54F /* TKAPIConnection+Private.h */,
+				D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */,
 				D6C3D06B1E4DE76A00EBB54F /* TKAPIConnection.m */,
+				D6C3D06A1E4DE76A00EBB54F /* TKAPIConnection+Private.h */,
 				D6C3D0871E51A09200EBB54F /* TKMapRegion.h */,
 				D6C3D0881E51A09200EBB54F /* TKMapRegion.m */,
+				D6C3D0791E4DFACB00EBB54F /* TKMapWorkers.m */,
+				D6C3D0781E4DFACB00EBB54F /* TKMapWorkers+Private.h */,
 				D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */,
 				D6C3D0611E4DDE2D00EBB54F /* TKMedium.m */,
 				D6C3D0581E4DDAE500EBB54F /* TKPlace.h */,
-				D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */,
 				D6C3D0591E4DDAE500EBB54F /* TKPlace.m */,
+				D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */,
 				D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */,
 				D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */,
 				D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */,
@@ -205,7 +205,7 @@
 				D6B2A1311E530B11005509E8 /* TKAPI+Private.h in Headers */,
 				D608D0C71E77D6D100A1CA41 /* TKPlace+Private.h in Headers */,
 				D6B2A1411E530B11005509E8 /* TKPlacesQuery.h in Headers */,
-				D6B2A1371E530B11005509E8 /* MapWorkers.h in Headers */,
+				D6B2A1371E530B11005509E8 /* TKMapWorkers+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -223,7 +223,7 @@
 				D6B2A15C1E531097005509E8 /* TKAPI+Private.h in Headers */,
 				D608D0C51E77D66400A1CA41 /* TKPlace+Private.h in Headers */,
 				D6B2A16C1E531097005509E8 /* TKPlacesQuery.h in Headers */,
-				D6B2A1621E531097005509E8 /* MapWorkers.h in Headers */,
+				D6B2A1621E531097005509E8 /* TKMapWorkers+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,7 +232,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D6C3D0621E4DDE2D00EBB54F /* TKMedium.h in Headers */,
-				D6C3D07A1E4DFACB00EBB54F /* MapWorkers.h in Headers */,
+				D6C3D07A1E4DFACB00EBB54F /* TKMapWorkers+Private.h in Headers */,
 				D6C3D0721E4DE7B400EBB54F /* TKAPI+Private.h in Headers */,
 				D6C3D0661E4DE29C00EBB54F /* NSObject+Parsing.h in Headers */,
 				D6C3D06E1E4DE76A00EBB54F /* TKAPIConnection+Private.h in Headers */,
@@ -428,7 +428,7 @@
 				D6B2A13C1E530B11005509E8 /* TKMapRegion.m in Sources */,
 				D6B2A13A1E530B11005509E8 /* NSObject+Parsing.m in Sources */,
 				D6B2A1321E530B11005509E8 /* TKAPI.m in Sources */,
-				D6B2A1381E530B11005509E8 /* MapWorkers.m in Sources */,
+				D6B2A1381E530B11005509E8 /* TKMapWorkers.m in Sources */,
 				D6B2A13E1E530B11005509E8 /* TKMedium.m in Sources */,
 				D6B2A1461E530B18005509E8 /* TravelKit.m in Sources */,
 			);
@@ -445,7 +445,7 @@
 				D6B2A1671E531097005509E8 /* TKMapRegion.m in Sources */,
 				D6B2A1651E531097005509E8 /* NSObject+Parsing.m in Sources */,
 				D6B2A15D1E531097005509E8 /* TKAPI.m in Sources */,
-				D6B2A1631E531097005509E8 /* MapWorkers.m in Sources */,
+				D6B2A1631E531097005509E8 /* TKMapWorkers.m in Sources */,
 				D6B2A1691E531097005509E8 /* TKMedium.m in Sources */,
 				D6B2A1741E532002005509E8 /* TravelKit.m in Sources */,
 			);
@@ -458,7 +458,7 @@
 				D6C3D0731E4DE7B400EBB54F /* TKAPI.m in Sources */,
 				D6C3D07F1E4DFCA700EBB54F /* TKPlacesQuery.m in Sources */,
 				D6C3D06F1E4DE76A00EBB54F /* TKAPIConnection.m in Sources */,
-				D6C3D07B1E4DFACB00EBB54F /* MapWorkers.m in Sources */,
+				D6C3D07B1E4DFACB00EBB54F /* TKMapWorkers.m in Sources */,
 				D6C3D0671E4DE29C00EBB54F /* NSObject+Parsing.m in Sources */,
 				D6C3D05F1E4DDE0A00EBB54F /* TKReference.m in Sources */,
 				D6C3D0861E5196CB00EBB54F /* TravelKit.m in Sources */,

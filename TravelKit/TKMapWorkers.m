@@ -1,19 +1,19 @@
 //
-//  MapWorkers.m
+//  TKMapWorkers.m
 //  Tripomatic
 //
 //  Created by Michal Zelinka on 03/02/16.
 //  Copyright © 2016 Tripomatic. All rights reserved.
 //
 
-#import "MapWorkers.h"
+#import "TKMapWorkers+Private.h"
 
 #define MINMAX(a, x, b) MIN(MAX(a, x), b)
 
 #pragma mark - Quadkeys stuff
 
 
-int MapSize(int levelOfDetail)
+int TK_mapSize(int levelOfDetail)
 {
 	if (levelOfDetail == 23)
 		return INT_MAX;
@@ -21,7 +21,7 @@ int MapSize(int levelOfDetail)
 	return 256 << levelOfDetail;
 }
 
-MapPoint latLongToPixelXY(CLLocationDegrees lat, CLLocationDegrees lon, int levelOfDetail)
+TKMapPoint TK_latLongToPixelXY(CLLocationDegrees lat, CLLocationDegrees lon, int levelOfDetail)
 {
 	lat = MINMAX(-85.05112878, lat, 85.05112878);
 	lon = MINMAX(-180, lon, 180);
@@ -30,19 +30,19 @@ MapPoint latLongToPixelXY(CLLocationDegrees lat, CLLocationDegrees lon, int leve
 	double sinLatitude = sin(lat * M_PI / 180);
 	double y = 0.5 - log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * M_PI);
 
-	int mapSize = MapSize(levelOfDetail);
+	int mapSize = TK_mapSize(levelOfDetail);
 	double pixelX = MINMAX(0, x * mapSize + 0.5, mapSize - 1);
 	double pixelY = MINMAX(0, y * mapSize + 0.5, mapSize - 1);
 
-	return MapPointMake(pixelX, pixelY);
+	return TKMapPointMake(pixelX, pixelY);
 }
 
-MapPoint pixelXYToTileXY(double pixelX, double pixelY)
+TKMapPoint TK_pixelXYToTileXY(double pixelX, double pixelY)
 {
-	return MapPointMake(pixelX / 256, pixelY / 256);
+	return TKMapPointMake(pixelX / 256, pixelY / 256);
 }
 
-NSString *tileXYToQuadKey(int tileX, int tileY, int levelOfDetail)
+NSString *TK_tileXYToQuadKey(int tileX, int tileY, int levelOfDetail)
 {
 	NSMutableString *quadKey = [NSMutableString string];
 
@@ -60,22 +60,22 @@ NSString *tileXYToQuadKey(int tileX, int tileY, int levelOfDetail)
 	return quadKey;
 }
 
-NSString *toQuadKey(CLLocationDegrees lat, CLLocationDegrees lon, int levelOfDetail)
+NSString *TK_toQuadKey(CLLocationDegrees lat, CLLocationDegrees lon, int levelOfDetail)
 {
-	//	if (levelOfDetail < 1 || levelOfDetail > 23)
-	//		throw "levelOfDetail needs to be between 1 and 23";
+//	if (levelOfDetail < 1 || levelOfDetail > 23)
+//		throw "levelOfDetail needs to be between 1 and 23";
 
-	MapPoint pixelXY = latLongToPixelXY(lat, lon, levelOfDetail);
-	MapPoint tileXY = pixelXYToTileXY(pixelXY.x, pixelXY.y);
-	return tileXYToQuadKey(tileXY.x, tileXY.y, levelOfDetail);
+	TKMapPoint pixelXY = TK_latLongToPixelXY(lat, lon, levelOfDetail);
+	TKMapPoint tileXY = TK_pixelXYToTileXY(pixelXY.x, pixelXY.y);
+	return TK_tileXYToQuadKey(tileXY.x, tileXY.y, levelOfDetail);
 }
 
-double approximateZoomLevelForLatitudeSpan(CLLocationDegrees latitudeSpan)
+double TK_approximateZoomLevelForLatitudeSpan(CLLocationDegrees latitudeSpan)
 {
 	return 8.257237*pow(latitudeSpan, -0.1497541);
 }
 
-NSArray *decodePolyLineFromString(NSString *polylineString)
+NSArray *TK_decodePolyLineFromString(NSString *polylineString)
 {
 	@try
 	{
@@ -123,7 +123,7 @@ NSArray *decodePolyLineFromString(NSString *polylineString)
 	}
 }
 
-NSString *encodePolyLineFromPoints(NSArray *points)
+NSString *TK_encodePolyLineFromPoints(NSArray *points)
 {
 	NSMutableString *encodedString = [NSMutableString string];
 	int val = 0;
