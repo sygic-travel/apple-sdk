@@ -1,5 +1,5 @@
 //
-//  APIConnection.h
+//  APIConnection+Private.h
 //  Tripomatic
 //
 //  Created by Michal Zelinka on 27/09/13.

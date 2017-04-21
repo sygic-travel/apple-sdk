@@ -7,7 +7,7 @@
 //
 
 #import "TravelKit.h"
-#import "TKAPI.h"
+#import "TKAPI+Private.h"
 
 
 @implementation TravelKit

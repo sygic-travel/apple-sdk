@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
 //
 
-#import "TKAPI.h"
+#import "TKAPI+Private.h"
 #import "TKPlace+Private.h"
 #import "NSObject+Parsing.h"
 

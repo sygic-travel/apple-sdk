@@ -6,7 +6,7 @@
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
 //
 
-#import "TKAPIConnection.h"
+#import "TKAPIConnection+Private.h"
 #import "NSObject+Parsing.h"
 
 NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";

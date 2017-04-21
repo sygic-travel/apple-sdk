@@ -1,5 +1,5 @@
 //
-//  API.h
+//  API+Private.h
 //  Tripomatic
 //
 //  Created by Michal Zelinka on 27/09/13.
@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TKAPIConnection.h"
+#import "TKAPIConnection+Private.h"
 
 #import "TKPlace.h"
 #import "TKMedium.h"
