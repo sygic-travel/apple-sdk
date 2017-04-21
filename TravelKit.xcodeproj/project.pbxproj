@@ -70,6 +70,9 @@
 		D6C3D0861E5196CB00EBB54F /* TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0851E5196CB00EBB54F /* TravelKit.m */; };
 		D6C3D0891E51A09200EBB54F /* TKMapRegion.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0871E51A09200EBB54F /* TKMapRegion.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6C3D08A1E51A09200EBB54F /* TKMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0881E51A09200EBB54F /* TKMapRegion.m */; };
+		D6E1531C1EAA257400FC0838 /* TKMedium+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */; };
+		D6E1531D1EAA257400FC0838 /* TKMedium+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */; };
+		D6E1531E1EAA257400FC0838 /* TKMedium+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -98,6 +101,7 @@
 		D6C3D0851E5196CB00EBB54F /* TravelKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TravelKit.m; sourceTree = "<group>"; };
 		D6C3D0871E51A09200EBB54F /* TKMapRegion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKMapRegion.h; sourceTree = "<group>"; };
 		D6C3D0881E51A09200EBB54F /* TKMapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapRegion.m; sourceTree = "<group>"; };
+		D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKMedium+Private.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -170,6 +174,7 @@
 				D6C3D0781E4DFACB00EBB54F /* TKMapWorkers+Private.h */,
 				D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */,
 				D6C3D0611E4DDE2D00EBB54F /* TKMedium.m */,
+				D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */,
 				D6C3D0581E4DDAE500EBB54F /* TKPlace.h */,
 				D6C3D0591E4DDAE500EBB54F /* TKPlace.m */,
 				D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */,
@@ -205,6 +210,7 @@
 				D6B2A1311E530B11005509E8 /* TKAPI+Private.h in Headers */,
 				D608D0C71E77D6D100A1CA41 /* TKPlace+Private.h in Headers */,
 				D6B2A1411E530B11005509E8 /* TKPlacesQuery.h in Headers */,
+				D6E1531E1EAA257400FC0838 /* TKMedium+Private.h in Headers */,
 				D6B2A1371E530B11005509E8 /* TKMapWorkers+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -223,6 +229,7 @@
 				D6B2A15C1E531097005509E8 /* TKAPI+Private.h in Headers */,
 				D608D0C51E77D66400A1CA41 /* TKPlace+Private.h in Headers */,
 				D6B2A16C1E531097005509E8 /* TKPlacesQuery.h in Headers */,
+				D6E1531C1EAA257400FC0838 /* TKMedium+Private.h in Headers */,
 				D6B2A1621E531097005509E8 /* TKMapWorkers+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -241,6 +248,7 @@
 				D6C3D07E1E4DFCA700EBB54F /* TKPlacesQuery.h in Headers */,
 				D608D0C61E77D6D000A1CA41 /* TKPlace+Private.h in Headers */,
 				D6C3D0891E51A09200EBB54F /* TKMapRegion.h in Headers */,
+				D6E1531D1EAA257400FC0838 /* TKMedium+Private.h in Headers */,
 				D6C3D05E1E4DDE0A00EBB54F /* TKReference.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

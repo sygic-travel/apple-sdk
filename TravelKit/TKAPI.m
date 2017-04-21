@@ -8,6 +8,7 @@
 
 #import "TKAPI+Private.h"
 #import "TKPlace+Private.h"
+#import "TKMedium+Private.h"
 #import "NSObject+Parsing.h"
 
 

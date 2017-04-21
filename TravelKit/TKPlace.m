@@ -7,6 +7,7 @@
 //
 
 #import "TKPlace+Private.h"
+#import "TKMedium+Private.h"
 #import "TKMapWorkers+Private.h"
 #import "NSObject+Parsing.h"
 
