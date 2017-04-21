@@ -20,6 +20,7 @@
 	if (_tags.count) [key appendString:[_tags componentsJoinedByString:@"+"]];
 	if (_parentID.length) [key appendString:_parentID];
 	if (_quadKeys.count) [key appendString:[_quadKeys componentsJoinedByString:@"+"]];
+	if (_mapSpread) [key appendString:[_mapSpread stringValue]];
 	if (_limit) [key appendString:[@(_limit) stringValue]];
 	if (_bounds) [key appendString:_bounds.description];
 

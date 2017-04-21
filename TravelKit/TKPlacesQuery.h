@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
 @property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
 @property (nonatomic, copy, nullable) NSString *parentID;
+@property (nonatomic, strong, nullable) NSNumber *mapSpread; // 1-3 // limit must be visibile by 4^x
 @property (atomic) TKPlaceLevel level;
 @property (atomic) NSUInteger limit;
 
