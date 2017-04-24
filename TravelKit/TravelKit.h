@@ -47,24 +47,26 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
  
  **Objective-C example:**
 
+     TravelKit *kit = [TravelKit sharedKit];
+
      // Set your API key
-     [TravelKit sharedKit].APIKey = @"<YOUR_API_KEY_GOES_HERE>";
+     kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  
      // Ask kit for Eiffel Tower Place object with details
-     [[TravelKit sharedKit] detailedPlaceWithID:@"poi:530" completion:^(TKPlace *place, NSError *e) {
+     [kit detailedPlaceWithID:@"poi:530" completion:^(TKPlace *place, NSError *e) {
          if (place) NSLog(@"Let's visit %@!", place.name);
-         else NSLog(@"Something went wrong :(");
+         else NSLog(@"Something went wrong :/");
      }];
  
  **Swift example:**
 
     // Set your API key
-	TravelKit.shared.APIKey = "<YOUR_API_KEY_GOES_HERE>"
+	TravelKit.shared().APIKey = "<YOUR_API_KEY_GOES_HERE>"
  
     // Ask kit for Eiffel Tower Place object with details
-    TravelKit.shared.detailedPlace(ID: "poi:530") { (place, error) in
+    TravelKit.shared().detailedPlace(ID: "poi:530") { (place, error) in
         if let place = place { print("Let's visit \(place.name)!") }
-        else { print("Something went wrong :(") }
+        else { print("Something went wrong :/") }
     }
 
  API key must be provided, otherwise using any methods listed below will result in an
@@ -85,6 +87,19 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
  @warning This needs to be set in order to successfully work with the kit.
  */
 @property (nonatomic, copy) NSString *APIKey;
+
+/**
+ Preferred language of response data to use.
+
+ Supported langage codes: `en`, `fr`, `de`, `es`, `nl`, `pt`, `it`, `ru`, `cs`, `sk`, `pl`, `tr`, `zh`, `ko`.
+ 
+ Default language code is `en`.
+
+ If you want to enforce specific language or pick the one depending on your own choice, simply set one of the options listed.
+
+ @warning This needs to be set in order to receive translated content.
+ */
+@property (nonatomic, copy) NSString *language;
 
 ///---------------------------------------------------------------------------------------
 /// @name Initialisation
@@ -107,18 +122,18 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
 ///---------------------------------------------------------------------------------------
 
 /**
- Returns a collection of `Place` objects for the given query object.
+ Returns a collection of `TKPlace` objects for the given query object.
  
  This method is good for use to fetch Places for lists, map annotations and other batch uses.
 
- @param query Query object containing the desired attributes to look for.
+ @param query `TKPlacesQuery` object containing the desired attributes to look for.
  @param completion Completion block called on success or error.
  */
 - (void)placesForQuery:(TKPlacesQuery *)query
 	completion:(void (^)(NSArray<TKPlace *> *places, NSError *error))completion;
 
 /**
- Returns a Detailed `Place` object for the given global Place identifier.
+ Returns a Detailed `TKPlace` object for the given global Place identifier.
  
  This method is good for fetching furhter Place information to use f.e. on Place Detail screen.
 
@@ -129,7 +144,7 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
 	completion:(void (^)(TKPlace *place, NSError *error))completion;
 
 /**
- Returns a collection of `Medium` objects for the given global Place identifier.
+ Returns a collection of `TKMedium` objects for the given global Place identifier.
  
  This method is used to fetch all Place media to be used f.e. for Gallery screen.
 

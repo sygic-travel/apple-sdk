@@ -13,7 +13,7 @@
 
 
 /**
- Enum identifying a `Medium` type.
+ Enum identifying a `TKMedium` type.
  */
 typedef NS_ENUM(NSUInteger, TKMediumType) {
 	/// Unknown type – fallback value
@@ -29,10 +29,10 @@ typedef NS_ENUM(NSUInteger, TKMediumType) {
 };
 
 /**
- Enum identifying a suitability of `Medium`.
+ Enum identifying a suitability of `TKMedium` for basic use cases.
  */
 typedef NS_OPTIONS(NSUInteger, TKMediumSuitability) {
-	/// None – default value.
+	/// No known suitability (default value).
 	TKMediumSuitabilityNone           = 0,
 	/// Medium suitable for square presentation.
 	TKMediumSuitabilitySquare         = 1,

@@ -45,7 +45,7 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 @interface TKAPI : NSObject
 
 @property (nonatomic, copy) NSString *APIKey;
-@property (nonatomic, copy, readonly) NSString *defaultAPIKey;
+@property (nonatomic, copy) NSString *language;
 @property (nonatomic, copy, readonly) NSString *hostname;
 @property (nonatomic, readonly) BOOL isAlphaEnvironment; // Private
 
@@ -56,7 +56,6 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 // Standard supported + custom API calls
 - (NSString *)pathForRequestType:(TKAPIRequestType)type;
 - (NSString *)pathForRequestType:(TKAPIRequestType)type ID:(NSString *)ID;
-- (NSString *)URLStringForPath:(NSString *)path;
 
 @end
 

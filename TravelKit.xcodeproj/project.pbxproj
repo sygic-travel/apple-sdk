@@ -10,6 +10,9 @@
 		D608D0C51E77D66400A1CA41 /* TKPlace+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */; };
 		D608D0C61E77D6D000A1CA41 /* TKPlace+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */; };
 		D608D0C71E77D6D100A1CA41 /* TKPlace+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */; };
+		D666C4051EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
+		D666C4061EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
+		D666C4071EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
 		D6B2A1311E530B11005509E8 /* TKAPI+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */; };
 		D6B2A1321E530B11005509E8 /* TKAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0711E4DE7B400EBB54F /* TKAPI.m */; };
 		D6B2A1331E530B11005509E8 /* TKAPIConnection+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D06A1E4DE76A00EBB54F /* TKAPIConnection+Private.h */; };
@@ -77,6 +80,7 @@
 
 /* Begin PBXFileReference section */
 		D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKPlace+Private.h"; sourceTree = "<group>"; };
+		D666C4041EAE2C5300085915 /* TKReference+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKReference+Private.h"; sourceTree = "<group>"; };
 		D6B2A1291E530AFD005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B2A1541E530F60005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C3D04C1E4DD36200EBB54F /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -182,6 +186,7 @@
 				D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */,
 				D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */,
 				D6C3D05D1E4DDE0A00EBB54F /* TKReference.m */,
+				D666C4041EAE2C5300085915 /* TKReference+Private.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -208,6 +213,7 @@
 				D6B2A13F1E530B11005509E8 /* TKPlace.h in Headers */,
 				D6B2A1391E530B11005509E8 /* NSObject+Parsing.h in Headers */,
 				D6B2A1311E530B11005509E8 /* TKAPI+Private.h in Headers */,
+				D666C4071EAE2C5300085915 /* TKReference+Private.h in Headers */,
 				D608D0C71E77D6D100A1CA41 /* TKPlace+Private.h in Headers */,
 				D6B2A1411E530B11005509E8 /* TKPlacesQuery.h in Headers */,
 				D6E1531E1EAA257400FC0838 /* TKMedium+Private.h in Headers */,
@@ -227,6 +233,7 @@
 				D6B2A16A1E531097005509E8 /* TKPlace.h in Headers */,
 				D6B2A1641E531097005509E8 /* NSObject+Parsing.h in Headers */,
 				D6B2A15C1E531097005509E8 /* TKAPI+Private.h in Headers */,
+				D666C4051EAE2C5300085915 /* TKReference+Private.h in Headers */,
 				D608D0C51E77D66400A1CA41 /* TKPlace+Private.h in Headers */,
 				D6B2A16C1E531097005509E8 /* TKPlacesQuery.h in Headers */,
 				D6E1531C1EAA257400FC0838 /* TKMedium+Private.h in Headers */,
@@ -246,6 +253,7 @@
 				D6C3D0511E4DD36200EBB54F /* TravelKit.h in Headers */,
 				D6C3D05A1E4DDAE500EBB54F /* TKPlace.h in Headers */,
 				D6C3D07E1E4DFCA700EBB54F /* TKPlacesQuery.h in Headers */,
+				D666C4061EAE2C5300085915 /* TKReference+Private.h in Headers */,
 				D608D0C61E77D6D000A1CA41 /* TKPlace+Private.h in Headers */,
 				D6C3D0891E51A09200EBB54F /* TKMapRegion.h in Headers */,
 				D6E1531D1EAA257400FC0838 /* TKMedium+Private.h in Headers */,

@@ -45,8 +45,7 @@
 	if (![subdomain hasSuffix:@"."])
 		subdomain = [subdomain stringByAppendingString:@"."];
 
-//	NSString *lang = [[UserSettings sharedSettings].appLanguage ?: @"en" lowercaseString];
-	NSString *lang = @"en";
+	NSString *lang = _language ?: @"en";
 
 	_apiURL = [NSString stringWithFormat:@"%@://%@%@/%@/%@",
 	//          http[s]://  api.      sygictravelapi.com  /    0.x   /   en
@@ -79,27 +78,7 @@
 	return [NSURL URLWithString:self.apiURL].host;
 }
 
-- (NSString *)URLStringForPath:(NSString *)path
-{
-	return [self URLStringForPath:path APIKey:nil];
-}
-
-- (NSString *)URLStringForPath:(NSString *)path APIKey:(NSString *)APIKey
-{
-	if (!APIKey) APIKey = _APIKey;
-
-	if (![path hasPrefix:@"/"])
-		path = [NSString stringWithFormat:@"/%@", path];
-
-	return [NSString stringWithFormat:@"%@/%@%@", _apiURL, APIKey, path];
-}
-
 - (NSString *)URLStringForRequestType:(TKAPIRequestType)type path:(NSString *)path
-{
-	return [self URLStringForRequestType:type path:path APIKey:nil];
-}
-
-- (NSString *)URLStringForRequestType:(TKAPIRequestType)type path:(NSString *)path APIKey:(NSString *)APIKey
 {
 	NSMutableString *ret = [_apiURL mutableCopy];
 
@@ -186,7 +165,7 @@
 
 	TKAPI *api = [TKAPI sharedAPI];
 
-	NSString *urlString = [api URLStringForRequestType:_type path:_path APIKey:_APIKey];
+	NSString *urlString = [api URLStringForRequestType:_type path:_path];
 	NSURL *url = [NSURL URLWithString:urlString];
 
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];

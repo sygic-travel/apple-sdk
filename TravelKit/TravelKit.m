@@ -31,6 +31,13 @@
 	[TKAPI sharedAPI].APIKey = _APIKey;
 }
 
+- (void)setLanguage:(NSString *)language
+{
+	_language = language;
+
+	[TKAPI sharedAPI].language = language;
+}
+
 - (void)placesForQuery:(TKPlacesQuery *)query completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion
 {
 	static NSCache<NSNumber *, NSArray<TKPlace *> *> *placesCache = nil;

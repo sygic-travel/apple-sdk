@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKReference.h"
+#import "TKReference+Private.h"
 #import "NSObject+Parsing.h"
 
 

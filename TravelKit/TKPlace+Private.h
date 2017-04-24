@@ -8,14 +8,18 @@
 
 #import "TKPlace.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface TKPlace (Private)
-- (instancetype)initFromResponse:(NSDictionary *)response;
+- (nullable instancetype)initFromResponse:(NSDictionary *)response;
 @end
 
 @interface TKPlaceDetail (Private)
-- (instancetype)initFromResponse:(NSDictionary *)response;
+- (nullable instancetype)initFromResponse:(NSDictionary *)response;
 @end
 
 @interface TKPlaceTag (Private)
-- (instancetype)initFromResponse:(NSDictionary *)response;
+- (nullable instancetype)initFromResponse:(NSDictionary *)response;
 @end
+
+NS_ASSUME_NONNULL_END

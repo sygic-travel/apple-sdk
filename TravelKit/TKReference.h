@@ -10,20 +10,37 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ Entity handling basic information about additional linked content.
+ */
 @interface TKReference : NSObject
 
+/// Reference identifier.
 @property (atomic) NSUInteger ID NS_SWIFT_NAME(ID);
+
+/// Reference title.
 @property (nonatomic, copy, nullable) NSString *title;
+
+/// Reference type.
 @property (nonatomic, copy, nullable) NSString *type;
+
+/// Reference supplier.
 @property (nonatomic, copy, nullable) NSString *supplier;
+
 @property (nonatomic, copy, nullable) NSNumber *price;
 @property (nonatomic, copy, nullable) NSString *languageID;
-@property (nonatomic, copy, nullable) NSURL *onlineURL;
-@property (nonatomic, copy, nullable) NSArray<NSString *> *flags;
-@property (atomic) NSInteger priority;
-@property (nonatomic, copy, readonly) NSString *iconName;
 
-- (instancetype)initFromResponse:(NSDictionary *)response;
+/// Online `NSURL` of the Reference.
+@property (nonatomic, copy, nullable) NSURL *onlineURL;
+
+/// Additional flags.
+@property (nonatomic, copy, nullable) NSArray<NSString *> *flags;
+
+/// Reference priority. Higher means more important.
+@property (atomic) NSInteger priority;
+
+/// Name of a proposed icon for the Reference.
+@property (nonatomic, copy, readonly) NSString *iconName;
 
 @end
 
