@@ -16,11 +16,13 @@
 	<key>--project-company</key>
 	<string>Tripomatic</string>
 	<key>--project-name</key>
-	<string>TravelKit</string>
+	<string>Sygic Travel SDK</string>
 	<key>--repeat-first-par</key>
 	<false/>
 	<key>--templates</key>
 	<string>./Documentation/Templates</string>
+	<key>--index-desc</key>
+	<string>./Documentation/README.md</string>
 	<key>--verbose</key>
 	<string>3</string>
 	<key>--output</key>
@@ -28,7 +30,7 @@
 	<key>--keep-undocumented-objects</key>
 	<true/>
 	<key>--keep-undocumented-members</key>
-	<true/>
+	<false/>
 	<key>--keep-merged-sections</key>
 	<true/>
 	<key>--keep-intermediate-files</key>
