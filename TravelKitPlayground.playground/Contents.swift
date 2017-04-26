@@ -58,10 +58,10 @@ import Foundation
 import TravelKit
 import PlaygroundSupport
 
-let travelKit = TravelKit.shared()!
+let travelKit = TravelKit.shared()
 let printLock = NSLock()
 
-travelKit.apiKey = "**REDACTED**"
+travelKit.apiKey = "<YOUR_API_KEY_GOES_HERE>"
 
 let destinationsQuery = TKPlacesQuery()
 destinationsQuery.level = [ .city, .town ]

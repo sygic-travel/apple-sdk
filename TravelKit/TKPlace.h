@@ -17,35 +17,35 @@
  Flag value denoting level value of a `TKPlace`.
  */
 typedef NS_OPTIONS(NSUInteger, TKPlaceLevel) {
-	/// Unknown level – fallback value.
+	/// Unknown level. _Fallback value_
 	TKPlaceLevelUnknown           = 0,
-	/// Point of interest.
+	/// Point of interest. _Examples: Eiffel Tower, Big Ben, Golden Gate bridge_
 	TKPlaceLevelPOI               = 1 << 0,
-	/// Neighbourhood
+	/// Neighbourhood.
 	TKPlaceLevelNeighbourhood     = 1 << 1,
-	/// Locality
+	/// Locality.
 	TKPlaceLevelLocality          = 1 << 2,
-	/// Settlement
+	/// Settlement.
 	TKPlaceLevelSettlement        = 1 << 3,
-	/// Village
+	/// Village.
 	TKPlaceLevelVillage           = 1 << 4,
-	/// Town
+	/// Town. Smaller than city, bigger than village. _Examples: Camden Town in London_
 	TKPlaceLevelTown              = 1 << 5,
-	/// City
+	/// City. _Example: London, New York, Paris_
 	TKPlaceLevelCity              = 1 << 6,
-	/// County
+	/// County. _Example: Orange County_
 	TKPlaceLevelCounty            = 1 << 7,
-	/// Region
+	/// Region. _Example: Champagne_
 	TKPlaceLevelRegion            = 1 << 8,
-	/// Island
+	/// Island.
 	TKPlaceLevelIsland            = 1 << 9,
-	/// Archipelago
+	/// Archipelago.
 	TKPlaceLevelArchipelago       = 1 << 10,
-	/// State
+	/// State. _Example: California_
 	TKPlaceLevelState             = 1 << 11,
-	/// Country
+	/// Country. _Example: France_
 	TKPlaceLevelCountry           = 1 << 12,
-	/// Continent
+	/// Continent. _Example: Europe_
 	TKPlaceLevelContinent         = 1 << 13,
 };
 
@@ -136,7 +136,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param slug Provided Category slug.
  @return Localised display name for the category.
  */
-+ (NSString *)displayNameForCategorySlug:(NSString *)slug;
++ (nullable NSString *)displayNameForCategorySlug:(NSString *)slug;
 
 @end
 
@@ -148,7 +148,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKPlaceTag : NSObject
 
 /// Displayable key, always in English.
-@property (nonatomic, copy) NSString *key;
+@property (nonatomic, copy, nonnull) NSString *key;
 
 /// Displayable value, translated if available.
 @property (nonatomic, copy, nullable) NSString *name;

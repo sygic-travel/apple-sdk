@@ -51,32 +51,49 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface TKMedium : NSObject
 
+///---------------------------------------------------------------------------------------
+/// @name Properties
+///---------------------------------------------------------------------------------------
+
 /// Global identifier.
 @property (nonatomic, copy) NSString *ID NS_SWIFT_NAME(ID);
+
 /// Medium type.
 @property (atomic) TKMediumType type;
+
 /// Medium suitability.
 @property (atomic) TKMediumSuitability suitability;
+
 /// Medium width, if available.
 @property (atomic) CGFloat width;
+
 /// Medium height, if available.
 @property (atomic) CGFloat height;
+
 /// Medium title.
 @property (nonatomic, copy, nullable) NSString *title;
+
 /// Medium author, usually full name or similar.
 @property (nonatomic, copy, nullable) NSString *author;
+
 /// Medium provider.
 @property (nonatomic, copy, nullable) NSString *provider;
+
 /// Medium license name.
 @property (nonatomic, copy, nullable) NSString *license;
+
 /// Medium source URL.
 @property (nonatomic, strong, nullable) NSURL *URL;
+
 /// Medium source Preview URL.
 @property (nonatomic, strong, nullable) NSURL *previewURL;
+
 /// Origin URL of the Medium.
 @property (nonatomic, strong, nullable) NSURL *originURL;
+
 /// URL link to a Medium author.
 @property (nonatomic, strong, nullable) NSURL *authorURL;
+
 /// External ID of the Medium.
 @property (nonatomic, copy, nullable) NSString *externalID;
 

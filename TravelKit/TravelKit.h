@@ -35,45 +35,30 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
 	TKErrorCodePlaceMediaFailed = 300,
 };
 
+NS_ASSUME_NONNULL_BEGIN
 
 /**
- Main class currently used for authentication and data fetching.
- 
- This class provides a singleton instance with the public `+sharedKit` method which may be
- used to work with the _Travel_ backend.
- 
+ Main class currently used for authentication and data fetching. It provides a singleton
+ instance with the public `+sharedKit` method which may be used to work with the _Travel_
+ backend.
+
  The basic workflow is pretty straight-forward – to start using _TravelKit_, you only need a
  couple of lines to get the desired data.
  
- **Objective-C example:**
-
+     // Get shared instance
      TravelKit *kit = [TravelKit sharedKit];
 
      // Set your API key
      kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  
-     // Ask kit for Eiffel Tower Place object with details
+     // Ask kit for Eiffel Tower TKPlace object with details
      [kit detailedPlaceWithID:@"poi:530" completion:^(TKPlace *place, NSError *e) {
          if (place) NSLog(@"Let's visit %@!", place.name);
          else NSLog(@"Something went wrong :/");
      }];
  
- **Swift example:**
-
-    // Set your API key
-	TravelKit.shared().APIKey = "<YOUR_API_KEY_GOES_HERE>"
- 
-    // Ask kit for Eiffel Tower Place object with details
-    TravelKit.shared().detailedPlace(ID: "poi:530") { (place, error) in
-        if let place = place { print("Let's visit \(place.name)!") }
-        else { print("Something went wrong :/") }
-    }
-
- API key must be provided, otherwise using any methods listed below will result in an
+ @discussion API key must be provided, otherwise using any methods listed below will result in an
  error being returned in a call completion block.
- 
- *TravelKit* is very easily testable using _Swift Playgrounds_.
-
  */
 @interface TravelKit : NSObject
 
@@ -86,7 +71,7 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
  
  @warning This needs to be set in order to successfully work with the kit.
  */
-@property (nonatomic, copy) NSString *APIKey;
+@property (nonatomic, copy, nullable) NSString *APIKey;
 
 /**
  Preferred language of response data to use.
@@ -99,7 +84,7 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
 
  @warning This needs to be set in order to receive translated content.
  */
-@property (nonatomic, copy) NSString *language;
+@property (nonatomic, copy, nullable) NSString *language;
 
 ///---------------------------------------------------------------------------------------
 /// @name Initialisation
@@ -112,7 +97,7 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
  
  @warning Regular `-init` and `+new` methods are not available.
  */
-+ (TravelKit *)sharedKit NS_SWIFT_NAME(shared());
++ (nonnull TravelKit *)sharedKit NS_SWIFT_NAME(shared());
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (instancetype)new UNAVAILABLE_ATTRIBUTE;
@@ -130,7 +115,7 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
  @param completion Completion block called on success or error.
  */
 - (void)placesForQuery:(TKPlacesQuery *)query
-	completion:(void (^)(NSArray<TKPlace *> *places, NSError *error))completion;
+	completion:(void (^)(NSArray<TKPlace *>  * _Nullable places, NSError * _Nullable error))completion;
 
 /**
  Returns a Detailed `TKPlace` object for the given global Place identifier.
@@ -141,7 +126,7 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
  @param completion Completion block called on success or error.
  */
 - (void)detailedPlaceWithID:(NSString *)placeID
-	completion:(void (^)(TKPlace *place, NSError *error))completion;
+	completion:(void (^)(TKPlace * _Nullable place, NSError * _Nullable error))completion;
 
 /**
  Returns a collection of `TKMedium` objects for the given global Place identifier.
@@ -152,6 +137,8 @@ typedef NS_ENUM(NSUInteger, TKErrorCode) {
  @param completion Completion block called on success or error.
  */
 - (void)mediaForPlaceWithID:(NSString *)placeID
-	completion:(void (^)(NSArray<TKMedium *> *media, NSError *error))completion;
+	completion:(void (^)(NSArray<TKMedium *> * _Nullable media, NSError * _Nullable error))completion;
 
 @end
+
+NS_ASSUME_NONNULL_END

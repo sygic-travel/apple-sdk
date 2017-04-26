@@ -273,13 +273,15 @@
 			NSString *level = levelToString(query.level);
 
 			if (level) [queryItems addObject:
-				[NSURLQueryItem queryItemWithName:@"level" value:level]];
+				[NSURLQueryItem queryItemWithName:@"levels" value:level]];
 		}
 
-		// TODO: Multiple quadkeys support not yet implemeneted on API
 		if (query.quadKeys.count)
+		{
+			NSString *joined = [query.quadKeys componentsJoinedByString:@"|"];
 			[queryItems addObject:[NSURLQueryItem
-				queryItemWithName:@"map_tile" value:query.quadKeys.firstObject]];
+				queryItemWithName:@"map_tile" value:joined]];
+		}
 
 		if (query.mapSpread)
 			[queryItems addObject:[NSURLQueryItem
@@ -315,18 +317,27 @@
 			[path appendString:@"?"];
 
 			NSMutableArray<NSString *> *queryFields = [NSMutableArray arrayWithCapacity:queryItems.count];
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+			NSMutableCharacterSet *set = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+			[set removeCharactersInString:@"?&="];
 
 			for (NSURLQueryItem *item in queryItems)
 			{
-				NSString *value = [item.value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+				NSString *value = [item.value stringByAddingPercentEncodingWithAllowedCharacters:set];
 				NSString *field = [NSString stringWithFormat:@"%@=%@", item.name, value];
 				[queryFields addObject:field];
 			}
 
-#pragma clang diagnostic pop
+//#pragma clang diagnostic push
+//#pragma clang diagnostic ignored "-Wdeprecated-declarations"
+//
+//			for (NSURLQueryItem *item in queryItems)
+//			{
+//				NSString *value = [item.value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+//				NSString *field = [NSString stringWithFormat:@"%@=%@", item.name, value];
+//				[queryFields addObject:field];
+//			}
+//
+//#pragma clang diagnostic pop
 
 			[path appendString:[queryFields componentsJoinedByString:@"&"]];
 		}

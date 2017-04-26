@@ -11,6 +11,8 @@
 
 @implementation NSObject (Parsing)
 
+#pragma mark - Parsing procedures
+
 - (id)parsedArray
 {
 	return ([self isKindOfClass:[NSArray class]]) ? self : nil;
@@ -32,17 +34,14 @@
 	return ([self isKindOfClass:[NSNumber class]]) ? self : nil;
 }
 
-- (id)objectAtIndex:(NSUInteger)index
+#pragma mark - Parsing procedures
+
+- (id)objectAtIndexedSubscript:(NSUInteger)index
 {
 	return nil;
 }
 
 - (id)objectForKeyedSubscript:(id)key
-{
-	return nil;
-}
-
-- (id)objectForKey:(id)key
 {
 	return nil;
 }

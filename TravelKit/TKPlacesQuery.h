@@ -45,7 +45,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @warning `-limit` must be divisibile by 4^mapSpread.
 @property (nonatomic, strong, nullable) NSNumber *mapSpread;
 
-/// Desired level of `TKPlace` objects.
+/// Desired levels of `TKPlace` objects.
 /// ====
 /// @see TKPlaceLevel
 @property (atomic) TKPlaceLevel level;

@@ -15,6 +15,10 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface TKReference : NSObject
 
+///---------------------------------------------------------------------------------------
+/// @name Properties
+///---------------------------------------------------------------------------------------
+
 /// Reference identifier.
 @property (atomic) NSUInteger ID NS_SWIFT_NAME(ID);
 
@@ -27,7 +31,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Reference supplier.
 @property (nonatomic, copy, nullable) NSString *supplier;
 
+/// Potential price of the Reference if applicable.
 @property (nonatomic, copy, nullable) NSNumber *price;
+
+/// Reference language.
+/// ====
+/// @discussion May be `nil` if generic. 
 @property (nonatomic, copy, nullable) NSString *languageID;
 
 /// Online `NSURL` of the Reference.
