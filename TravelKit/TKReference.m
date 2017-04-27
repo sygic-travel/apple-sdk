@@ -61,12 +61,7 @@
 
 - (id)copy
 {
-	return [self copyWithZone:nil];
-}
-
-- (id)copyWithZone:(NSZone *)zone
-{
-	TKReference *ref = [TKReference new];
+	TKReference *ref = [[self class] new];
 	ref.ID = _ID;
 	ref.title = _title;
 	ref.type = _type;
@@ -78,6 +73,11 @@
 	ref.priority = _priority;
 
 	return ref;
+}
+
+- (id)copyWithZone:(__unused NSZone *)zone
+{
+	return [self copy];
 }
 
 - (NSString *)iconName

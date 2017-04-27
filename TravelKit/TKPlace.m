@@ -33,7 +33,7 @@
 
 + (TKPlaceLevel)levelFromString:(NSString *)str
 {
-	str = str ?: @"";
+	NSString *key = str ?: @"";
 
 	static NSDictionary<NSString *, NSNumber *> *levels = nil;
 
@@ -57,7 +57,7 @@
 		};
 	});
 
-	return [levels[str] unsignedIntegerValue];
+	return [levels[key] unsignedIntegerValue];
 }
 
 - (instancetype)initFromResponse:(NSDictionary *)dictionary
@@ -72,7 +72,7 @@
 		if (!_ID || !_name) return nil;
 
 		_perex = [dictionary[@"perex"] parsedString];
-		_level = [TKPlace levelFromString:[dictionary[@"level"] parsedString]];
+		_level = [[self class] levelFromString:[dictionary[@"level"] parsedString]];
 
 		NSString *thumbnail = [dictionary[@"thumbnail_url"] parsedString];
 		if (thumbnail) {
@@ -152,7 +152,7 @@
 
 	for (NSString *slug in _categories)
 	{
-		NSString *s = [TKPlace displayNameForCategorySlug:slug];
+		NSString *s = [[self class] displayNameForCategorySlug:slug];
 		if (s) [ret addObject:s];
 	}
 

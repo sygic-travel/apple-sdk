@@ -65,11 +65,10 @@
 		if (completion)
 			completion(places, nil);
 
-	} failure:^{
+	} failure:^(TKAPIError *error) {
 
 		if (completion)
-			completion(nil, [NSError errorWithDomain:
-				@"TravelKit" code:TKErrorCodePlacesFailed userInfo:nil]);
+			completion(nil, error);
 
 	}] start];
 }
@@ -92,18 +91,17 @@
 		return;
 	}
 
-	[[[TKAPIRequest alloc] initAsPlaceRequestForItemWithID:placeID success:^(TKPlace *place, NSArray<TKMedium *> *media) {
+	[[[TKAPIRequest alloc] initAsPlaceRequestForItemWithID:placeID success:^(TKPlace *place) {
 
 		[placeCache setObject:place forKey:placeID];
 
 		if (completion)
 			completion(place, nil);
 
-	} failure:^{
+	} failure:^(TKAPIError *error) {
 
 		if (completion)
-			completion(nil, [NSError errorWithDomain:
-				@"TravelKit" code:TKErrorCodePlaceDetailsFailed userInfo:nil]);
+			completion(nil, error);
 
 	}] start];
 }
@@ -133,11 +131,10 @@
 		if (completion)
 			completion(media, nil);
 
-	} failure:^{
+	} failure:^(TKAPIError *error){
 
 		if (completion)
-			completion(nil, [NSError errorWithDomain:
-				@"TravelKit" code:TKErrorCodePlaceMediaFailed userInfo:nil]);
+			completion(nil, error);
 
 	}] start];
 }

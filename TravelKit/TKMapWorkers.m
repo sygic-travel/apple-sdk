@@ -21,13 +21,13 @@ int TK_mapSize(int levelOfDetail)
 	return 256 << levelOfDetail;
 }
 
-TKMapPoint TK_latLongToPixelXY(CLLocationDegrees lat, CLLocationDegrees lon, int levelOfDetail)
+TKMapPoint TK_latLongToPixelXY(CLLocationDegrees lat, CLLocationDegrees lng, int levelOfDetail)
 {
-	lat = MINMAX(-85.05112878, lat, 85.05112878);
-	lon = MINMAX(-180, lon, 180);
+	CLLocationDegrees fLat = MINMAX(-85.05112878, lat, 85.05112878);
+	CLLocationDegrees fLng = MINMAX(-180, lng, 180);
 
-	double x = (lon + 180) / 360.0;
-	double sinLatitude = sin(lat * M_PI / 180);
+	double x = (fLng + 180) / 360.0;
+	double sinLatitude = sin(fLat * M_PI / 180);
 	double y = 0.5 - log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * M_PI);
 
 	int mapSize = TK_mapSize(levelOfDetail);
@@ -67,7 +67,7 @@ NSString *TK_toQuadKey(CLLocationDegrees lat, CLLocationDegrees lon, int levelOf
 
 	TKMapPoint pixelXY = TK_latLongToPixelXY(lat, lon, levelOfDetail);
 	TKMapPoint tileXY = TK_pixelXYToTileXY(pixelXY.x, pixelXY.y);
-	return TK_tileXYToQuadKey(tileXY.x, tileXY.y, levelOfDetail);
+	return TK_tileXYToQuadKey((int)tileXY.x, (int)tileXY.y, levelOfDetail);
 }
 
 double TK_approximateZoomLevelForLatitudeSpan(CLLocationDegrees latitudeSpan)
@@ -84,8 +84,8 @@ NSArray *TK_decodePolyLineFromString(NSString *polylineString)
 									options:NSLiteralSearch
 									  range:NSMakeRange(0, [encoded length])];
 
-		NSInteger len = [encoded length];
-		NSInteger index = 0, lat = 0, lng = 0;
+		NSUInteger len = [encoded length], index = 0;
+		NSInteger lat = 0, lng = 0;
 		NSMutableArray *array = [[NSMutableArray alloc] init];
 
 		while (index < len) {
@@ -135,7 +135,7 @@ NSString *TK_encodePolyLineFromPoints(NSArray *points)
 		CLLocationCoordinate2D coordinate = location.coordinate;
 
 		// Encode latitude
-		val = round((coordinate.latitude - prevCoordinate.latitude) * 1e5);
+		val = (int)round((coordinate.latitude - prevCoordinate.latitude) * 1e5);
 		val = (val < 0) ? ~(val<<1) : (val <<1);
 		while (val >= 0x20) {
 			value = (0x20|(val & 31)) + 63;
@@ -145,7 +145,7 @@ NSString *TK_encodePolyLineFromPoints(NSArray *points)
 		[encodedString appendFormat:@"%c", val + 63];
 
 		// Encode longitude
-		val = round((coordinate.longitude - prevCoordinate.longitude) * 1e5);
+		val = (int)round((coordinate.longitude - prevCoordinate.longitude) * 1e5);
 		val = (val < 0) ? ~(val<<1) : (val <<1);
 		while (val >= 0x20) {
 			value = (0x20|(val & 31)) + 63;

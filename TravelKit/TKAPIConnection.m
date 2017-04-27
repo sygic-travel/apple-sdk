@@ -17,7 +17,6 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 @implementation TKAPIResponse
 
-
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
 	if (self = [super init])
@@ -65,7 +64,14 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 - (instancetype)initWithResponse:(TKAPIResponse *)response
 {
-	if (self = [self initWithDomain:TKAPIResponseErrorDomain code:response.code userInfo:nil])
+	NSString *message = [response.message parsedString] ?: @"Unknown error";
+
+	NSDictionary *userInfo = @{
+		NSLocalizedDescriptionKey: message,
+		NSLocalizedFailureReasonErrorKey: message,
+	};
+
+	if (self = [self initWithDomain:TKAPIResponseErrorDomain code:response.code userInfo:userInfo])
 	{
 		_ID = [response.metadata[@"error"][@"id"] parsedString];
 		_response = response;
@@ -91,7 +97,6 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 
 @implementation TKAPIConnection
-
 
 - (instancetype)initWithURLRequest:(NSMutableURLRequest *)request
 	success:(TKAPIConnectionSuccessBlock)success failure:(TKAPIConnectionFailureBlock)failure
@@ -185,13 +190,13 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 #pragma mark - NSURLConnection delegate
 
 
-- (void)connection:(NSURLConnection *)aConnection didReceiveData:(NSData *)data
+- (void)connection:(__unused NSURLConnection *)connection didReceiveData:(NSData *)data
 {
 	// Append newly received data
 	[_receivedData appendData:data];
 }
 
-- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+- (void)connection:(__unused NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
 {
 	// Server response start reading data
 	// Needs to be cleared because request could have been forwarded
@@ -202,7 +207,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 		_responseStatus = [(NSHTTPURLResponse *)response statusCode];
 }
 
-- (void)connectionDidFinishLoading:(NSURLConnection *)connection
+- (void)connectionDidFinishLoading:(__unused NSURLConnection *)connection
 {
 	// We've got all data from the server response
 	// Now it's time to parse and process it
@@ -213,9 +218,10 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 	NSError *error = nil;
 
-	NSDictionary *jsonDictionary = [NSJSONSerialization JSONObjectWithData:_receivedData options:kNilOptions error:&error];
+	NSDictionary *jsonDictionary = [NSJSONSerialization
+		JSONObjectWithData:_receivedData options:(NSJSONReadingOptions)kNilOptions error:&error];
 
-	if (error) {
+	if (!jsonDictionary || error) {
 
 		if (_responseStatus >= 400 || _responseStatus < 100)
 			error = [TKAPIError errorWithDomain:TKAPIResponseErrorDomain code:_responseStatus userInfo:nil];
@@ -244,9 +250,9 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 	if (![response.status isEqual:@"ok"]) {
 
-		TKAPIError *error = [TKAPIError errorWithResponse:response];
+		TKAPIError *e = [TKAPIError errorWithResponse:response];
 
-		if (_failureBlock) _failureBlock(error);
+		if (_failureBlock) _failureBlock(e);
 
 		return;
 	}
@@ -261,7 +267,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 		[_delegate connectionDidFinish:self];
 }
 
-- (void)connection:(NSURLConnection *)aConnection didFailWithError:(NSError *)error
+- (void)connection:(__unused NSURLConnection *)connection didFailWithError:(NSError *)error
 {
 #ifdef LOG_API
 	NSLog(@"[API REQUEST] ID:%@ FAILED URL:%@  ERROR:%@  USERINFO: %@", _identifier,

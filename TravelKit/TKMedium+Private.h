@@ -8,7 +8,7 @@
 
 #import "TKMedium.h"
 
-@interface TKMedium (Private)
+@interface TKMedium ()
 
 - (instancetype)initFromResponse:(NSDictionary *)response;
 

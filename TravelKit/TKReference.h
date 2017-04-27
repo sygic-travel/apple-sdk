@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Entity handling basic information about additional linked content.
  */
-@interface TKReference : NSObject
+@interface TKReference : NSObject <NSCopying>
 
 ///---------------------------------------------------------------------------------------
 /// @name Properties

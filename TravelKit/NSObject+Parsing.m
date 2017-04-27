@@ -36,12 +36,12 @@
 
 #pragma mark - Parsing procedures
 
-- (id)objectAtIndexedSubscript:(NSUInteger)index
+- (id)objectAtIndexedSubscript:(__unused NSUInteger)index
 {
 	return nil;
 }
 
-- (id)objectForKeyedSubscript:(id)key
+- (id)objectForKeyedSubscript:(__unused id)key
 {
 	return nil;
 }

@@ -13,7 +13,7 @@ FOUNDATION_EXPORT NSString * const TKAPIResponseErrorDomain;
 
 @interface TKAPIResponse: NSObject
 
-@property (assign) NSInteger code;
+@property (atomic, assign) NSInteger code;
 @property (nonatomic, copy, readonly) NSString *status;
 @property (nonatomic, copy, readonly) NSString *message;
 @property (nonatomic, copy, readonly) NSDictionary *metadata;
@@ -50,7 +50,7 @@ typedef void(^TKAPIConnectionFailureBlock)(TKAPIError *);
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic, weak) id<TKAPIConnectionDelegate> delegate;
 
-@property (readonly) NSInteger responseStatus;
+@property (atomic, readonly) NSInteger responseStatus;
 @property (nonatomic, strong, readonly) NSURL *URL;
 @property (nonatomic, strong, readonly) NSMutableData *receivedData;
 @property (nonatomic, strong, readonly) NSURLConnection *connection;

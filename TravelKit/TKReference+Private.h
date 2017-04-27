@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TKReference (Private)
+@interface TKReference ()
 
 - (nullable instancetype)initFromResponse:(NSDictionary *)response;
 

@@ -79,25 +79,28 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 // Places
 
 - (instancetype)initAsPlacesRequestForQuery:(TKPlacesQuery *)query
-	success:(void (^)(NSArray<TKPlace *> *places))success failure:(void (^)())failure;
+	success:(void (^)(NSArray<TKPlace *> *places))success
+		failure:(TKAPIConnectionFailureBlock)failure;
 
 ////////////////////
 // Place
 
 - (instancetype)initAsPlaceRequestForItemWithID:(NSString *)itemID
-	success:(void (^)(TKPlace *place, NSArray<TKMedium *> *media))success failure:(void (^)())failure;
+	success:(void (^)(TKPlace *place))success
+		failure:(TKAPIConnectionFailureBlock)failure;
 
 ////////////////////
 // Media
 
 - (instancetype)initAsMediaRequestForPlaceWithID:(NSString *)placeID
-	success:(void (^)(NSArray<TKMedium *> *media))success failure:(void (^)())failure;
+	success:(void (^)(NSArray<TKMedium *> *media))success
+		failure:(TKAPIConnectionFailureBlock)failure;
 
 ////////////////////
 // Exchange rates
 
 - (instancetype)initAsExchangeRatesRequestWithSuccess:(void (^)(NSDictionary<NSString *, NSNumber *> *))success
-	failure:(void (^)())failure;
+	failure:(TKAPIConnectionFailureBlock)failure;
 
 ////////////////////
 // Custom requests

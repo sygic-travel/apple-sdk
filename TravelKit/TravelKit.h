@@ -22,19 +22,6 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKPlacesQuery.h>
 #import <TravelKit/NSObject+Parsing.h>
 
-
-/**
- Enum containing the error codes used through the kit.
- */
-typedef NS_ENUM(NSUInteger, TKErrorCode) {
-	/// Error code indicating _Places_ call failure.
-	TKErrorCodePlacesFailed = 100,
-	/// Error code indicating _Place Details_ call failure.
-	TKErrorCodePlaceDetailsFailed = 200,
-	/// Error code indicating _Place Media_ call failure.
-	TKErrorCodePlaceMediaFailed = 300,
-};
-
 NS_ASSUME_NONNULL_BEGIN
 
 /**

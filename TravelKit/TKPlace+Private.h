@@ -10,15 +10,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TKPlace (Private)
+@interface TKPlace ()
 - (nullable instancetype)initFromResponse:(NSDictionary *)response;
 @end
 
-@interface TKPlaceDetail (Private)
+@interface TKPlaceDetail ()
 - (nullable instancetype)initFromResponse:(NSDictionary *)response;
 @end
 
-@interface TKPlaceTag (Private)
+@interface TKPlaceTag ()
 - (nullable instancetype)initFromResponse:(NSDictionary *)response;
 @end
 

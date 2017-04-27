@@ -78,7 +78,7 @@
 	return [NSURL URLWithString:self.apiURL].host;
 }
 
-- (NSString *)URLStringForRequestType:(TKAPIRequestType)type path:(NSString *)path
+- (NSString *)URLStringForPath:(NSString *)path
 {
 	NSMutableString *ret = [_apiURL mutableCopy];
 
@@ -119,7 +119,7 @@
 	}
 }
 
-- (NSString *)HTTPMethodForRequestType:(TKAPIRequestType)type
+- (NSString *)HTTPMethodForRequestType:(__unused TKAPIRequestType)type
 {
 	return @"GET";
 }
@@ -152,7 +152,7 @@
 	if (self = [super init])
 	{
 		_connection = nil;
-		_type = -1;
+		_type = TKAPIRequestTypeUnknown;
 		_state = TKAPIRequestStateInit;
 	}
 
@@ -165,7 +165,7 @@
 
 	TKAPI *api = [TKAPI sharedAPI];
 
-	NSString *urlString = [api URLStringForRequestType:_type path:_path];
+	NSString *urlString = [api URLStringForPath:_path];
 	NSURL *url = [NSURL URLWithString:urlString];
 
 	NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
@@ -214,7 +214,7 @@
 ////////////////////
 
 
-- (void)connectionDidFinish:(TKAPIConnection *)connection
+- (void)connectionDidFinish:(__unused TKAPIConnection *)connection
 {
 	_connection = nil;
 	_successBlock = nil;
@@ -228,7 +228,7 @@
 
 
 - (instancetype)initAsPlacesRequestForQuery:(TKPlacesQuery *)query
-	success:(void (^)(NSArray<TKPlace *> *place))success failure:(void (^)())failure
+	success:(void (^)(NSArray<TKPlace *> *place))success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
@@ -366,7 +366,7 @@
 
 		}; _failureBlock = ^(TKAPIError *error){
 			_state = TKAPIRequestStateFinished;
-			if (failure) failure();
+			if (failure) failure(error);
 		};
 	}
 
@@ -380,7 +380,7 @@
 
 
 - (instancetype)initAsPlaceRequestForItemWithID:(NSString *)itemID
-	success:(void (^)(TKPlace *place, NSArray<TKMedium *> *media))success failure:(void (^)())failure
+	success:(void (^)(TKPlace *place))success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
@@ -403,12 +403,12 @@
 
 			_state = TKAPIRequestStateFinished;
 
-			if (!place && failure) failure();
-			if (place && success) success(place, media);
+			if (!place && failure) failure(nil); // TODO
+			if (place && success) success(place);
 
 		}; _failureBlock = ^(TKAPIError *error){
 			_state = TKAPIRequestStateFinished;
-			if (failure) failure();
+			if (failure) failure(error);
 		};
 	}
 
@@ -422,7 +422,7 @@
 
 
 - (instancetype)initAsMediaRequestForPlaceWithID:(NSString *)placeID
-	success:(void (^)(NSArray<TKMedium *> *media))success failure:(void (^)())failure
+	success:(void (^)(NSArray<TKMedium *> *media))success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
@@ -450,7 +450,7 @@
 
 		}; _failureBlock = ^(TKAPIError *error){
 			_state = TKAPIRequestStateFinished;
-			if (failure) failure();
+			if (failure) failure(error);
 		};
 	}
 
@@ -463,7 +463,8 @@
 ////////////////////
 
 
-- (instancetype)initAsExchangeRatesRequestWithSuccess:(void (^)(NSDictionary<NSString *, NSNumber *> *))success failure:(void (^)())failure
+- (instancetype)initAsExchangeRatesRequestWithSuccess:(void (^)(NSDictionary<NSString *, NSNumber *> *))success
+	failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
