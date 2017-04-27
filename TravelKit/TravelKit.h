@@ -19,7 +19,6 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKReference.h>
 #import <TravelKit/TKMedium.h>
 #import <TravelKit/TKMapRegion.h>
-#import <TravelKit/TKPlacesQuery.h>
 #import <TravelKit/NSObject+Parsing.h>
 
 NS_ASSUME_NONNULL_BEGIN
