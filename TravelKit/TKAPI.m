@@ -241,7 +241,7 @@
 		if (query.searchTerm.length)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"query" value:query.searchTerm]];
 
-		if (query.level)
+		if (query.levels)
 		{
 			NSString * (^levelToString)(TKPlaceLevel level) = ^NSString *(TKPlaceLevel level) {
 
@@ -270,20 +270,29 @@
 				return levels[@(level)];
 			};
 
-			NSString *level = levelToString(query.level);
+			NSMutableArray *levels = [NSMutableArray arrayWithCapacity:3];
 
-			if (level) [queryItems addObject:
-				[NSURLQueryItem queryItemWithName:@"levels" value:level]];
+			for (TKPlaceLevel l = TKPlaceLevelPOI; l <= TKPlaceLevelContinent; l *= 2)
+			{
+				if (!(query.levels & l)) continue;
+				NSString *lev = levelToString(l);
+				if (lev) [levels addObject:lev];
+			}
+
+			NSString *lstr = [levels componentsJoinedByString:@"|"];
+
+			if (lstr.length) [queryItems addObject:
+				[NSURLQueryItem queryItemWithName:@"levels" value:lstr]];
 		}
 
 		if (query.quadKeys.count)
 		{
 			NSString *joined = [query.quadKeys componentsJoinedByString:@"|"];
 			[queryItems addObject:[NSURLQueryItem
-				queryItemWithName:@"map_tile" value:joined]];
+				queryItemWithName:@"map_tiles" value:joined]];
 		}
 
-		if (query.mapSpread)
+		if (query.mapSpread.intValue > 0)
 			[queryItems addObject:[NSURLQueryItem
 				queryItemWithName:@"map_spread" value:query.mapSpread.stringValue]];
 
@@ -305,12 +314,12 @@
 				value:[query.tags componentsJoinedByString:@"|"]]];
 
 		if (query.parentID)
-			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"parent"
+			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"parents"
 				value:query.parentID]];
 
-		if (query.limit)
+		if (query.limit.intValue > 0)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"limit"
-				value:[@(query.limit) stringValue]]];
+				value:[query.limit stringValue]]];
 
 		if (queryItems.count)
 		{

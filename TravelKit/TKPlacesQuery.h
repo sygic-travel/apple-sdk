@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Listed map quad keys to query.
 ///
-/// @warning Not fully working yet, only the first one is queried.
+/// @note Length `1-18`. All requested quad keys should be of a same length.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *quadKeys;
 
 /// Desired area of the map.
@@ -40,17 +40,22 @@ NS_ASSUME_NONNULL_BEGIN
 /// Idenfitier of the parent node of returned `TKPlace` objects.
 @property (nonatomic, copy, nullable) NSString *parentID;
 
-/// *Accepted values:* `1-3`.
-/// @warning `-limit` must be divisibile by 4^mapSpread.
+/// Division of each map tile when spreading.
+///
+/// @note Accepted values: `0-3`. Implicit value is `0`.
+///
+/// @warning Value of `limit` must be divisible by `4^mapSpread`.
 @property (nonatomic, strong, nullable) NSNumber *mapSpread;
 
 /// Desired levels of `TKPlace` objects.
 ///
 /// @see `TKPlaceLevel`
-@property (atomic) TKPlaceLevel level;
+@property (atomic) TKPlaceLevel levels;
 
 /// Maximum number of results returned. If multiple quad keys specified, the limit applies to each one of them separately.
-@property (atomic) NSUInteger limit;
+///
+/// @warning The value requested must be divisible by `4^mapSpread`.
+@property (nonatomic, strong, nullable) NSNumber *limit;
 
 @end
 

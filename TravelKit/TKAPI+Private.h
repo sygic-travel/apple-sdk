@@ -51,7 +51,7 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 
 /** Shared sigleton */
 + (TKAPI *)sharedAPI;
-- (instancetype)init OBJC_UNAVAILABLE("Use [TKAPI sharedAPI].");
+- (instancetype)init OBJC_UNAVAILABLE("Use +[TKAPI sharedAPI].");
 
 // Standard supported + custom API calls
 - (NSString *)pathForRequestType:(TKAPIRequestType)type;

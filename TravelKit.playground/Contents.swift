@@ -64,7 +64,7 @@ let printLock = NSLock()
 travelKit.apiKey = "<YOUR_API_KEY_GOES_HERE>"
 
 let destinationsQuery = TKPlacesQuery()
-destinationsQuery.level = [ .city, .town ]
+destinationsQuery.levels = [ .city, .town ]
 destinationsQuery.limit = 5
 
 travelKit.places(for: destinationsQuery) { (places, error) in
@@ -78,7 +78,7 @@ travelKit.places(for: destinationsQuery) { (places, error) in
 
 let sightsQuery = TKPlacesQuery()
 sightsQuery.parentID = "city:1"
-sightsQuery.level = .POI
+sightsQuery.levels = .POI
 sightsQuery.categories = ["sightseeing"]
 sightsQuery.limit = 10
 
