@@ -20,7 +20,8 @@ $table_border_color: #ddd;
 
 $color_light: #F5F8FC;
 $color_darkblue: #0B293A;
-$color_brightblue: #3A68D8;
+$color_brightblue: #0F62C4;
+$color_intenseorange: #F9413F;
 $color_darkblue_lighten: rgba(11, 41, 58, 0.75);
 $keyline_color: rgba(12, 40, 73, 0.08);
 $code_font: Menlo, Bitstream Vera Sans Mono, Monaco, Consolas, monospacee;
@@ -98,6 +99,7 @@ body {
   font-weight: $header_weight;
   color: $color_darkblue;
   margin: $margin;
+  line-height: 120%;
 }
 
 h1 {
@@ -113,7 +115,7 @@ h2 {
 }
 
 h3 {
-  @include heading(14px, 1em 0 0.3em);
+  @include heading(1.2rem, 1em 0 0.3em);
 }
 
 h4 {
@@ -232,6 +234,7 @@ pre code {
 // ===========================================================================
 
 .content-wrapper {
+  padding-top: 83px !important;
   display: flex;
   flex-direction: column;
   @media (min-width: 768px) {
@@ -254,7 +257,14 @@ pre code {
 // ===========================================================================
 
 .header-container {
-  background: $color_brightblue;
+  background: #f9413f; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(+25deg, #FF0F3F, #FF5334); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(+25deg, #FF0F3F, #FF5334); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(+25deg, #FF0F3F, #FF5334); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(+25deg, #FF0F3F, #FF5334); /* Standard syntax */
+  position: fixed;
+  width: 100%;
+  z-index: 2000;
 }
 .header {
   display: flex;
@@ -284,6 +294,18 @@ pre code {
   flex: 1;
 }
 
+.header-col--primary .header-tag {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.header-col--secondary {
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
 .header-link {
   font-family: $header_font;
   color: $header_link_color;
@@ -293,6 +315,13 @@ pre code {
   padding-right: 2px;
   vertical-align: -4px;
   height: 16px;
+}
+
+.header-icon {
+  @media (max-width: 768px) {
+    display: block;
+    margin: 0 auto;
+  }
 }
 
 // ===========================================================================
@@ -307,6 +336,10 @@ pre code {
   margin: 0;
   background: $color_light;
   border-bottom: 1px solid $keyline_color;
+  position: fixed;
+  width: 100%;
+  top: 58px;
+  z-index: 1000;
 }
 
 .carat {
@@ -366,6 +399,7 @@ pre code {
   overflow: hidden;
   text-overflow: ellipsis;
   color: $navigation_task_color;
+  padding: 3px 0;
 }
 
 %nav-group-task-gloss {
@@ -396,6 +430,7 @@ pre code {
 .nav-group-name > .small-heading,
 .nav-group-task-link {
   display: block;
+  padding: 2px 0;
 }
 
 .nav-group-task-link {

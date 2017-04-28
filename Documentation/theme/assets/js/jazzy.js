@@ -16,6 +16,17 @@ $(document).ready(function() {
   }
 });
 
+// Do some other stuff on window load
+$(window).load(function() {
+  refreshFixedHeader();
+  fillCodeBlocksWithLanguageTag();
+  if ((window.location.pathname.indexOf('index.html') != -1) ||
+      (window.location.pathname.indexOf('.html') == -1))
+    $('head style.nav-group-highlight-style').remove();
+  elm = $('li.nav-group-task[data-name="TravelKit"]')[0]
+  $(elm).parent().prepend(elm);
+});
+
 // On token click, toggle its discussion and animate token.marginLeft
 $(".token").click(function(event) {
   if (window.jazzy.docset) {
@@ -44,4 +55,20 @@ $(".token").click(function(event) {
 // Dumb down quotes within code blocks that delimit strings instead of quotations.
 $("code q").replaceWith(function () {
   return ["\"", $(this).contents(), "\""];
+});
+
+// Customisations
+function refreshFixedHeader() {
+  $('.breadcrumbs').css('top', $('.header-container').height()+'px');
+  $('.content-wrapper').css("cssText", "padding-top: "+ ($('.header-container').height() + $('.breadcrumbs').height()) + 'px !important');
+}
+
+function fillCodeBlocksWithLanguageTag() {
+  $.each($('.highlight.objective_c'), function(i,o){ o.innerHTML = '<div><span class="codeblock-inserted-heading">Objective-C</span></div>'+o.innerHTML });
+  $.each($('.highlight.swift'), function(i,o){ o.innerHTML = '<div><span class="codeblock-inserted-heading">Swift</span></div>'+o.innerHTML });
+  $.each($('.highlight.json'), function(i,o){ o.innerHTML = '<div><span class="codeblock-inserted-heading">JSON</span></div>'+o.innerHTML });
+}
+
+$(window).resize(function() {
+  refreshFixedHeader();
 });

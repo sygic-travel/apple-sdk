@@ -86,3 +86,16 @@
 .highlight .vc   { color:#c0c0f0; } /* Name.Variable.Class */
 .highlight .vg   { color:#f08040; } /* Name.Variable.Global */
 .highlight .vi   { color:#a0a0f0; } /* Name.Variable.Instance */
+
+.codeblock-inserted-heading {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 10px;
+  font-family: "Open Sans" !important;
+  font-weight: 700;
+  padding: 0px 8px;
+  margin: 0 0 8px 0;
+  display: inline-block;
+  color: #5bb1dc;
+  background: rgba(61, 142, 196, 0.15);
+  border-radius: 5px; }
