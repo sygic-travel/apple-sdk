@@ -6,11 +6,17 @@ Sygic Travel Apple SDK is a framework for embedding a rich set of Sygic Travel d
 ## Requirements
 
 - Xcode 8.0+ (recommended)
+- macOS 10.12+ SDK (recommended)
+- iOS 10.0+ SDK (recommended)
+- tvOS 10.0+ SDK (recommended)
+- _Objective-C_ or _Swift_ project
+- _API key_ for your business or project
+
+## Deployment
+
 - OS X 10.9+ target (_macOS framework_)
 - iOS 8.2+ target (_iOS framework_)
 - tvOS 9.0+ target (_tvOS framework_)
-- _Objective-C_ or _Swift_ project
-- _API key_ for your business or project
 
 ## Installation
 TODO
@@ -25,8 +31,6 @@ Let's define a set of Places we want:
 - marked as _Points of interest_
 - marked with category _Sightseeing_
 - only the _Top 10_ of them
-
-### Objective-C example
 
 ```objc
 // Hold an instance
@@ -48,8 +52,6 @@ query.limit = 10;
 	else NSLog(@"Something went wrong :/");
 }];
 ```
-
-### Swift example
 
 ```swift
 // Set your API key

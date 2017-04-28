@@ -35,8 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSNumber *price;
 
 /// Reference language.
-/// ====
-/// @discussion May be `nil` if generic. 
+///
+/// @note May be `nil` if generic. 
 @property (nonatomic, copy, nullable) NSString *languageID;
 
 /// Online `NSURL` of the Reference.

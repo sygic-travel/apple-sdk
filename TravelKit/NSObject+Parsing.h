@@ -21,53 +21,58 @@ NS_ASSUME_NONNULL_BEGIN
  
  Consider having a following JSON input:
  
-     {
-         "id" : "poi:530",
-         "name" : "Eiffel Tower",
-         "location" : {
-             "latitude" : 48.858262,
-             "longitude" : 2.2944955,
-         },
-         "perex" : "Once the world's tallest man-made structure",
-         "level" : "poi"
-     }
+```json
+{
+    "id" : "poi:530",
+    "name" : "Eiffel Tower",
+    "location" : {
+        "latitude" : 48.858262,
+        "longitude" : 2.2944955
+    },
+    "perex" : "Once the world's tallest man-made structure",
+    "level" : "poi"
+}
+```
  
- By parsing it to a `JSON` object using native `NSJSONSerialization` procedure, it's very easy to get the object properties using the provided nethods:
+ By converting it to an object using native `NSJSONSerialization` procedure, it's very easy to read object's properties using the provided nethods:
 
-     // Parse strings only if they are strings in JSON, otherwise `nil`
-     NSString *ID = [place[@"id"] parsedString];
-     NSString *name = [place[@"name"] parsedString];
-     NSString *perex = [place[@"perex"] parsedString];
+```objc
+// Parse strings only if they are strings in JSON, otherwise `nil`
+NSString *ID = [place[@"id"] parsedString];
+NSString *name = [place[@"name"] parsedString];
+NSString *perex = [place[@"perex"] parsedString];
 
-     CLLocation *location = nil;
+CLLocation *location = nil;
 
-     // Parse coordinates only if placed within `location` object as number properties
-     NSNumber *latitude = [place[@"location"][@"latitude"] parsedNumber];
-     NSNumber *longitude = [place[@"location"][@"latitude"] parsedNumber];
+// Parse coordinates only if placed within `location` object as number properties
+NSNumber *latitude = [place[@"location"][@"latitude"] parsedNumber];
+NSNumber *longitude = [place[@"location"][@"latitude"] parsedNumber];
 
-     // Easy `nil`-checking due to parsing to objects
-     if (latitude && longitude)
-         location = [[CLLocation alloc] initWithLatitude:latitude.doubleValue longitude:longitude.doubleValue];
+// Easy `nil`-checking due to parsing to objects
+if (latitude && longitude)
+    location = [[CLLocation alloc] initWithLatitude:latitude.doubleValue longitude:longitude.doubleValue];
 
-     // If all required properties are non-`nil`, celebrate!
-     if (ID && name && location)
-         NSLog(@"Valid TKPlace may be initialised, woohoo!");
+// If all required properties are non-`nil`, celebrate!
+if (ID && name && location)
+    NSLog(@"Valid TKPlace may be initialised, woohoo!");
+```
 
- Parsing nested values is simplier due to
- may be used to easily parse an `NSNumber` object from `NSArray` if all conditions are met and returns `nil` in any conflicting situation.
+ Parsing nested values and futher processing of the obtained values becomes very straight-forward.
 
- **Note:** Overriding of `NSObject` affects your app flow as usually sending these messages to `NSObject` or other classes inheriting from them would lead to a crash:
+ @warning Overriding of `NSObject` affects your app flow as usually sending these messages to `NSObject` or other classes inheriting from them would lead to a crash -- that may be a correct behaviour for debugging purposes. This override will cause both of these examples to return `nil` instead of crashing.
 
-     NSNumber *number = @1;
+````objc
+NSNumber *number = @1;
 
-     // This code would usually crash due to an unrecognised selector sent
-     //   to the `number` object as `NSNumber` doesn't implement key subscripting.
-     [number[@"props"] parsedArray];
+// This code would usually crash due to an unrecognised selector sent
+//   to the `number` object as `NSNumber` doesn't implement key subscripting.
+[number[@"props"] parsedArray]; // returns `nil`
 
-     // Same case, `NSNumber` doesn't implement index subscripting.
-     [number[0] parsedNumber];
+// Same case, `NSNumber` doesn't implement index subscripting.
+[number[0] parsedNumber]; // returns `nil`
+````
 
- which may be a correct behaviour for debugging purposes. This override will cause both of these examples to return `nil` instead of crashing.
+ @note These methods only affect _Objective-C_ code. _Swift_ code works with a different base structure `Any`. To parse _Swift_ objects using the same manner try using [`SwiftyJSON`](https://github.com/SwiftyJSON/SwiftyJSON) framework.
  */
 
 @interface NSObject (Parsing)

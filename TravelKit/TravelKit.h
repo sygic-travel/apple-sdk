@@ -31,20 +31,22 @@ NS_ASSUME_NONNULL_BEGIN
  The basic workflow is pretty straight-forward – to start using _TravelKit_, you only need a
  couple of lines to get the desired data.
  
-     // Get shared instance
-     TravelKit *kit = [TravelKit sharedKit];
+```objc
+// Get shared instance
+TravelKit *kit = [TravelKit sharedKit];
 
-     // Set your API key
-     kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
- 
-     // Ask kit for Eiffel Tower TKPlace object with details
-     [kit detailedPlaceWithID:@"poi:530" completion:^(TKPlace *place, NSError *e) {
-         if (place) NSLog(@"Let's visit %@!", place.name);
-         else NSLog(@"Something went wrong :/");
-     }];
- 
- @discussion API key must be provided, otherwise using any methods listed below will result in an
- error being returned in a call completion block.
+// Set your API key
+kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
+
+// Ask kit for Eiffel Tower TKPlace object with details
+[kit detailedPlaceWithID:@"poi:530" completion:^(TKPlace *place, NSError *e) {
+    if (place) NSLog(@"Let's visit %@!", place.name);
+    else NSLog(@"Something went wrong :/");
+}];
+```
+
+ @warning API key must be provided, otherwise using any methods listed below will result
+ in an error being returned in a call completion block.
  */
 @interface TravelKit : NSObject
 
@@ -55,22 +57,25 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Client API key you've obtained.
  
- @warning This needs to be set in order to successfully work with the kit.
+ @warning This needs to be set in order to perform data requests successfully.
  */
 @property (nonatomic, copy, nullable) NSString *APIKey;
 
 /**
  Preferred language of response data to use.
 
- Supported langage codes: `en`, `fr`, `de`, `es`, `nl`, `pt`, `it`, `ru`, `cs`, `sk`, `pl`, `tr`, `zh`, `ko`.
+ @note Supported langage codes: **`en`**, **`fr`**, **`de`**, **`es`**, **`nl`**,
+       **`pt`**, **`it`**, **`ru`**, **`cs`**, **`sk`**, **`pl`**, **`tr`**,
+       **`zh`**, **`ko`**.
  
  Default language code is `en`.
 
- If you want to enforce specific language or pick the one depending on your own choice, simply set one of the options listed.
+ If you want to enforce specific language or pick the one depending on your own choice,
+ simply set one of the options listed.
 
  @warning This needs to be set in order to receive translated content.
  */
-@property (nonatomic, copy, nullable) NSString *language;
+@property (nonatomic, copy, null_resettable) NSString *language;
 
 ///---------------------------------------------------------------------------------------
 /// @name Initialisation

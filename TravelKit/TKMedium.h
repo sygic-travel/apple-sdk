@@ -13,10 +13,10 @@
 
 
 /**
- Enum identifying a `TKMedium` type.
+ Enum identifying a basic type of `TKMedium`.
  */
 typedef NS_ENUM(NSUInteger, TKMediumType) {
-	/// Unknown type – fallback value
+	/// Unknown type – fallback value.
 	TKMediumTypeUnknown      = 0,
 	/// Image type.
 	TKMediumTypeImage        = 1,
@@ -29,25 +29,25 @@ typedef NS_ENUM(NSUInteger, TKMediumType) {
 };
 
 /**
- Enum identifying a suitability of `TKMedium` for basic use cases.
+ Enum identifying a suitability of `TKMedium` for some basic use cases.
  */
 typedef NS_OPTIONS(NSUInteger, TKMediumSuitability) {
 	/// No known suitability (default value).
 	TKMediumSuitabilityNone           = 0,
 	/// Medium suitable for square presentation.
-	TKMediumSuitabilitySquare         = 1,
+	TKMediumSuitabilitySquare         = 1 << 0,
 	/// Medium suitable for portrait presentation.
-	TKMediumSuitabilityPortrait       = 2,
+	TKMediumSuitabilityPortrait       = 1 << 1,
 	/// Medium suitable for landscape presentation.
-	TKMediumSuitabilityLandscape      = 4,
-	/// Medium suitable for video preview.
-	TKMediumSuitabilityVideoPreview   = 8,
+	TKMediumSuitabilityLandscape      = 1 << 2,
+	/// Medium suitable for _square_ video preview.
+	TKMediumSuitabilityVideoPreview   = 1 << 3,
 };
 
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Entity preserving information about a remote Medium, f.e. an image or a video.
+ Entity preserving information about a remote displayable Medium, f.e. an Image or a Video.
  */
 @interface TKMedium : NSObject
 

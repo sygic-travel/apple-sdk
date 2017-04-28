@@ -16,7 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Query object used for fetching specific collections of `TKPlace` objects.
  
- To perform regional queries, use either `-quadKeys` (preferred) or `-bounds` property to specify the area of your interest.
+ To perform regional queries, use either `quadKeys` (preferred) or `bounds` property to specify the area of your interest.
  */
 @interface TKPlacesQuery : NSObject
 
@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *searchTerm;
 
 /// Listed map quad keys to query.
-/// ====
+///
 /// @warning Not fully working yet, only the first one is queried.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *quadKeys;
 
@@ -41,13 +41,12 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *parentID;
 
 /// *Accepted values:* `1-3`.
-/// ====
 /// @warning `-limit` must be divisibile by 4^mapSpread.
 @property (nonatomic, strong, nullable) NSNumber *mapSpread;
 
 /// Desired levels of `TKPlace` objects.
-/// ====
-/// @see TKPlaceLevel
+///
+/// @see `TKPlaceLevel`
 @property (atomic) TKPlaceLevel level;
 
 /// Maximum number of results returned. If multiple quad keys specified, the limit applies to each one of them separately.

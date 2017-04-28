@@ -10,6 +10,13 @@
 #import "TKAPI+Private.h"
 
 
+@interface TravelKit ()
+{
+	NSString *_Nullable _language;
+}
+@end
+
+
 @implementation TravelKit
 
 + (TravelKit *)sharedKit
@@ -24,6 +31,21 @@
 	return shared;
 }
 
++ (NSArray<NSString *> *)supportedLanguages
+{
+	static NSArray *langs = nil;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		langs = @[ @"en", @"fr", @"de", @"es", @"nl",
+				   @"pt", @"it", @"ru", @"cs", @"sk",
+				   @"pl", @"tr", @"zh", @"ko", @"en-GB",
+		];
+	});
+
+	return langs;
+}
+
 - (void)setAPIKey:(NSString *)APIKey
 {
 	_APIKey = [APIKey copy];
@@ -31,9 +53,19 @@
 	[TKAPI sharedAPI].APIKey = _APIKey;
 }
 
+- (NSString *)language
+{
+	return _language ?: @"en";
+}
+
 - (void)setLanguage:(NSString *)language
 {
-	_language = language;
+	NSArray *supported = [[self class] supportedLanguages];
+	NSString *newLanguage = (language &&
+	  [supported containsObject:language]) ?
+		language : nil;
+
+	_language = [newLanguage copy];
 
 	[TKAPI sharedAPI].language = language;
 }
