@@ -18,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  To perform regional queries, use either `quadKeys` (preferred) or `bounds` property to specify the area of your interest.
  */
-@interface TKPlacesQuery : NSObject
+@interface TKPlacesQuery : NSObject <NSCopying>
 
 /// Search term to use. Mainly usable for searching through English and localised names.
 @property (nonatomic, copy, nullable) NSString *searchTerm;

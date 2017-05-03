@@ -80,19 +80,85 @@
 		placesCache.countLimit = 100;
 	});
 
-	NSUInteger queryHash = query.hash;
+	if (query.quadKeys.count <= 1)
+	{
+		NSArray *cached = [placesCache objectForKey:@(query.hash)];
+		if (cached) {
+			if (completion)
+				completion(cached, nil);
+			return;
+		}
+	}
 
-	NSArray<TKPlace *> *cached = [placesCache objectForKey:@(queryHash)];
+	NSMutableArray<NSString *> *neededQuadKeys =
+		[NSMutableArray arrayWithCapacity:query.quadKeys.count];
+	NSMutableArray<TKPlace *> *cachedPlaces =
+		[NSMutableArray arrayWithCapacity:200];
 
-	if (cached) {
+	TKPlacesQuery *workingQuery = [query copy];
+
+	for (NSString *quad in query.quadKeys) {
+
+		workingQuery.quadKeys = @[ quad ];
+		NSUInteger queryHash = workingQuery.hash;
+
+		NSArray<TKPlace *> *cached = [placesCache objectForKey:@(queryHash)];
+
+		if (cached)
+			[cachedPlaces addObjectsFromArray:cached];
+		else
+			[neededQuadKeys addObject:quad];
+	}
+
+	if (query.quadKeys.count && !neededQuadKeys.count) {
 		if (completion)
-			completion(cached, nil);
+		{
+			[cachedPlaces sortUsingComparator:^NSComparisonResult(TKPlace *lhs, TKPlace *rhs) {
+				return [rhs.rating ?: @0 compare:lhs.rating ?: @0];
+			}];
+			completion(cachedPlaces, nil);
+		}
 		return;
 	}
 
-	[[[TKAPIRequest alloc] initAsPlacesRequestForQuery:query success:^(NSArray<TKPlace *> *places) {
+	workingQuery.quadKeys = neededQuadKeys;
 
-		[placesCache setObject:places forKey:@(queryHash)];
+	[[[TKAPIRequest alloc] initAsPlacesRequestForQuery:workingQuery success:^(NSArray<TKPlace *> *places) {
+
+		if (neededQuadKeys.count)
+		{
+			[cachedPlaces addObjectsFromArray:places];
+
+			NSMutableDictionary<NSString *, NSMutableArray<TKPlace *> *>
+				*sorted = [NSMutableDictionary dictionaryWithCapacity:neededQuadKeys.count];
+
+			for (NSString *quad in neededQuadKeys)
+				sorted[quad] = [NSMutableArray arrayWithCapacity:64];
+
+			for (TKPlace *p in places)
+				for (NSString *quad in neededQuadKeys)
+					if ([p.quadKey hasPrefix:quad])
+					{
+						[sorted[quad] addObject:p];
+						break;
+					}
+
+			for (NSString *quad in sorted.allKeys)
+			{
+				workingQuery.quadKeys = @[ quad ];
+				NSUInteger hash = workingQuery.hash;
+				[placesCache setObject:sorted[quad] forKey:@(hash)];
+			}
+
+			places = [cachedPlaces sortedArrayUsingComparator:^NSComparisonResult(TKPlace *lhs, TKPlace *rhs) {
+				return [rhs.rating ?: @0 compare:lhs.rating ?: @0];
+			}];
+		}
+		else {
+			NSUInteger queryHash = workingQuery.hash;
+			[placesCache setObject:places forKey:@(queryHash)];
+
+		}
 
 		if (completion)
 			completion(places, nil);

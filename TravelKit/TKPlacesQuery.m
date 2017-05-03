@@ -27,4 +27,26 @@
 	return key.hash;
 }
 
+- (id)copy
+{
+	TKPlacesQuery *query = [TKPlacesQuery new];
+
+	query.levels = _levels;
+	query.searchTerm = _searchTerm;
+	query.categories = _categories;
+	query.tags = _tags;
+	query.parentID = _parentID;
+	query.quadKeys = _quadKeys;
+	query.mapSpread = _mapSpread;
+	query.limit = _limit;
+	query.bounds = _bounds;
+
+	return query;
+}
+
+- (id)copyWithZone:(NSZone __unused *)zone
+{
+	return [self copy];
+}
+
 @end
