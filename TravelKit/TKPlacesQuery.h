@@ -20,17 +20,19 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface TKPlacesQuery : NSObject <NSCopying>
 
-/// Search term to use. Mainly usable for searching through English and localised names.
+/// Search term to use. Usable for searching through English and localised names.
 @property (nonatomic, copy, nullable) NSString *searchTerm;
 
-/// Desired levels of `TKPlace` objects. Matches `TKPlace` objects in _ANY_ of the reqested levels.
+/// Desired levels of Places.
+///
+/// @note Matches objects in **ANY** of the reqested levels.
 ///
 /// @see `TKPlaceLevel`
 @property (atomic) TKPlaceLevel levels;
 
 /// Listed map quad keys to query.
 ///
-/// @note Length `1`--`18`. All requested quad keys should be of the same length.
+/// @note Length: `1`--`18`. All requested quad keys should be of the same length.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *quadKeys;
 
 /// Desired area of the map.
@@ -43,18 +45,26 @@ NS_ASSUME_NONNULL_BEGIN
 /// @warning Value of `limit` must be divisible by `4^mapSpread`.
 @property (nonatomic, strong, nullable) NSNumber *mapSpread;
 
-/// Array of the desired Category slugs. Matches `TKPlace` objects having _ALL_ of the requested categories.
+/// Array of the desired Category slugs.
+///
+/// @note Matches Places having **ALL** of the requested categories.
 ///
 /// @see `TKPlace`
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
 
-/// Plain-text array of the desired Tag keys. Matches `TKPlace` objects having _ALL_ of the reqested tags.
+/// Plain-text array of the desired Tag keys.
+///
+/// @note Matches Places having **ALL** of the reqested tags.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
 
-/// Idenfitier of the parent node of returned `TKPlace` objects.
+/// Desired parent node identifier.
 @property (nonatomic, copy, nullable) NSString *parentID;
 
-/// Maximum number of results returned. If multiple quad keys specified, the limit applies to each one of them separately.
+/// Maximum number of results returned.
+///
+/// @note Accepted values: `0`--`512`.
+///
+/// @note If multiple quad keys specified, the limit applies to each map tile separately.
 ///
 /// @warning The value requested must be divisible by `4^mapSpread`.
 @property (nonatomic, strong, nullable) NSNumber *limit;

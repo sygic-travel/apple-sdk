@@ -11,12 +11,7 @@
 #import <MapKit/MapKit.h>
 #import <TravelKit/TKPlace.h>
 
-
-#pragma mark - Map Annotation wrapper
-
-
 NS_ASSUME_NONNULL_BEGIN
-
 
 /**
  Object entity carrying information about a map point.
@@ -44,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Methods
 ///---------------------------------------------------------------------------------------
 
+/// :nodoc:
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
 /**

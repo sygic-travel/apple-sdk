@@ -109,4 +109,18 @@
 			_originURL.absoluteString, _provider, _width, _height];
 }
 
+- (NSURL *)displayableImageURLForSize:(CGSize)size
+{
+	if (size.width < 20 || size.height < 20 ||
+	    size.width > 6000 || size.height > 6000)
+		return nil;
+
+	NSString *sizeString = [NSString stringWithFormat:@"%.0fx%.0f", size.width, size.height];
+
+	NSString *urlString = [[_URL absoluteString] stringByReplacingOccurrencesOfString:
+	                       @TKMEDIUM_SIZE_PLACEHOLDER withString:sizeString];
+
+	return [NSURL URLWithString:urlString];
+}
+
 @end

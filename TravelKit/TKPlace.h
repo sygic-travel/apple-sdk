@@ -67,41 +67,54 @@ NS_ASSUME_NONNULL_BEGIN
 /// Global identifier.
 @property (nonatomic, copy) NSString *ID NS_SWIFT_NAME(ID);
 
-/// Displayable name of the place, translated if possible.
+/// Displayable name of the place, translated if possible. Example: _Buckingham Palace_.
 @property (nonatomic, copy) NSString *name;
 
-/// Displayable name suffix.
+/// Displayable name suffix. Example: _London, United Kingdom_.
 @property (nonatomic, copy, nullable) NSString *suffix;
 
 /// Denotable place level.
 @property (atomic) TKPlaceLevel level;
 
-/// Short perex introducint the place.
+/// Short perex introducing the place.
 @property (nonatomic, copy, nullable) NSString *perex;
 
 /// Location of the place.
 @property (nonatomic, strong) CLLocation *location;
 
-/// 18-character QuadKey.
+/// 18-character Quad key.
 @property (nonatomic, copy, nullable) NSString *quadKey;
 
 /// Bounding box.
 @property (nonatomic, strong, nullable) TKMapRegion *boundingBox;
 
-/// Price value.
+/// Price value. Value in `USD`.
 @property (nonatomic, strong, nullable) NSNumber *price;
 
-/// Global rating value – double value in range 0.0-10.0.
+/// Global rating value.
+///
+/// @note Possible values: double in range `0`--`10.0`.
 @property (nonatomic, strong, nullable) NSNumber *rating;
 
 /// Marker identifier usable for displayable icon.
 @property (nonatomic, copy, nullable) NSString *marker;
 
-/// List of Category slugs. All supported keys may be obtained by calling `+supportedCategories`.
+/// List of Category slugs assigned.
 ///
-/// @note Possible values: **`sightseeing`**, **`shopping`**, **`eating`**,
-///       **`discovering`**, **`playing`**, **`traveling`**, **`going_out`**,
-///       **`hiking`**, **`sports`**, **`relaxing`**, **`sleeping`**.
+/// @note Possible values:
+///       - **`sightseeing`**
+///       - **`shopping`**
+///       - **`eating`**
+///       - **`discovering`**
+///       - **`playing`**
+///       - **`traveling`**
+///       - **`going_out`**
+///       - **`hiking`**
+///       - **`sports`**
+///       - **`relaxing`**
+///       - **`sleeping`**
+///
+/// @note All supported keys may be obtained by calling `+supportedCategories`.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
 
 /// List of Parent IDs.
@@ -113,7 +126,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Thumbnail URL to an image of size 150×150 pixels.
 @property (nonatomic, strong, nullable) NSURL *thumbnailURL;
 
-/// Place detail containing further attributes.
+/// Place detail of `TKPlaceDetail` instance containing further attributes.
 @property (nonatomic, strong, nullable) TKPlaceDetail *detail;
 
 ///---------------------------------------------------------------------------------------
@@ -158,7 +171,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKPlaceDetail : NSObject
 
 /// Full-length description.
-@property (nonatomic, copy, nullable) NSString *fullDescription; // TODO: Other attrs
+@property (nonatomic, copy, nullable) NSString *fullDescription;
 
 /// List of Place Tags.
 @property (nonatomic, copy, nullable) NSArray<TKPlaceTag *> *tags;

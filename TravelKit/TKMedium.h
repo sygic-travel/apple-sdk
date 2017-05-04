@@ -97,6 +97,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// External ID of the Medium.
 @property (nonatomic, copy, nullable) NSString *externalID;
 
+///---------------------------------------------------------------------------------------
+/// @name Helping methods
+///---------------------------------------------------------------------------------------
+
+/**
+ Method for getting an URL to a Medium image with a given size.
+
+ @param size Desired size of the image.
+ @return URL for loading the resized image.
+ */
+- (nullable NSURL *)displayableImageURLForSize:(CGSize)size;
+
 @end
 
 NS_ASSUME_NONNULL_END

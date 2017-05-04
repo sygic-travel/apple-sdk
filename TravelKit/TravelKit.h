@@ -165,6 +165,8 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  @param toRemove Out array of annotations to remove from the map.
  
  @note `toAdd`, `toKeep` and `toRemove` are regular given mutable arrays this method will fill.
+       Annotations in `toAdd` array are meant to be used with `-addAnnotations:` or equivalent
+       method of your Map view, `toRemove` accordingly with `-removeAnnotations:` method.
  */
 - (void)interpolateNewAnnotations:(NSArray<TKMapPlaceAnnotation *> *)newAnnotations
 				   oldAnnotations:(NSArray<TKMapPlaceAnnotation *> *)oldAnnotations
