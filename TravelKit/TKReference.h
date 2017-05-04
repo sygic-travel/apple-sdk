@@ -31,7 +31,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Reference supplier.
 @property (nonatomic, copy, nullable) NSString *supplier;
 
-/// Potential price of the Reference if applicable.
+/// Potential price of the Reference if applicable. Value in `USD`.
 @property (nonatomic, copy, nullable) NSNumber *price;
 
 /// Reference language.

@@ -307,11 +307,11 @@
 
 		if (query.categories.count)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"categories"
-				value:[query.categories componentsJoinedByString:@"|"]]];
+				value:[query.categories componentsJoinedByString:@","]]];
 
 		if (query.tags.count)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"tags"
-				value:[query.tags componentsJoinedByString:@"|"]]];
+				value:[query.tags componentsJoinedByString:@","]]];
 
 		if (query.parentID)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"parents"

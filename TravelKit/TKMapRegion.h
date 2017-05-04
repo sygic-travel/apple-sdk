@@ -50,7 +50,6 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithCoordinateRegion:(MKCoordinateRegion)region;
 
-
 /**
  Initializes the map region object using a couple of bounding `CLLocation` points.
 

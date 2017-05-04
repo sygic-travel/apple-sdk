@@ -23,34 +23,36 @@ NS_ASSUME_NONNULL_BEGIN
 /// Search term to use. Mainly usable for searching through English and localised names.
 @property (nonatomic, copy, nullable) NSString *searchTerm;
 
+/// Desired levels of `TKPlace` objects. Matches `TKPlace` objects in _ANY_ of the reqested levels.
+///
+/// @see `TKPlaceLevel`
+@property (atomic) TKPlaceLevel levels;
+
 /// Listed map quad keys to query.
 ///
-/// @note Length `1-18`. All requested quad keys should be of a same length.
+/// @note Length `1`--`18`. All requested quad keys should be of the same length.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *quadKeys;
 
 /// Desired area of the map.
 @property (nonatomic, strong, nullable) TKMapRegion *bounds;
 
-/// Array of the desired Category slugs.
-@property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
-
-/// Plain-text array of the desired Tags.
-@property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
-
-/// Idenfitier of the parent node of returned `TKPlace` objects.
-@property (nonatomic, copy, nullable) NSString *parentID;
-
 /// Division of each map tile when spreading.
 ///
-/// @note Accepted values: `0-3`. Implicit value is `0`.
+/// @note Accepted values: `0`--`3`. Implicit value is `0`.
 ///
 /// @warning Value of `limit` must be divisible by `4^mapSpread`.
 @property (nonatomic, strong, nullable) NSNumber *mapSpread;
 
-/// Desired levels of `TKPlace` objects.
+/// Array of the desired Category slugs. Matches `TKPlace` objects having _ALL_ of the requested categories.
 ///
-/// @see `TKPlaceLevel`
-@property (atomic) TKPlaceLevel levels;
+/// @see `TKPlace`
+@property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
+
+/// Plain-text array of the desired Tag keys. Matches `TKPlace` objects having _ALL_ of the reqested tags.
+@property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
+
+/// Idenfitier of the parent node of returned `TKPlace` objects.
+@property (nonatomic, copy, nullable) NSString *parentID;
 
 /// Maximum number of results returned. If multiple quad keys specified, the limit applies to each one of them separately.
 ///

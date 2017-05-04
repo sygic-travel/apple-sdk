@@ -9,7 +9,7 @@
 #import "TKPlace+Private.h"
 #import "TKMedium+Private.h"
 #import "TKReference+Private.h"
-#import "TKMapWorkers+Private.h"
+#import "TKMapWorker+Private.h"
 #import "NSObject+Parsing.h"
 
 
@@ -69,7 +69,15 @@
 		_name = [dictionary[@"name"] parsedString];
 		_suffix = [dictionary[@"name_suffix"] parsedString];
 
-		if (!_ID || !_name) return nil;
+		// Coordinates
+		NSDictionary *location = [dictionary[@"location"] parsedDictionary];
+		NSNumber *lat = [location[@"lat"] parsedNumber];
+		NSNumber *lng = [location[@"lng"] parsedNumber];
+
+		if (lat && lng) _location = [[CLLocation alloc]
+			initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+
+		if (!_ID || !_name || !_location) return nil;
 
 		_perex = [dictionary[@"perex"] parsedString];
 		_level = [[self class] levelFromString:[dictionary[@"level"] parsedString]];
@@ -80,18 +88,9 @@
 			if (thumbURL) _thumbnailURL = thumbURL;
 		}
 
-		// Coordinates
-		NSDictionary *location = [dictionary[@"location"] parsedDictionary];
-		NSNumber *lat = [location[@"lat"] parsedNumber];
-		NSNumber *lng = [location[@"lng"] parsedNumber];
-
-		if (lat && lng) _location = [[CLLocation alloc]
-			initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
-
 		_quadKey = [dictionary[@"quadkey"] parsedString];
 		if (!_quadKey && _location)
-			_quadKey = TK_toQuadKey(_location.coordinate.latitude,
-				_location.coordinate.longitude, 18);
+			_quadKey = [TKMapWorker quadKeyForCoordinate:_location.coordinate detailLevel:18];
 
 		// Bounding box
 		if ((location = [dictionary[@"bounding_box"] parsedDictionary]))
@@ -144,38 +143,6 @@
     }
 
     return self;
-}
-
-- (NSArray<NSString *> *)displayableCategories
-{
-	NSMutableArray<NSString *> *ret = [NSMutableArray arrayWithCapacity:_categories.count];
-
-	for (NSString *slug in _categories)
-	{
-		NSString *s = [[self class] displayNameForCategorySlug:slug];
-		if (s) [ret addObject:s];
-	}
-
-	return ret;
-}
-
-+ (NSString *)displayNameForCategorySlug:(NSString *)slug
-{
-	NSDictionary *displayNames = @{
-		@"sightseeing": NSLocalizedString(@"Sightseeing", @"TravelKit - Category name"),
-		@"shopping": NSLocalizedString(@"Shopping", @"TravelKit - Category name"),
-		@"eating": NSLocalizedString(@"Restaurants", @"TravelKit - Category name"),
-		@"discovering": NSLocalizedString(@"Museums", @"TravelKit - Category name"),
-		@"playing": NSLocalizedString(@"Family", @"TravelKit - Category name"),
-		@"traveling": NSLocalizedString(@"Transport", @"TravelKit - Category name"),
-		@"going_out": NSLocalizedString(@"Nightlife", @"TravelKit - Category name"),
-		@"hiking": NSLocalizedString(@"Outdoors", @"TravelKit - Category name"),
-		@"sports": NSLocalizedString(@"Sports", @"TravelKit - Category name"),
-		@"relaxing": NSLocalizedString(@"Relaxation", @"TravelKit - Category name"),
-		@"sleeping": NSLocalizedString(@"Accommodation", @"TravelKit - Category name"),
-	};
-
-	return displayNames[slug];
 }
 
 - (NSUInteger)displayableHexColor

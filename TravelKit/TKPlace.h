@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *perex;
 
 /// Location of the place.
-@property (nonatomic, strong, nullable) CLLocation *location;
+@property (nonatomic, strong) CLLocation *location;
 
 /// 18-character QuadKey.
 @property (nonatomic, copy, nullable) NSString *quadKey;
@@ -97,7 +97,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Marker identifier usable for displayable icon.
 @property (nonatomic, copy, nullable) NSString *marker;
 
-/// List of Category slugs.
+/// List of Category slugs. All supported keys may be obtained by calling `+supportedCategories`.
+///
+/// @note Possible values: **`sightseeing`**, **`shopping`**, **`eating`**,
+///       **`discovering`**, **`playing`**, **`traveling`**, **`going_out`**,
+///       **`hiking`**, **`sports`**, **`relaxing`**, **`sleeping`**.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
 
 /// List of Parent IDs.
@@ -116,7 +120,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Helping properties
 ///---------------------------------------------------------------------------------------
 
-@property (nonatomic, copy, nullable, readonly) NSArray<NSString *> *displayableCategories;
+/// Default _HEX_ colour value. Values `0x000000` through `0xFFFFFF`.
 @property (atomic, readonly) NSUInteger displayableHexColor;
 
 ///---------------------------------------------------------------------------------------
@@ -129,14 +133,6 @@ NS_ASSUME_NONNULL_BEGIN
  @return Array of category slugs as strings.
  */
 + (NSArray<NSString *> *)supportedCategories;
-
-/**
- Returns a display name string for the provided Category slug.
-
- @param slug Provided Category slug.
- @return Localised display name for the category.
- */
-+ (nullable NSString *)displayNameForCategorySlug:(NSString *)slug;
 
 @end
 

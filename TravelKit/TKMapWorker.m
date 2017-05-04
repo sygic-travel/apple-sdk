@@ -1,28 +1,45 @@
 //
-//  TKMapWorkers.m
+//  TKMapWorker.m
 //  Tripomatic
 //
 //  Created by Michal Zelinka on 03/02/16.
 //  Copyright © 2016 Tripomatic. All rights reserved.
 //
 
-#import "TKMapWorkers+Private.h"
+#import "TKMapWorker+Private.h"
 
 #define MINMAX(a, x, b) MIN(MAX(a, x), b)
+
+
+typedef struct {
+	double x;
+	double y;
+} TKMapPoint;
+
+typedef struct {
+	int64_t x;
+	int64_t y;
+} TKTilePoint;
+
+
+@implementation TKMapWorker
 
 #pragma mark - Quadkeys stuff
 
 
-int TK_mapSize(int levelOfDetail)
++ (double)tileMapSizeForDetailLevel:(UInt8)level
 {
-	if (levelOfDetail == 23)
+	if (level == 23)
 		return INT_MAX;
 
-	return 256 << levelOfDetail;
+	return 256 << level;
 }
 
-TKMapPoint TK_latLongToPixelXY(CLLocationDegrees lat, CLLocationDegrees lng, int levelOfDetail)
++ (TKMapPoint)pixelPointForCoordinate:(CLLocationCoordinate2D)coordinate detailLevel:(UInt8)level
 {
+	CLLocationDegrees lat = coordinate.latitude;
+	CLLocationDegrees lng = coordinate.longitude;
+
 	CLLocationDegrees fLat = MINMAX(-85.05112878, lat, 85.05112878);
 	CLLocationDegrees fLng = MINMAX(-180, lng, 180);
 
@@ -30,29 +47,29 @@ TKMapPoint TK_latLongToPixelXY(CLLocationDegrees lat, CLLocationDegrees lng, int
 	double sinLatitude = sin(fLat * M_PI / 180);
 	double y = 0.5 - log((1 + sinLatitude) / (1 - sinLatitude)) / (4 * M_PI);
 
-	int mapSize = TK_mapSize(levelOfDetail);
+	double mapSize = [self tileMapSizeForDetailLevel:level];
 	double pixelX = MINMAX(0, x * mapSize + 0.5, mapSize - 1);
 	double pixelY = MINMAX(0, y * mapSize + 0.5, mapSize - 1);
 
-	return TKMapPointMake(pixelX, pixelY);
+	return (TKMapPoint){ pixelX, pixelY };
 }
 
-TKMapPoint TK_pixelXYToTileXY(double pixelX, double pixelY)
++ (TKTilePoint)tilePointForPixelPoint:(TKMapPoint)pixelPoint
 {
-	return TKMapPointMake(pixelX / 256, pixelY / 256);
+	return (TKTilePoint){ ((int64_t)pixelPoint.x) / 256, ((int64_t)pixelPoint.y) / 256 };
 }
 
-NSString *TK_tileXYToQuadKey(int tileX, int tileY, int levelOfDetail)
++ (NSString *)quadKeyForTilePoint:(TKTilePoint)tilePoint detailLevel:(UInt8)level
 {
 	NSMutableString *quadKey = [NSMutableString string];
 
-	for (int i = levelOfDetail; i > 0; i--)
+	for (int i = level; i > 0; i--)
 	{
 		int digit = 0;
 		int mask = 1 << (i - 1);
-		if ((tileX & mask) != 0)
+		if ((tilePoint.x & mask) != 0)
 			digit++;
-		if ((tileY & mask) != 0)
+		if ((tilePoint.y & mask) != 0)
 			digit += 2;
 		[quadKey appendString:[@(digit) stringValue]];
 	}
@@ -60,26 +77,28 @@ NSString *TK_tileXYToQuadKey(int tileX, int tileY, int levelOfDetail)
 	return quadKey;
 }
 
-NSString *TK_toQuadKey(CLLocationDegrees lat, CLLocationDegrees lon, int levelOfDetail)
++ (NSString *)quadKeyForCoordinate:(CLLocationCoordinate2D)coorinate detailLevel:(UInt8)level
 {
 //	if (levelOfDetail < 1 || levelOfDetail > 23)
 //		throw "levelOfDetail needs to be between 1 and 23";
 
-	TKMapPoint pixelXY = TK_latLongToPixelXY(lat, lon, levelOfDetail);
-	TKMapPoint tileXY = TK_pixelXYToTileXY(pixelXY.x, pixelXY.y);
-	return TK_tileXYToQuadKey((int)tileXY.x, (int)tileXY.y, levelOfDetail);
+	TKMapPoint pixelPoint = [self pixelPointForCoordinate:coorinate detailLevel:level];
+	TKTilePoint tilePoint = [self tilePointForPixelPoint:pixelPoint];
+
+	return [self quadKeyForTilePoint:tilePoint detailLevel:level];
 }
 
-double TK_approximateZoomLevelForLatitudeSpan(CLLocationDegrees latitudeSpan)
++ (double)approximateZoomLevelForLatitudeSpan:(CLLocationDegrees)latitudeSpan
 {
 	return 8.257237*pow(latitudeSpan, -0.1497541);
 }
 
-NSArray *TK_decodePolyLineFromString(NSString *polylineString)
+
++ (NSArray<CLLocation *> *)pointsFromPolyline:(NSString *)polyline
 {
 	@try
 	{
-		NSMutableString *encoded = [polylineString mutableCopy];
+		NSMutableString *encoded = [polyline mutableCopy];
 		[encoded replaceOccurrencesOfString:@"\\\\" withString:@"\\"
 									options:NSLiteralSearch
 									  range:NSMakeRange(0, [encoded length])];
@@ -123,7 +142,7 @@ NSArray *TK_decodePolyLineFromString(NSString *polylineString)
 	}
 }
 
-NSString *TK_encodePolyLineFromPoints(NSArray *points)
++ (NSString *)polylineFromPoints:(NSArray<CLLocation *> *)points
 {
 	NSMutableString *encodedString = [NSMutableString string];
 	int val = 0;
@@ -159,3 +178,38 @@ NSString *TK_encodePolyLineFromPoints(NSArray *points)
 	
 	return encodedString;
 }
+
++ (UInt8)detailLevelForRegion:(MKCoordinateRegion)region
+{
+	double zoomLevel = [self approximateZoomLevelForLatitudeSpan:region.span.latitudeDelta];
+	return (UInt8)round(MINMAX(1, zoomLevel, 18));
+}
+
++ (NSArray<NSString *> *)quadKeysForRegion:(MKCoordinateRegion)region
+{
+	UInt8 zoomLevel = [self detailLevelForRegion:region];
+
+	NSMutableArray<CLLocation *> *checkPoints = [NSMutableArray array];
+
+	CLLocationDegrees latSpan = region.span.latitudeDelta;
+	CLLocationDegrees lngSpan = region.span.longitudeDelta;
+
+	for (uint i = 0; i <= 10; i++)
+		for (uint j = 0; j <= 10; j++)
+		{
+			CLLocationDegrees locLat = (region.center.latitude-latSpan/2) + i*(latSpan/10);
+			CLLocationDegrees locLng = (region.center.longitude-lngSpan/2) + j*(lngSpan/10);
+			[checkPoints addObject:[[CLLocation alloc] initWithLatitude:locLat longitude:locLng]];
+		}
+
+	NSMutableOrderedSet<NSString *> *quadKeys = [NSMutableOrderedSet orderedSetWithCapacity:10];
+
+	for (CLLocation *location in checkPoints) {
+		NSString *quadKey = [self quadKeyForCoordinate:location.coordinate detailLevel:zoomLevel];
+		if (quadKey) [quadKeys addObject:quadKey];
+	}
+
+	return [quadKeys array];
+}
+
+@end

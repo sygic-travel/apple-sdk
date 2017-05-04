@@ -19,7 +19,9 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKReference.h>
 #import <TravelKit/TKMedium.h>
 #import <TravelKit/TKMapRegion.h>
+#import <TravelKit/TKMapPlaceAnnotation.h>
 #import <TravelKit/NSObject+Parsing.h>
+#import <TravelKit/Foundation+TravelKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -129,6 +131,29 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  */
 - (void)mediaForPlaceWithID:(NSString *)placeID
 	completion:(void (^)(NSArray<TKMedium *> * _Nullable media, NSError * _Nullable error))completion;
+
+///---------------------------------------------------------------------------------------
+/// @name Map-related methods
+///---------------------------------------------------------------------------------------
+
+/**
+ Naive method for fetching standardized quad keys for the given region.
+
+ @param region Region to calculate quad keys for.
+ @return Array of quad key strings.
+ */
+- (NSArray<NSString *> *)quadKeysForMapRegion:(MKCoordinateRegion)region;
+
+/**
+ Spreading method calculating optimally spreaded `TKMapPlaceAnnotation` objects in 3 basic sizes.
+
+ @param places Places to spread and create `TKMapPlaceAnnotation` objects for.
+ @param region Region where to spread.
+ @param size Standard size of the Map view. May be taken from either `-frame` or `-bounds`.
+ @return Array of spreaded annotations.
+ */
+- (NSArray<TKMapPlaceAnnotation *> *)spreadedAnnotationsForPlaces:(NSArray<TKPlace *> *)places
+	mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size;
 
 @end
 

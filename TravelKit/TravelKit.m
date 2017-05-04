@@ -8,6 +8,8 @@
 
 #import "TravelKit.h"
 #import "TKAPI+Private.h"
+#import "TKMapWorker+Private.h"
+#import "Foundation+TravelKit.h"
 
 
 @interface TravelKit ()
@@ -235,6 +237,99 @@
 			completion(nil, error);
 
 	}] start];
+}
+
+- (NSArray<NSString *> *)quadKeysForMapRegion:(MKCoordinateRegion)region
+{
+	return [TKMapWorker quadKeysForRegion:region];
+}
+
+- (NSArray<TKMapPlaceAnnotation *> *)spreadedAnnotationsForPlaces:(NSArray<TKPlace *> *)places
+	mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size
+{
+	NSMutableArray<TKPlace *> *workingPlaces = [places mutableCopy];
+
+	// Minimal distance between annotations with basic size of 64 pixels
+	CLLocationDistance minDistance = region.span.latitudeDelta / (size.height / 64) * 111000;
+
+	NSMutableArray<TKMapPlaceAnnotation *> *annotations = [NSMutableArray arrayWithCapacity:workingPlaces.count];
+
+	NSMutableArray<TKPlace *> *firstClass   = [NSMutableArray arrayWithCapacity:workingPlaces.count / 4];
+	NSMutableArray<TKPlace *> *secondClass  = [NSMutableArray arrayWithCapacity:workingPlaces.count / 2];
+	NSMutableArray<TKPlace *> *thirdClass   = [NSMutableArray arrayWithCapacity:workingPlaces.count / 2];
+
+	for (TKPlace *p in workingPlaces)
+	{
+		if (p.rating.floatValue < 6.0 || !p.thumbnailURL) continue;
+
+		BOOL conflict = NO;
+		for (TKPlace *i in firstClass)
+			if ([i.location distanceFromLocation:p.location] < minDistance)
+			{ conflict = YES; break; }
+		if (!conflict) [firstClass addObject:p];
+	}
+
+	[workingPlaces removeObjectsInArray:firstClass];
+
+	for (TKPlace *p in workingPlaces)
+	{
+		if (!p.thumbnailURL) continue;
+
+		BOOL conflict = NO;
+		for (TKPlace *i in firstClass)
+			if ([i.location distanceFromLocation:p.location] < 0.95*minDistance)
+			{ conflict = YES; break; }
+		for (TKPlace *i in secondClass)
+			if ([i.location distanceFromLocation:p.location] < 0.85*minDistance)
+			{ conflict = YES; break; }
+		if (!conflict) [secondClass addObject:p];
+	}
+
+	[workingPlaces removeObjectsInArray:secondClass];
+
+	for (TKPlace *p in workingPlaces)
+	{
+		BOOL conflict = NO;
+		for (TKPlace *i in firstClass)
+			if ([i.location distanceFromLocation:p.location] < 0.7*minDistance)
+			{ conflict = YES; break; }
+		for (TKPlace *i in secondClass)
+			if ([i.location distanceFromLocation:p.location] < 0.6*minDistance)
+			{ conflict = YES; break; }
+		for (TKPlace *i in thirdClass)
+			if ([i.location distanceFromLocation:p.location] < 0.5*minDistance)
+			{ conflict = YES; break; }
+		if (!conflict) [thirdClass addObject:p];
+	}
+
+	NSArray<TKMapPlaceAnnotation *> *classAnnotations = [firstClass
+	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
+		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
+		anno.pixelSize = 56;
+		return anno;
+	}];
+
+	[annotations addObjectsFromArray:classAnnotations];
+
+	classAnnotations = [secondClass
+	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
+		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
+		anno.pixelSize = 40;
+		return anno;
+	}];
+
+	[annotations addObjectsFromArray:classAnnotations];
+
+	classAnnotations = [thirdClass
+	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
+		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
+		anno.pixelSize = 18;
+		return anno;
+	}];
+
+	[annotations addObjectsFromArray:classAnnotations];
+
+	return annotations;
 }
 
 @end
