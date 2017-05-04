@@ -332,4 +332,37 @@
 	return annotations;
 }
 
+- (void)interpolateNewAnnotations:(NSArray<TKMapPlaceAnnotation *> *)newAnnotations
+				   oldAnnotations:(NSArray<TKMapPlaceAnnotation *> *)oldAnnotations
+							toAdd:(NSMutableArray<TKMapPlaceAnnotation *> *)toAdd
+						   toKeep:(NSMutableArray<TKMapPlaceAnnotation *> *)toKeep
+						 toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove
+{
+	NSArray<NSString *> *displayedIDs = [newAnnotations
+	  mappedArrayUsingBlock:^id _Nonnull(TKMapPlaceAnnotation *p, NSUInteger __unused i) {
+		return p.place.ID;
+	}];
+
+	for (TKMapPlaceAnnotation *p in oldAnnotations)
+	{
+		if (![p isKindOfClass:[TKMapPlaceAnnotation class]]) continue;
+
+		if ([displayedIDs containsObject:p.place.ID])
+			[toKeep addObject:p];
+		else [toRemove addObject:p];
+	}
+
+	for (TKMapPlaceAnnotation *p in newAnnotations)
+	{
+		if (![p isKindOfClass:[TKMapPlaceAnnotation class]]) continue;
+
+		BOOL displayed = NO;
+		for (TKMapPlaceAnnotation *k in toKeep)
+			if ([k.place.ID isEqual:p.place.ID])
+				displayed = YES;
+		if (!displayed)
+			[toAdd addObject:p];
+	}
+}
+
 @end
