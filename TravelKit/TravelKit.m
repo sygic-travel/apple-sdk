@@ -314,7 +314,7 @@
 	classAnnotations = [secondClass
 	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
-		anno.pixelSize = 40;
+		anno.pixelSize = 38;
 		return anno;
 	}];
 
@@ -323,7 +323,7 @@
 	classAnnotations = [thirdClass
 	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
-		anno.pixelSize = 18;
+		anno.pixelSize = 14;
 		return anno;
 	}];
 

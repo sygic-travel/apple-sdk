@@ -31,33 +31,43 @@
 	return categories;
 }
 
-+ (TKPlaceLevel)levelFromString:(NSString *)str
++ (NSDictionary<NSNumber *, NSString *> *)levelStrings
 {
-	NSString *key = str ?: @"";
-
-	static NSDictionary<NSString *, NSNumber *> *levels = nil;
+	static NSDictionary<NSNumber *, NSString *> *levels = nil;
 
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		levels = @{
-			@"poi": @(TKPlaceLevelPOI),
-			@"neighbourhood": @(TKPlaceLevelNeighbourhood),
-			@"locality": @(TKPlaceLevelLocality),
-			@"settlement": @(TKPlaceLevelSettlement),
-			@"village": @(TKPlaceLevelVillage),
-			@"town": @(TKPlaceLevelTown),
-			@"city": @(TKPlaceLevelCity),
-			@"county": @(TKPlaceLevelCounty),
-			@"region": @(TKPlaceLevelRegion),
-			@"island": @(TKPlaceLevelIsland),
-			@"archipelago": @(TKPlaceLevelArchipelago),
-			@"state": @(TKPlaceLevelState),
-			@"country": @(TKPlaceLevelCountry),
-			@"continent": @(TKPlaceLevelContinent),
+			@(TKPlaceLevelPOI): @"poi",
+			@(TKPlaceLevelNeighbourhood): @"neighbourhood",
+			@(TKPlaceLevelLocality): @"locality",
+			@(TKPlaceLevelSettlement): @"settlement",
+			@(TKPlaceLevelVillage): @"village",
+			@(TKPlaceLevelTown): @"town",
+			@(TKPlaceLevelCity): @"city",
+			@(TKPlaceLevelCounty): @"county",
+			@(TKPlaceLevelRegion): @"region",
+			@(TKPlaceLevelIsland): @"island",
+			@(TKPlaceLevelArchipelago): @"archipelago",
+			@(TKPlaceLevelState): @"state",
+			@(TKPlaceLevelCountry): @"country",
+			@(TKPlaceLevelContinent): @"continent",
 		};
 	});
 
-	return [levels[key] unsignedIntegerValue];
+	return levels;
+}
+
++ (TKPlaceLevel)levelFromString:(NSString *)str
+{
+	NSDictionary *levels = [self levelStrings];
+
+	if (str)
+		for (NSNumber *key in levels.allKeys)
+			if ([levels[key] isEqual:str])
+				return key.unsignedIntegerValue;
+
+	return TKPlaceLevelUnknown;
 }
 
 - (instancetype)initFromResponse:(NSDictionary *)dictionary

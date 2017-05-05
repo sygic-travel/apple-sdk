@@ -243,39 +243,16 @@
 
 		if (query.levels)
 		{
-			NSString * (^levelToString)(TKPlaceLevel level) = ^NSString *(TKPlaceLevel level) {
-
-				static NSDictionary *levels = nil;
-
-				static dispatch_once_t onceToken;
-				dispatch_once(&onceToken, ^{
-					levels = @{
-						@(TKPlaceLevelPOI): @"poi",
-						@(TKPlaceLevelNeighbourhood): @"neighbourhood",
-						@(TKPlaceLevelLocality): @"locality",
-						@(TKPlaceLevelSettlement): @"settlement",
-						@(TKPlaceLevelVillage): @"village",
-						@(TKPlaceLevelTown): @"town",
-						@(TKPlaceLevelCity): @"city",
-						@(TKPlaceLevelCounty): @"county",
-						@(TKPlaceLevelRegion): @"region",
-						@(TKPlaceLevelIsland): @"island",
-						@(TKPlaceLevelArchipelago): @"archipelago",
-						@(TKPlaceLevelState): @"state",
-						@(TKPlaceLevelCountry): @"country",
-						@(TKPlaceLevelContinent): @"continent",
-					};
-				});
-
-				return levels[@(level)];
-			};
+			//
 
 			NSMutableArray *levels = [NSMutableArray arrayWithCapacity:3];
+			NSDictionary<NSNumber *, NSString *> *supportedLevels = [TKPlace levelStrings];
 
-			for (TKPlaceLevel l = TKPlaceLevelPOI; l <= TKPlaceLevelContinent; l *= 2)
+			for (NSNumber *sl in supportedLevels.allKeys)
 			{
-				if (!(query.levels & l)) continue;
-				NSString *lev = levelToString(l);
+				TKPlaceLevel cl = sl.unsignedIntegerValue;
+				if (!(query.levels & cl)) continue;
+				NSString *lev = supportedLevels[sl];
 				if (lev) [levels addObject:lev];
 			}
 
@@ -336,18 +313,6 @@
 				[queryFields addObject:field];
 			}
 
-//#pragma clang diagnostic push
-//#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-//
-//			for (NSURLQueryItem *item in queryItems)
-//			{
-//				NSString *value = [item.value stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-//				NSString *field = [NSString stringWithFormat:@"%@=%@", item.name, value];
-//				[queryFields addObject:field];
-//			}
-//
-//#pragma clang diagnostic pop
-
 			[path appendString:[queryFields componentsJoinedByString:@"&"]];
 		}
 
@@ -400,19 +365,12 @@
 
 			TKPlace *place = nil;
 			NSDictionary *item = [response.data[@"place"] parsedDictionary];
-			NSArray *itemMedia = [response.data[@"place"][@"main_media"][@"media"] parsedArray];
 
 			if (item) place = [[TKPlace alloc] initFromResponse:item];
 
-			NSMutableArray<TKMedium *> *media = [NSMutableArray arrayWithCapacity:4];
-			for (NSDictionary *dict in itemMedia) {
-				TKMedium *m = [[TKMedium alloc] initFromResponse:dict];
-				if (m) [media addObject:m];
-			}
-
 			_state = TKAPIRequestStateFinished;
 
-			if (!place && failure) failure(nil); // TODO
+			if (!place && failure) failure(nil);
 			if (place && success) success(place);
 
 		}; _failureBlock = ^(TKAPIError *error){

@@ -10,16 +10,34 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+
 @interface TKPlace ()
+
+/// Dictionary with @(TKPlaceLevel) key and NSString* values
++ (NSDictionary<NSNumber *, NSString *> *)levelStrings;
+
+/// TKPlace resolver from NSString*
++ (TKPlaceLevel)levelFromString:(NSString *)str;
+
+/// Initialiser
 - (nullable instancetype)initFromResponse:(NSDictionary *)response;
+
 @end
+
 
 @interface TKPlaceDetail ()
+
+/// Initialiser
 - (nullable instancetype)initFromResponse:(NSDictionary *)response;
+
 @end
 
+
 @interface TKPlaceTag ()
+
+/// Initialiser
 - (nullable instancetype)initFromResponse:(NSDictionary *)response;
+
 @end
 
 NS_ASSUME_NONNULL_END
