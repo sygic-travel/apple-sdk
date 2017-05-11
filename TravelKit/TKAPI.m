@@ -104,10 +104,10 @@
 	switch (type) {
 
 	case TKAPIRequestTypePlacesGET: // GET
-		return @"/places";
+		return @"/places/list";
 
 	case TKAPIRequestTypePlaceGET: // GET
-		return [NSString stringWithFormat:@"/place-details/%@", ID];
+		return [NSString stringWithFormat:@"/places/%@", ID];
 
 	case TKAPIRequestTypeMediaGET: // GET
 		return [NSString stringWithFormat:@"/places/%@/media", ID];
@@ -326,7 +326,7 @@
 			for (NSDictionary *dict in items)
 			{
 				if (![dict parsedDictionary]) continue;
-				NSString *guid = [dict[@"guid"] parsedString];
+				NSString *guid = [dict[@"id"] parsedString];
 				if (!guid) continue;
 
 				TKPlace *a = [[TKPlace alloc] initFromResponse:dict];

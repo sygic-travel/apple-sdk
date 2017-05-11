@@ -1,6 +1,6 @@
 //
 //  NSObject+Parsing.h
-//  Tripomatic
+//  TravelKit
 //
 //  Created by Michal Zelinka on 03/09/15.
 //  Copyright (c) 2015 Tripomatic. All rights reserved.

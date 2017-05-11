@@ -14,8 +14,6 @@ FOUNDATION_EXPORT NSString * const TKAPIResponseErrorDomain;
 @interface TKAPIResponse: NSObject
 
 @property (atomic, assign) NSInteger code;
-@property (nonatomic, copy, readonly) NSString *status;
-@property (nonatomic, copy, readonly) NSString *message;
 @property (nonatomic, copy, readonly) NSDictionary *metadata;
 @property (nonatomic, strong, readonly) id data;
 
@@ -27,6 +25,7 @@ FOUNDATION_EXPORT NSString * const TKAPIResponseErrorDomain;
 @interface TKAPIError : NSError
 
 @property (nonatomic, strong, readonly) NSString *ID;
+@property (nonatomic, strong, readonly) NSArray<NSString *> *args;
 @property (nonatomic, strong, readonly) TKAPIResponse *response;
 
 @end

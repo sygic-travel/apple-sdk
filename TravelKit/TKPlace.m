@@ -75,7 +75,7 @@
 	if (self = [super init])
 	{
 		// Basic attributes
-		_ID = [dictionary[@"guid"] parsedString];
+		_ID = [dictionary[@"id"] parsedString];
 		_name = [dictionary[@"name"] parsedString];
 		_suffix = [dictionary[@"name_suffix"] parsedString];
 

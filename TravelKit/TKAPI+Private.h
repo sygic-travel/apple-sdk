@@ -13,10 +13,10 @@
 #import "TKMedium.h"
 #import "TKPlacesQuery.h"
 
-#define API_PROTOCOL   "https" // Mandatory
+#define API_PROTOCOL   "https"
 #define API_SUBDOMAIN  "api"
 #define API_BASE_URL   "sygictravelapi.com"
-#define API_VERSION    "0.1"
+#define API_VERSION    "0.2"
 
 typedef NS_ENUM(NSInteger, TKAPIRequestType)
 {

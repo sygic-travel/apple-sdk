@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
 //
 
+#import "Foundation+TravelKit.h"
 #import "TKAPIConnection+Private.h"
 #import "NSObject+Parsing.h"
 
@@ -23,8 +24,6 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 	{
 		_code    = [[dictionary[@"status_code"] parsedNumber] integerValue] ?:
 		           [[dictionary[@"status_code"] parsedString] integerValue];
-		_status  =  [dictionary[@"status"] parsedString];
-		_message =  [dictionary[@"status_message"] parsedString];
 		_data = dictionary[@"data"];
 
 		// Give up invalid response
@@ -64,16 +63,24 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 - (instancetype)initWithResponse:(TKAPIResponse *)response
 {
-	NSString *message = [response.message parsedString] ?: @"Unknown error";
+	NSString *ID = [response.metadata[@"error"][@"id"] parsedString] ?: @"error.unknown";
+
+	NSArray *args = [[response.metadata[@"error"][@"args"] parsedArray]
+	  filteredArrayUsingBlock:^BOOL(id obj, NSUInteger __unused idx) {
+		return [obj isKindOfClass:[NSString class]];
+	}];
+
+	NSString *reason = [args componentsJoinedByString:@". "] ?: @"Unknown";
 
 	NSDictionary *userInfo = @{
-		NSLocalizedDescriptionKey: message,
-		NSLocalizedFailureReasonErrorKey: message,
+		NSLocalizedDescriptionKey: ID,
+		NSLocalizedFailureReasonErrorKey: reason,
 	};
 
 	if (self = [self initWithDomain:TKAPIResponseErrorDomain code:response.code userInfo:userInfo])
 	{
-		_ID = [response.metadata[@"error"][@"id"] parsedString];
+		_ID = ID;
+		_args = args;
 		_response = response;
 	}
 
@@ -248,7 +255,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 		_identifier, response.status, response.code, response.message, dataSeparator, responseString);
 #endif
 
-	if (![response.status isEqual:@"ok"]) {
+	if (response.code != 200) {
 
 		TKAPIError *e = [TKAPIError errorWithResponse:response];
 

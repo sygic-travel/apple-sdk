@@ -19,7 +19,7 @@
 	if (self = [super init])
 	{
 		// If photo has its GUID, use it
-		_ID = [response[@"guid"] parsedString];
+		_ID = [response[@"id"] parsedString];
 
 		// Otherwise there's no way how to identify
 		if (!_ID)
