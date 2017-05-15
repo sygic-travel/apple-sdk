@@ -44,7 +44,7 @@ typedef void(^TKAPIConnectionFailureBlock)(TKAPIError *);
 @end
 
 
-@interface TKAPIConnection : NSObject <NSURLConnectionDelegate>
+@interface TKAPIConnection : NSObject <NSURLConnectionDataDelegate>
 
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic, weak) id<TKAPIConnectionDelegate> delegate;

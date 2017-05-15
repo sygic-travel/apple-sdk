@@ -290,4 +290,10 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 		[_delegate connectionDidFinish:self];
 }
 
+- (NSCachedURLResponse *)connection:(__unused NSURLConnection *)connection
+	willCacheResponse:(__unused NSCachedURLResponse *)cachedResponse
+{
+	return nil;
+}
+
 @end
