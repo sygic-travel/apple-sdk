@@ -15,6 +15,7 @@ FOUNDATION_EXPORT NSString * const TKAPIResponseErrorDomain;
 
 @property (atomic, assign) NSInteger code;
 @property (nonatomic, copy, readonly) NSDictionary *metadata;
+@property (nonatomic, strong) NSDate *timestamp;
 @property (nonatomic, strong, readonly) id data;
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary;

@@ -22,9 +22,12 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 {
 	if (self = [super init])
 	{
-		_code    = [[dictionary[@"status_code"] parsedNumber] integerValue] ?:
-		           [[dictionary[@"status_code"] parsedString] integerValue];
+		_code = [[dictionary[@"status_code"] parsedNumber] integerValue];
 		_data = dictionary[@"data"];
+
+		NSString *timestamp = [dictionary[@"server_timestamp"] parsedString];
+		if (timestamp) _timestamp =
+			[[NSDateFormatter shared8601DateTimeFormatter] dateFromString:timestamp];
 
 		// Give up invalid response
 		if (!_code)

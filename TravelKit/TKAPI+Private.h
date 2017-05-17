@@ -21,7 +21,8 @@
 typedef NS_ENUM(NSInteger, TKAPIRequestType)
 {
 	TKAPIRequestTypeUnknown = 0,
-	TKAPIRequestTypePlacesGET,
+	TKAPIRequestTypePlacesQueryGET,
+	TKAPIRequestTypePlacesBatchGET,
 	TKAPIRequestTypePlaceGET,
 	TKAPIRequestTypeMediaGET,
 	TKAPIRequestTypeExchangeRatesGET,
@@ -76,9 +77,16 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 
 
 ////////////////////
-// Places
+// Places Query
 
 - (instancetype)initAsPlacesRequestForQuery:(TKPlacesQuery *)query
+	success:(void (^)(NSArray<TKPlace *> *places))success
+		failure:(TKAPIConnectionFailureBlock)failure;
+
+////////////////////
+// Places Batch
+
+- (instancetype)initAsPlacesRequestForIDs:(NSArray<NSString *> *)placeIDs
 	success:(void (^)(NSArray<TKPlace *> *places))success
 		failure:(TKAPIConnectionFailureBlock)failure;
 

@@ -60,7 +60,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param block Block used to determine `obj` inclusion in the array returned.
  @return Filtered array.
  */
-- (NSArray<ObjectType> *)filteredArrayUsingBlock:(BOOL (^)(id obj, NSUInteger idx))block;
+- (NSArray<ObjectType> *)filteredArrayUsingBlock:(BOOL (^)(ObjectType obj, NSUInteger idx))block;
 
 @end
 
@@ -73,6 +73,18 @@ NS_ASSUME_NONNULL_BEGIN
  @return Trimmed string.
  */
 - (NSString *)trimmedString;
+
+@end
+
+
+@interface NSDateFormatter (TravelKit)
+
+/**
+ Shared _ISO 8601_ Datetime formatter for generic use.
+
+ @return Shared `NSDateFormatter` processing _ISO 8601_ formatted strings.
+ */
++ (NSDateFormatter *)shared8601DateTimeFormatter;
 
 @end
 

@@ -90,3 +90,20 @@
 }
 
 @end
+
+
+@implementation NSDateFormatter (TravelKit)
+
++ (NSDateFormatter *)shared8601DateTimeFormatter
+{
+	static NSDateFormatter *shared = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		shared = [[NSDateFormatter alloc] init];
+		shared.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
+		shared.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
+	});
+	return shared;
+}
+
+@end

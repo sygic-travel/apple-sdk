@@ -77,7 +77,7 @@ travelKit.places(for: destinationsQuery) { (places, error) in
 }
 
 let sightsQuery = TKPlacesQuery()
-sightsQuery.parentID = "city:1"
+sightsQuery.parentIDs = ["city:1"]
 sightsQuery.levels = .POI
 sightsQuery.categories = ["sightseeing"]
 sightsQuery.limit = 10

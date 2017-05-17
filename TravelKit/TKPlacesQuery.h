@@ -14,6 +14,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ Query enum declaring in which manner the related parameter should be treated.
+ */
+typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
+	/// Matching rule stating **ANY** of the queried criteria needs to be met.
+	TKPlacesQueryMatchingAny  = 0,
+	/// Matching rule stating **ALL** of the queried criteria need to be met.
+	TKPlacesQueryMatchingAll = 1,
+};
+
+/**
  Query object used for fetching specific collections of `TKPlace` objects.
  
  To perform regional queries, use either `quadKeys` (preferred) or `bounds` property to specify the area of your interest.
@@ -48,17 +58,36 @@ NS_ASSUME_NONNULL_BEGIN
 /// Array of the desired Category slugs.
 ///
 /// @note Matches Places having **ALL** of the requested categories.
+///       Switching to **ANY** is possible by using the `-categoriesMatching` property.
 ///
 /// @see `TKPlace`
+/// @see `categoriesMatching`
 @property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
+
+/// Flag controlling the matching rule for `categories`.
+@property (atomic) TKPlacesQueryMatching categoriesMatching;
 
 /// Plain-text array of the desired Tag keys.
 ///
 /// @note Matches Places having **ALL** of the reqested tags.
+///       Switching to **ANY** is possible by using the `-tagsMatching` property.
+///
+/// @see `tagsMatching`
 @property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
 
-/// Desired parent node identifier.
-@property (nonatomic, copy, nullable) NSString *parentID;
+/// Flag controlling the matching rule for `tags`.
+@property (atomic) TKPlacesQueryMatching tagsMatching;
+
+/// Desired identifiers of parent nodes.
+///
+/// @note Matches Places having **ALL** of the reqested parents.
+///       Switching to **ANY** is possible by using the `-parentIDsMatching` property.
+///
+/// @see `parentIDsMatching`
+@property (nonatomic, copy, nullable) NSArray<NSString *> *parentIDs;
+
+/// Flag controlling the matching rule for `parentIDs`.
+@property (atomic) TKPlacesQueryMatching parentIDsMatching;
 
 /// Maximum number of results returned.
 ///

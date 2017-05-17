@@ -103,8 +103,11 @@
 {
 	switch (type) {
 
-	case TKAPIRequestTypePlacesGET: // GET
+	case TKAPIRequestTypePlacesQueryGET: // GET
 		return @"/places/list";
+
+	case TKAPIRequestTypePlacesBatchGET: // GET
+		return @"/places";
 
 	case TKAPIRequestTypePlaceGET: // GET
 		return [NSString stringWithFormat:@"/places/%@", ID];
@@ -223,7 +226,7 @@
 
 
 ////////////////////
-#pragma mark - Places
+#pragma mark - Places Query
 ////////////////////
 
 
@@ -232,7 +235,7 @@
 {
 	if (self = [super init])
 	{
-		_type = TKAPIRequestTypePlacesGET;
+		_type = TKAPIRequestTypePlacesQueryGET;
 
 		NSMutableString *path = [[[TKAPI sharedAPI] pathForRequestType:_type] mutableCopy];
 
@@ -283,16 +286,25 @@
 				 ]]];
 
 		if (query.categories.count)
+		{
+			NSString *operator = (query.categoriesMatching == TKPlacesQueryMatchingAll) ? @"," : @"|";
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"categories"
-				value:[query.categories componentsJoinedByString:@","]]];
+				value:[query.categories componentsJoinedByString:operator]]];
+		}
 
 		if (query.tags.count)
+		{
+			NSString *operator = (query.tagsMatching == TKPlacesQueryMatchingAll) ? @"," : @"|";
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"tags"
-				value:[query.tags componentsJoinedByString:@","]]];
+				value:[query.tags componentsJoinedByString:operator]]];
+		}
 
-		if (query.parentID)
+		if (query.parentIDs.count)
+		{
+			NSString *operator = (query.parentIDsMatching == TKPlacesQueryMatchingAll) ? @"," : @"|";
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"parents"
-				value:query.parentID]];
+				value:[query.parentIDs componentsJoinedByString:operator]]];
+		}
 
 		if (query.limit.intValue > 0)
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"limit"
@@ -331,6 +343,75 @@
 
 				TKPlace *a = [[TKPlace alloc] initFromResponse:dict];
 				if (a) a.detail = nil;
+				if (a) [stored addObject:a];
+			}
+
+			_state = TKAPIRequestStateFinished;
+
+			if (success) success(stored);
+
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
+			if (failure) failure(error);
+		};
+	}
+
+	return self;
+}
+
+
+////////////////////
+#pragma mark - Places Batch
+////////////////////
+
+
+- (instancetype)initAsPlacesRequestForIDs:(NSArray<NSString *> *)placeIDs
+	success:(void (^)(NSArray<TKPlace *> *))success failure:(TKAPIConnectionFailureBlock)failure
+{
+	if (self = [super init])
+	{
+		_type = TKAPIRequestTypePlacesBatchGET;
+
+		NSMutableString *path = [[[TKAPI sharedAPI] pathForRequestType:_type] mutableCopy];
+
+		NSMutableArray<NSURLQueryItem *> *queryItems = [NSMutableArray arrayWithCapacity:10];
+
+		NSString *formattedIDs = [placeIDs componentsJoinedByString:@"|"] ?: @"";
+
+		[queryItems addObject:[NSURLQueryItem queryItemWithName:@"ids" value:formattedIDs]];
+
+		if (queryItems.count)
+		{
+			[path appendString:@"?"];
+
+			NSMutableArray<NSString *> *queryFields = [NSMutableArray arrayWithCapacity:queryItems.count];
+			NSMutableCharacterSet *set = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+			[set removeCharactersInString:@"?&="];
+
+			for (NSURLQueryItem *item in queryItems)
+			{
+				NSString *value = [item.value stringByAddingPercentEncodingWithAllowedCharacters:set];
+				NSString *field = [NSString stringWithFormat:@"%@=%@", item.name, value];
+				[queryFields addObject:field];
+			}
+
+			[path appendString:[queryFields componentsJoinedByString:@"&"]];
+		}
+
+		_path = path;
+
+		_successBlock = ^(TKAPIResponse *response){
+
+			NSMutableArray *stored = [NSMutableArray array];
+			NSArray *items = [response.data[@"places"] parsedArray];
+
+			for (NSDictionary *dict in items)
+			{
+				if (![dict parsedDictionary]) continue;
+				NSString *guid = [dict[@"id"] parsedString];
+				if (!guid) continue;
+
+				TKPlace *a = [[TKPlace alloc] initFromResponse:dict];
 				if (a) [stored addObject:a];
 			}
 
@@ -581,7 +662,8 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		types = @{
-			@(TKAPIRequestTypePlacesGET): @"PLACES_GET",
+			@(TKAPIRequestTypePlacesQueryGET): @"PLACES_QUERY_GET",
+			@(TKAPIRequestTypePlacesBatchGET): @"PLACES_BATCH_GET",
 			@(TKAPIRequestTypePlaceGET): @"PLACE_GET",
 			@(TKAPIRequestTypeMediaGET): @"MEDIA_GET",
 			@(TKAPIRequestTypeExchangeRatesGET): @"EXCHANGE_RATES_GET",

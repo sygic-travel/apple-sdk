@@ -111,6 +111,15 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 	completion:(void (^)(NSArray<TKPlace *>  * _Nullable places, NSError * _Nullable error))completion;
 
 /**
+ Returns a collection of `TKPlace` objects for the given IDs.
+
+ @param placeIDs Array of strings matching desired Place IDs.
+ @param completion Completion block called on success or error.
+ */
+- (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
+	completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion;
+
+/**
  Returns a Detailed `TKPlace` object for the given global Place identifier.
  
  This method is good for fetching furhter Place information to use f.e. on Place Detail screen.

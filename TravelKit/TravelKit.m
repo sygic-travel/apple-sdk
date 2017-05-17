@@ -48,6 +48,19 @@
 	return langs;
 }
 
++ (NSCache<NSString *, TKPlace *> *)placeCache
+{
+	static NSCache<NSString *, TKPlace *> *placeCache = nil;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		placeCache = [NSCache new];
+		placeCache.countLimit = 200;
+	});
+
+	return placeCache;
+}
+
 - (void)setAPIKey:(NSString *)APIKey
 {
 	_APIKey = [APIKey copy];
@@ -173,15 +186,48 @@
 	}] start];
 }
 
+- (void)placesWithIDs:(NSArray<NSString *> *)placeIDs completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion
+{
+	NSCache<NSString *, TKPlace *> *placeCache = [self.class placeCache];
+
+	NSMutableArray<TKPlace *> *ret = [NSMutableArray arrayWithCapacity:placeIDs.count];
+	NSMutableArray *requested = [placeIDs mutableCopy];
+
+	TKPlace *place = nil;
+	for (NSString *placeID in placeIDs)
+		if ((place = [placeCache objectForKey:placeID]))
+		{
+			[ret addObject:place];
+			[requested removeObject:placeID];
+		}
+
+	if (!requested.count) {
+		if (completion)
+			completion(ret, nil);
+		return;
+	}
+
+	[[[TKAPIRequest alloc] initAsPlacesRequestForIDs:requested success:^(NSArray<TKPlace *> *places) {
+
+		for (TKPlace *p in places)
+			[placeCache setObject:place forKey:p.ID];
+
+		[requested addObjectsFromArray:places];
+
+		if (completion)
+			completion(requested, nil);
+
+	} failure:^(TKAPIError *error) {
+
+		if (completion)
+			completion(nil, error);
+
+	}] start];
+}
+
 - (void)detailedPlaceWithID:(NSString *)placeID completion:(void (^)(TKPlace *, NSError *))completion
 {
-	static NSCache<NSString *, TKPlace *> *placeCache = nil;
-
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		placeCache = [NSCache new];
-		placeCache.countLimit = 200;
-	});
+	NSCache<NSString *, TKPlace *> *placeCache = [self.class placeCache];
 
 	TKPlace *cached = [placeCache objectForKey:placeID];
 
