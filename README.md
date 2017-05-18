@@ -1,7 +1,7 @@
 # Sygic Travel Apple SDK
 
 
-Sygic Travel Apple SDK is a framework for embedding a rich set of Sygic Travel data within your application. It gives you an access to millions of Places covering the whole world. 
+Sygic Travel Apple SDK is a framework for embedding a rich set of Sygic Travel data within your application. It gives you access to millions of Places covering the entire world. 
 
 ## Requirements
 
@@ -29,7 +29,7 @@ Let's define a set of Places we want:
 
 - placed in _London_
 - marked as _Points of interest_
-- marked with category _Sightseeing_
+- included in the _Sightseeing_ category
 - only the _Top 10_ of them
 
 ```objc
@@ -41,8 +41,8 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 	
 // Create query to get Top 10 Sightseeing Places in London
 TKPlacesQuery *query = [TKPlacesQuery new];
-query.parentID = @"city:1";
-query.level = TKPlaceLevelPOI;
+query.parentIDs = @[ @"city:1" ];
+query.levels = TKPlaceLevelPOI;
 query.categories = @[ @"sightseeing" ];
 query.limit = 10;
 	
@@ -59,8 +59,8 @@ TravelKit.shared().apiKey = "<YOUR_API_KEY_GOES_HERE>"
 	
 // Create query to get Top 10 Sightseeing Places in London
 let query = TKPlacesQuery()
-query.parentID = "city:1"
-query.level = .POI
+query.parentIDs = ["city:1"]
+query.levels = .POI
 query.categories = ["sightseeing"]
 query.limit = 10
 	
@@ -71,9 +71,9 @@ TravelKit.shared().places(for: query) { (places, error) in
 }
 ```
 
-*API key* must be provided, otherwise using any methods listed below will result in an error being returned by the completion block.
+The *API key* must be provided, otherwise using any methods listed below will result in an error being returned by the completion block.
 
-*TravelKit* is very easily testable using _Swift Playgrounds_ – one is included with the workspace attached.
+*TravelKit* is very easily testable using _Swift Playgrounds_ – a sample playground is provided together with the workspace attached.
 
 ## Basic Classes
 

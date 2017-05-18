@@ -290,7 +290,7 @@
 	return [TKMapWorker quadKeysForRegion:region];
 }
 
-- (NSArray<TKMapPlaceAnnotation *> *)spreadedAnnotationsForPlaces:(NSArray<TKPlace *> *)places
+- (NSArray<TKMapPlaceAnnotation *> *)spreadAnnotationsForPlaces:(NSArray<TKPlace *> *)places
 	mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size
 {
 	NSMutableArray<TKPlace *> *workingPlaces = [places mutableCopy];

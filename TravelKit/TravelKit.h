@@ -26,11 +26,11 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Main class currently used for authentication and data fetching. It provides a singleton
+ The main class currently used for authentication and data fetching. It provides a singleton
  instance with the public `+sharedKit` method which may be used to work with the _Travel_
  backend.
 
- The basic workflow is pretty straight-forward – to start using _TravelKit_, you only need a
+ The basic workflow is pretty straightforward – to start using _TravelKit_, you only need a
  couple of lines to get the desired data.
  
 ```objc
@@ -66,7 +66,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 /**
  Preferred language of response data to use.
 
- @note Supported langage codes: **`en`**, **`fr`**, **`de`**, **`es`**, **`nl`**,
+ @note Supported language codes: **`en`**, **`fr`**, **`de`**, **`es`**, **`nl`**,
        **`pt`**, **`it`**, **`ru`**, **`cs`**, **`sk`**, **`pl`**, **`tr`**,
        **`zh`**, **`ko`**.
  
@@ -102,7 +102,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 /**
  Returns a collection of `TKPlace` objects for the given query object.
  
- This method is good for use to fetch Places for lists, map annotations and other batch uses.
+ This method is good for fetching Places to use for lists, map annotations and other batch uses.
 
  @param query `TKPlacesQuery` object containing the desired attributes to look for.
  @param completion Completion block called on success or error.
@@ -122,7 +122,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 /**
  Returns a Detailed `TKPlace` object for the given global Place identifier.
  
- This method is good for fetching furhter Place information to use f.e. on Place Detail screen.
+ This method is good for fetching further Place information to use f.e. on Place Detail screen.
 
  @param placeID Global identifier of the desired Place.
  @param completion Completion block called on success or error.
@@ -146,7 +146,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 ///---------------------------------------------------------------------------------------
 
 /**
- Naive method for fetching standardized quad keys for the given region.
+ Naive method for fetching standardised quad keys for the given region.
 
  @param region Region to calculate quad keys for.
  @return Array of quad key strings.
@@ -154,14 +154,14 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 - (NSArray<NSString *> *)quadKeysForMapRegion:(MKCoordinateRegion)region;
 
 /**
- Spreading method calculating optimally spreaded `TKMapPlaceAnnotation` objects in 3 basic sizes.
+ Spreading method calculating optimally spread `TKMapPlaceAnnotation` objects in 3 basic sizes.
 
  @param places Places to spread and create `TKMapPlaceAnnotation` objects for.
- @param region Region where to spread.
+ @param region Region where to spread the annotations.
  @param size Standard size of the Map view. May be taken from either `-frame` or `-bounds`.
- @return Array of spreaded annotations.
+ @return Array of spread annotations.
  */
-- (NSArray<TKMapPlaceAnnotation *> *)spreadedAnnotationsForPlaces:(NSArray<TKPlace *> *)places
+- (NSArray<TKMapPlaceAnnotation *> *)spreadAnnotationsForPlaces:(NSArray<TKPlace *> *)places
 	mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size;
 
 /**

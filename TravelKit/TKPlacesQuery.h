@@ -20,7 +20,7 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 	/// Matching rule stating **ANY** of the queried criteria needs to be met.
 	TKPlacesQueryMatchingAny  = 0,
 	/// Matching rule stating **ALL** of the queried criteria need to be met.
-	TKPlacesQueryMatchingAll = 1,
+	TKPlacesQueryMatchingAll  = 1,
 };
 
 /**
@@ -35,7 +35,7 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 
 /// Desired levels of Places.
 ///
-/// @note Matches objects in **ANY** of the reqested levels.
+/// @note Matches objects in **ANY** of the requested levels.
 ///
 /// @see `TKPlaceLevel`
 @property (atomic) TKPlaceLevel levels;
@@ -58,7 +58,7 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 /// Array of the desired Category slugs.
 ///
 /// @note Matches Places having **ALL** of the requested categories.
-///       Switching to **ANY** is possible by using the `-categoriesMatching` property.
+///       Switching to **ANY** is possible by using the `categoriesMatching` property.
 ///
 /// @see `TKPlace`
 /// @see `categoriesMatching`
@@ -69,8 +69,8 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 
 /// Plain-text array of the desired Tag keys.
 ///
-/// @note Matches Places having **ALL** of the reqested tags.
-///       Switching to **ANY** is possible by using the `-tagsMatching` property.
+/// @note Matches Places having **ALL** of the requested tags.
+///       Switching to **ANY** is possible by using the `tagsMatching` property.
 ///
 /// @see `tagsMatching`
 @property (nonatomic, copy, nullable) NSArray<NSString *> *tags;
@@ -80,8 +80,8 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 
 /// Desired identifiers of parent nodes.
 ///
-/// @note Matches Places having **ALL** of the reqested parents.
-///       Switching to **ANY** is possible by using the `-parentIDsMatching` property.
+/// @note Matches Places having **ALL** of the requested parents.
+///       Switching to **ANY** is possible by using the `parentIDsMatching` property.
 ///
 /// @see `parentIDsMatching`
 @property (nonatomic, copy, nullable) NSArray<NSString *> *parentIDs;
