@@ -6,6 +6,7 @@
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
 //
 
+#import "TravelKit.h"
 #import "Foundation+TravelKit.h"
 #import "TKAPIConnection+Private.h"
 #import "NSObject+Parsing.h"
@@ -108,6 +109,55 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 @implementation TKAPIConnection
 
++ (NSString *)userAgentString
+{
+	static NSString *agent = nil;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+
+		NSMutableArray *concat = [NSMutableArray arrayWithCapacity:2];
+
+		NSString *appName = [[[NSBundle mainBundle] objectForInfoDictionaryKey:(id)kCFBundleNameKey] parsedString];
+		NSString *appVersion = [[[NSBundle mainBundle] objectForInfoDictionaryKey:(id)kCFBundleVersionKey] parsedString];
+
+		appName = [appName stringByTrimmingCharactersInRegexString:@"[^0-9a-zA-Z]"];
+		appVersion = [appVersion stringByTrimmingCharactersInRegexString:@"[^0-9a-zA-Z.]"];
+
+		if (appName && appVersion)
+			[concat addObject:[NSString stringWithFormat:@"%@/%@", appName, appVersion]];
+
+		NSString *sdkName = @"TravelKit";
+		NSString *sdkVersion = [@(TravelKitVersionNumber) stringValue];
+
+		if (sdkName && sdkVersion)
+			[concat addObject:[NSString stringWithFormat:@"%@/%@", sdkName, sdkVersion]];
+
+		NSString *platformName = nil;
+		NSString *platformVersion = nil;
+#if TARGET_OS_IOS
+		platformName = @"iOS";
+#elif TARGET_OS_TV
+		platformName = @"tvOS";
+#elif TARGET_OS_OSX
+		platformName = @"macOS";
+#elif TARGET_OS_WATCH
+		platformName = @"watchOS";
+#endif
+
+		NSOperatingSystemVersion ver = [NSProcessInfo processInfo].operatingSystemVersion;
+		platformVersion = [NSString stringWithFormat:@"%zd.%zd.%zd",
+		                   ver.majorVersion, ver.minorVersion, ver.patchVersion];
+
+		if (platformName && platformVersion)
+			[concat addObject:[NSString stringWithFormat:@"%@/%@", platformName, platformVersion]];
+
+		agent = [concat componentsJoinedByString:@" "];
+	});
+
+	return agent;
+}
+
 - (instancetype)initWithURLRequest:(NSMutableURLRequest *)request
 	success:(TKAPIConnectionSuccessBlock)success failure:(TKAPIConnectionFailureBlock)failure
 {
@@ -120,6 +170,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 		request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
 
 		[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
+		[request setValue:[self.class userAgentString] forHTTPHeaderField:@"User-Agent"];
 
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"

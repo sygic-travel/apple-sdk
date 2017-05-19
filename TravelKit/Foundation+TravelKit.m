@@ -89,6 +89,15 @@
 	return [self stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 }
 
+- (NSString *)stringByTrimmingCharactersInRegexString:(NSString *)regexString
+{
+	NSRegularExpression *regex = [NSRegularExpression
+		regularExpressionWithPattern:regexString options:(NSRegularExpressionOptions)0 error:nil];
+
+	return [regex stringByReplacingMatchesInString:self
+		options:(NSMatchingOptions)0 range:NSMakeRange(0, self.length) withTemplate:@""];
+}
+
 @end
 
 

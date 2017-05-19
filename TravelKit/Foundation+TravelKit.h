@@ -74,6 +74,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSString *)trimmedString;
 
+/**
+ Trimming function removing all the characters specified in the regular expression.
+
+ @param regexString Regular expression used for trimming.
+ @return Trimmed string.
+ */
+- (NSString *)stringByTrimmingCharactersInRegexString:(NSString *)regexString;
+
 @end
 
 
