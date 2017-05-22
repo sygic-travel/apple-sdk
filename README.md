@@ -1,9 +1,15 @@
 # Sygic Travel Apple SDK
 
 
-Sygic Travel Apple SDK is a framework for embedding a rich set of Sygic Travel data within your application. It gives you access to millions of Places covering the entire world. 
+**Sygic Travel Apple SDK** is a framework suitable for embedding a rich set of _Sygic Travel_ data within your application. It gives you access to millions of Places covering the entire world.
+
+We build it as a generic platform project available on all Apple platforms.
+
+For further details see [Full SDK documentation](http://docs.sygictravelapi.com/apple-sdk/latest/).
 
 ## Requirements
+
+All development requirements are actually recommendations as it reflects the environment we use to develop and distribute the code.
 
 - Xcode 8.0+ (recommended)
 - macOS 10.12+ SDK (recommended)
@@ -14,12 +20,21 @@ Sygic Travel Apple SDK is a framework for embedding a rich set of Sygic Travel d
 
 ## Deployment
 
+Deployment requirements determine the environment minimum you can 
+
 - OS X 10.9+ target (_macOS framework_)
 - iOS 8.2+ target (_iOS framework_)
 - tvOS 9.0+ target (_tvOS framework_)
 
 ## Installation
-TODO
+
+- get the framework package
+- unpack and add to your project
+- link it as a dynamic framework (embedded binary) in your project settings
+
+## Configuration
+
+Actually the only step needed is obtaining an _API key_ you use to set up the framework before you start using it. [Contact us](https://travel.sygic.com/b2b) to get one.
 
 ## Quick Usage Introduction
 
@@ -85,3 +100,7 @@ Class               | Description
 **`TKPlacesQuery`**   | Entity used when querying for `Places`
 **`TKMedium`**        | Basic `Medium` entity
 **`TKReference`**     | External `Reference` link
+
+## Documentation
+
+Available on [Docs portal](http://docs.sygictravelapi.com/apple-sdk/latest/).
