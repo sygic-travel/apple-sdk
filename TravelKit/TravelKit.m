@@ -92,7 +92,7 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		placesCache = [NSCache new];
-		placesCache.countLimit = 100;
+		placesCache.countLimit = 256;
 	});
 
 	if (query.quadKeys.count <= 1)
@@ -296,7 +296,7 @@
 	NSMutableArray<TKPlace *> *workingPlaces = [places mutableCopy];
 
 	// Minimal distance between annotations with basic size of 64 pixels
-	CLLocationDistance minDistance = region.span.latitudeDelta / (size.height / 64) * 111000;
+	CLLocationDistance minDistance = region.span.latitudeDelta / (size.height / 76) * 111000;
 
 	NSMutableArray<TKMapPlaceAnnotation *> *annotations = [NSMutableArray arrayWithCapacity:workingPlaces.count];
 
@@ -351,7 +351,7 @@
 	NSArray<TKMapPlaceAnnotation *> *classAnnotations = [firstClass
 	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
-		anno.pixelSize = 56;
+		anno.pixelSize = 64;
 		return anno;
 	}];
 
@@ -360,7 +360,7 @@
 	classAnnotations = [secondClass
 	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
-		anno.pixelSize = 38;
+		anno.pixelSize = 42;
 		return anno;
 	}];
 
