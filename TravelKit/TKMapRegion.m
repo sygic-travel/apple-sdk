@@ -85,7 +85,8 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"[%.6f, %6f]<%.6f, %.6f>",
+	return [NSString stringWithFormat:
+		@"<MapRegion %p @ [%.3f, %3f] {%.3f, %.3f}>", self,
 		_coordinateRegion.center.latitude,
 		_coordinateRegion.center.longitude,
 		_coordinateRegion.span.latitudeDelta,

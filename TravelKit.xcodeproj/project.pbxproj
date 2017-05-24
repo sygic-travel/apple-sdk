@@ -10,6 +10,22 @@
 		D608D0C51E77D66400A1CA41 /* TKPlace+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */; };
 		D608D0C61E77D6D000A1CA41 /* TKPlace+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */; };
 		D608D0C71E77D6D100A1CA41 /* TKPlace+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */; };
+		D61B924F1ED476B500645489 /* TKPlacesManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D61B924D1ED476B500645489 /* TKPlacesManager+Private.h */; };
+		D61B92501ED476B500645489 /* TKPlacesManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D61B924D1ED476B500645489 /* TKPlacesManager+Private.h */; };
+		D61B92511ED476B500645489 /* TKPlacesManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D61B924D1ED476B500645489 /* TKPlacesManager+Private.h */; };
+		D61B92521ED476B500645489 /* TKPlacesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D61B924E1ED476B500645489 /* TKPlacesManager.m */; };
+		D61B92531ED476B500645489 /* TKPlacesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D61B924E1ED476B500645489 /* TKPlacesManager.m */; };
+		D61B92541ED476B500645489 /* TKPlacesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D61B924E1ED476B500645489 /* TKPlacesManager.m */; };
+		D61B92571ED4798200645489 /* TKReachability+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D61B92551ED4798200645489 /* TKReachability+Private.h */; };
+		D61B92581ED4798200645489 /* TKReachability+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D61B92551ED4798200645489 /* TKReachability+Private.h */; };
+		D61B92591ED4798200645489 /* TKReachability+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D61B92551ED4798200645489 /* TKReachability+Private.h */; };
+		D61B925A1ED4798200645489 /* TKReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D61B92561ED4798200645489 /* TKReachability.m */; };
+		D61B925B1ED4798200645489 /* TKReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D61B92561ED4798200645489 /* TKReachability.m */; };
+		D61B925C1ED4798200645489 /* TKReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D61B92561ED4798200645489 /* TKReachability.m */; };
+		D61B92641ED47B5600645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92631ED47B5600645489 /* SystemConfiguration.framework */; };
+		D61B92661ED47B5B00645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92651ED47B5B00645489 /* SystemConfiguration.framework */; };
+		D61B92681ED47B6100645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92671ED47B6100645489 /* SystemConfiguration.framework */; };
+		D61B926A1ED4803D00645489 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92691ED4803D00645489 /* CoreTelephony.framework */; };
 		D666C4051EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
 		D666C4061EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
 		D666C4071EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
@@ -92,6 +108,14 @@
 
 /* Begin PBXFileReference section */
 		D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKPlace+Private.h"; sourceTree = "<group>"; };
+		D61B924D1ED476B500645489 /* TKPlacesManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKPlacesManager+Private.h"; sourceTree = "<group>"; };
+		D61B924E1ED476B500645489 /* TKPlacesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPlacesManager.m; sourceTree = "<group>"; };
+		D61B92551ED4798200645489 /* TKReachability+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKReachability+Private.h"; sourceTree = "<group>"; };
+		D61B92561ED4798200645489 /* TKReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKReachability.m; sourceTree = "<group>"; };
+		D61B92631ED47B5600645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		D61B92651ED47B5B00645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		D61B92671ED47B6100645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		D61B92691ED4803D00645489 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
 		D666C4041EAE2C5300085915 /* TKReference+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKReference+Private.h"; sourceTree = "<group>"; };
 		D6B2A1291E530AFD005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B2A1541E530F60005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -129,6 +153,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D61B92681ED47B6100645489 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,6 +161,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D61B92641ED47B5600645489 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -143,6 +169,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D61B926A1ED4803D00645489 /* CoreTelephony.framework in Frameworks */,
+				D61B92661ED47B5B00645489 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -202,8 +230,12 @@
 				D6C3D0581E4DDAE500EBB54F /* TKPlace.h */,
 				D6C3D0591E4DDAE500EBB54F /* TKPlace.m */,
 				D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */,
+				D61B924E1ED476B500645489 /* TKPlacesManager.m */,
+				D61B924D1ED476B500645489 /* TKPlacesManager+Private.h */,
 				D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */,
 				D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */,
+				D61B92561ED4798200645489 /* TKReachability.m */,
+				D61B92551ED4798200645489 /* TKReachability+Private.h */,
 				D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */,
 				D6C3D05D1E4DDE0A00EBB54F /* TKReference.m */,
 				D666C4041EAE2C5300085915 /* TKReference+Private.h */,
@@ -214,6 +246,10 @@
 		D6C3D0801E4DFE2800EBB54F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				D61B92691ED4803D00645489 /* CoreTelephony.framework */,
+				D61B92631ED47B5600645489 /* SystemConfiguration.framework */,
+				D61B92651ED47B5B00645489 /* SystemConfiguration.framework */,
+				D61B92671ED47B6100645489 /* SystemConfiguration.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -232,8 +268,10 @@
 				D6B2A13B1E530B11005509E8 /* TKMapRegion.h in Headers */,
 				D6B2A13F1E530B11005509E8 /* TKPlace.h in Headers */,
 				D6B2A1391E530B11005509E8 /* NSObject+Parsing.h in Headers */,
+				D61B92591ED4798200645489 /* TKReachability+Private.h in Headers */,
 				D689DBEF1EBB062700708599 /* Foundation+TravelKit.h in Headers */,
 				D6B2A1311E530B11005509E8 /* TKAPI+Private.h in Headers */,
+				D61B92511ED476B500645489 /* TKPlacesManager+Private.h in Headers */,
 				D666C4071EAE2C5300085915 /* TKReference+Private.h in Headers */,
 				D608D0C71E77D6D100A1CA41 /* TKPlace+Private.h in Headers */,
 				D6B2A1411E530B11005509E8 /* TKPlacesQuery.h in Headers */,
@@ -254,8 +292,10 @@
 				D6B2A1661E531097005509E8 /* TKMapRegion.h in Headers */,
 				D6B2A16A1E531097005509E8 /* TKPlace.h in Headers */,
 				D6B2A1641E531097005509E8 /* NSObject+Parsing.h in Headers */,
+				D61B92571ED4798200645489 /* TKReachability+Private.h in Headers */,
 				D689DBED1EBB062600708599 /* Foundation+TravelKit.h in Headers */,
 				D6B2A15C1E531097005509E8 /* TKAPI+Private.h in Headers */,
+				D61B924F1ED476B500645489 /* TKPlacesManager+Private.h in Headers */,
 				D666C4051EAE2C5300085915 /* TKReference+Private.h in Headers */,
 				D6EF38E91EB9D11400260E82 /* TKMapPlaceAnnotation.h in Headers */,
 				D608D0C51E77D66400A1CA41 /* TKPlace+Private.h in Headers */,
@@ -276,8 +316,10 @@
 				D6C3D06E1E4DE76A00EBB54F /* TKAPIConnection+Private.h in Headers */,
 				D6C3D0511E4DD36200EBB54F /* TravelKit.h in Headers */,
 				D6C3D05A1E4DDAE500EBB54F /* TKPlace.h in Headers */,
+				D61B92581ED4798200645489 /* TKReachability+Private.h in Headers */,
 				D689DBEE1EBB062700708599 /* Foundation+TravelKit.h in Headers */,
 				D6C3D07E1E4DFCA700EBB54F /* TKPlacesQuery.h in Headers */,
+				D61B92501ED476B500645489 /* TKPlacesManager+Private.h in Headers */,
 				D666C4061EAE2C5300085915 /* TKReference+Private.h in Headers */,
 				D608D0C61E77D6D000A1CA41 /* TKPlace+Private.h in Headers */,
 				D6C3D0891E51A09200EBB54F /* TKMapRegion.h in Headers */,
@@ -473,7 +515,9 @@
 				D6B2A13A1E530B11005509E8 /* NSObject+Parsing.m in Sources */,
 				D6EF38F61EB9EB7800260E82 /* TKMapPlaceAnnotation.m in Sources */,
 				D6B2A1321E530B11005509E8 /* TKAPI.m in Sources */,
+				D61B925C1ED4798200645489 /* TKReachability.m in Sources */,
 				D6B2A1381E530B11005509E8 /* TKMapWorker.m in Sources */,
+				D61B92541ED476B500645489 /* TKPlacesManager.m in Sources */,
 				D6B2A13E1E530B11005509E8 /* TKMedium.m in Sources */,
 				D6B2A1461E530B18005509E8 /* TravelKit.m in Sources */,
 			);
@@ -492,7 +536,9 @@
 				D6B2A1671E531097005509E8 /* TKMapRegion.m in Sources */,
 				D6B2A1651E531097005509E8 /* NSObject+Parsing.m in Sources */,
 				D6B2A15D1E531097005509E8 /* TKAPI.m in Sources */,
+				D61B925A1ED4798200645489 /* TKReachability.m in Sources */,
 				D6B2A1631E531097005509E8 /* TKMapWorker.m in Sources */,
+				D61B92521ED476B500645489 /* TKPlacesManager.m in Sources */,
 				D6B2A1691E531097005509E8 /* TKMedium.m in Sources */,
 				D6B2A1741E532002005509E8 /* TravelKit.m in Sources */,
 			);
@@ -511,7 +557,9 @@
 				D6C3D05F1E4DDE0A00EBB54F /* TKReference.m in Sources */,
 				D6EF38F51EB9EB7800260E82 /* TKMapPlaceAnnotation.m in Sources */,
 				D6C3D0861E5196CB00EBB54F /* TravelKit.m in Sources */,
+				D61B925B1ED4798200645489 /* TKReachability.m in Sources */,
 				D6C3D0631E4DDE2D00EBB54F /* TKMedium.m in Sources */,
+				D61B92531ED476B500645489 /* TKPlacesManager.m in Sources */,
 				D6C3D05B1E4DDAE500EBB54F /* TKPlace.m in Sources */,
 				D6C3D08A1E51A09200EBB54F /* TKMapRegion.m in Sources */,
 			);

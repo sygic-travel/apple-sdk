@@ -162,7 +162,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  @return Array of spread annotations.
  */
 - (NSArray<TKMapPlaceAnnotation *> *)spreadAnnotationsForPlaces:(NSArray<TKPlace *> *)places
-	mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size;
+            mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size;
 
 /**
  Interpolating method for sorting Map annotations.
@@ -178,10 +178,10 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
        method of your Map view, `toRemove` accordingly with `-removeAnnotations:` method.
  */
 - (void)interpolateNewAnnotations:(NSArray<TKMapPlaceAnnotation *> *)newAnnotations
-				   oldAnnotations:(NSArray<TKMapPlaceAnnotation *> *)oldAnnotations
-							toAdd:(NSMutableArray<TKMapPlaceAnnotation *> *)toAdd
-						   toKeep:(NSMutableArray<TKMapPlaceAnnotation *> *)toKeep
-						 toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove;
+                   oldAnnotations:(NSArray<TKMapPlaceAnnotation *> *)oldAnnotations
+                            toAdd:(NSMutableArray<TKMapPlaceAnnotation *> *)toAdd
+                           toKeep:(NSMutableArray<TKMapPlaceAnnotation *> *)toKeep
+                         toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove;
 
 @end
 

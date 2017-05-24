@@ -6,6 +6,7 @@
 //  Copyright © 2016 Tripomatic. All rights reserved.
 //
 
+#import "Foundation+TravelKit.h"
 #import "TKMapWorker+Private.h"
 
 #define MINMAX(a, x, b) MIN(MAX(a, x), b)
@@ -24,7 +25,9 @@ typedef struct {
 
 @implementation TKMapWorker
 
-#pragma mark - Quadkeys stuff
+
+#pragma mark -
+#pragma mark Quadkeys
 
 
 + (double)tileMapSizeForDetailLevel:(UInt8)level
@@ -88,10 +91,52 @@ typedef struct {
 	return [self quadKeyForTilePoint:tilePoint detailLevel:level];
 }
 
++ (UInt8)detailLevelForRegion:(MKCoordinateRegion)region
+{
+	double zoomLevel = [self approximateZoomLevelForLatitudeSpan:region.span.latitudeDelta];
+	return (UInt8)round(MINMAX(1, zoomLevel, 18));
+}
+
++ (NSArray<NSString *> *)quadKeysForRegion:(MKCoordinateRegion)region
+{
+	UInt8 zoomLevel = [self detailLevelForRegion:region];
+
+	NSMutableArray<CLLocation *> *checkPoints = [NSMutableArray array];
+
+	CLLocationDegrees latSpan = region.span.latitudeDelta;
+	CLLocationDegrees lngSpan = region.span.longitudeDelta;
+
+	for (uint i = 0; i <= 10; i++)
+		for (uint j = 0; j <= 10; j++)
+		{
+			CLLocationDegrees locLat = (region.center.latitude-latSpan/2) + i*(latSpan/10);
+			CLLocationDegrees locLng = (region.center.longitude-lngSpan/2) + j*(lngSpan/10);
+			[checkPoints addObject:[[CLLocation alloc] initWithLatitude:locLat longitude:locLng]];
+		}
+
+	NSMutableOrderedSet<NSString *> *quadKeys = [NSMutableOrderedSet orderedSetWithCapacity:10];
+
+	for (CLLocation *location in checkPoints) {
+		NSString *quadKey = [self quadKeyForCoordinate:location.coordinate detailLevel:zoomLevel];
+		if (quadKey) [quadKeys addObject:quadKey];
+	}
+
+	return [quadKeys array];
+}
+
+
+#pragma mark -
+#pragma mark Regions
+
+
 + (double)approximateZoomLevelForLatitudeSpan:(CLLocationDegrees)latitudeSpan
 {
 	return 8.257237*pow(latitudeSpan, -0.1497541);
 }
+
+
+#pragma mark -
+#pragma mark Polylines
 
 
 + (NSArray<CLLocation *> *)pointsFromPolyline:(NSString *)polyline
@@ -179,37 +224,130 @@ typedef struct {
 	return encodedString;
 }
 
-+ (UInt8)detailLevelForRegion:(MKCoordinateRegion)region
+
+#pragma mark -
+#pragma mark Spreading
+
+
++ (NSArray<TKMapPlaceAnnotation *> *)spreadAnnotationsForPlaces:(NSArray<TKPlace *> *)places
+	mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size
 {
-	double zoomLevel = [self approximateZoomLevelForLatitudeSpan:region.span.latitudeDelta];
-	return (UInt8)round(MINMAX(1, zoomLevel, 18));
-}
+	NSMutableArray<TKPlace *> *workingPlaces = [places mutableCopy];
 
-+ (NSArray<NSString *> *)quadKeysForRegion:(MKCoordinateRegion)region
-{
-	UInt8 zoomLevel = [self detailLevelForRegion:region];
+	// Minimal distance between annotations with basic size of 64 pixels
+	CLLocationDistance minDistance = region.span.latitudeDelta / (size.height / 76) * 111000;
 
-	NSMutableArray<CLLocation *> *checkPoints = [NSMutableArray array];
+	NSMutableArray<TKMapPlaceAnnotation *> *annotations = [NSMutableArray arrayWithCapacity:workingPlaces.count];
 
-	CLLocationDegrees latSpan = region.span.latitudeDelta;
-	CLLocationDegrees lngSpan = region.span.longitudeDelta;
+	NSMutableArray<TKPlace *> *firstClass   = [NSMutableArray arrayWithCapacity:workingPlaces.count / 4];
+	NSMutableArray<TKPlace *> *secondClass  = [NSMutableArray arrayWithCapacity:workingPlaces.count / 2];
+	NSMutableArray<TKPlace *> *thirdClass   = [NSMutableArray arrayWithCapacity:workingPlaces.count / 2];
 
-	for (uint i = 0; i <= 10; i++)
-		for (uint j = 0; j <= 10; j++)
-		{
-			CLLocationDegrees locLat = (region.center.latitude-latSpan/2) + i*(latSpan/10);
-			CLLocationDegrees locLng = (region.center.longitude-lngSpan/2) + j*(lngSpan/10);
-			[checkPoints addObject:[[CLLocation alloc] initWithLatitude:locLat longitude:locLng]];
-		}
+	for (TKPlace *p in workingPlaces)
+	{
+		if (p.rating.floatValue < 6.0 || !p.thumbnailURL) continue;
 
-	NSMutableOrderedSet<NSString *> *quadKeys = [NSMutableOrderedSet orderedSetWithCapacity:10];
-
-	for (CLLocation *location in checkPoints) {
-		NSString *quadKey = [self quadKeyForCoordinate:location.coordinate detailLevel:zoomLevel];
-		if (quadKey) [quadKeys addObject:quadKey];
+		BOOL conflict = NO;
+		for (TKPlace *i in firstClass)
+			if ([i.location distanceFromLocation:p.location] < minDistance)
+			{ conflict = YES; break; }
+		if (!conflict) [firstClass addObject:p];
 	}
 
-	return [quadKeys array];
+	[workingPlaces removeObjectsInArray:firstClass];
+
+	for (TKPlace *p in workingPlaces)
+	{
+		if (!p.thumbnailURL) continue;
+
+		BOOL conflict = NO;
+		for (TKPlace *i in firstClass)
+			if ([i.location distanceFromLocation:p.location] < 0.95*minDistance)
+			{ conflict = YES; break; }
+		for (TKPlace *i in secondClass)
+			if ([i.location distanceFromLocation:p.location] < 0.85*minDistance)
+			{ conflict = YES; break; }
+		if (!conflict) [secondClass addObject:p];
+	}
+
+	[workingPlaces removeObjectsInArray:secondClass];
+
+	for (TKPlace *p in workingPlaces)
+	{
+		BOOL conflict = NO;
+		for (TKPlace *i in firstClass)
+			if ([i.location distanceFromLocation:p.location] < 0.7*minDistance)
+			{ conflict = YES; break; }
+		for (TKPlace *i in secondClass)
+			if ([i.location distanceFromLocation:p.location] < 0.6*minDistance)
+			{ conflict = YES; break; }
+		for (TKPlace *i in thirdClass)
+			if ([i.location distanceFromLocation:p.location] < 0.5*minDistance)
+			{ conflict = YES; break; }
+		if (!conflict) [thirdClass addObject:p];
+	}
+
+	NSArray<TKMapPlaceAnnotation *> *classAnnotations = [firstClass
+	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
+		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
+		anno.pixelSize = 64;
+		return anno;
+	}];
+
+	[annotations addObjectsFromArray:classAnnotations];
+
+	classAnnotations = [secondClass
+	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
+		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
+		anno.pixelSize = 42;
+		return anno;
+	}];
+
+	[annotations addObjectsFromArray:classAnnotations];
+
+	classAnnotations = [thirdClass
+	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
+		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
+		anno.pixelSize = 14;
+		return anno;
+	}];
+
+	[annotations addObjectsFromArray:classAnnotations];
+
+	return annotations;
+}
+
++ (void)interpolateNewAnnotations:(NSArray<TKMapPlaceAnnotation *> *)newAnnotations
+                   oldAnnotations:(NSArray<TKMapPlaceAnnotation *> *)oldAnnotations
+                            toAdd:(NSMutableArray<TKMapPlaceAnnotation *> *)toAdd
+                           toKeep:(NSMutableArray<TKMapPlaceAnnotation *> *)toKeep
+                         toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove
+{
+	NSArray<NSString *> *displayedIDs = [newAnnotations
+	  mappedArrayUsingBlock:^id _Nonnull(TKMapPlaceAnnotation *p, NSUInteger __unused i) {
+		return p.place.ID;
+	}];
+
+	for (TKMapPlaceAnnotation *p in oldAnnotations)
+	{
+		if (![p isKindOfClass:[TKMapPlaceAnnotation class]]) continue;
+
+		if ([displayedIDs containsObject:p.place.ID])
+			[toKeep addObject:p];
+		else [toRemove addObject:p];
+	}
+
+	for (TKMapPlaceAnnotation *p in newAnnotations)
+	{
+		if (![p isKindOfClass:[TKMapPlaceAnnotation class]]) continue;
+
+		BOOL displayed = NO;
+		for (TKMapPlaceAnnotation *k in toKeep)
+			if ([k.place.ID isEqual:p.place.ID])
+				displayed = YES;
+		if (!displayed)
+			[toAdd addObject:p];
+	}
 }
 
 @end
