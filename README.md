@@ -1,13 +1,13 @@
 # Sygic Travel Apple SDK
 
 
-**Sygic Travel Apple SDK** is a framework suitable for embedding a rich set of _Sygic Travel_ data within your application. It gives you access to millions of Places covering the entire world.
+**Sygic Travel Apple SDK** (stylised for Apple platforms as _TravelKit_) is a framework suitable for embedding a rich set of _Sygic Travel_ data within your application. It gives you access to millions of Places covering the entire world.
 
 We build it as a generic platform project available on all Apple platforms.
 
 For further details see [Full SDK documentation](http://docs.sygictravelapi.com/apple-sdk/latest/).
 
-## Requirements
+## Development Requirements
 
 All development requirements are actually recommendations as it reflects the environment we use to develop and distribute the code.
 
@@ -18,7 +18,7 @@ All development requirements are actually recommendations as it reflects the env
 - _Objective-C_ or _Swift_ project
 - _API key_ for your business or project
 
-## Deployment
+## Production Deployment
 
 Deployment requirements determine the environment minimum you can 
 
@@ -104,3 +104,7 @@ Class               | Description
 ## Documentation
 
 Available on [Docs portal](http://docs.sygictravelapi.com/apple-sdk/latest/).
+
+## License
+
+This project is licensed under the terms of the MIT license. See the **LICENSE** file for details.
