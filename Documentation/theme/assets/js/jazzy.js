@@ -23,8 +23,14 @@ $(window).load(function() {
   if ((window.location.pathname.indexOf('index.html') != -1) ||
       (window.location.pathname.indexOf('.html') == -1))
     $('head style.nav-group-highlight-style').remove();
-  elm = $('li.nav-group-task[data-name="TravelKit"]')[0]
-  $(elm).parent().prepend(elm);
+  $('li.nav-group-name[data-name="Guides"]').remove();
+  var orderedPrefixes = ["TravelKit", "TKPlace", "TKTour", "TKMedium", "TKReference", "TKMap"].reverse();
+  $.each(orderedPrefixes, function(i,e){
+    var elms = $('li.nav-group-task[data-name*="'+e+'"]').toArray().reverse();
+    $.each(elms, function(i,e){
+      $(e).parent().prepend(e);
+    });
+  });
 });
 
 // On token click, toggle its discussion and animate token.marginLeft
