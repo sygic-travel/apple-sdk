@@ -72,7 +72,7 @@ NSNumber *number = @1;
 [number[0] parsedNumber]; // returns `nil`
 ````
 
- @note These methods only affect _Objective-C_ code. _Swift_ code works with a different base structure `Any`. To parse _Swift_ objects using the same manner try using [`SwiftyJSON`](https://github.com/SwiftyJSON/SwiftyJSON) framework.
+ @note These methods only affect _Objective-C_ runtime and _NSObject_-based classes. _Swift_ runtime works with a different base structure. To parse _Swift_ objects containing _JSON_ data using the same manner try using [`SwiftyJSON`](https://github.com/SwiftyJSON/SwiftyJSON) framework.
  */
 
 @interface NSObject (Parsing)
