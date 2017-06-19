@@ -88,9 +88,6 @@ NS_ASSUME_NONNULL_BEGIN
 /// Bounding box.
 @property (nonatomic, strong, nullable) TKMapRegion *boundingBox;
 
-/// Price value. Value in `USD`.
-@property (nonatomic, strong, nullable) NSNumber *price;
-
 /// Global rating value.
 ///
 /// @note Possible values: double in range `0`--`10.0`.
