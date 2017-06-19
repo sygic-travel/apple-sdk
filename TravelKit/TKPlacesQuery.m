@@ -62,7 +62,17 @@
 	return query;
 }
 
+- (id)mutableCopy
+{
+	return [self copy];
+}
+
 - (id)copyWithZone:(NSZone __unused *)zone
+{
+	return [self copy];
+}
+
+- (id)mutableCopyWithZone:(NSZone __unused *)zone
 {
 	return [self copy];
 }

@@ -10,8 +10,10 @@
 #import "TKAPIConnection+Private.h"
 
 #import "TKPlace.h"
+#import "TKTour.h"
 #import "TKMedium.h"
 #import "TKPlacesQuery.h"
+#import "TKToursQuery.h"
 
 #define API_PROTOCOL   "https"
 #define API_SUBDOMAIN  "api"
@@ -24,6 +26,7 @@ typedef NS_ENUM(NSInteger, TKAPIRequestType)
 	TKAPIRequestTypePlacesQueryGET,
 	TKAPIRequestTypePlacesBatchGET,
 	TKAPIRequestTypePlaceGET,
+	TKAPIRequestTypeToursQueryGET,
 	TKAPIRequestTypeMediaGET,
 	TKAPIRequestTypeExchangeRatesGET,
 	TKAPIRequestTypeCustomGET,
@@ -95,6 +98,13 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 
 - (instancetype)initAsPlaceRequestForItemWithID:(NSString *)itemID
 	success:(void (^)(TKPlace *place))success
+		failure:(TKAPIConnectionFailureBlock)failure;
+
+////////////////////
+// Tours Query
+
+- (instancetype)initAsToursRequestForQuery:(TKToursQuery *)query
+	success:(void (^)(NSArray<TKTour *> *tours))success
 		failure:(TKAPIConnectionFailureBlock)failure;
 
 ////////////////////

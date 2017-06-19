@@ -18,6 +18,8 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKPlacesQuery.h>
 #import <TravelKit/TKReference.h>
 #import <TravelKit/TKMedium.h>
+#import <TravelKit/TKTour.h>
+#import <TravelKit/TKToursQuery.h>
 #import <TravelKit/TKMapRegion.h>
 #import <TravelKit/TKMapPlaceAnnotation.h>
 #import <TravelKit/NSObject+Parsing.h>
@@ -96,7 +98,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 - (instancetype)new UNAVAILABLE_ATTRIBUTE;
 
 ///---------------------------------------------------------------------------------------
-/// @name Working queries
+/// @name Place working queries
 ///---------------------------------------------------------------------------------------
 
 /**
@@ -130,6 +132,10 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 - (void)detailedPlaceWithID:(NSString *)placeID
 	completion:(void (^)(TKPlace * _Nullable place, NSError * _Nullable error))completion;
 
+///---------------------------------------------------------------------------------------
+/// @name Media working queries
+///---------------------------------------------------------------------------------------
+
 /**
  Returns a collection of `TKMedium` objects for the given global Place identifier.
  
@@ -140,6 +146,21 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  */
 - (void)mediaForPlaceWithID:(NSString *)placeID
 	completion:(void (^)(NSArray<TKMedium *> * _Nullable media, NSError * _Nullable error))completion;
+
+///---------------------------------------------------------------------------------------
+/// @name Tours working queries
+///---------------------------------------------------------------------------------------
+
+/**
+ Returns a collection of `TKTour` objects for the given query object.
+ 
+ This method is good for fetching Tours to use for lists and other batch uses.
+
+ @param query `TKToursQuery` object containing the desired attributes to look for.
+ @param completion Completion block called on success or error.
+ */
+- (void)toursForQuery:(TKToursQuery *)query
+	completion:(void (^)(NSArray<TKTour *>  * _Nullable tours, NSError * _Nullable error))completion;
 
 ///---------------------------------------------------------------------------------------
 /// @name Map-related methods

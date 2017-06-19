@@ -288,7 +288,7 @@ typedef struct {
 	}
 
 	NSArray<TKMapPlaceAnnotation *> *classAnnotations = [firstClass
-	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
+	  mappedArrayUsingBlock:^id _Nullable(TKPlace * _Nonnull place, NSUInteger __unused idx) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
 		anno.pixelSize = 64;
 		return anno;
@@ -297,7 +297,7 @@ typedef struct {
 	[annotations addObjectsFromArray:classAnnotations];
 
 	classAnnotations = [secondClass
-	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
+	  mappedArrayUsingBlock:^id _Nullable(TKPlace * _Nonnull place, NSUInteger __unused idx) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
 		anno.pixelSize = 42;
 		return anno;
@@ -306,7 +306,7 @@ typedef struct {
 	[annotations addObjectsFromArray:classAnnotations];
 
 	classAnnotations = [thirdClass
-	  mappedArrayUsingBlock:^id(TKPlace *place, NSUInteger __unused idx) {
+	  mappedArrayUsingBlock:^id _Nullable(TKPlace * _Nonnull place, NSUInteger __unused idx) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
 		anno.pixelSize = 14;
 		return anno;
@@ -324,7 +324,7 @@ typedef struct {
                          toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove
 {
 	NSArray<NSString *> *displayedIDs = [newAnnotations
-	  mappedArrayUsingBlock:^id _Nonnull(TKMapPlaceAnnotation *p, NSUInteger __unused i) {
+	  mappedArrayUsingBlock:^id _Nullable(TKMapPlaceAnnotation * _Nonnull p, NSUInteger __unused idx) {
 		return p.place.ID;
 	}];
 

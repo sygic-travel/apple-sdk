@@ -53,7 +53,7 @@
 	return nil;
 }
 
-- (NSArray *)mappedArrayUsingBlock:(id (^)(id, NSUInteger))block
+- (NSArray *)mappedArrayUsingBlock:(id _Nullable (^)(id obj, NSUInteger idx))block
 {
 	NSMutableArray *results = [NSMutableArray arrayWithCapacity:self.count];
 

@@ -50,9 +50,9 @@ NS_ASSUME_NONNULL_BEGIN
  @return Mapped array.
  
  @note Any objects returned via block are included in the array returned. No type-checking is performed.
-       Returning `nil` in block works as filtering.
+       Returning `nil` within the block works as filtering.
  */
-- (NSArray *)mappedArrayUsingBlock:(id (^)(ObjectType, NSUInteger))block;
+- (NSArray *)mappedArrayUsingBlock:(id _Nullable (^)(ObjectType obj, NSUInteger idx))block;
 
 /**
  Array method for quick filtering purposes.

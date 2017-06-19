@@ -122,7 +122,6 @@
 
 		// Properties
 		_rating = [dictionary[@"rating"] parsedNumber];
-		_price = [dictionary[@"price"][@"value"] parsedNumber];
 
 		// Parents
 		NSMutableArray *locationIDs = [NSMutableArray array];

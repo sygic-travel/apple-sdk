@@ -28,7 +28,7 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
  
  To perform regional queries, use either `quadKeys` (preferred) or `bounds` property to specify the area of your interest.
  */
-@interface TKPlacesQuery : NSObject <NSCopying>
+@interface TKPlacesQuery : NSObject <NSCopying, NSMutableCopying>
 
 /// Search term to use. Usable for searching through English and localised names.
 @property (nonatomic, copy, nullable) NSString *searchTerm;
