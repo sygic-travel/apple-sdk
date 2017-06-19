@@ -9,6 +9,7 @@
 #import "TravelKit.h"
 #import "TKAPI+Private.h"
 #import "TKPlacesManager+Private.h"
+#import "TKToursManager+Private.h"
 #import "TKMapWorker+Private.h"
 #import "Foundation+TravelKit.h"
 
@@ -105,6 +106,17 @@
                  completion:(void (^)(NSArray<TKMedium *> *, NSError *))completion
 {
 	[[TKPlacesManager sharedManager] mediaForPlaceWithID:placeID completion:completion];
+}
+
+
+#pragma mark -
+#pragma mark Tours
+
+
+- (void)toursForQuery:(TKToursQuery *)query
+           completion:(void (^)(NSArray<TKTour *> *, NSError *))completion
+{
+	[[TKToursManager sharedManager] toursForQuery:query completion:completion];
 }
 
 

@@ -8,6 +8,7 @@
 
 #import "TKAPI+Private.h"
 #import "TKPlace+Private.h"
+#import "TKTour+Private.h"
 #import "TKMedium+Private.h"
 #import "NSObject+Parsing.h"
 
@@ -111,6 +112,9 @@
 
 	case TKAPIRequestTypePlaceGET: // GET
 		return [NSString stringWithFormat:@"/places/%@", ID];
+
+	case TKAPIRequestTypeToursQueryGET: // GET
+		return @"/tours/viator";
 
 	case TKAPIRequestTypeMediaGET: // GET
 		return [NSString stringWithFormat:@"/places/%@/media", ID];
@@ -231,7 +235,7 @@
 
 
 - (instancetype)initAsPlacesRequestForQuery:(TKPlacesQuery *)query
-	success:(void (^)(NSArray<TKPlace *> *place))success failure:(TKAPIConnectionFailureBlock)failure
+	success:(void (^)(NSArray<TKPlace *> *))success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
@@ -435,7 +439,7 @@
 
 
 - (instancetype)initAsPlaceRequestForItemWithID:(NSString *)itemID
-	success:(void (^)(TKPlace *place))success failure:(TKAPIConnectionFailureBlock)failure
+	success:(void (^)(TKPlace *))success failure:(TKAPIConnectionFailureBlock)failure
 {
 	if (self = [super init])
 	{
@@ -453,6 +457,94 @@
 
 			if (!place && failure) failure(nil);
 			if (place && success) success(place);
+
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
+			if (failure) failure(error);
+		};
+	}
+
+	return self;
+}
+
+
+////////////////////
+#pragma mark - Tours Query
+////////////////////
+
+
+- (instancetype)initAsToursRequestForQuery:(TKToursQuery *)query
+	success:(void (^)(NSArray<TKTour *> *))success failure:(TKAPIConnectionFailureBlock)failure
+{
+	if (self = [super init])
+	{
+		_type = TKAPIRequestTypeToursQueryGET;
+
+		NSMutableString *path = [[[TKAPI sharedAPI] pathForRequestType:_type] mutableCopy];
+
+		NSMutableArray<NSURLQueryItem *> *queryItems = [NSMutableArray arrayWithCapacity:10];
+
+		if (query.parentID)
+			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"destination_id" value:query.parentID]];
+
+		if (query.sortingType)
+		{
+			NSString *type = @"rating";
+			if (query.sortingType == TKToursQuerySortingPrice) type = @"price";
+			else if (query.sortingType == TKToursQuerySortingTopSellers) type = @"top_sellers";
+			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"sort_by" value:type]];
+		}
+
+		{
+			NSString *direction = (query.descendingSortingOrder) ? @"desc" : @"asc";
+			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"sort_direction" value:direction]];
+		}
+
+		if (query.pageNumber)
+		{
+			NSUInteger page = query.pageNumber.unsignedIntegerValue;
+			if (page > 1) [queryItems addObject:
+				[NSURLQueryItem queryItemWithName:@"page" value:[query.pageNumber stringValue]]];
+		}
+
+		if (queryItems.count)
+		{
+			[path appendString:@"?"];
+
+			NSMutableArray<NSString *> *queryFields = [NSMutableArray arrayWithCapacity:queryItems.count];
+			NSMutableCharacterSet *set = [[NSCharacterSet URLQueryAllowedCharacterSet] mutableCopy];
+			[set removeCharactersInString:@"?&="];
+
+			for (NSURLQueryItem *item in queryItems)
+			{
+				NSString *value = [item.value stringByAddingPercentEncodingWithAllowedCharacters:set];
+				NSString *field = [NSString stringWithFormat:@"%@=%@", item.name, value];
+				[queryFields addObject:field];
+			}
+
+			[path appendString:[queryFields componentsJoinedByString:@"&"]];
+		}
+
+		_path = path;
+
+		_successBlock = ^(TKAPIResponse *response){
+
+			NSMutableArray *stored = [NSMutableArray array];
+			NSArray *items = [response.data[@"tours"] parsedArray];
+
+			for (NSDictionary *dict in items)
+			{
+				if (![dict parsedDictionary]) continue;
+				NSString *guid = [dict[@"id"] parsedString];
+				if (!guid) continue;
+
+				TKTour *a = [[TKTour alloc] initFromResponse:dict];
+				if (a) [stored addObject:a];
+			}
+
+			_state = TKAPIRequestStateFinished;
+
+			if (success) success(stored);
 
 		}; _failureBlock = ^(TKAPIError *error){
 			_state = TKAPIRequestStateFinished;
@@ -665,6 +757,7 @@
 			@(TKAPIRequestTypePlacesQueryGET): @"PLACES_QUERY_GET",
 			@(TKAPIRequestTypePlacesBatchGET): @"PLACES_BATCH_GET",
 			@(TKAPIRequestTypePlaceGET): @"PLACE_GET",
+			@(TKAPIRequestTypeToursQueryGET): @"TOURS_QUERY_GET",
 			@(TKAPIRequestTypeMediaGET): @"MEDIA_GET",
 			@(TKAPIRequestTypeExchangeRatesGET): @"EXCHANGE_RATES_GET",
 			@(TKAPIRequestTypeCustomGET): @"CUSTOM_GET",

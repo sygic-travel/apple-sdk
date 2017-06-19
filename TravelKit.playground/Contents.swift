@@ -1,67 +1,40 @@
-//: Playground - noun: a place where people can play
 
 /*:
-# Hello playground!
+# TravelKit playground
 
-A *simple* demo with _markup_ examples.
+A *simple* 😎 demo playground with basic examples on how to use the **TravelKit SDK**.
+
+Let's begin with some Playground necessities first:
 */
 
-//: Another **variable** of type __String__
-
-
-//: This is also a Level 1 Heading
-
-//: ------
-
-//: ## This is a Level 2 Heading
-
-//: ### This is a Level 3 Heading
-
-/*:
-## Countries
-> 1. Brazil
-> 2. Vietnam
-> 3. Colombia
-
-(the > symbol denotes a new section)
-*/
-
-/*:
-## Points to Remember
-* Empty lines end the single line comment delimiter block
-* Comment content ends at a newline
-* Commands that work in a comment block work in single line
-* This **includes** text formatting commands
-*/
-
-/*:
-This text is above the horizontal rule
-
----
-And this is below
-*/
-
-/*: Setup and use a link reference.
-[The Swift Programming Language]: http://developer.apple.com/library/ios/documentation/Swift/Conceptual/Swift_Programming_Language/ "Some hover text"
-
-For more information, see [The Swift Programming Language].
-*/
-
-//: show Swift keywords such as `for` and `let` as monspaced font.
-
-/*:
-\* This is not a bullet item
-* but this is a bullet item
-*/
-
+// Couple of imports
 import Foundation
 import TravelKit
 import PlaygroundSupport
 
+// Define indefinite execution so the Playground
+// won't stop before the requests finish
+PlaygroundPage.current.needsIndefiniteExecution = true
+
+// Assign a shared instance to work with
 let travelKit = TravelKit.shared()
+
+// Create a lock used for results printing sync
 let printLock = NSLock()
 
+/*:
+## Setting up
+
+Bringing the SDK to life is no big deal – all you need to provide is an API key.
+*/
+
 travelKit.apiKey = "<YOUR_API_KEY_GOES_HERE>"
+
+/*:
+## Fetching Destinations
+
+For most of your future requests you'll often need some Destinations to work with. Here's an example call for some of them:
+*/
 
 let destinationsQuery = TKPlacesQuery()
 destinationsQuery.levels = [ .city, .town ]
@@ -75,6 +48,12 @@ travelKit.places(for: destinationsQuery) { (places, error) in
 	})
 	printLock.unlock()
 }
+
+/*:
+## Fetching Places with attributes
+
+Making some more advanced queries is very simple as well. For example, here's a quick code fetching the best 10 POI Places in Sightseeing category in London:
+*/
 
 let sightsQuery = TKPlacesQuery()
 sightsQuery.parentIDs = ["city:1"]
@@ -91,4 +70,28 @@ travelKit.places(for: sightsQuery) { (places, error) in
 	printLock.unlock()
 }
 
-PlaygroundPage.current.needsIndefiniteExecution = true
+/*:
+## Fetching Tours
+
+Querying for some Tours users would like to attend is very easy as well:
+*/
+
+let toursQuery = TKToursQuery()
+toursQuery.parentID = "city:1"
+toursQuery.sortingType = .price
+toursQuery.descendingSortingOrder = true
+
+travelKit.tours(for: toursQuery) { (tours, error) in
+	printLock.lock()
+	print("\nMost Expensive Tours in London:\n")
+	tours?.forEach({ (tour) in
+		print("$\(tour.price ?? 0): \(tour.title)")
+	})
+	printLock.unlock()
+}
+
+/*:
+[The Apple SDK Documentation]: http://docs.sygictravelapi.com/apple-sdk/latest/ "Apple SDK Documentation"
+
+For more detailed digging in, see [The Apple SDK Documentation].
+*/
