@@ -39,6 +39,8 @@ typedef NS_ENUM(NSUInteger, TKToursQuerySorting) {
 
 /// Desired sorting type of Tours returned.
 ///
+/// @note Changing this property may change current `descendingSortingOrder` setting.
+///
 /// @see `TKToursQuerySorting`
 @property (nonatomic) TKToursQuerySorting sortingType;
 
