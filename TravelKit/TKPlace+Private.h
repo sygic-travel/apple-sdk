@@ -16,6 +16,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Dictionary with @(TKPlaceLevel) key and NSString* values
 + (NSDictionary<NSNumber *, NSString *> *)levelStrings;
 
+/// Dictionary with @(TKPlaceCategory) key and NSString* values
++ (NSDictionary<NSNumber *, NSString *> *)categorySlugs;
+
 /// TKPlace resolver from NSString*
 + (TKPlaceLevel)levelFromString:(NSString *)str;
 

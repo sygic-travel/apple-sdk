@@ -250,8 +250,6 @@
 
 		if (query.levels)
 		{
-			//
-
 			NSMutableArray *levels = [NSMutableArray arrayWithCapacity:3];
 			NSDictionary<NSNumber *, NSString *> *supportedLevels = [TKPlace levelStrings];
 
@@ -289,11 +287,22 @@
 					query.bounds.northEastPoint.coordinate.longitude
 				 ]]];
 
-		if (query.categories.count)
+		if (query.categories)
 		{
+			NSMutableArray *slugs = [NSMutableArray arrayWithCapacity:3];
+			NSDictionary<NSNumber *, NSString *> *supportedSlugs = [TKPlace categorySlugs];
+
+			for (NSNumber *sl in supportedSlugs.allKeys)
+			{
+				TKPlaceCategory cat = sl.unsignedIntegerValue;
+				if (!(query.categories & cat)) continue;
+				NSString *slug = supportedSlugs[sl];
+				if (slug) [slugs addObject:slug];
+			}
+
 			NSString *operator = (query.categoriesMatching == TKPlacesQueryMatchingAll) ? @"," : @"|";
 			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"categories"
-				value:[query.categories componentsJoinedByString:operator]]];
+				value:[slugs componentsJoinedByString:operator]]];
 		}
 
 		if (query.tags.count)

@@ -60,9 +60,9 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 /// @note Matches Places having **ALL** of the requested categories.
 ///       Switching to **ANY** is possible by using the `categoriesMatching` property.
 ///
-/// @see `TKPlace`
+/// @see `TKPlaceCategory`
 /// @see `categoriesMatching`
-@property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
+@property (atomic) TKPlaceCategory categories;
 
 /// Flag controlling the matching rule for `categories`.
 @property (atomic) TKPlacesQueryMatching categoriesMatching;
