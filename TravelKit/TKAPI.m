@@ -114,7 +114,7 @@
 		return [NSString stringWithFormat:@"/places/%@", ID];
 
 	case TKAPIRequestTypeToursQueryGET: // GET
-		return @"/tours/viator";
+		return @"/tours";
 
 	case TKAPIRequestTypeMediaGET: // GET
 		return [NSString stringWithFormat:@"/places/%@/media", ID];
