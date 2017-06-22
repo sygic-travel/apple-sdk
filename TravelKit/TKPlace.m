@@ -113,7 +113,9 @@
 			lng = [dictionary[@"east"] parsedNumber];
 			CLLocation *northEast = (lat && lng) ? [[CLLocation alloc]
 				initWithLatitude:lat.doubleValue longitude:lng.doubleValue] : nil;
-			_boundingBox = [[TKMapRegion alloc] initWithSouthWestPoint:southWest northEastPoint:northEast];
+			if (southWest && northEast)
+				_boundingBox = [[TKMapRegion alloc]
+					initWithSouthWestPoint:southWest northEastPoint:northEast];
 		}
 
 		// Activity details
