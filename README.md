@@ -22,7 +22,7 @@ All development requirements are actually recommendations as it reflects the env
 
 Deployment requirements determine the minimal environments compatible with the SDK when you distribute it with your project.
 
-- OS X/macOS 10.9+ target (_macOS framework_)
+- OS X/macOS 10.10+ target (_macOS framework_)
 - iOS 8.2+ target (_iOS framework_)
 - tvOS 9.0+ target (_tvOS framework_)
 

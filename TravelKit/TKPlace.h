@@ -9,9 +9,9 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-#import "TKMapRegion.h"
-#import "TKReference.h"
-#import "TKMedium.h"
+#import <TravelKit/TKMapRegion.h>
+#import <TravelKit/TKReference.h>
+#import <TravelKit/TKMedium.h>
 
 /**
  Flag value denoting level value of a `TKPlace`.

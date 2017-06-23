@@ -10,9 +10,9 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
-#import "TKPlace.h"
-#import "TKMapRegion.h"
-#import "TKMapPlaceAnnotation.h"
+#import <TravelKit/TKPlace.h>
+#import <TravelKit/TKMapRegion.h>
+#import <TravelKit/TKMapPlaceAnnotation.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

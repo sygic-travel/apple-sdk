@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKMedium.h"
+#import <TravelKit/TKMedium.h>
 
 @interface TKMedium ()
 
