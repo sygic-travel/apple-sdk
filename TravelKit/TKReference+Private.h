@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKReference.h"
+#import <TravelKit/TKReference.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -8,8 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TKPlace.h"
-#import "TKMapRegion.h"
+#import <TravelKit/TKPlace.h>
+#import <TravelKit/TKMapRegion.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

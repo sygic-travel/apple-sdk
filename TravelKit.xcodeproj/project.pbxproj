@@ -387,7 +387,6 @@
 				D6B2A1251E530AFD005509E8 /* Frameworks */,
 				D6B2A1261E530AFD005509E8 /* Headers */,
 				D6B2A1271E530AFD005509E8 /* Resources */,
-				D6B2A14E1E530F29005509E8 /* Normalize Framework headers */,
 			);
 			buildRules = (
 			);
@@ -406,7 +405,6 @@
 				D6B2A1501E530F60005509E8 /* Frameworks */,
 				D6B2A1511E530F60005509E8 /* Headers */,
 				D6B2A1521E530F60005509E8 /* Resources */,
-				D6B2A1731E531279005509E8 /* Normalize Framework headers */,
 			);
 			buildRules = (
 			);
@@ -425,7 +423,6 @@
 				D6C3D0481E4DD36200EBB54F /* Frameworks */,
 				D6C3D0491E4DD36200EBB54F /* Headers */,
 				D6C3D04A1E4DD36200EBB54F /* Resources */,
-				D6B2A14C1E530E15005509E8 /* Normalize Framework headers */,
 			);
 			buildRules = (
 			);
@@ -502,51 +499,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		D6B2A14C1E530E15005509E8 /* Normalize Framework headers */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Normalize Framework headers";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd \"$BUILT_PRODUCTS_DIR\"\ncd \"$PRODUCT_NAME.framework\"\ncd \"Headers\"\nfor i in $(ls | grep \".h\"); do\n    sed -i \"\" \"s/#import \\\"/#import <$PRODUCT_NAME\\//g\" $i\n    sed -i \"\" \"s/.h\\\"/.h>/g\" $i\ndone\n";
-		};
-		D6B2A14E1E530F29005509E8 /* Normalize Framework headers */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Normalize Framework headers";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd \"$BUILT_PRODUCTS_DIR\"\ncd \"$PRODUCT_NAME.framework\"\ncd \"Headers\"\nfor i in $(ls | grep \".h\"); do\n    sed -i \"\" \"s/#import \\\"/#import <$PRODUCT_NAME\\//g\" $i\n    sed -i \"\" \"s/.h\\\"/.h>/g\" $i\ndone\n";
-		};
-		D6B2A1731E531279005509E8 /* Normalize Framework headers */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Normalize Framework headers";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "cd \"$BUILT_PRODUCTS_DIR\"\ncd \"$PRODUCT_NAME.framework\"\ncd \"Headers\"\nfor i in $(ls | grep \".h\"); do\n    sed -i \"\" \"s/#import \\\"/#import <$PRODUCT_NAME\\//g\" $i\n    sed -i \"\" \"s/.h\\\"/.h>/g\" $i\ndone\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		D6B2A1241E530AFD005509E8 /* Sources */ = {

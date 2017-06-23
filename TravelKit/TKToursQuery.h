@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import "TKTour.h"
+#import <TravelKit/TKTour.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

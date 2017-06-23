@@ -7,13 +7,13 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TKAPIConnection+Private.h"
+#import <TravelKit/TKAPIConnection+Private.h>
 
-#import "TKPlace.h"
-#import "TKTour.h"
-#import "TKMedium.h"
-#import "TKPlacesQuery.h"
-#import "TKToursQuery.h"
+#import <TravelKit/TKPlace.h>
+#import <TravelKit/TKTour.h>
+#import <TravelKit/TKMedium.h>
+#import <TravelKit/TKPlacesQuery.h>
+#import <TravelKit/TKToursQuery.h>
 
 #define API_PROTOCOL   "https"
 #define API_SUBDOMAIN  "api"
