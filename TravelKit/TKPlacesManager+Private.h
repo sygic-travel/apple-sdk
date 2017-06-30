@@ -17,6 +17,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)sharedManager;
 
+#pragma mark - Generic queries
+
 - (void)placesForQuery:(TKPlacesQuery *)query
 	completion:(void (^)(NSArray<TKPlace *>  * _Nullable places, NSError * _Nullable error))completion;
 

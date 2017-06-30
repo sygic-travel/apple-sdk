@@ -7,10 +7,23 @@
 //
 
 #import "TKPlacesManager+Private.h"
+#import "TKDatabaseManager+Private.h"
 #import "TKAPI+Private.h"
 
 
+@interface TKPlacesManager ()
+
+@property (nonatomic, strong) TKDatabaseManager *database;
+
+@end
+
+
 @implementation TKPlacesManager
+
+
+#pragma mark -
+#pragma mark Initialization
+
 
 + (instancetype)sharedManager
 {
@@ -22,6 +35,16 @@
 	});
 
 	return shared;
+}
+
+- (instancetype)init
+{
+	if (self = [super init])
+	{
+		_database = [TKDatabaseManager sharedInstance];
+	}
+
+	return self;
 }
 
 + (NSCache<NSString *, TKPlace *> *)placeCache
@@ -36,6 +59,11 @@
 
 	return placeCache;
 }
+
+
+#pragma mark -
+#pragma mark General queries
+
 
 - (void)placesForQuery:(TKPlacesQuery *)query completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion
 {

@@ -15,20 +15,28 @@
 
 @implementation TKPlace
 
-+ (NSArray<NSString *> *)supportedCategories
++ (NSDictionary<NSNumber *, NSString *> *)categorySlugs
 {
-	static NSArray *categories = nil;
+	static NSDictionary<NSNumber *, NSString *> *slugs = nil;
 
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		categories = @[
-			@"sightseeing", @"shopping", @"eating", @"discovering", @"playing",
-			@"traveling", @"going_out", @"hiking", @"sports", @"relaxing",
-			@"sleeping",
-		];
+		slugs = @{
+			@(TKPlaceCategorySightseeing): @"sightseeing",
+			@(TKPlaceCategoryShopping): @"shopping",
+			@(TKPlaceCategoryEating): @"eating",
+			@(TKPlaceCategoryDiscovering): @"discovering",
+			@(TKPlaceCategoryPlaying): @"playing",
+			@(TKPlaceCategoryTravelling): @"traveling",
+			@(TKPlaceCategoryGoingOut): @"going_out",
+			@(TKPlaceCategoryHiking): @"hiking",
+			@(TKPlaceCategorySports): @"sports",
+			@(TKPlaceCategoryRelaxing): @"relaxing",
+			@(TKPlaceCategorySleeping): @"sleeping",
+		};
 	});
 
-	return categories;
+	return slugs;
 }
 
 + (NSDictionary<NSNumber *, NSString *> *)levelStrings
@@ -68,6 +76,25 @@
 				return key.unsignedIntegerValue;
 
 	return TKPlaceLevelUnknown;
+}
+
++ (TKPlaceCategory)categoriesFromSlugArray:(NSArray<NSString *> *)categories
+{
+	TKPlaceCategory res = TKPlaceCategoryNone;
+
+	if ([categories containsObject:@"sightseeing"]) res |= TKPlaceCategorySightseeing;
+	if ([categories containsObject:@"shopping"]) res |= TKPlaceCategoryShopping;
+	if ([categories containsObject:@"eating"]) res |= TKPlaceCategoryEating;
+	if ([categories containsObject:@"discovering"]) res |= TKPlaceCategoryDiscovering;
+	if ([categories containsObject:@"playing"]) res |= TKPlaceCategoryPlaying;
+	if ([categories containsObject:@"traveling"]) res |= TKPlaceCategoryTravelling;
+	if ([categories containsObject:@"going_out"]) res |= TKPlaceCategoryGoingOut;
+	if ([categories containsObject:@"hiking"]) res |= TKPlaceCategoryHiking;
+	if ([categories containsObject:@"sports"]) res |= TKPlaceCategorySports;
+	if ([categories containsObject:@"relaxing"]) res |= TKPlaceCategoryRelaxing;
+	if ([categories containsObject:@"sleeping"]) res |= TKPlaceCategorySleeping;
+
+	return res;
 }
 
 - (instancetype)initFromResponse:(NSDictionary *)dictionary
@@ -137,11 +164,9 @@
 			_marker = nil;
 
 		// Fetch possible categories, tags and flags
-		NSMutableOrderedSet<NSString *> *categories = [NSMutableOrderedSet orderedSetWithCapacity:4];
 		NSMutableOrderedSet<NSString *> *flags = [NSMutableOrderedSet orderedSetWithCapacity:4];
 
-		for (NSString *str in [dictionary[@"categories"] parsedArray])
-			if ([str parsedString]) [categories addObject:str];
+		_categories = [[self class] categoriesFromSlugArray:[dictionary[@"categories"] parsedArray]];
 
 		if ([[dictionary[@"description"][@"is_translated"] parsedNumber] boolValue])
 			[flags addObject:@"translated_description"];
@@ -149,7 +174,6 @@
 		if ([[dictionary[@"description"][@"provider"] parsedString] isEqualToString:@"wikipedia"])
 			[flags addObject:@"wikipedia_description"];
 
-		_categories = [categories array];
 		_flags = [flags array];
     }
 
@@ -158,19 +182,17 @@
 
 - (NSUInteger)displayableHexColor
 {
-	NSString *firstCategory = _categories.firstObject;
-
-	if ([firstCategory isEqual:@"sightseeing"]) return 0xF6746C;
-	if ([firstCategory isEqual:@"shopping"])    return 0xE7A41C;
-	if ([firstCategory isEqual:@"eating"])      return 0xF6936C;
-	if ([firstCategory isEqual:@"discovering"]) return 0x898F9A;
-	if ([firstCategory isEqual:@"playing"])     return 0x6CD8F6;
-	if ([firstCategory isEqual:@"traveling"])   return 0x6B91F6;
-	if ([firstCategory isEqual:@"going_out"])   return 0xE76CA0;
-	if ([firstCategory isEqual:@"hiking"])      return 0xD59B6B;
-	if ([firstCategory isEqual:@"sports"])      return 0x68B277;
-	if ([firstCategory isEqual:@"relaxing"])    return 0xA06CF6;
-	if ([firstCategory isEqual:@"sleeping"])    return 0xA4CB69;
+	if (_categories & TKPlaceCategorySightseeing) return 0xF6746C;
+	if (_categories & TKPlaceCategoryShopping)    return 0xE7A41C;
+	if (_categories & TKPlaceCategoryEating)      return 0xF6936C;
+	if (_categories & TKPlaceCategoryDiscovering) return 0x898F9A;
+	if (_categories & TKPlaceCategoryPlaying)     return 0x6CD8F6;
+	if (_categories & TKPlaceCategoryTravelling)  return 0x6B91F6;
+	if (_categories & TKPlaceCategoryGoingOut)    return 0xE76CA0;
+	if (_categories & TKPlaceCategoryHiking)      return 0xD59B6B;
+	if (_categories & TKPlaceCategorySports)      return 0x68B277;
+	if (_categories & TKPlaceCategoryRelaxing)    return 0xA06CF6;
+	if (_categories & TKPlaceCategorySleeping)    return 0xA4CB69;
 
 	return 0x999999;
 }
