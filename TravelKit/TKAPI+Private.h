@@ -18,7 +18,7 @@
 #define API_PROTOCOL   "https"
 #define API_SUBDOMAIN  "api"
 #define API_BASE_URL   "sygictravelapi.com"
-#define API_VERSION    "0.2"
+#define API_VERSION    "1.0"
 
 typedef NS_ENUM(NSInteger, TKAPIRequestType)
 {
