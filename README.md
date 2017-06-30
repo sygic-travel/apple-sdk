@@ -58,7 +58,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 TKPlacesQuery *query = [TKPlacesQuery new];
 query.parentIDs = @[ @"city:1" ];
 query.levels = TKPlaceLevelPOI;
-query.categories = @[ @"sightseeing" ];
+query.categories = TKPlaceCategorySightseeing;
 query.limit = 10;
 	
 // Perform query and print a message containing the first item
@@ -76,7 +76,7 @@ TravelKit.shared().apiKey = "<YOUR_API_KEY_GOES_HERE>"
 let query = TKPlacesQuery()
 query.parentIDs = ["city:1"]
 query.levels = .POI
-query.categories = ["sightseeing"]
+query.categories = [.sightseeing]
 query.limit = 10
 	
 // Perform query and print a message containing the first item
@@ -98,6 +98,8 @@ Class               | Description
 **`TKPlace`**         | Basic `Place` entity
 **`TKPlaceDetail`**   | Detailed object including additional `Place` properties
 **`TKPlacesQuery`**   | Entity used when querying for `Places`
+**`TKTour`**          | Basic `Tour` entity
+**`TKToursQuery`**    | Entity used when querying for `Tours`
 **`TKMedium`**        | Basic `Medium` entity
 **`TKReference`**     | External `Reference` link
 

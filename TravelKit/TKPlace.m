@@ -80,19 +80,14 @@
 
 + (TKPlaceCategory)categoriesFromSlugArray:(NSArray<NSString *> *)categories
 {
-	TKPlaceCategory res = TKPlaceCategoryNone;
+	TKPlaceCategory __block res = TKPlaceCategoryNone;
 
-	if ([categories containsObject:@"sightseeing"]) res |= TKPlaceCategorySightseeing;
-	if ([categories containsObject:@"shopping"]) res |= TKPlaceCategoryShopping;
-	if ([categories containsObject:@"eating"]) res |= TKPlaceCategoryEating;
-	if ([categories containsObject:@"discovering"]) res |= TKPlaceCategoryDiscovering;
-	if ([categories containsObject:@"playing"]) res |= TKPlaceCategoryPlaying;
-	if ([categories containsObject:@"traveling"]) res |= TKPlaceCategoryTravelling;
-	if ([categories containsObject:@"going_out"]) res |= TKPlaceCategoryGoingOut;
-	if ([categories containsObject:@"hiking"]) res |= TKPlaceCategoryHiking;
-	if ([categories containsObject:@"sports"]) res |= TKPlaceCategorySports;
-	if ([categories containsObject:@"relaxing"]) res |= TKPlaceCategoryRelaxing;
-	if ([categories containsObject:@"sleeping"]) res |= TKPlaceCategorySleeping;
+	NSDictionary<NSNumber *, NSString *> *slugs = [self categorySlugs];
+
+	[slugs enumerateKeysAndObjectsUsingBlock:^(NSNumber *cat, NSString *slug, BOOL *__unused stop) {
+		if ([categories containsObject:slug])
+			res |= cat.unsignedIntegerValue;
+	}];
 
 	return res;
 }

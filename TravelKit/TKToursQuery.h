@@ -27,8 +27,6 @@ typedef NS_ENUM(NSUInteger, TKToursQuerySorting) {
 
 /**
  Query object used for fetching specific collections of `TKTour` objects.
- 
- To perform regional queries, use either `quadKeys` (preferred) or `bounds` property to specify the area of your interest.
  */
 @interface TKToursQuery : NSObject <NSCopying, NSMutableCopying>
 

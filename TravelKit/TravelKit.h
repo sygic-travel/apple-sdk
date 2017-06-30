@@ -119,7 +119,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  @param completion Completion block called on success or error.
  */
 - (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
-	completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion;
+	completion:(void (^)(NSArray<TKPlace *> * _Nullable places, NSError * _Nullable error))completion;
 
 /**
  Returns a Detailed `TKPlace` object for the given global Place identifier.
@@ -167,7 +167,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 ///---------------------------------------------------------------------------------------
 
 /**
- Fetches an array of IDs for Places previously marked as favourite.
+ Fetches an array of IDs of Places previously marked as favourite.
 
  @return Array of Place IDs.
  */
@@ -177,7 +177,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  Updates a favourite state for a specific Place ID.
 
  @param favouriteID Place ID to update.
- @param favourite Favourite state, either `YES` or `NO`.
+ @param favourite Desired Favourite state, either `YES` or `NO`.
  */
 - (void)updateFavouritePlaceID:(NSString *)favouriteID setFavourite:(BOOL)favourite;
 
