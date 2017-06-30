@@ -45,3 +45,5 @@ $moduleVersion = `cat TravelKit.xcodeproj/project.pbxproj | grep TK_BUNDLE_VERSI
 #  --xcodebuild-arguments --objc,Realm/Realm.h,--,-x,objective-c,-isysroot,$(xcrun --show-sdk-path),-I,$(pwd) \
 #  --root-url https://realm.io/docs/objc/2.2.0/api/ \
 #  --head "$(cat docs/custom_head.html)"
+
+`open Documentation/html/index.html`
