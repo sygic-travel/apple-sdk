@@ -82,6 +82,16 @@
 
 
 #pragma mark -
+#pragma mark Generic methods
+
+
+- (void)clearUserData
+{
+	[[TKSessionManager sharedSession] clearUserData];
+}
+
+
+#pragma mark -
 #pragma mark Places
 
 

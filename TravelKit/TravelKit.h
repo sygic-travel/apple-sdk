@@ -223,6 +223,15 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
                            toKeep:(NSMutableArray<TKMapPlaceAnnotation *> *)toKeep
                          toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove;
 
+///---------------------------------------------------------------------------------------
+/// @name Session-related methods
+///---------------------------------------------------------------------------------------
+
+/**
+ Clears all cached and persisting user data.
+ */
+- (void)clearUserData;
+
 @end
 
 NS_ASSUME_NONNULL_END
