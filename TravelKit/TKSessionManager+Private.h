@@ -25,10 +25,10 @@
 
 - (void)clearUserData;
 
-#pragma mark - Favourites
+#pragma mark - Favorites
 
-- (NSArray<NSString *> *)favouritePlaceIDs;
+- (NSArray<NSString *> *)favoritePlaceIDs;
 
-- (void)updateFavouritePlaceID:(NSString *)favouriteID setFavourite:(BOOL)favourite;
+- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite;
 
 @end

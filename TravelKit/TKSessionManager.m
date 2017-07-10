@@ -47,35 +47,35 @@
 
 - (void)clearUserData
 {
-	// Clear Favourites
-	[_database runQuery:@"DELETE * FROM %@;" tableName:kDatabaseTableFavourite];
+	// Clear Favorites
+	[_database runQuery:@"DELETE * FROM %@;" tableName:kDatabaseTableFavorites];
 }
 
 
 #pragma mark -
-#pragma mark Favourites
+#pragma mark Favorites
 
 
-- (NSArray<NSString *> *)favouritePlaceIDs
+- (NSArray<NSString *> *)favoritePlaceIDs
 {
 	NSArray *results = [_database runQuery:
-		@"SELECT id FROM %@;" tableName:kDatabaseTableFavourite];
+		@"SELECT id FROM %@;" tableName:kDatabaseTableFavorites];
 
 	return [results mappedArrayUsingBlock:^NSString *(NSDictionary *res, NSUInteger __unused idx) {
 		return [res[@"id"] parsedString];
 	}];
 }
 
-- (void)updateFavouritePlaceID:(NSString *)favouriteID setFavourite:(BOOL)favourite
+- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
 {
-	if (!favouriteID) return;
+	if (!favoriteID) return;
 
-	if (favourite)
+	if (favorite)
 		[_database runQuery:@"INSERT OR IGNORE INTO %@ VALUES (?);"
-			tableName:kDatabaseTableFavourite data:@[ favouriteID ]];
+			tableName:kDatabaseTableFavorites data:@[ favoriteID ]];
 	else
 		[_database runQuery:@"DELETE FROM %@ WHERE id = ?;"
-			tableName:kDatabaseTableFavourite data:@[ favouriteID ]];
+			tableName:kDatabaseTableFavorites data:@[ favoriteID ]];
 }
 
 @end

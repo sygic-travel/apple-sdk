@@ -122,17 +122,17 @@
 
 
 #pragma mark -
-#pragma mark Favourites
+#pragma mark Favorites
 
 
-- (NSArray<NSString *> *)favouritePlaceIDs
+- (NSArray<NSString *> *)favoritePlaceIDs
 {
-	return [[TKSessionManager sharedSession] favouritePlaceIDs];
+	return [[TKSessionManager sharedSession] favoritePlaceIDs];
 }
 
-- (void)updateFavouritePlaceID:(NSString *)favouriteID setFavourite:(BOOL)favourite
+- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
 {
-	[[TKSessionManager sharedSession] updateFavouritePlaceID:favouriteID setFavourite:favourite];
+	[[TKSessionManager sharedSession] updateFavoritePlaceID:favoriteID setFavorite:favorite];
 }
 
 

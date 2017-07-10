@@ -24,12 +24,12 @@ NSString * const kDatabaseFilename = @"database.sqlite";
 NSUInteger const kDatabaseSchemeVersionLatest = 20170621;
 
 // Table names // ABI-EXPORTED
-NSString * const kDatabaseTablePlace = @"place";
-NSString * const kDatabaseTablePlaceDetail = @"place_detail";
+NSString * const kDatabaseTablePlaces = @"places";
+NSString * const kDatabaseTablePlaceDetails = @"place_details";
 NSString * const kDatabaseTablePlaceParents = @"place_parents";
-NSString * const kDatabaseTableMedium = @"medium";
-NSString * const kDatabaseTableReference = @"reference";
-NSString * const kDatabaseTableFavourite = @"favourite";
+NSString * const kDatabaseTableMedia = @"media";
+NSString * const kDatabaseTableReferences = @"references";
+NSString * const kDatabaseTableFavorites = @"favorites";
 
 
 #pragma mark Private category
@@ -225,10 +225,10 @@ NSString * const kDatabaseTableFavourite = @"favourite";
 	//////////////
 	// Perform migration rules
 
-	// Favourites
+	// Favorites
 	if (currentScheme < 20170621) {
 		[self runUpdate:@"CREATE TABLE IF NOT EXISTS %@ "
-			"(id text PRIMARY KEY NOT NULL);" tableName:kDatabaseTableFavourite];
+			"(id text PRIMARY KEY NOT NULL);" tableName:kDatabaseTableFavorites];
 	}
 
 	//////////////

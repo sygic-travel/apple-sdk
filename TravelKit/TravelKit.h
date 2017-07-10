@@ -163,23 +163,23 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 	completion:(void (^)(NSArray<TKTour *>  * _Nullable tours, NSError * _Nullable error))completion;
 
 ///---------------------------------------------------------------------------------------
-/// @name Favourites
+/// @name Favorites
 ///---------------------------------------------------------------------------------------
 
 /**
- Fetches an array of IDs of Places previously marked as favourite.
+ Fetches an array of IDs of Places previously marked as favorite.
 
  @return Array of Place IDs.
  */
-- (NSArray<NSString *> *)favouritePlaceIDs;
+- (NSArray<NSString *> *)favoritePlaceIDs;
 
 /**
- Updates a favourite state for a specific Place ID.
+ Updates a favorite state for a specific Place ID.
 
- @param favouriteID Place ID to update.
- @param favourite Desired Favourite state, either `YES` or `NO`.
+ @param favoriteID Place ID to update.
+ @param favorite Desired Favorite state, either `YES` or `NO`.
  */
-- (void)updateFavouritePlaceID:(NSString *)favouriteID setFavourite:(BOOL)favourite;
+- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite;
 
 ///---------------------------------------------------------------------------------------
 /// @name Map-related methods

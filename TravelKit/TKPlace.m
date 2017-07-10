@@ -27,7 +27,7 @@
 			@(TKPlaceCategoryEating): @"eating",
 			@(TKPlaceCategoryDiscovering): @"discovering",
 			@(TKPlaceCategoryPlaying): @"playing",
-			@(TKPlaceCategoryTravelling): @"traveling",
+			@(TKPlaceCategoryTraveling): @"traveling",
 			@(TKPlaceCategoryGoingOut): @"going_out",
 			@(TKPlaceCategoryHiking): @"hiking",
 			@(TKPlaceCategorySports): @"sports",
@@ -182,7 +182,7 @@
 	if (_categories & TKPlaceCategoryEating)      return 0xF6936C;
 	if (_categories & TKPlaceCategoryDiscovering) return 0x898F9A;
 	if (_categories & TKPlaceCategoryPlaying)     return 0x6CD8F6;
-	if (_categories & TKPlaceCategoryTravelling)  return 0x6B91F6;
+	if (_categories & TKPlaceCategoryTraveling)   return 0x6B91F6;
 	if (_categories & TKPlaceCategoryGoingOut)    return 0xE76CA0;
 	if (_categories & TKPlaceCategoryHiking)      return 0xD59B6B;
 	if (_categories & TKPlaceCategorySports)      return 0x68B277;
