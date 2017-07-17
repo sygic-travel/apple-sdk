@@ -1,8 +1,8 @@
-# Caching
+# Persistence & Caching
 
 ## General
 
-All the cached stuff is held _session-only_ – that means it's not persistent and not available the next time the application initializes the kit.
+All the cached stuff is held _session-only_ (unless otherwise stated) – that means it's not persistent and not available the next time the application initializes the kit.
 
 ## Places
 
@@ -11,6 +11,10 @@ All the cached stuff is held _session-only_ – that means it's not persistent a
 `-placesWithIDs:completion:` – cached using every single `placeID` keeping approx. last 200 objects
 
 `-detailedPlaceWithID:completion:` – cached using the `placeID` given, keeping approx. last 200 objects
+
+## Favorites
+
+Kept in a local persistence. Resettable by using `-[TravelKit clearUserData]`.
 
 ## Media
 
