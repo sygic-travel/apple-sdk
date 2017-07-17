@@ -26,15 +26,15 @@
 
 - (void)toursForQuery:(TKToursQuery *)query completion:(void (^)(NSArray<TKTour *> *, NSError *))completion
 {
-	static NSCache<NSNumber *, NSArray<TKTour *> *> *placesCache = nil;
+	static NSCache<NSNumber *, NSArray<TKTour *> *> *toursCache = nil;
 
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
-		placesCache = [NSCache new];
-		placesCache.countLimit = 256;
+		toursCache = [NSCache new];
+		toursCache.countLimit = 32;
 	});
 
-	NSArray *cached = [placesCache objectForKey:@(query.hash)];
+	NSArray *cached = [toursCache objectForKey:@(query.hash)];
 	if (cached) {
 		if (completion)
 			completion(cached, nil);
@@ -43,7 +43,7 @@
 
 	[[[TKAPIRequest alloc] initAsToursRequestForQuery:query success:^(NSArray<TKTour *> *tours) {
 
-		[placesCache setObject:tours forKey:@(query.hash)];
+		[toursCache setObject:tours forKey:@(query.hash)];
 
 		if (completion)
 			completion(tours, nil);
