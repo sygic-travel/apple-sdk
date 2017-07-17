@@ -23,7 +23,7 @@ $(window).load(function() {
   if ((window.location.pathname.indexOf('index.html') != -1) ||
       (window.location.pathname.indexOf('.html') == -1))
     $('head style.nav-group-highlight-style').remove();
-  $('li.nav-group-name[data-name="Guides"]').remove();
+  $('li.nav-group-name[data-name="Guides"] li.nav-group-task[data-name="Introduction"]').remove();
   var orderedPrefixes = ["TravelKit", "TKPlace", "TKTour", "TKMedium", "TKReference", "TKMap"].reverse();
   $.each(orderedPrefixes, function(i,e){
     var elms = $('li.nav-group-task[data-name*="'+e+'"]').toArray().reverse();
