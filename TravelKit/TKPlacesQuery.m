@@ -28,7 +28,7 @@
 
 	if (_levels) [key appendString:[@(_levels) stringValue]];
 	if (_searchTerm.length) [key appendString:_searchTerm];
-	if (_categories.count) [key appendString:[_categories componentsJoinedByString:@"+"]];
+	if (_categories) [key appendString:[@(_categories) stringValue]];
 	if (_categoriesMatching) [key appendString:@"@"];
 	if (_tags.count) [key appendString:[_tags componentsJoinedByString:@"+"]];
 	if (_tagsMatching) [key appendString:@"@"];
@@ -48,7 +48,7 @@
 
 	query.levels = _levels;
 	query.searchTerm = [_searchTerm copy];
-	query.categories = [_categories copy];
+	query.categories = _categories;
 	query.categoriesMatching = _categoriesMatching;
 	query.tags = [_tags copy];
 	query.tagsMatching = _tagsMatching;

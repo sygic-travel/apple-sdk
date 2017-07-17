@@ -23,10 +23,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (atomic) NSUInteger ID NS_SWIFT_NAME(ID);
 
 /// Reference title.
-@property (nonatomic, copy, nullable) NSString *title;
+@property (nonatomic, copy) NSString *title;
 
 /// Reference type.
-@property (nonatomic, copy, nullable) NSString *type;
+@property (nonatomic, copy) NSString *type;
 
 /// Reference supplier.
 @property (nonatomic, copy, nullable) NSString *supplier;
@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *languageID;
 
 /// Online `NSURL` of the Reference.
-@property (nonatomic, copy, nullable) NSURL *onlineURL;
+@property (nonatomic, copy) NSURL *onlineURL;
 
 /// Additional flags.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *flags;

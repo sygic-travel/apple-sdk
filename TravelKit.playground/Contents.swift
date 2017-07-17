@@ -58,7 +58,7 @@ Making some more advanced queries is very simple as well. For example, here's a 
 let sightsQuery = TKPlacesQuery()
 sightsQuery.parentIDs = ["city:1"]
 sightsQuery.levels = .POI
-sightsQuery.categories = ["sightseeing"]
+sightsQuery.categories = [.sightseeing]
 sightsQuery.limit = 10
 
 travelKit.places(for: sightsQuery) { (places, error) in

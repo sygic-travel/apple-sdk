@@ -26,6 +26,9 @@
 		D61B92661ED47B5B00645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92651ED47B5B00645489 /* SystemConfiguration.framework */; };
 		D61B92681ED47B6100645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92671ED47B6100645489 /* SystemConfiguration.framework */; };
 		D61B926A1ED4803D00645489 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92691ED4803D00645489 /* CoreTelephony.framework */; };
+		D649BAA11ED6E23D003EF406 /* TravelKit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */; };
+		D64B13961EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */; };
+		D64B13971EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */; };
 		D666C4051EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
 		D666C4061EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
 		D666C4071EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
@@ -35,6 +38,12 @@
 		D689DBF01EBB062B00708599 /* Foundation+TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EF38EC1EB9EA6E00260E82 /* Foundation+TravelKit.m */; };
 		D689DBF11EBB062C00708599 /* Foundation+TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EF38EC1EB9EA6E00260E82 /* Foundation+TravelKit.m */; };
 		D689DBF21EBB062C00708599 /* Foundation+TravelKit.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EF38EC1EB9EA6E00260E82 /* Foundation+TravelKit.m */; };
+		D68E947A1F05354E009E2C9C /* TKSessionManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D68E94781F05354E009E2C9C /* TKSessionManager+Private.h */; };
+		D68E947B1F05354E009E2C9C /* TKSessionManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D68E94781F05354E009E2C9C /* TKSessionManager+Private.h */; };
+		D68E947C1F05354E009E2C9C /* TKSessionManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D68E94781F05354E009E2C9C /* TKSessionManager+Private.h */; };
+		D68E947D1F05354E009E2C9C /* TKSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D68E94791F05354E009E2C9C /* TKSessionManager.m */; };
+		D68E947E1F05354E009E2C9C /* TKSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D68E94791F05354E009E2C9C /* TKSessionManager.m */; };
+		D68E947F1F05354E009E2C9C /* TKSessionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D68E94791F05354E009E2C9C /* TKSessionManager.m */; };
 		D69831911EF3D4B4002776BE /* TKToursQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = D698318F1EF3D4B4002776BE /* TKToursQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D69831921EF3D4B4002776BE /* TKToursQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = D698318F1EF3D4B4002776BE /* TKToursQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D69831931EF3D4B4002776BE /* TKToursQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = D698318F1EF3D4B4002776BE /* TKToursQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -125,6 +134,48 @@
 		D6EF38F41EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */ = {isa = PBXBuildFile; fileRef = D6EF38E71EB9D11400260E82 /* TKMapPlaceAnnotation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6EF38F51EB9EB7800260E82 /* TKMapPlaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EF38E81EB9D11400260E82 /* TKMapPlaceAnnotation.m */; };
 		D6EF38F61EB9EB7800260E82 /* TKMapPlaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EF38E81EB9D11400260E82 /* TKMapPlaceAnnotation.m */; };
+		D6F0E3E11ED6E7DB00A0D3D5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */; };
+		D6F0E3E31ED6E7F100A0D3D5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E21ED6E7F100A0D3D5 /* libsqlite3.tbd */; };
+		D6F0E3E51ED6E81000A0D3D5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E41ED6E81000A0D3D5 /* libsqlite3.tbd */; };
+		D6F0E46C1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */; };
+		D6F0E46D1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */; };
+		D6F0E46E1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */; };
+		D6F0E46F1ED6EF5800A0D3D5 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type -Wno-sign-conversion -Wno-nonnull"; }; };
+		D6F0E4701ED6EF5800A0D3D5 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type -Wno-sign-conversion -Wno-nonnull"; }; };
+		D6F0E4711ED6EF5800A0D3D5 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type -Wno-sign-conversion -Wno-nonnull"; }; };
+		D6F0E4721ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4621ED6EF5800A0D3D5 /* FMDatabaseAdditions.h */; };
+		D6F0E4731ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4621ED6EF5800A0D3D5 /* FMDatabaseAdditions.h */; };
+		D6F0E4741ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4621ED6EF5800A0D3D5 /* FMDatabaseAdditions.h */; };
+		D6F0E4751ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4631ED6EF5800A0D3D5 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E4761ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4631ED6EF5800A0D3D5 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E4771ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4631ED6EF5800A0D3D5 /* FMDatabaseAdditions.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E4781ED6EF5800A0D3D5 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4641ED6EF5800A0D3D5 /* FMDatabasePool.h */; };
+		D6F0E4791ED6EF5800A0D3D5 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4641ED6EF5800A0D3D5 /* FMDatabasePool.h */; };
+		D6F0E47A1ED6EF5800A0D3D5 /* FMDatabasePool.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4641ED6EF5800A0D3D5 /* FMDatabasePool.h */; };
+		D6F0E47B1ED6EF5800A0D3D5 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4651ED6EF5800A0D3D5 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E47C1ED6EF5800A0D3D5 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4651ED6EF5800A0D3D5 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E47D1ED6EF5800A0D3D5 /* FMDatabasePool.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4651ED6EF5800A0D3D5 /* FMDatabasePool.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E47E1ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4661ED6EF5800A0D3D5 /* FMDatabaseQueue.h */; };
+		D6F0E47F1ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4661ED6EF5800A0D3D5 /* FMDatabaseQueue.h */; };
+		D6F0E4801ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4661ED6EF5800A0D3D5 /* FMDatabaseQueue.h */; };
+		D6F0E4811ED6EF5800A0D3D5 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4671ED6EF5800A0D3D5 /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E4821ED6EF5800A0D3D5 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4671ED6EF5800A0D3D5 /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E4831ED6EF5800A0D3D5 /* FMDatabaseQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4671ED6EF5800A0D3D5 /* FMDatabaseQueue.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E4841ED6EF5800A0D3D5 /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4681ED6EF5800A0D3D5 /* FMDB.h */; };
+		D6F0E4851ED6EF5800A0D3D5 /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4681ED6EF5800A0D3D5 /* FMDB.h */; };
+		D6F0E4861ED6EF5800A0D3D5 /* FMDB.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4681ED6EF5800A0D3D5 /* FMDB.h */; };
+		D6F0E4871ED6EF5800A0D3D5 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4691ED6EF5800A0D3D5 /* FMResultSet.h */; };
+		D6F0E4881ED6EF5800A0D3D5 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4691ED6EF5800A0D3D5 /* FMResultSet.h */; };
+		D6F0E4891ED6EF5800A0D3D5 /* FMResultSet.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4691ED6EF5800A0D3D5 /* FMResultSet.h */; };
+		D6F0E48A1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E46A1ED6EF5800A0D3D5 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E48B1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E46A1ED6EF5800A0D3D5 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		D6F0E48C1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E46A1ED6EF5800A0D3D5 /* FMResultSet.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type"; }; };
+		EF0D9D6A1EFAAF7400C50AE2 /* TKDatabaseManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = EF0D9D681EFAAB7500C50AE2 /* TKDatabaseManager+Private.h */; };
+		EF0D9D6B1EFAAF7400C50AE2 /* TKDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0D9D691EFAAB7500C50AE2 /* TKDatabaseManager.m */; };
+		EF0D9D6C1EFAAF7400C50AE2 /* TKDatabaseManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = EF0D9D681EFAAB7500C50AE2 /* TKDatabaseManager+Private.h */; };
+		EF0D9D6D1EFAAF7400C50AE2 /* TKDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0D9D691EFAAB7500C50AE2 /* TKDatabaseManager.m */; };
+		EF0D9D6E1EFAAF7500C50AE2 /* TKDatabaseManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = EF0D9D681EFAAB7500C50AE2 /* TKDatabaseManager+Private.h */; };
+		EF0D9D6F1EFAAF7500C50AE2 /* TKDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0D9D691EFAAB7500C50AE2 /* TKDatabaseManager.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -137,7 +188,10 @@
 		D61B92651ED47B5B00645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		D61B92671ED47B6100645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		D61B92691ED4803D00645489 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
+		D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TravelKit-Prefix.pch"; sourceTree = "<group>"; };
 		D666C4041EAE2C5300085915 /* TKReference+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKReference+Private.h"; sourceTree = "<group>"; };
+		D68E94781F05354E009E2C9C /* TKSessionManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKSessionManager+Private.h"; sourceTree = "<group>"; };
+		D68E94791F05354E009E2C9C /* TKSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSessionManager.m; sourceTree = "<group>"; };
 		D698318F1EF3D4B4002776BE /* TKToursQuery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKToursQuery.h; sourceTree = "<group>"; };
 		D69831901EF3D4B4002776BE /* TKToursQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKToursQuery.m; sourceTree = "<group>"; };
 		D69831971EF3D7F9002776BE /* TKTour.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTour.h; sourceTree = "<group>"; };
@@ -174,6 +228,22 @@
 		D6EF38E81EB9D11400260E82 /* TKMapPlaceAnnotation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapPlaceAnnotation.m; sourceTree = "<group>"; };
 		D6EF38EB1EB9EA6E00260E82 /* Foundation+TravelKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation+TravelKit.h"; sourceTree = "<group>"; };
 		D6EF38EC1EB9EA6E00260E82 /* Foundation+TravelKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+TravelKit.m"; sourceTree = "<group>"; };
+		D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
+		D6F0E3E21ED6E7F100A0D3D5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
+		D6F0E3E41ED6E81000A0D3D5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.1.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
+		D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
+		D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
+		D6F0E4621ED6EF5800A0D3D5 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
+		D6F0E4631ED6EF5800A0D3D5 /* FMDatabaseAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseAdditions.m; sourceTree = "<group>"; };
+		D6F0E4641ED6EF5800A0D3D5 /* FMDatabasePool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabasePool.h; sourceTree = "<group>"; };
+		D6F0E4651ED6EF5800A0D3D5 /* FMDatabasePool.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabasePool.m; sourceTree = "<group>"; };
+		D6F0E4661ED6EF5800A0D3D5 /* FMDatabaseQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseQueue.h; sourceTree = "<group>"; };
+		D6F0E4671ED6EF5800A0D3D5 /* FMDatabaseQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabaseQueue.m; sourceTree = "<group>"; };
+		D6F0E4681ED6EF5800A0D3D5 /* FMDB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDB.h; sourceTree = "<group>"; };
+		D6F0E4691ED6EF5800A0D3D5 /* FMResultSet.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMResultSet.h; sourceTree = "<group>"; };
+		D6F0E46A1ED6EF5800A0D3D5 /* FMResultSet.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMResultSet.m; sourceTree = "<group>"; };
+		EF0D9D681EFAAB7500C50AE2 /* TKDatabaseManager+Private.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TKDatabaseManager+Private.h"; sourceTree = "<group>"; };
+		EF0D9D691EFAAB7500C50AE2 /* TKDatabaseManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKDatabaseManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -182,6 +252,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D61B92681ED47B6100645489 /* SystemConfiguration.framework in Frameworks */,
+				D6F0E3E51ED6E81000A0D3D5 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -190,6 +261,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				D61B92641ED47B5600645489 /* SystemConfiguration.framework in Frameworks */,
+				D6F0E3E11ED6E7DB00A0D3D5 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -199,12 +271,31 @@
 			files = (
 				D61B926A1ED4803D00645489 /* CoreTelephony.framework in Frameworks */,
 				D61B92661ED47B5B00645489 /* SystemConfiguration.framework in Frameworks */,
+				D6F0E3E31ED6E7F100A0D3D5 /* libsqlite3.tbd in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D68E94771F0533CE009E2C9C /* Session */ = {
+			isa = PBXGroup;
+			children = (
+				D68E94791F05354E009E2C9C /* TKSessionManager.m */,
+				D68E94781F05354E009E2C9C /* TKSessionManager+Private.h */,
+			);
+			name = Session;
+			sourceTree = "<group>";
+		};
+		D68E94801F06301F009E2C9C /* General */ = {
+			isa = PBXGroup;
+			children = (
+				D61B92561ED4798200645489 /* TKReachability.m */,
+				D61B92551ED4798200645489 /* TKReachability+Private.h */,
+			);
+			name = General;
+			sourceTree = "<group>";
+		};
 		D6C3D0421E4DD36200EBB54F = {
 			isa = PBXGroup;
 			children = (
@@ -230,6 +321,7 @@
 				D6C3D0571E4DDAD200EBB54F /* Sources */,
 				D6C3D04F1E4DD36200EBB54F /* TravelKit.h */,
 				D6C3D0851E5196CB00EBB54F /* TravelKit.m */,
+				D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */,
 				D6C3D0501E4DD36200EBB54F /* Info.plist */,
 			);
 			path = TravelKit;
@@ -238,42 +330,19 @@
 		D6C3D0571E4DDAD200EBB54F /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				EF0E928B1EFAA8910036D13D /* Places */,
+				EF0E928F1EFAA93C0036D13D /* Tours */,
+				EF0E928C1EFAA8AF0036D13D /* Media */,
+				EF0E928E1EFAA9290036D13D /* References */,
+				EF0E928D1EFAA8CB0036D13D /* Map */,
+				EF0D9D671EFAAB3800C50AE2 /* Database */,
+				D68E94771F0533CE009E2C9C /* Session */,
+				EF0E92901EFAA9590036D13D /* API */,
+				D68E94801F06301F009E2C9C /* General */,
 				D6EF38EB1EB9EA6E00260E82 /* Foundation+TravelKit.h */,
 				D6EF38EC1EB9EA6E00260E82 /* Foundation+TravelKit.m */,
 				D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */,
 				D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */,
-				D6C3D0711E4DE7B400EBB54F /* TKAPI.m */,
-				D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */,
-				D6C3D06B1E4DE76A00EBB54F /* TKAPIConnection.m */,
-				D6C3D06A1E4DE76A00EBB54F /* TKAPIConnection+Private.h */,
-				D6EF38E71EB9D11400260E82 /* TKMapPlaceAnnotation.h */,
-				D6EF38E81EB9D11400260E82 /* TKMapPlaceAnnotation.m */,
-				D6C3D0871E51A09200EBB54F /* TKMapRegion.h */,
-				D6C3D0881E51A09200EBB54F /* TKMapRegion.m */,
-				D6C3D0791E4DFACB00EBB54F /* TKMapWorker.m */,
-				D6C3D0781E4DFACB00EBB54F /* TKMapWorker+Private.h */,
-				D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */,
-				D6C3D0611E4DDE2D00EBB54F /* TKMedium.m */,
-				D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */,
-				D6C3D0581E4DDAE500EBB54F /* TKPlace.h */,
-				D6C3D0591E4DDAE500EBB54F /* TKPlace.m */,
-				D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */,
-				D61B924E1ED476B500645489 /* TKPlacesManager.m */,
-				D61B924D1ED476B500645489 /* TKPlacesManager+Private.h */,
-				D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */,
-				D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */,
-				D61B92561ED4798200645489 /* TKReachability.m */,
-				D61B92551ED4798200645489 /* TKReachability+Private.h */,
-				D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */,
-				D6C3D05D1E4DDE0A00EBB54F /* TKReference.m */,
-				D666C4041EAE2C5300085915 /* TKReference+Private.h */,
-				D69831971EF3D7F9002776BE /* TKTour.h */,
-				D698319F1EF3F051002776BE /* TKTour.m */,
-				D698319B1EF3EB79002776BE /* TKTour+Private.h */,
-				D69831A31EF7AE8A002776BE /* TKToursManager.m */,
-				D69831A41EF7AE8A002776BE /* TKToursManager+Private.h */,
-				D698318F1EF3D4B4002776BE /* TKToursQuery.h */,
-				D69831901EF3D4B4002776BE /* TKToursQuery.m */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -285,8 +354,112 @@
 				D61B92631ED47B5600645489 /* SystemConfiguration.framework */,
 				D61B92651ED47B5B00645489 /* SystemConfiguration.framework */,
 				D61B92671ED47B6100645489 /* SystemConfiguration.framework */,
+				D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */,
+				D6F0E3E21ED6E7F100A0D3D5 /* libsqlite3.tbd */,
+				D6F0E3E41ED6E81000A0D3D5 /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		D6F0E45F1ED6EF5800A0D3D5 /* fmdb */ = {
+			isa = PBXGroup;
+			children = (
+				D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */,
+				D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */,
+				D6F0E4621ED6EF5800A0D3D5 /* FMDatabaseAdditions.h */,
+				D6F0E4631ED6EF5800A0D3D5 /* FMDatabaseAdditions.m */,
+				D6F0E4641ED6EF5800A0D3D5 /* FMDatabasePool.h */,
+				D6F0E4651ED6EF5800A0D3D5 /* FMDatabasePool.m */,
+				D6F0E4661ED6EF5800A0D3D5 /* FMDatabaseQueue.h */,
+				D6F0E4671ED6EF5800A0D3D5 /* FMDatabaseQueue.m */,
+				D6F0E4681ED6EF5800A0D3D5 /* FMDB.h */,
+				D6F0E4691ED6EF5800A0D3D5 /* FMResultSet.h */,
+				D6F0E46A1ED6EF5800A0D3D5 /* FMResultSet.m */,
+			);
+			name = fmdb;
+			path = fmdb/src/fmdb;
+			sourceTree = SOURCE_ROOT;
+		};
+		EF0D9D671EFAAB3800C50AE2 /* Database */ = {
+			isa = PBXGroup;
+			children = (
+				D6F0E45F1ED6EF5800A0D3D5 /* fmdb */,
+				EF0D9D691EFAAB7500C50AE2 /* TKDatabaseManager.m */,
+				EF0D9D681EFAAB7500C50AE2 /* TKDatabaseManager+Private.h */,
+			);
+			name = Database;
+			sourceTree = "<group>";
+		};
+		EF0E928B1EFAA8910036D13D /* Places */ = {
+			isa = PBXGroup;
+			children = (
+				D6C3D0581E4DDAE500EBB54F /* TKPlace.h */,
+				D6C3D0591E4DDAE500EBB54F /* TKPlace.m */,
+				D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */,
+				D61B924E1ED476B500645489 /* TKPlacesManager.m */,
+				D61B924D1ED476B500645489 /* TKPlacesManager+Private.h */,
+				D6C3D07C1E4DFCA700EBB54F /* TKPlacesQuery.h */,
+				D6C3D07D1E4DFCA700EBB54F /* TKPlacesQuery.m */,
+			);
+			name = Places;
+			sourceTree = "<group>";
+		};
+		EF0E928C1EFAA8AF0036D13D /* Media */ = {
+			isa = PBXGroup;
+			children = (
+				D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */,
+				D6C3D0611E4DDE2D00EBB54F /* TKMedium.m */,
+				D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */,
+			);
+			name = Media;
+			sourceTree = "<group>";
+		};
+		EF0E928D1EFAA8CB0036D13D /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				D6EF38E71EB9D11400260E82 /* TKMapPlaceAnnotation.h */,
+				D6EF38E81EB9D11400260E82 /* TKMapPlaceAnnotation.m */,
+				D6C3D0871E51A09200EBB54F /* TKMapRegion.h */,
+				D6C3D0881E51A09200EBB54F /* TKMapRegion.m */,
+				D6C3D0791E4DFACB00EBB54F /* TKMapWorker.m */,
+				D6C3D0781E4DFACB00EBB54F /* TKMapWorker+Private.h */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
+		EF0E928E1EFAA9290036D13D /* References */ = {
+			isa = PBXGroup;
+			children = (
+				D6C3D05C1E4DDE0A00EBB54F /* TKReference.h */,
+				D6C3D05D1E4DDE0A00EBB54F /* TKReference.m */,
+				D666C4041EAE2C5300085915 /* TKReference+Private.h */,
+			);
+			name = References;
+			sourceTree = "<group>";
+		};
+		EF0E928F1EFAA93C0036D13D /* Tours */ = {
+			isa = PBXGroup;
+			children = (
+				D69831971EF3D7F9002776BE /* TKTour.h */,
+				D698319F1EF3F051002776BE /* TKTour.m */,
+				D698319B1EF3EB79002776BE /* TKTour+Private.h */,
+				D69831A31EF7AE8A002776BE /* TKToursManager.m */,
+				D69831A41EF7AE8A002776BE /* TKToursManager+Private.h */,
+				D698318F1EF3D4B4002776BE /* TKToursQuery.h */,
+				D69831901EF3D4B4002776BE /* TKToursQuery.m */,
+			);
+			name = Tours;
+			sourceTree = "<group>";
+		};
+		EF0E92901EFAA9590036D13D /* API */ = {
+			isa = PBXGroup;
+			children = (
+				D6C3D0711E4DE7B400EBB54F /* TKAPI.m */,
+				D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */,
+				D6C3D06B1E4DE76A00EBB54F /* TKAPIConnection.m */,
+				D6C3D06A1E4DE76A00EBB54F /* TKAPIConnection+Private.h */,
+			);
+			name = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -317,6 +490,15 @@
 				D698319A1EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831AA1EF7AE8A002776BE /* TKToursManager+Private.h in Headers */,
 				D6EF38F41EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */,
+				D64B13971EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */,
+				D6F0E4801ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */,
+				D6F0E4861ED6EF5800A0D3D5 /* FMDB.h in Headers */,
+				D68E947C1F05354E009E2C9C /* TKSessionManager+Private.h in Headers */,
+				D6F0E4741ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */,
+				D6F0E46E1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */,
+				D6F0E47A1ED6EF5800A0D3D5 /* FMDatabasePool.h in Headers */,
+				D6F0E4891ED6EF5800A0D3D5 /* FMResultSet.h in Headers */,
+				EF0D9D6E1EFAAF7500C50AE2 /* TKDatabaseManager+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,6 +527,15 @@
 				D69831981EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831A81EF7AE8A002776BE /* TKToursManager+Private.h in Headers */,
 				D6B2A1621E531097005509E8 /* TKMapWorker+Private.h in Headers */,
+				D649BAA11ED6E23D003EF406 /* TravelKit-Prefix.pch in Headers */,
+				D6F0E46C1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */,
+				D6F0E4721ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */,
+				D68E947A1F05354E009E2C9C /* TKSessionManager+Private.h in Headers */,
+				D6F0E4781ED6EF5800A0D3D5 /* FMDatabasePool.h in Headers */,
+				D6F0E4871ED6EF5800A0D3D5 /* FMResultSet.h in Headers */,
+				D6F0E4841ED6EF5800A0D3D5 /* FMDB.h in Headers */,
+				D6F0E47E1ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */,
+				EF0D9D6A1EFAAF7400C50AE2 /* TKDatabaseManager+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +564,15 @@
 				D69831991EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831A91EF7AE8A002776BE /* TKToursManager+Private.h in Headers */,
 				D6EF38F31EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */,
+				D64B13961EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */,
+				D6F0E46D1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */,
+				D6F0E4731ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */,
+				D68E947B1F05354E009E2C9C /* TKSessionManager+Private.h in Headers */,
+				D6F0E4791ED6EF5800A0D3D5 /* FMDatabasePool.h in Headers */,
+				D6F0E4881ED6EF5800A0D3D5 /* FMResultSet.h in Headers */,
+				D6F0E4851ED6EF5800A0D3D5 /* FMDB.h in Headers */,
+				D6F0E47F1ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */,
+				EF0D9D6C1EFAAF7400C50AE2 /* TKDatabaseManager+Private.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +705,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6F0E4711ED6EF5800A0D3D5 /* FMDatabase.m in Sources */,
+				D6F0E48C1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */,
+				D6F0E4771ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */,
+				D6F0E47D1ED6EF5800A0D3D5 /* FMDatabasePool.m in Sources */,
+				D6F0E4831ED6EF5800A0D3D5 /* FMDatabaseQueue.m in Sources */,
 				D6B2A1441E530B11005509E8 /* TKReference.m in Sources */,
 				D6B2A1401E530B11005509E8 /* TKPlace.m in Sources */,
 				D6B2A1421E530B11005509E8 /* TKPlacesQuery.m in Sources */,
@@ -519,8 +724,10 @@
 				D6B2A1381E530B11005509E8 /* TKMapWorker.m in Sources */,
 				D69831A71EF7AE8A002776BE /* TKToursManager.m in Sources */,
 				D69831A21EF3F051002776BE /* TKTour.m in Sources */,
+				D68E947F1F05354E009E2C9C /* TKSessionManager.m in Sources */,
 				D61B92541ED476B500645489 /* TKPlacesManager.m in Sources */,
 				D6B2A13E1E530B11005509E8 /* TKMedium.m in Sources */,
+				EF0D9D6F1EFAAF7500C50AE2 /* TKDatabaseManager.m in Sources */,
 				D6B2A1461E530B18005509E8 /* TravelKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -529,6 +736,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6F0E46F1ED6EF5800A0D3D5 /* FMDatabase.m in Sources */,
+				D6F0E48A1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */,
+				D6F0E4751ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */,
+				D6F0E47B1ED6EF5800A0D3D5 /* FMDatabasePool.m in Sources */,
+				D6F0E4811ED6EF5800A0D3D5 /* FMDatabaseQueue.m in Sources */,
 				D6B2A16F1E531097005509E8 /* TKReference.m in Sources */,
 				D6B2A16B1E531097005509E8 /* TKPlace.m in Sources */,
 				D6B2A16D1E531097005509E8 /* TKPlacesQuery.m in Sources */,
@@ -543,8 +755,10 @@
 				D6B2A1631E531097005509E8 /* TKMapWorker.m in Sources */,
 				D69831A51EF7AE8A002776BE /* TKToursManager.m in Sources */,
 				D69831A01EF3F051002776BE /* TKTour.m in Sources */,
+				D68E947D1F05354E009E2C9C /* TKSessionManager.m in Sources */,
 				D61B92521ED476B500645489 /* TKPlacesManager.m in Sources */,
 				D6B2A1691E531097005509E8 /* TKMedium.m in Sources */,
+				EF0D9D6B1EFAAF7400C50AE2 /* TKDatabaseManager.m in Sources */,
 				D6B2A1741E532002005509E8 /* TravelKit.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -553,6 +767,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D6F0E4701ED6EF5800A0D3D5 /* FMDatabase.m in Sources */,
+				D6F0E48B1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */,
+				D6F0E4761ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */,
+				D6F0E47C1ED6EF5800A0D3D5 /* FMDatabasePool.m in Sources */,
+				D6F0E4821ED6EF5800A0D3D5 /* FMDatabaseQueue.m in Sources */,
 				D6C3D0731E4DE7B400EBB54F /* TKAPI.m in Sources */,
 				D6C3D07F1E4DFCA700EBB54F /* TKPlacesQuery.m in Sources */,
 				D6C3D06F1E4DE76A00EBB54F /* TKAPIConnection.m in Sources */,
@@ -567,8 +786,10 @@
 				D6C3D0631E4DDE2D00EBB54F /* TKMedium.m in Sources */,
 				D69831A61EF7AE8A002776BE /* TKToursManager.m in Sources */,
 				D69831A11EF3F051002776BE /* TKTour.m in Sources */,
+				D68E947E1F05354E009E2C9C /* TKSessionManager.m in Sources */,
 				D61B92531ED476B500645489 /* TKPlacesManager.m in Sources */,
 				D6C3D05B1E4DDAE500EBB54F /* TKPlace.m in Sources */,
+				EF0D9D6D1EFAAF7400C50AE2 /* TKDatabaseManager.m in Sources */,
 				D6C3D08A1E51A09200EBB54F /* TKMapRegion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -667,6 +888,8 @@
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(PRODUCT_NAME)/$(PRODUCT_NAME)-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
@@ -696,8 +919,8 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TK_BUNDLE_BUILD = 135;
-				TK_BUNDLE_VERSION = 0.3.1;
+				TK_BUNDLE_BUILD = 140;
+				TK_BUNDLE_VERSION = 1.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -752,6 +975,8 @@
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "$(PRODUCT_NAME)/$(PRODUCT_NAME)-Prefix.pch";
 				GCC_PREPROCESSOR_DEFINITIONS = "NDEBUG=1";
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
 				GCC_WARN_ABOUT_MISSING_FIELD_INITIALIZERS = YES;
@@ -777,8 +1002,8 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TK_BUNDLE_BUILD = 135;
-				TK_BUNDLE_VERSION = 0.3.1;
+				TK_BUNDLE_BUILD = 140;
+				TK_BUNDLE_VERSION = 1.0;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -1,0 +1,50 @@
+//
+//  TravelKit-Prefix.pch
+//  TravelKit
+//
+//  Created by Michal Zelinka on 25/05/17.
+//  Copyright © 2017 Tripomatic. All rights reserved.
+//
+
+
+#import <Availability.h>
+
+// Target conditionals
+
+#ifdef TARGET_OS_OSX
+#ifndef __MAC_10_9
+#warning "This project uses features only available in macOS SDK 10.9 and later."
+#endif // __MAC_10_9
+#endif // TARGET_OS_OSX
+
+#ifdef TARGET_OS_IOS
+#ifndef __IPHONE_8_2
+	#warning "This project uses features only available in iOS SDK 8.2 and later."
+#endif // __IPHONE_8_2
+#endif // TARGET_OS_IOS
+
+#ifdef TARGET_OS_TV
+#ifndef __TVOS_9_0
+	#warning "This project uses features only available in tvOS SDK 9.0 and later."
+#endif // __TVOS_9_0
+#endif // TARGET_OS_TV
+
+// Shadow FMDB
+
+#define FMDB_SQLITE_STANDALONE 0
+#define FMDatabase        TKFMDatabase
+#define FMDatabasePool    TKFMDatabasePool
+#define FMDatabaseQueue   TKFMDatabaseQueue
+#define FMResultSet       TKFMResultSet
+#define FMStatement       TKFMStatement
+#define FMDBVersion       TKFMDBVersion
+#define FMDBBlockSQLiteCallBackFunction \
+        TKFMDBBlockSQLiteCallBackFunction
+#define FMDBEscapeSavePointName \
+        TKFMDBEscapeSavePointName
+#define FMDBExecuteStatementsCallbackBlock \
+        TKFMDBExecuteStatementsCallbackBlock
+#define FMDBExecuteBulkSQLCallback \
+        TKFMDBExecuteBulkSQLCallback
+#define FMDBDatabaseBusyHandler \
+        TKFMDBDatabaseBusyHandler

@@ -10,6 +10,7 @@
 #import "TKAPI+Private.h"
 #import "TKPlacesManager+Private.h"
 #import "TKToursManager+Private.h"
+#import "TKSessionManager+Private.h"
 #import "TKMapWorker+Private.h"
 #import "Foundation+TravelKit.h"
 
@@ -81,6 +82,16 @@
 
 
 #pragma mark -
+#pragma mark Generic methods
+
+
+- (void)clearUserData
+{
+	[[TKSessionManager sharedSession] clearUserData];
+}
+
+
+#pragma mark -
 #pragma mark Places
 
 
@@ -117,6 +128,21 @@
            completion:(void (^)(NSArray<TKTour *> *, NSError *))completion
 {
 	[[TKToursManager sharedManager] toursForQuery:query completion:completion];
+}
+
+
+#pragma mark -
+#pragma mark Favorites
+
+
+- (NSArray<NSString *> *)favoritePlaceIDs
+{
+	return [[TKSessionManager sharedSession] favoritePlaceIDs];
+}
+
+- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
+{
+	[[TKSessionManager sharedSession] updateFavoritePlaceID:favoriteID setFavorite:favorite];
 }
 
 

@@ -30,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Short perex introducing the tour.
 @property (nonatomic, copy, nullable) NSString *perex;
 
-/// Price value. Value in `USD`.
+/// Price value. Provided in `USD`.
 @property (nonatomic, strong, nullable) NSNumber *price;
 
 /// Original price value. Usable for discount calculation. Value in `USD`.

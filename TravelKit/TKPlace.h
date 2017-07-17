@@ -49,6 +49,37 @@ typedef NS_OPTIONS(NSUInteger, TKPlaceLevel) {
 	TKPlaceLevelContinent         = 1 << 13,
 };
 
+/**
+ Flag value defining which categories a particular `TKPlace` belongs to.
+ */
+typedef NS_OPTIONS(NSUInteger, TKPlaceCategory) {
+	/// Default value.
+	TKPlaceCategoryNone           = 0,
+	/// Sightseeing.
+	TKPlaceCategorySightseeing    = 1 << 0,
+	/// Shopping.
+	TKPlaceCategoryShopping       = 1 << 1,
+	/// Eating.
+	TKPlaceCategoryEating         = 1 << 2,
+	/// Discovering.
+	TKPlaceCategoryDiscovering    = 1 << 3,
+	/// Playing.
+	TKPlaceCategoryPlaying        = 1 << 4,
+	/// Traveling.
+	TKPlaceCategoryTraveling      = 1 << 5,
+	/// Going out.
+	TKPlaceCategoryGoingOut       = 1 << 6,
+	/// Hiking.
+	TKPlaceCategoryHiking         = 1 << 7,
+	/// Sports.
+	TKPlaceCategorySports         = 1 << 8,
+	/// Relaxing.
+	TKPlaceCategoryRelaxing       = 1 << 9,
+	/// Sleeping.
+	TKPlaceCategorySleeping       = 1 << 10,
+};
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 @class TKPlaceTag, TKPlaceDetail;
@@ -98,21 +129,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// List of Category slugs assigned.
 ///
-/// @note Possible values:
-///       - **`sightseeing`**
-///       - **`shopping`**
-///       - **`eating`**
-///       - **`discovering`**
-///       - **`playing`**
-///       - **`traveling`**
-///       - **`going_out`**
-///       - **`hiking`**
-///       - **`sports`**
-///       - **`relaxing`**
-///       - **`sleeping`**
-///
-/// @note All supported keys may be obtained by calling `+supportedCategories`.
-@property (nonatomic, copy, nullable) NSArray<NSString *> *categories;
+/// @see `TKPlaceCategory`
+@property (atomic) TKPlaceCategory categories;
 
 /// List of Parent IDs.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *parents;
@@ -132,17 +150,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Default _HEX_ colour value. Values `0x000000` through `0xFFFFFF`.
 @property (atomic, readonly) NSUInteger displayableHexColor;
-
-///---------------------------------------------------------------------------------------
-/// @name Helping methods
-///---------------------------------------------------------------------------------------
-
-/**
- Returns a list of currently supported Category slugs.
-
- @return Array of category slugs as strings.
- */
-+ (NSArray<NSString *> *)supportedCategories;
 
 @end
 

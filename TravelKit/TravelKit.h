@@ -34,7 +34,7 @@ NS_ASSUME_NONNULL_BEGIN
 
  The basic workflow is pretty straightforward – to start using _TravelKit_, you only need a
  couple of lines to get the desired data.
- 
+
 ```objc
 // Get shared instance
 TravelKit *kit = [TravelKit sharedKit];
@@ -60,7 +60,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
 /**
  Client API key you've obtained.
- 
+
  @warning This needs to be set in order to perform data requests successfully.
  */
 @property (nonatomic, copy, nullable) NSString *APIKey;
@@ -89,7 +89,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  Shared singleton object to work with.
 
  @return Singleton `TravelKit` object.
- 
+
  @warning Regular `-init` and `+new` methods are not available.
  */
 + (nonnull TravelKit *)sharedKit NS_SWIFT_NAME(shared());
@@ -103,7 +103,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
 /**
  Returns a collection of `TKPlace` objects for the given query object.
- 
+
  This method is good for fetching Places to use for lists, map annotations and other batch uses.
 
  @param query `TKPlacesQuery` object containing the desired attributes to look for.
@@ -119,11 +119,11 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  @param completion Completion block called on success or error.
  */
 - (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
-	completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion;
+	completion:(void (^)(NSArray<TKPlace *> * _Nullable places, NSError * _Nullable error))completion;
 
 /**
  Returns a Detailed `TKPlace` object for the given global Place identifier.
- 
+
  This method is good for fetching further Place information to use f.e. on Place Detail screen.
 
  @param placeID Global identifier of the desired Place.
@@ -138,7 +138,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
 /**
  Returns a collection of `TKMedium` objects for the given global Place identifier.
- 
+
  This method is used to fetch all Place media to be used f.e. for Gallery screen.
 
  @param placeID Global identifier of the desired Place.
@@ -153,14 +153,35 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
 /**
  Returns a collection of `TKTour` objects for the given query object.
- 
+
  This method is good for fetching Tours to use for lists and other batch uses.
 
  @param query `TKToursQuery` object containing the desired attributes to look for.
  @param completion Completion block called on success or error.
+
+ @note Experimental.
  */
 - (void)toursForQuery:(TKToursQuery *)query
 	completion:(void (^)(NSArray<TKTour *>  * _Nullable tours, NSError * _Nullable error))completion;
+
+///---------------------------------------------------------------------------------------
+/// @name Favorites
+///---------------------------------------------------------------------------------------
+
+/**
+ Fetches an array of IDs of Places previously marked as favorite.
+
+ @return Array of Place IDs.
+ */
+- (NSArray<NSString *> *)favoritePlaceIDs;
+
+/**
+ Updates a favorite state for a specific Place ID.
+
+ @param favoriteID Place ID to update.
+ @param favorite Desired Favorite state, either `YES` or `NO`.
+ */
+- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite;
 
 ///---------------------------------------------------------------------------------------
 /// @name Map-related methods
@@ -203,6 +224,15 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
                             toAdd:(NSMutableArray<TKMapPlaceAnnotation *> *)toAdd
                            toKeep:(NSMutableArray<TKMapPlaceAnnotation *> *)toKeep
                          toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove;
+
+///---------------------------------------------------------------------------------------
+/// @name Session-related methods
+///---------------------------------------------------------------------------------------
+
+/**
+ Clears all cached and persisting user data.
+ */
+- (void)clearUserData;
 
 @end
 
