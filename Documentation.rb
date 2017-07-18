@@ -22,6 +22,7 @@ $moduleVersion = `cat TravelKit.xcodeproj/project.pbxproj | grep TK_BUNDLE_VERSI
 
 `jazzy --objc --clean \
  --framework-root . \
+ --sdk macosx \
  --module TravelKit \
  --module-version #{$moduleVersion} \
  --umbrella-header TravelKit/TravelKit.h \
