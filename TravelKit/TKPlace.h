@@ -85,15 +85,19 @@ NS_ASSUME_NONNULL_BEGIN
 @class TKPlaceTag, TKPlaceDetail;
 
 
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Place object
+///-----------------------------------------------------------------------------
+
 /**
  Basic Place model keeping various information about its properties.
  */
-
 @interface TKPlace : NSObject
 
-///---------------------------------------------------------------------------------------
+///----------------------
 /// @name Hard properties
-///---------------------------------------------------------------------------------------
+///----------------------
 
 /// Global identifier.
 @property (nonatomic, copy) NSString *ID NS_SWIFT_NAME(ID);
@@ -144,9 +148,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Place detail of `TKPlaceDetail` instance containing further attributes.
 @property (nonatomic, strong, nullable) TKPlaceDetail *detail;
 
-///---------------------------------------------------------------------------------------
+///-------------------------
 /// @name Helping properties
-///---------------------------------------------------------------------------------------
+///-------------------------
 
 /// Default _HEX_ colour value. Values `0x000000` through `0xFFFFFF`.
 @property (atomic, readonly) NSUInteger displayableHexColor;
@@ -154,10 +158,50 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Place Description object
+///-----------------------------------------------------------------------------
+
+/**
+ Place description object.
+ */
+@interface TKPlaceDescription : NSObject
+
+/// Full-length text description.
+@property (nonatomic, copy) NSString *text;
+
+/// Text slug of the description provider, if available.
+///
+/// @note Possible values: `wikipedia`, `wikivoyage`.
+///
+/// @note Descriptions without any `provider` set are provided by Sygic Travel.
+@property (nonatomic, copy, nullable) NSString *provider;
+
+/// URL address of the description source.
+@property (nonatomic, copy, nullable) NSURL *link;
+
+/// Text slug of the translation provider, if available.
+///
+/// @note Possible values: `google`.
+///
+/// @note Translations without any `translationProvider` set are provided by Sygic Travel.
+@property (nonatomic, copy, nullable) NSString *translationProvider;
+
+/// Flag indicating whether the description provided is translated.
+@property (atomic) BOOL translated;
+
+@end
+
+
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Place Tag object
+///-----------------------------------------------------------------------------
+
 /**
  Place tag object.
  */
-
 @interface TKPlaceTag : NSObject
 
 /// Displayable key, always in English.
@@ -169,13 +213,18 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Place Detail object
+///-----------------------------------------------------------------------------
+
 /**
  Detail object containing further attributes about the Place.
  */
 @interface TKPlaceDetail : NSObject
 
 /// Full-length description.
-@property (nonatomic, copy, nullable) NSString *fullDescription;
+@property (nonatomic, strong, nullable) TKPlaceDescription *fullDescription;
 
 /// List of Place Tags.
 @property (nonatomic, copy, nullable) NSArray<TKPlaceTag *> *tags;

@@ -200,6 +200,30 @@
 @end
 
 
+@implementation TKPlaceDescription
+
+- (instancetype)initFromResponse:(NSDictionary *)response
+{
+	if (self = [super init])
+	{
+		_text = [response[@"text"] parsedString];
+		_provider = [response[@"provider"] parsedString];
+
+		if (!_text) return nil;
+
+		NSString *link = [response[@"link"] parsedString];
+		if (link) _link = [NSURL URLWithString:link];
+
+		_translated = [[response[@"is_translated"] parsedNumber] boolValue];
+		_translationProvider = [response[@"translation_provider"] parsedString];
+	}
+
+	return self;
+}
+
+@end
+
+
 @implementation TKPlaceTag
 
 - (instancetype)initFromResponse:(NSDictionary *)response
@@ -253,7 +277,10 @@
 		_mainMedia = media;
 
 		// Other properties
-		_fullDescription = [response[@"description"][@"text"] parsedString];
+
+		NSDictionary *description = [response[@"description"] parsedDictionary];
+		if (description) _fullDescription = [[TKPlaceDescription alloc] initFromResponse:description];
+
 		_address = [response[@"address"] parsedString];
 		_phone = [response[@"phone"] parsedString];
 		_email = [response[@"email"] parsedString];
