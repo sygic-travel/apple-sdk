@@ -71,7 +71,14 @@
 
 - (void)setAPIKey:(NSString *)APIKey
 {
-	_APIKey = APIKey;
+	_APIKey = [APIKey copy];
+}
+
+- (void)setLanguage:(NSString *)language
+{
+	_language = [language copy];
+
+	[self refreshServerProperties];
 }
 
 - (NSString *)hostname
