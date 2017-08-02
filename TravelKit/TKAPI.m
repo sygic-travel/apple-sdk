@@ -49,7 +49,7 @@
 	NSString *lang = _language ?: @"en";
 
 	_apiURL = [NSString stringWithFormat:@"%@://%@%@/%@/%@",
-	//          http[s]://  api.      sygictravelapi.com  /    0.x   /   en
+	//          http[s]://  api.      sygictravelapi.com  /    xyz   /   en
 	//             |         |              |                   |        |
 	    @API_PROTOCOL,   subdomain,    @API_BASE_URL,    @API_VERSION,   lang];
 
