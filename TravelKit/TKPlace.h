@@ -223,7 +223,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface TKPlaceDetail : NSObject
 
-/// Full-length description.
+/// `TKPlaceDescription` instance object containing a detailed description.
 @property (nonatomic, strong, nullable) TKPlaceDescription *fullDescription;
 
 /// List of Place Tags.
