@@ -7,6 +7,16 @@ We build it as a generic platform project available on all Apple platforms.
 
 For further details see [Full SDK documentation](http://docs.sygictravelapi.com/apple-sdk/latest/).
 
+## Getting the SDK
+
+### Installing via CocoaPods
+
+Simply add a `TravelKit` pod to your `Podfile`. Then run `pod update` to fetch the SDK automatically.
+
+### Getting the framework from GitHub
+
+You can grab a released compiled SDK package or its source code on [GitHub](https://github.com/sygic-travel/apple-sdk). Check out the repository or grab it from the _Releases_ section.
+
 ## Development Requirements
 
 All development requirements are actually recommendations as it reflects the environment we use to develop and distribute the code.
