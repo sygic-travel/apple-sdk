@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef USE_NSOBJECT_PARSING
+
 NS_ASSUME_NONNULL_BEGIN
 
 /** Handles additional properties and methods for quick parsing needs.
@@ -116,3 +118,5 @@ NSNumber *number = @1;
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // USE_NSOBJECT_PARSING

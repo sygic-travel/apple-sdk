@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+#ifdef USE_FOUNDATION_TRAVELKIT
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface NSObject (TravelKit)
@@ -97,3 +99,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // USE_FOUNDATION_TRAVELKIT
