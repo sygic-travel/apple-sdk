@@ -30,6 +30,11 @@
 
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
+
+#ifdef DEBUG
+		NSLog(@"Running TravelKit in DEBUG mode.");
+#endif
+
 		shared = [self new];
 	});
 

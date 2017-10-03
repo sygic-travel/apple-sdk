@@ -305,8 +305,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 	responseString = [responseString stringByReplacingOccurrencesOfString:@"\r" withString:@""];
 	if (_silent) responseString = @"(silenced)";
 	NSString *dataSeparator = (_silent) ? @"":@"\n";
-	NSLog(@"[API RESPONSE] ID:%@ STATUS:%@ CODE:%zd MESSAGE:%@ DATA:%@%@",
-		_identifier, response.status, response.code, response.message, dataSeparator, responseString);
+	NSLog(@"[API RESPONSE] ID:%@ CODE:%zd DATA:%@%@", _identifier, response.code, dataSeparator, responseString);
 #endif
 
 	if (response.code != 200) {
