@@ -1,6 +1,6 @@
 //
-//  API.h
-//  Tripomatic
+//  TKAPI.h
+//  TravelKit
 //
 //  Created by Michal Zelinka on 27/09/13.
 //  Copyright (c) 2013 Tripomatic. All rights reserved.

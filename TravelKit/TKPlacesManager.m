@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKPlacesManager+Private.h"
+#import "TKPlacesManager.h"
 #import "TKDatabaseManager+Private.h"
 #import "TKAPI+Private.h"
 
@@ -25,7 +25,7 @@
 #pragma mark Initialization
 
 
-+ (instancetype)sharedManager
++ (TKPlacesManager *)sharedManager
 {
 	static TKPlacesManager *shared = nil;
 
@@ -41,7 +41,7 @@
 {
 	if (self = [super init])
 	{
-		_database = [TKDatabaseManager sharedInstance];
+		_database = [TKDatabaseManager sharedManager];
 	}
 
 	return self;

@@ -19,12 +19,8 @@ extern NSString * const kDatabaseTableFavorites;
 
 @interface TKDatabaseManager : NSObject
 
-/**
- * Shared instance
- *
- * @return singleton instance of this class
- */
-+ (TKDatabaseManager *)sharedInstance;
+/** Shared instance */
+@property (class, readonly, strong) TKDatabaseManager *sharedManager;
 
 /** Default path of the database file */
 + (NSString *)databasePath;

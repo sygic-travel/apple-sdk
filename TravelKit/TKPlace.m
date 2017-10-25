@@ -9,7 +9,7 @@
 #import "TKPlace+Private.h"
 #import "TKMedium+Private.h"
 #import "TKReference+Private.h"
-#import "TKMapWorker+Private.h"
+#import "TKMapWorker.h"
 #import "NSObject+Parsing.h"
 
 

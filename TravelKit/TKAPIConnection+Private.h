@@ -1,6 +1,6 @@
 //
-//  APIConnection+Private.h
-//  Tripomatic
+//  TKAPIConnection+Private.h
+//  TravelKit
 //
 //  Created by Michal Zelinka on 27/09/13.
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
@@ -28,6 +28,8 @@ FOUNDATION_EXPORT NSString * const TKAPIResponseErrorDomain;
 @property (nonatomic, strong, readonly) NSString *ID;
 @property (nonatomic, strong, readonly) NSArray<NSString *> *args;
 @property (nonatomic, strong, readonly) TKAPIResponse *response;
+
++ (instancetype)errorWithCode:(NSInteger)code userInfo:(NSDictionary<NSErrorUserInfoKey,id> *)dict;
 
 @end
 

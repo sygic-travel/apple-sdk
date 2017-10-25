@@ -67,6 +67,14 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
+@interface NSDictionary<KeyType, ObjectType> (TravelKit)
+
+- (nullable NSString *)asJSONString;
+- (nullable NSData *)asJSONData;
+
+@end
+
+
 @interface NSString (TravelKit)
 
 /**

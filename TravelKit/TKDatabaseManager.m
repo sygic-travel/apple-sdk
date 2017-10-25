@@ -21,7 +21,7 @@
 NSString * const kDatabaseFilename = @"database.sqlite";
 
 // Database scheme
-NSUInteger const kDatabaseSchemeVersionLatest = 20170621;
+NSUInteger const kDatabaseSchemeVersionLatest = 20171024;
 
 // Table names // ABI-EXPORTED
 NSString * const kDatabaseTablePlaces = @"places";
@@ -51,7 +51,7 @@ NSString * const kDatabaseTableFavorites = @"favorites";
 
 @implementation TKDatabaseManager
 
-+ (TKDatabaseManager *)sharedInstance
++ (TKDatabaseManager *)sharedManager
 {
     static dispatch_once_t once = 0;
     static TKDatabaseManager *shared = nil;
@@ -222,6 +222,10 @@ NSString * const kDatabaseTableFavorites = @"favorites";
 	if (currentScheme == kDatabaseSchemeVersionLatest)
 		return;
 
+#ifdef DEBUG
+	NSLog(@"[DATABASE] Updating Database scheme");
+#endif
+
 	//////////////
 	// Perform migration rules
 
@@ -229,6 +233,12 @@ NSString * const kDatabaseTableFavorites = @"favorites";
 	if (currentScheme < 20170621) {
 		[self runUpdate:@"CREATE TABLE IF NOT EXISTS %@ "
 			"(id text PRIMARY KEY NOT NULL);" tableName:kDatabaseTableFavorites];
+	}
+
+	// Favorites on server
+	if (currentScheme < 20171024) {
+		[self runUpdate:@"ALTER TABLE %@ ADD state INTEGER "
+			"NOT NULL DEFAULT 0;" tableName:kDatabaseTableFavorites];
 	}
 
 	//////////////

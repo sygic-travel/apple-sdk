@@ -82,6 +82,24 @@
 @end
 
 
+@implementation NSDictionary (TravelKit)
+
+- (NSString *)asJSONString
+{
+	NSData *jsonData = [self asJSONData];
+	return (jsonData) ? [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] : nil;
+}
+
+- (NSData *)asJSONData
+{
+	NSError *err = nil;
+	NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:&err];
+	return (!err) ? jsonData : nil;
+}
+
+@end
+
+
 @implementation NSString (TravelKit)
 
 - (NSString *)trimmedString

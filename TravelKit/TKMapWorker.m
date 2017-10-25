@@ -1,13 +1,13 @@
 //
 //  TKMapWorker.m
-//  Tripomatic
+//  TravelKit
 //
 //  Created by Michal Zelinka on 03/02/16.
 //  Copyright © 2016 Tripomatic. All rights reserved.
 //
 
 #import "Foundation+TravelKit.h"
-#import "TKMapWorker+Private.h"
+#import "TKMapWorker.h"
 
 #define MINMAX(a, x, b) MIN(MAX(a, x), b)
 

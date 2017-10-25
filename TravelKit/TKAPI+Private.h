@@ -1,6 +1,6 @@
 //
-//  API+Private.h
-//  Tripomatic
+//  TKAPI+Private.h
+//  TravelKit
 //
 //  Created by Michal Zelinka on 27/09/13.
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
@@ -19,6 +19,11 @@
 #define API_SUBDOMAIN  "api"
 #define API_BASE_URL   "sygictravelapi.com"
 #define API_VERSION    "1.0"
+
+#ifdef DEBUG
+#undef  API_SUBDOMAIN
+#define API_SUBDOMAIN  "alpha-api"
+#endif
 
 typedef NS_ENUM(NSInteger, TKAPIRequestType)
 {

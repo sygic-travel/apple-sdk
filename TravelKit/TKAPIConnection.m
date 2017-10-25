@@ -1,6 +1,6 @@
 //
-//  APIConnection.m
-//  Tripomatic
+//  TKAPIConnection.m
+//  TravelKit
 //
 //  Created by Michal Zelinka on 27/09/13.
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
@@ -53,6 +53,11 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 
 
 @implementation TKAPIError
+
++ (instancetype)errorWithCode:(NSInteger)code userInfo:(NSDictionary<NSErrorUserInfoKey,id> *)dict
+{
+	return [self errorWithDomain:TKAPIResponseErrorDomain code:code userInfo:dict];
+}
 
 + (instancetype)errorWithError:(NSError *)error
 {

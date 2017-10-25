@@ -1,5 +1,5 @@
 //
-//  TKToursManager+Private.h
+//  TKToursManager.h
 //  TravelKit
 //
 //  Created by Michal Zelinka on 19/06/17.
@@ -7,15 +7,17 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <TravelKit.h>
+#import <TravelKit/TKTour.h>
+#import <TravelKit/TKToursQuery.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface TKToursManager : NSObject
 
+@property (class, readonly, strong) TKToursManager *sharedManager;
+
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
-+ (instancetype)sharedManager;
 
 - (void)toursForQuery:(TKToursQuery *)query
 	completion:(void (^)(NSArray<TKTour *>  * _Nullable places, NSError * _Nullable error))completion;

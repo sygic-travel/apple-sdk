@@ -8,10 +8,7 @@
 
 #import "TravelKit.h"
 #import "TKAPI+Private.h"
-#import "TKPlacesManager+Private.h"
-#import "TKToursManager+Private.h"
-#import "TKSessionManager+Private.h"
-#import "TKMapWorker+Private.h"
+#import "TKMapWorker.h"
 #import "Foundation+TravelKit.h"
 
 
@@ -90,9 +87,34 @@
 #pragma mark Generic methods
 
 
+- (instancetype)init
+{
+	if (self = [super init])
+	{
+		_places = [TKPlacesManager sharedManager];
+		__tours = [TKToursManager sharedManager];
+		_session = [TKSessionManager sharedSession];
+	}
+
+	return self;
+}
+
+@end
+
+
+#pragma mark -
+#pragma mark Deprecated namespace
+
+
+@implementation TravelKit (Deprecated)
+
+#pragma mark -
+#pragma mark Session-related methods
+
+
 - (void)clearUserData
 {
-	[[TKSessionManager sharedSession] clearUserData];
+	[_session clearUserData];
 }
 
 

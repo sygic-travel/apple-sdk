@@ -40,7 +40,7 @@ let destinationsQuery = TKPlacesQuery()
 destinationsQuery.levels = [ .city, .town ]
 destinationsQuery.limit = 5
 
-travelKit.places(for: destinationsQuery) { (places, error) in
+travelKit.places.places(for: destinationsQuery) { (places, error) in
 	printLock.lock()
 	print("\nTop Destinations:\n")
 	places?.forEach({ (place) in
@@ -61,7 +61,7 @@ sightsQuery.levels = .POI
 sightsQuery.categories = [.sightseeing]
 sightsQuery.limit = 10
 
-travelKit.places(for: sightsQuery) { (places, error) in
+travelKit.places.places(for: sightsQuery) { (places, error) in
 	printLock.lock()
 	print("\nTop Sights in London:\n")
 	places?.forEach({ (place) in
@@ -81,7 +81,7 @@ toursQuery.parentID = "city:1"
 toursQuery.sortingType = .price
 toursQuery.descendingSortingOrder = true
 
-travelKit.tours(for: toursQuery) { (tours, error) in
+travelKit._tours.tours(for: toursQuery) { (tours, error) in
 	printLock.lock()
 	print("\nMost Expensive Tours in London:\n")
 	tours?.forEach({ (tour) in
