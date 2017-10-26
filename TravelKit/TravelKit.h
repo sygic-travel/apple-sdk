@@ -19,6 +19,7 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKReference.h>
 #import <TravelKit/TKMedium.h>
 #import <TravelKit/TKTour.h>
+#import <TravelKit/TKTrip.h>
 #import <TravelKit/TKToursQuery.h>
 #import <TravelKit/TKMapRegion.h>
 #import <TravelKit/TKMapWorker.h>
@@ -27,9 +28,11 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 
 #import <TravelKit/TKPlacesManager.h>
 #import <TravelKit/TKToursManager.h>
+//#import <TravelKit/TKTripsManager.h>
 #import <TravelKit/TKSessionManager.h>
 
 #import <TravelKit/Foundation+TravelKit.h>
+#import <TravelKit/NSDate+Tripomatic.h>
 #import <TravelKit/NSObject+Parsing.h>
 
 NS_ASSUME_NONNULL_BEGIN

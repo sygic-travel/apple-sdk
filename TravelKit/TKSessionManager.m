@@ -190,7 +190,7 @@
 	NSArray *results = [_database runQuery:
 		@"SELECT id FROM %@ WHERE state >= 0;" tableName:kDatabaseTableFavorites];
 
-	return [results mappedArrayUsingBlock:^NSString *(NSDictionary *res, NSUInteger __unused idx) {
+	return [results mappedArrayUsingBlock:^NSString *(NSDictionary *res) {
 		return [res[@"id"] parsedString];
 	}];
 }

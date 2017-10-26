@@ -15,6 +15,9 @@ extern NSString * const kDatabaseTablePlaceParents;
 extern NSString * const kDatabaseTableMedia;
 extern NSString * const kDatabaseTableReferences;
 extern NSString * const kDatabaseTableFavorites;
+extern NSString * const kDatabaseTableTrips;
+extern NSString * const kDatabaseTableTripDays;
+extern NSString * const kDatabaseTableTripDayItems;
 
 
 @interface TKDatabaseManager : NSObject

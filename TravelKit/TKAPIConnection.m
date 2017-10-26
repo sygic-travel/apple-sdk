@@ -9,6 +9,7 @@
 #import "TravelKit.h"
 #import "Foundation+TravelKit.h"
 #import "TKAPIConnection+Private.h"
+#import "NSDate+Tripomatic.h"
 #import "NSObject+Parsing.h"
 
 NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
@@ -75,7 +76,7 @@ NSString * const TKAPIResponseErrorDomain = @"TKAPIResponseErrorDomain";
 	NSString *ID = [response.metadata[@"error"][@"id"] parsedString] ?: @"error.unknown";
 
 	NSArray *args = [[response.metadata[@"error"][@"args"] parsedArray]
-	  filteredArrayUsingBlock:^BOOL(id obj, NSUInteger __unused idx) {
+	  filteredArrayUsingBlock:^BOOL(id obj) {
 		return [obj isKindOfClass:[NSString class]];
 	}];
 
