@@ -3,7 +3,7 @@
 //  TravelKit
 //
 //  Created by Michal Zelinka on 25/10/2017.
-//  Copyright (c) 2012 Tripomatic. All rights reserved.
+//  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
 #import "TKMapWorker.h"
@@ -352,7 +352,7 @@
 	NSMutableString *randomString = [@LOCAL_TRIP_PREFIX mutableCopy];
 
 	for (uint i = 0; i < 16; i++)
-		[randomString appendFormat:@"%c", [letters characterAtIndex:arc4random()%[letters length]]];
+		[randomString appendFormat:@"%c", [letters characterAtIndex:arc4random() % letters.length]];
 
 	[randomString appendFormat:@"_%.0f", [[NSDate new] timeIntervalSince1970]];
 

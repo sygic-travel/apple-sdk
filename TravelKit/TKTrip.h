@@ -3,7 +3,7 @@
 //  TravelKit
 //
 //  Created by Michal Zelinka on 25/10/2017.
-//  Copyright (c) 2012 Tripomatic. All rights reserved.
+//  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

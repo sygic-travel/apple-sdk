@@ -28,7 +28,7 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 
 #import <TravelKit/TKPlacesManager.h>
 #import <TravelKit/TKToursManager.h>
-//#import <TravelKit/TKTripsManager.h>
+#import <TravelKit/TKTripsManager.h>
 #import <TravelKit/TKSessionManager.h>
 
 #import <TravelKit/Foundation+TravelKit.h>
@@ -121,7 +121,13 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
  @warning Experimental.
  */
-@property (nonatomic, strong, readonly) TKToursManager *_tours;
+@property (nonatomic, strong, readonly) TKToursManager *_tours
+	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
+
+/**
+ Shared Trips Manager instance to provide Trips-related stuff.
+ */
+@property (nonatomic, strong, readonly) TKTripsManager *trips;
 
 /**
  Shared Session Manager instance to provide Session-related stuff.

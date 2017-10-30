@@ -16,6 +16,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TKPlacesManager : NSObject
 
+///---------------------------------------------------------------------------------------
+/// @name Shared interface
+///---------------------------------------------------------------------------------------
+
+/// Shared Places managing instance.
 @property (class, readonly, strong) TKPlacesManager *sharedManager;
 
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
