@@ -498,10 +498,14 @@
 
 		NSMutableString *path = [[[TKAPI sharedAPI] pathForRequestType:_type] mutableCopy];
 
+		[path appendFormat:@"/%@",
+			query.source == TKToursQuerySourceGetYourGuide ?
+				@"get-your-guide" : @"viator"];
+
 		NSMutableArray<NSURLQueryItem *> *queryItems = [NSMutableArray arrayWithCapacity:10];
 
 		if (query.parentID)
-			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"destination_id" value:query.parentID]];
+			[queryItems addObject:[NSURLQueryItem queryItemWithName:@"parent_place_id" value:query.parentID]];
 
 		if (query.sortingType)
 		{

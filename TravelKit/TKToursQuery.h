@@ -13,15 +13,25 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
+ Query enum declaring the source from which the Tours will be queried.
+ */
+typedef NS_ENUM(NSUInteger, TKToursQuerySource) {
+	/// Get results from Viator. Default.
+	TKToursQuerySourceViator        = 0,
+	/// Get results from GetYourGuide.
+	TKToursQuerySourceGetYourGuide  = 1,
+};
+
+/**
  Query enum declaring the sorting option for the results returned.
  */
 typedef NS_ENUM(NSUInteger, TKToursQuerySorting) {
 	/// Get results sorted by rating. Descending by default.
-	TKToursQuerySortingRating  = 0,
+	TKToursQuerySortingRating      = 0,
 	/// Get results sorted by price. Ascending by default.
-	TKToursQuerySortingPrice  = 1,
+	TKToursQuerySortingPrice       = 1,
 	/// Get results sorted by Top selling items. Descending by default.
-	TKToursQuerySortingTopSellers = 2,
+	TKToursQuerySortingTopSellers  = 2,
 };
 
 
@@ -29,6 +39,11 @@ typedef NS_ENUM(NSUInteger, TKToursQuerySorting) {
  Query object used for fetching specific collections of `TKTour` objects.
  */
 @interface TKToursQuery : NSObject <NSCopying, NSMutableCopying>
+
+/// Desired source of the Tours returned. May be either Viator (default) or GetYourGuide.
+///
+/// @see `TKToursQuerySource`
+@property (nonatomic) TKToursQuerySource source;
 
 /// Desired identifier of parent node. _Example: `city:1`_
 ///
