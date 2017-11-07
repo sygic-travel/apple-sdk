@@ -8,29 +8,6 @@
 
 #import <Foundation/Foundation.h>
 
-#define kSynchronizationTimerPeriod  15
-#define kSynchronizationMinPeriod    60
-
-typedef NS_ENUM(NSUInteger, SyncState) {
-	kSyncStateStandby = 0,
-	kSyncStateInitializing,
-//	kSyncStateCustomPlaces,
-//	kSyncStateLeavedTrips,
-	kSyncStateFavourites,
-	kSyncStateChanges,
-//	kSyncStateUpdatedTrips,
-//	kSyncStateMissingItems,
-	kSyncStateClearing,
-};
-
-typedef NS_ENUM(NSUInteger, SyncNotificationType) {
-	kSyncNotificationBegin = 0,
-	kSyncNotificationSignificantUpdate,
-	kSyncNotificationCancel,
-	kSyncNotificationDone,
-};
-
-
 @interface TKSynchronizationManager : NSObject
 
 #pragma mark - Shared instance
@@ -49,12 +26,12 @@ typedef NS_ENUM(NSUInteger, SyncNotificationType) {
 /// @name Variables
 ///---------------------------------------------------------------------------------------
 
-@property (nonatomic, readonly) SyncState state;
 @property (nonatomic, assign) BOOL blockSynchronization;
+@property (nonatomic, assign) BOOL periodicSyncEnabled;
+
+@property (readonly) BOOL syncInProgress;
 
 - (void)synchronize;
 - (void)cancelSynchronization;
-
-- (BOOL)syncInProgress;
 
 @end

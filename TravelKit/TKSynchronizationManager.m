@@ -21,6 +21,29 @@
 #endif
 
 
+#define kSynchronizationTimerPeriod  15
+#define kSynchronizationMinPeriod    60
+
+typedef NS_ENUM(NSUInteger, TKSynchronizationState) {
+	TKSynchronizationStateStandby = 0,
+	TKSynchronizationStateInitializing,
+//	TKSynchronizationStateCustomPlaces,
+//	TKSynchronizationStateLeavedTrips,
+	TKSynchronizationStateFavourites,
+	TKSynchronizationStateChanges,
+//	TKSynchronizationStateUpdatedTrips,
+//	TKSynchronizationStateMissingItems,
+	TKSynchronizationStateClearing,
+};
+
+typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
+	TKSynchronizationNotificationTypeBegin = 0,
+	TKSynchronizationNotificationTypeSignificantUpdate,
+	TKSynchronizationNotificationTypeCancel,
+	TKSynchronizationNotificationTypeDone,
+};
+
+
 @interface TKTripConflict : NSObject
 
 @property (nonatomic, strong) TKTrip *localTrip;
@@ -56,6 +79,7 @@
 @interface TKSynchronizationManager ()
 
 @property (nonatomic, strong) TKSessionManager *session;
+@property (atomic) TKSynchronizationState state;
 
 @end
 
@@ -79,7 +103,7 @@
 	if (self = [super init])
 	{
 		_session = [TKSessionManager sharedSession];
-		_state = kSyncStateStandby;
+		_state = TKSynchronizationStateStandby;
 		_queue = [NSOperationQueue new];
 		_queue.name = @"Synchronization";
 		_queue.maxConcurrentOperationCount = 1;
@@ -87,13 +111,31 @@
 			_queue.qualityOfService = NSQualityOfServiceBackground;
 		_requests = [NSMutableArray array];
 		_tripConflicts = [NSMutableArray array];
-		_repeatTimer = [NSTimer timerWithTimeInterval:kSynchronizationTimerPeriod target:self
-			selector:@selector(synchronizePeriodic) userInfo:nil repeats:YES];
-		[[NSRunLoop mainRunLoop] addTimer:_repeatTimer forMode:NSRunLoopCommonModes];
 		_lastSynchronization = 0;
 	}
 
 	return self;
+}
+
+
+#pragma mark - Setters
+
+
+- (void)setPeriodicSyncEnabled:(BOOL)periodicSyncEnabled
+{
+	// Store
+	_periodicSyncEnabled = periodicSyncEnabled;
+
+	// Invalidate in any case
+	[_repeatTimer invalidate];
+	_repeatTimer = nil;
+
+	if (periodicSyncEnabled)
+	{
+		_repeatTimer = [NSTimer timerWithTimeInterval:kSynchronizationTimerPeriod target:self
+			selector:@selector(synchronizePeriodic) userInfo:nil repeats:YES];
+		[[NSRunLoop mainRunLoop] addTimer:_repeatTimer forMode:NSRunLoopCommonModes];
+	}
 }
 
 
@@ -107,9 +149,9 @@
 		// If we're connected and session allows synchronization
 		if (!_blockSynchronization)
 		{
-			if (_state == kSyncStateStandby)
+			if (_state == TKSynchronizationStateStandby)
 			{
-				[self sendNotification:kSyncNotificationBegin];
+				[self sendNotification:TKSynchronizationNotificationTypeBegin];
 
 				_lastSynchronization = [NSDate timeIntervalSinceReferenceDate];
 
@@ -125,7 +167,7 @@
 				SyncLog(@"Skipping, still %tu items in queue", _requests.count + _tripConflicts.count);
 
 		}
-		else [self sendNotification:kSyncNotificationCancel];
+		else [self sendNotification:TKSynchronizationNotificationTypeCancel];
 	}
 }
 
@@ -159,7 +201,7 @@
 {
 	[NSThread currentThread].name = @"Synchronization";
 
-	_state = kSyncStateInitializing;
+	_state = TKSynchronizationStateInitializing;
 
 	// Set up fields for current synchronization loop
 	_currentAccessToken = [userCredentials.accessToken copy];
@@ -348,19 +390,15 @@
 			_lastChangesTimestamp = settings.changesTimestamp = [timestamp timeIntervalSince1970];
 
 //			// Set up comparable arrays
-//			NSMutableArray *currentOnlineTripIDs = [updatedTripsDict.allKeys mutableCopy];
-//			NSArray *currentDBTrips = [[[TripsManager defaultManager] getTripsForUserWithID:_currentUserID]
+//			NSMutableArray<NSString *> *currentOnlineTripIDs = [updatedTripsDict.allKeys mutableCopy];
+//			NSArray<TKTrip *> *currentDBTrips = [[[TKTripsManager sharedManager] allTrips]
 //				.reverseObjectEnumerator allObjects];
 //
 //			// Walk through the local trips to send to server (when signed in)
-//			for (Trip *localTrip in currentDBTrips) {
+//			for (TKTrip *localTrip in currentDBTrips) {
 //
 //				// Find out whether trip has been updated
 //				BOOL updated = updatedTripsDict[localTrip.ID] != nil;
-//
-//				// Hold sending this update when trip is active and changed after sync loop began
-//				if ([localTrip.ID isEqualToString:session.activeTrip.ID] && session.activeTrip.changedSinceLastSynchronization)
-//					continue;
 //
 //				// If not marked as updated on server...
 //				if (!updated) {
@@ -372,7 +410,7 @@
 //
 //						SyncLog(@"Trip NOT on server yet – sending: %@", localTrip);
 //
-//						APIRequest *request = [[APIRequest alloc] initAsNewTripRequestForTrip:localTrip success:^(Trip *trip) {
+//						TKAPIRequest *request = [[TKAPIRequest alloc] initAsNewTripRequestForTrip:localTrip success:^(Trip *trip) {
 //
 //							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
 //							[self checkState];
@@ -839,28 +877,28 @@
 	_state++;
 
 	// Push locally created Custom Places phase if required
-//	if (_state == kSyncStateCustomPlaces)
+//	if (_state == TKSynchronizationStateCustomPlaces)
 //		[self synchronizeCustomPlaces];
 
 	// Push locally leaved foreign Trips
-//	else if (_state == kSyncStateLeavedTrips)
+//	else if (_state == TKSynchronizationStateLeavedTrips)
 //		[self synchronizeLeavedTrips];
 
 	// Push locally marked Favourites phase if required
 //	else
-	if (_state == kSyncStateFavourites)
+	if (_state == TKSynchronizationStateFavourites)
 		[self synchronizeFavourites];
 
 	// Perform Changes phase if required
-	else if (_state == kSyncStateChanges)
+	else if (_state == TKSynchronizationStateChanges)
 		[self synchronizeChanges];
 
 	// Fetch Trips updated on API
-//	else if (_state == kSyncStateUpdatedTrips)
+//	else if (_state == TKSynchronizationStateUpdatedTrips)
 //		[self synchronizeUpdatedTrips];
 
 	// Fetch missing items from API
-//	else if (_state == kSyncStateMissingItems)
+//	else if (_state == TKSynchronizationStateMissingItems)
 //		[self synchronizeMissingItems];
 
 	// Otherwise finish synchronization loop
@@ -903,10 +941,10 @@
 //	[SessionManager defaultSession].changesTimestamp = _lastChangesTimestamp;
 
 	SyncLog(@"Synchronization finished");
-	_state = kSyncStateStandby;
+	_state = TKSynchronizationStateStandby;
 	if (_significantUpdatePerformed)
-		[self sendNotification:kSyncNotificationSignificantUpdate];
-	[self sendNotification:kSyncNotificationDone];
+		[self sendNotification:TKSynchronizationNotificationTypeSignificantUpdate];
+	[self sendNotification:TKSynchronizationNotificationTypeDone];
 }
 
 - (void)cancelSynchronization
@@ -918,25 +956,25 @@
 
 	SyncLog(@"Synchronization cancelled");
 
-	_state = kSyncStateStandby;
-	[self sendNotification:kSyncNotificationDone];
+	_state = TKSynchronizationStateStandby;
+	[self sendNotification:TKSynchronizationNotificationTypeDone];
 }
 
-- (void)sendNotification:(SyncNotificationType)notification
+- (void)sendNotification:(TKSynchronizationNotificationType)notification
 {
 //	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
 //
 //		switch (notification)
 //		{
-//			case kSyncNotificationBegin:
+//			case TKSynchronizationNotificationTypeBegin:
 //				[[NotificationCenter defaultCenter] postNotificationName:kNotificationSynchronizationManagerWillStart];
 //				break;
 //
-//			case kSyncNotificationDone:
+//			case TKSynchronizationNotificationTypeDone:
 //				[[NotificationCenter defaultCenter] postNotificationName:kNotificationSynchronizationManagerDidFinish];
 //				break;
 //
-//			case kSyncNotificationSignificantUpdate:
+//			case TKSynchronizationNotificationTypeSignificantUpdate:
 //				[[NotificationCenter defaultCenter] postNotificationName:kNotificationSynchronizationManagerDidSignificantUpdate];
 //				break;
 //		}
@@ -946,7 +984,7 @@
 
 - (BOOL)syncInProgress
 {
-    return (_state != kSyncStateStandby);
+    return (_state != TKSynchronizationStateStandby);
 }
 
 @end

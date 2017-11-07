@@ -220,7 +220,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 }
 
 - (void)performUserCredentialsAuthWithUsername:(NSString *)username password:(NSString *)password
-	success:(void (^)(TKUserCredentials *))success failure:(TKAPIConnectionFailureBlock)failure
+	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/oauth2/token";
 
@@ -252,7 +252,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 }
 
 - (void)performUserSocialAuthWithFacebookToken:(NSString *)facebookToken googleToken:(NSString *)googleToken
-	success:(void (^)(TKUserCredentials *))success failure:(TKAPIConnectionFailureBlock)failure
+	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/oauth2/token";
 
@@ -286,7 +286,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 }
 
 - (void)performJWTAuthWithToken:(NSString *)jwtToken
-	success:(void (^)(TKUserCredentials *))success failure:(TKAPIConnectionFailureBlock)failure
+	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/oauth2/token";
 
@@ -317,7 +317,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 }
 
 - (void)performUserRegisterWithToken:(NSString *)accessToken fullName:(NSString *)fullName email:(NSString *)email
-	password:(NSString *)password success:(void (^)(void))success failure:(TKAPIConnectionFailureBlock)failure
+	password:(NSString *)password success:(void (^)(void))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/user/register";
 
@@ -352,7 +352,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 }
 
 - (void)performUserResetPasswordWithToken:(NSString *)accessToken email:(NSString *)email
-	success:(void (^)(void))success failure:(TKAPIConnectionFailureBlock)failure
+	success:(void (^)(void))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/user/reset-password";
 
