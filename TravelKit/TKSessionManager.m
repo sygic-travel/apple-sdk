@@ -6,9 +6,10 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKSessionManager.h"
+#import "TKSessionManager+Private.h"
 #import "TKDatabaseManager+Private.h"
 #import "TKUserSettings+Private.h"
+#import "TKAPI+Private.h"
 #import "TKSSOAPI+Private.h"
 
 #import "Foundation+TravelKit.h"
@@ -54,6 +55,8 @@
 - (void)loadState
 {
 	_credentials = [[TKUserCredentials alloc] initFromDictionary:_settings.userCredentials];
+
+	[TKAPI sharedAPI].accessToken = _credentials.accessToken;
 }
 
 - (void)saveState
@@ -66,7 +69,7 @@
 - (void)clearUserData
 {
 	// Clear Favorites
-	[_database runQuery:@"DELETE * FROM %@;" tableName:kDatabaseTableFavorites];
+	[_database runQuery:@"DELETE FROM %@;" tableName:kDatabaseTableFavorites];
 
 	// Reset User settings
 	[[TKUserSettings sharedSettings] reset];
@@ -86,6 +89,8 @@
 - (void)setCredentials:(TKUserCredentials *)credentials
 {
 	_credentials = credentials;
+
+	[TKAPI sharedAPI].accessToken = _credentials.accessToken;
 
 	[self saveState];
 }
@@ -205,6 +210,47 @@
 	else
 		[_database runQuery:@"UPDATE %@ SET state = -1 WHERE id = ?;"
 			tableName:kDatabaseTableFavorites data:@[ favoriteID ]];
+}
+
+- (NSDictionary<NSString *,NSNumber *> *)favoritePlaceIDsToSynchronize
+{
+	NSArray<NSDictionary *> *results = [_database runQuery:
+		@"SELECT * FROM %@ WHERE state != 0;" tableName:kDatabaseTableFavorites];
+
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:results.count];
+
+	for (NSDictionary *f in results)
+	{
+		NSString *ID = [f[@"id"] parsedString];
+		NSNumber *state = [f[@"state"] parsedNumber];
+
+		if (!ID || ABS(state.integerValue) != 1) continue;
+
+		dict[ID] = state;
+	}
+
+	return dict;
+}
+
+- (void)storeServerFavoriteIDsAdded:(NSArray<NSString *> *)addedIDs removed:(NSArray<NSString *> *)removedIDs
+{
+	NSString *(^joinIDs)(NSArray<NSString *> *) = ^NSString *(NSArray<NSString *> *arr) {
+		if (!arr.count) return nil;
+		return [NSString stringWithFormat:@"'%@'", [arr componentsJoinedByString:@"','"]];
+	};
+
+	NSString *addString = joinIDs(addedIDs);
+	NSString *remString = joinIDs(removedIDs);
+
+	if (addString) [_database runQuery:[NSString stringWithFormat:
+		@"UPDATE %@ SET state = 0 WHERE id IN (%@);", kDatabaseTableFavorites, addString]];
+
+	for (NSString *ID in addedIDs)
+		[_database runQuery:@"INSERT OR IGNORE INTO %@ (id) VALUES (?);"
+			tableName:kDatabaseTableFavorites data:@[ ID ]];
+
+	if (remString) [_database runQuery:[NSString stringWithFormat:
+		@"DELETE FROM %@ WHERE id IN (%@);", kDatabaseTableFavorites, remString]];
 }
 
 @end

@@ -95,6 +95,7 @@
 		__tours = [TKToursManager sharedManager];
 		_trips = [TKTripsManager sharedManager];
 		_session = [TKSessionManager sharedSession];
+		_sync = [TKSynchronizationManager sharedManager];
 	}
 
 	return self;

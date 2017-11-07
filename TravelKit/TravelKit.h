@@ -30,6 +30,7 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKToursManager.h>
 #import <TravelKit/TKTripsManager.h>
 #import <TravelKit/TKSessionManager.h>
+#import <TravelKit/TKSynchronizationManager.h>
 
 #import <TravelKit/Foundation+TravelKit.h>
 #import <TravelKit/NSDate+Tripomatic.h>
@@ -133,6 +134,11 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  Shared Session Manager instance to provide Session-related stuff.
  */
 @property (nonatomic, strong, readonly) TKSessionManager *session;
+
+/**
+ Shared Synchronization Manager instance to provide Sync-related stuff.
+ */
+@property (nonatomic, strong, readonly) TKSynchronizationManager *sync;
 
 @end
 

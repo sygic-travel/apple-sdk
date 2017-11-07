@@ -12,6 +12,9 @@
 #import "TKMedium+Private.h"
 #import "NSObject+Parsing.h"
 
+#import "NSDate+Tripomatic.h"
+#import "Foundation+TravelKit.h"
+
 
 #pragma mark API
 
@@ -126,6 +129,16 @@
 	case TKAPIRequestTypeMediaGET: // GET
 		return [NSString stringWithFormat:@"/places/%@/media", ID];
 
+	case TKAPIRequestTypeFavoriteADD: // POST
+	case TKAPIRequestTypeFavoriteDELETE: // DELETE
+		return @"/favorites";
+
+	case TKAPIRequestTypeChangesGET: // GET
+		return @"/changes";
+
+//	case TKAPIRequestTypeExchangeRatesGET: // GET
+//		return @"/exchange-rates";
+
 	default:
 		@throw [NSException exceptionWithName:@"Unsupported request"
 			reason:@"Unsupported request type given" userInfo:nil];
@@ -135,7 +148,16 @@
 
 - (NSString *)HTTPMethodForRequestType:(__unused TKAPIRequestType)type
 {
-	return @"GET";
+	switch (type)
+	{
+		case TKAPIRequestTypeFavoriteADD:
+			return @"POST";
+
+		case TKAPIRequestTypeFavoriteDELETE:
+			return @"DELETE";
+
+		default: return @"GET";
+	}
 }
 
 @end
@@ -198,9 +220,14 @@
 		[request setValue:_HTTPHeaders[header] forHTTPHeaderField:header];
 
 	NSString *apiKey = _APIKey ?: api.APIKey;
+	NSString *accessToken = _accessToken ?: api.accessToken;
 
 	if (apiKey.length)
 		[request setValue:apiKey forHTTPHeaderField:@"X-API-Key"];
+
+	if (accessToken.length)
+		[request setValue:[NSString stringWithFormat:@"Bearer %@", accessToken]
+			forHTTPHeaderField:@"Authorization"];
 
 	_connection = [[TKAPIConnection alloc] initWithURLRequest:request success:_successBlock failure:_failureBlock];
 	_connection.identifier = self.typeString;
@@ -619,6 +646,143 @@
 
 
 ////////////////////
+#pragma mark - Favorites
+////////////////////
+
+
+- (instancetype)initAsFavoriteItemAddRequestWithID:(NSString *)itemID
+	success:(void (^)(void))success failure:(TKAPIConnectionFailureBlock)failure
+{
+	if (self = [super init])
+	{
+		_type = TKAPIRequestTypeFavoriteADD;
+		_path = [[TKAPI sharedAPI] pathForRequestType:_type];
+		_data = [@{ @"place_id": itemID ?: [NSNull null] } asJSONData];
+
+		_successBlock = ^(TKAPIResponse *__unused response){
+			_state = TKAPIRequestStateFinished;
+			if (success) success();
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
+			if (failure) failure(error);
+		};
+	}
+
+	return self;
+}
+
+- (instancetype)initAsFavoriteItemDeleteRequestWithID:(NSString *)itemID
+	success:(void (^)(void))success failure:(TKAPIConnectionFailureBlock)failure
+{
+	if (self = [super init])
+	{
+		_type = TKAPIRequestTypeFavoriteDELETE;
+		_path = [[TKAPI sharedAPI] pathForRequestType:_type];
+		_data = [@{ @"place_id": itemID ?: [NSNull null] } asJSONData];
+
+		_successBlock = ^(TKAPIResponse *__unused response){
+			_state = TKAPIRequestStateFinished;
+			if (success) success();
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
+			if (failure) failure(error);
+		};
+	}
+
+	return self;
+}
+
+
+////////////////////
+#pragma mark - Changes
+////////////////////
+
+
+- (instancetype)initAsChangesRequestSince:(NSDate *)sinceDate success:(void (^)(
+	NSDictionary<NSString *, NSNumber *> *updatedTripsDict, NSArray<NSString *> *deletedTripIDs,
+	NSArray<NSString *> *updatedFavouriteIDs, NSArray<NSString *> *deletedFavouriteIDs,
+	BOOL updatedSettings, NSDate *timestamp))success failure:(TKAPIConnectionFailureBlock)failure
+{
+	if (self = [super init])
+	{
+		_type = TKAPIRequestTypeChangesGET;
+		_path = [[TKAPI sharedAPI] pathForRequestType:_type];
+
+		NSString *sinceString = (sinceDate) ? [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:sinceDate] : nil;
+		sinceString = [sinceString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
+
+		if (sinceString) _path = [_path stringByAppendingFormat:@"?since=%@", sinceString];
+
+		_successBlock = ^(TKAPIResponse *response){
+
+			// Prepare structures for response data
+			NSMutableDictionary *updatedTripsDict = [NSMutableDictionary dictionaryWithCapacity:5];
+			NSMutableArray *deletedTripIDs = [NSMutableArray arrayWithCapacity:5],
+			               *updatedFavouriteItemIDs = [NSMutableArray arrayWithCapacity:5],
+			               *deletedFavouriteItemIDs = [NSMutableArray arrayWithCapacity:5];
+			BOOL settingsUpdated = NO;
+
+			NSArray<NSDictionary *> *events = [response.data[@"changes"] parsedArray];
+
+			// Loop through the events
+			for (NSDictionary *event in events)
+			{
+				NSString *type = [event[@"type"] parsedString];
+				NSString *change = [event[@"change"] parsedString];
+				NSString *ID = [event[@"id"] parsedString];
+
+				if (!type) continue;
+
+				// Trip updates
+
+				if ([type isEqualToString:@"trip"])
+				{
+					NSNumber *version = [event[@"version"] parsedNumber] ?: @0;
+					if (!ID) continue;
+					if ([change isEqualToString:@"updated"])
+						updatedTripsDict[ID] = version;
+					else if (sinceDate && [change isEqualToString:@"deleted"])
+						[deletedTripIDs addObject:ID];
+				}
+
+				// Favourites updates
+
+				else if ([type isEqualToString:@"favorite"])
+				{
+					if (!ID) continue;
+					if ([change isEqualToString:@"updated"])
+						[updatedFavouriteItemIDs addObject:ID];
+					else if (sinceDate && [change isEqualToString:@"deleted"])
+						[deletedFavouriteItemIDs addObject:ID];
+				}
+
+				// Settings updates
+
+				else if ([type isEqualToString:@"settings"])
+					if ([change isEqualToString:@"updated"])
+						settingsUpdated = YES;
+			}
+
+			// Get Changes timestamp
+			NSDate *datestamp = response.timestamp ?: [[NSDate now] dateByAddingTimeInterval:-5];
+
+			_state = TKAPIRequestStateFinished;
+
+			if (success)
+				success(updatedTripsDict, deletedTripIDs, updatedFavouriteItemIDs,
+				        deletedFavouriteItemIDs, settingsUpdated, datestamp);
+
+		}; _failureBlock = ^(TKAPIError *error){
+			_state = TKAPIRequestStateFinished;
+			if (failure) failure(error);
+		};
+	}
+
+	return self;
+}
+
+
+////////////////////
 #pragma mark - Exchange rates
 ////////////////////
 
@@ -779,6 +943,9 @@
 			@(TKAPIRequestTypePlaceGET): @"PLACE_GET",
 			@(TKAPIRequestTypeToursQueryGET): @"TOURS_QUERY_GET",
 			@(TKAPIRequestTypeMediaGET): @"MEDIA_GET",
+			@(TKAPIRequestTypeFavoriteADD): @"FAVORITE_ADD",
+			@(TKAPIRequestTypeFavoriteDELETE): @"FAVORITE_DELETE",
+			@(TKAPIRequestTypeChangesGET): @"CHANGES_GET",
 			@(TKAPIRequestTypeExchangeRatesGET): @"EXCHANGE_RATES_GET",
 			@(TKAPIRequestTypeCustomGET): @"CUSTOM_GET",
 			@(TKAPIRequestTypeCustomPOST): @"CUSTOM_POST",

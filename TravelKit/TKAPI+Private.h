@@ -11,6 +11,7 @@
 
 #import <TravelKit/TKPlace.h>
 #import <TravelKit/TKTour.h>
+#import <TravelKit/TKTrip.h>
 #import <TravelKit/TKMedium.h>
 #import <TravelKit/TKPlacesQuery.h>
 #import <TravelKit/TKToursQuery.h>
@@ -33,6 +34,9 @@ typedef NS_ENUM(NSInteger, TKAPIRequestType)
 	TKAPIRequestTypePlaceGET,
 	TKAPIRequestTypeToursQueryGET,
 	TKAPIRequestTypeMediaGET,
+	TKAPIRequestTypeFavoriteADD,
+	TKAPIRequestTypeFavoriteDELETE,
+	TKAPIRequestTypeChangesGET,
 	TKAPIRequestTypeExchangeRatesGET,
 	TKAPIRequestTypeCustomGET,
 	TKAPIRequestTypeCustomPOST,
@@ -54,6 +58,7 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 @interface TKAPI : NSObject
 
 @property (nonatomic, copy) NSString *APIKey;
+@property (nonatomic, copy) NSString *accessToken;
 @property (nonatomic, copy) NSString *language;
 @property (nonatomic, copy, readonly) NSString *hostname;
 @property (nonatomic, readonly) BOOL isAlphaEnvironment; // Private
@@ -72,6 +77,7 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 @interface TKAPIRequest : NSObject
 
 @property (nonatomic, copy) NSString *APIKey; // Customizable
+@property (nonatomic, copy) NSString *accessToken; // Customizable
 @property (atomic) TKAPIRequestType type;
 @property (atomic) TKAPIRequestState state;
 @property (nonatomic) BOOL silent;
@@ -118,6 +124,23 @@ typedef NS_ENUM(NSUInteger, TKAPIRequestState)
 - (instancetype)initAsMediaRequestForPlaceWithID:(NSString *)placeID
 	success:(void (^)(NSArray<TKMedium *> *media))success
 		failure:(TKAPIConnectionFailureBlock)failure;
+
+////////////////////
+// Favorites
+
+- (instancetype)initAsFavoriteItemAddRequestWithID:(NSString *)itemID
+	success:(void (^)(void))success failure:(TKAPIConnectionFailureBlock)failure;
+
+- (instancetype)initAsFavoriteItemDeleteRequestWithID:(NSString *)itemID
+	success:(void (^)(void))success failure:(TKAPIConnectionFailureBlock)failure;
+
+////////////////////
+// Changes
+
+- (instancetype)initAsChangesRequestSince:(NSDate *)sinceDate success:(void (^)(
+	NSDictionary<NSString *, NSNumber *> *updatedTripsDict, NSArray<NSString *> *deletedTripIDs,
+	NSArray<NSString *> *updatedFavouriteIDs, NSArray<NSString *> *deletedFavouriteIDs,
+	BOOL updatedSettings, NSDate *timestamp))success failure:(TKAPIConnectionFailureBlock)failure;
 
 ////////////////////
 // Exchange rates
