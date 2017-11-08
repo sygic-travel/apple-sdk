@@ -31,7 +31,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationState) {
 //	TKSynchronizationStateLeavedTrips,
 	TKSynchronizationStateFavourites,
 	TKSynchronizationStateChanges,
-//	TKSynchronizationStateUpdatedTrips,
+	TKSynchronizationStateUpdatedTrips,
 //	TKSynchronizationStateMissingItems,
 	TKSynchronizationStateClearing,
 };
@@ -79,6 +79,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 @interface TKSynchronizationManager ()
 
 @property (nonatomic, strong) TKSessionManager *session;
+@property (nonatomic, strong) TKTripsManager *tripsManager;
 @property (atomic) TKSynchronizationState state;
 
 @end
@@ -103,6 +104,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	if (self = [super init])
 	{
 		_session = [TKSessionManager sharedSession];
+		_tripsManager = [TKTripsManager sharedManager];
 		_state = TKSynchronizationStateStandby;
 		_queue = [NSOperationQueue new];
 		_queue.name = @"Synchronization";
@@ -216,6 +218,17 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 }
 
 
+#pragma mark - API requests worker
+
+
+- (void)enqueueAPIRequest:(TKAPIRequest *)request
+{
+	request.accessToken = _currentAccessToken;
+	[_requests addObject:request];
+	[request start];
+}
+
+
 #pragma mark - Phase initializers
 
 
@@ -267,9 +280,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 //		else
 //			request = [[APIRequest alloc] initAsUpdatePlaceRequestWithActivity:a success:success failure:failure];
 //
-//		request.accessToken = _currentAccessToken;
-//		[_requests addObject:request];
-//		[request start];
+//		[self enqueueAPIRequest:request];
 //	}
 //
 //	if (!changesAvailable)
@@ -300,9 +311,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 //
 //		} failure:^{ [self checkState]; }];
 //
-//		request.accessToken = _currentAccessToken;
-//		[_requests addObject:request];
-//		[request start];
+//		[self enqueueAPIRequest:request];
 //	}
 //
 //	if (!changesAvailable)
@@ -339,9 +348,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 		} failure:failure];
 
-//		request.accessToken = _currentAccessToken;
-		[_requests addObject:request];
-		[request start];
+		[self enqueueAPIRequest:request];
 	}
 
 	// Locally removed Favourites
@@ -354,9 +361,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 		} failure:failure];
 
-//		request.accessToken = _currentAccessToken;
-		[_requests addObject:request];
-		[request start];
+		[self enqueueAPIRequest:request];
 	}
 
 	[self checkState];
@@ -366,11 +371,10 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 {
 	// Get lastest updates from Changes API and do all the magic
 
-	TKSessionManager *session = [TKSessionManager sharedSession];
 	TKUserSettings *settings = [TKUserSettings sharedSettings];
 
 	// Check for user's trip changes
-	if (session.credentials != nil)
+	if (_session.credentials != nil)
 	{
 		NSDate *since = nil;
 
@@ -389,53 +393,121 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 			// Update Changes API timestamp
 			_lastChangesTimestamp = settings.changesTimestamp = [timestamp timeIntervalSince1970];
 
-//			// Set up comparable arrays
-//			NSMutableArray<NSString *> *currentOnlineTripIDs = [updatedTripsDict.allKeys mutableCopy];
-//			NSArray<TKTrip *> *currentDBTrips = [[[TKTripsManager sharedManager] allTrips]
-//				.reverseObjectEnumerator allObjects];
+			// Set up comparable arrays
+			NSMutableArray<NSString *> *currentOnlineTripIDs = [updatedTripsDict.allKeys mutableCopy];
+			NSArray<TKTrip *> *currentDBTrips = [[_tripsManager allTrips]
+				.reverseObjectEnumerator allObjects];
+
+			// Walk through the local trips to send to server (when signed in)
+			for (TKTrip *localTrip in currentDBTrips) {
+
+				// Find out whether trip has been updated
+				BOOL updated = updatedTripsDict[localTrip.ID] != nil;
+
+				// If not marked as updated on server...
+				if (!updated) {
+
+					BOOL deletedOnRemote = [deletedTripIDs containsObject:localTrip.ID];
+
+					// ...and is user-created (with no server-generated ID)
+					if ([localTrip.ID hasPrefix:@LOCAL_TRIP_PREFIX]) {
+
+						SyncLog(@"Trip NOT on server yet – sending: %@", localTrip);
+
+						TKAPIRequest *request = [[TKAPIRequest alloc] initAsNewTripRequestForTrip:localTrip success:^(TKTrip *trip) {
+
+							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+							[self checkState];
+
+						} failure:^(TKAPIError *__unused error) {
+							[self checkState];
+						}];
+
+						[self enqueueAPIRequest:request];
+					}
+
+					// ...if locally modified, send updates to the server
+
+					else if (!deletedOnRemote && localTrip.changed) {
+
+						SyncLog(@"Trip NOT up-to-date on server – sending: %@", localTrip);
+						TKAPIRequest *updateTripRequest = [[TKAPIRequest alloc] initAsUpdateTripRequestForTrip:localTrip success:^(TKTrip *trip) {
+
+							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+							[self checkState];
+
+						} failure:^(TKAPIError *__unused e, TKTrip *trip){
+
+// TODO: Conflicts
+//							TKAPIResponse *response = e.response;
+//							NSString *resolution = [response.data[@"conflict_resolution"] parsedString];
 //
-//			// Walk through the local trips to send to server (when signed in)
-//			for (TKTrip *localTrip in currentDBTrips) {
+//							// If pushed Trip update has been ignored,
+//							// add Trips pair to conflicts holding structure
+//							if (trip && [resolution containsSubstring:@"ignored"])
+//							{
+//								NSDictionary *conflictDict = [response.data[@"conflict_info"] parsedDictionary];
+//								TKTripConflict *conflict = [TKTripConflict new];
+//								conflict.localTrip = localTrip;
+//								conflict.remoteTrip = trip;
+//								conflict.lastEditor = [conflictDict[@"last_user_name"] parsedString];
+//								NSString *dateStr = [conflictDict[@"last_updated_at"] parsedString];
+//								conflict.lastUpdate = (dateStr) ? [NSDate dateFrom8601DateTimeString:dateStr] : nil;
+//								[_tripConflicts addObject:conflict];
+//							}
 //
-//				// Find out whether trip has been updated
-//				BOOL updated = updatedTripsDict[localTrip.ID] != nil;
-//
-//				// If not marked as updated on server...
-//				if (!updated) {
-//
-//					BOOL deletedOnRemote = [deletedTripIDs containsObject:localTrip.ID];
-//
-//					// ...and is user-created (with no server-generated ID)
-//					if ([localTrip.ID hasPrefix:@LOCAL_TRIP_PREFIX]) {
-//
-//						SyncLog(@"Trip NOT on server yet – sending: %@", localTrip);
-//
-//						TKAPIRequest *request = [[TKAPIRequest alloc] initAsNewTripRequestForTrip:localTrip success:^(Trip *trip) {
-//
-//							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
-//							[self checkState];
-//
-//						} failure:^{
-//							[self checkState];
-//						}];
-//
-//						request.accessToken = _currentAccessToken;
-//						[_requests addObject:request];
-//						[request start];
-//					}
-//
-//					// ...if locally modified, send updates to the server
-//
-//					else if (!deletedOnRemote && localTrip.changed) {
-//
-//						SyncLog(@"Trip NOT up-to-date on server – sending: %@", localTrip);
-//						APIRequest *updateTripRequest = [[APIRequest alloc] initAsUpdateTripRequestForTrip:localTrip success:^(Trip *trip) {
-//
-//							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
-//							[self checkState];
-//
-//						} failure:^(APIError *e, Trip *trip){
-//
+//							// Otherwise process received Trip
+//							else if (trip)
+								[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+
+							[self checkTripConflicts];
+							[self checkState];
+						}];
+
+						[self enqueueAPIRequest:updateTripRequest];
+					}
+
+					// ...otherwise:
+					// - Trips returned as deleted from server can be dropped directly
+					// - In case we request Changes API with 'since' timestamp 0, Trips not found in response
+					//   can be deleted as these are not present on the server
+
+					else if (deletedOnRemote || changesTimestamp < 1)
+					{
+						SyncLog(@"Trip NOT on server – deleting: %@", localTrip);
+
+						[_tripsManager deleteTripWithID:localTrip.ID];
+					}
+
+				}
+
+				else {
+
+					//////////////////////////
+					// Method A: Push changes to server so it can tell us what to do
+					//////////////////////////
+					//
+					// Success: Changes accepted
+					// Error: Begin conflict resolution of Trip if verbosely ignored, ignore otherwise
+					//
+
+					// Server sent updated Trip which is also locally modified.
+					// Try pushing it so we get one of [success, failure, conflict].
+
+					if (localTrip.changed) {
+
+						// Do not further process matching remote Trip, we decide what to do here
+						[currentOnlineTripIDs removeObject:localTrip.ID];
+
+						SyncLog(@"Trip conflicting with server - sending: %@", localTrip);
+						TKAPIRequest *request = [[TKAPIRequest alloc] initAsUpdateTripRequestForTrip:localTrip success:^(TKTrip *trip) {
+
+							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+							[self checkState];
+
+						} failure:^(TKAPIError *__unused e, TKTrip *trip){
+
+// TODO: Conflicts
 //							APIResponse *response = e.response;
 //							NSString *resolution = [response.data[@"conflict_resolution"] parsedString];
 //
@@ -455,174 +527,97 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 //
 //							// Otherwise process received Trip
 //							else if (trip)
-//								[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+								[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+
+							[self checkTripConflicts];
+							[self checkState];
+						}];
+
+						[self enqueueAPIRequest:request];
+
+						//////////////////////////
+						// Method B: Try some local-side rules
+						// Note: Not maintained
+						//////////////////////////
+
+//						BOOL canSafelyPush = matchingOnlineTrip.rights & TripRightsEdit;
 //
-//							[self checkTripConflicts];
-//							[self checkState];
-//						}];
-//
-//						updateTripRequest.accessToken = _currentAccessToken;
-//						[_requests addObject:updateTripRequest];
-//						[updateTripRequest start];
-//					}
-//
-//					// ...otherwise:
-//					// - Trips returned as deleted from server can be dropped directly
-//					// - In case we request Changes API with 'since' timestamp 0, Trips not found in response
-//					//   can be deleted as these are not present on the server
-//
-//					else if (deletedOnRemote || session.changesTimestamp == 0)
-//					{
-//						SyncLog(@"Trip NOT on server – deleting: %@", localTrip);
-//
-//						if ([session.activeTrip.ID isEqualToString:localTrip.ID])
-//							session.activeTrip = nil;
-//
-//						[[TripsManager defaultManager] deleteTripWithID:localTrip.ID];
-//					}
-//
-//				}
-//
-//				else {
-//
-//					//////////////////////////
-//					// Method A: Push changes to server so it can tell us what to do
-//					//////////////////////////
-//					//
-//					// Success: Changes accepted
-//					// Error: Begin conflict resolution of Trip if verbosely ignored, ignore otherwise
-//					//
-//
-//					// Server sent updated Trip which is also locally modified.
-//					// Try pushing it so we get one of [success, failure, conflict].
-//
-//					if (localTrip.changed) {
+//						// Break if I can't push any changes so local data will be overwritten later
+//						if (!canSafelyPush)
+//							continue;
 //
 //						// Do not further process matching remote Trip, we decide what to do here
-//						[currentOnlineTripIDs removeObject:localTrip.ID];
+//						[currentOnlineTrips removeObject:matchingOnlineTrip];
 //
-//						SyncLog(@"Trip conflicting with server - sending: %@", localTrip);
-//						APIRequest *request = [[APIRequest alloc] initAsUpdateTripRequestForTrip:localTrip success:^(Trip *trip) {
+//						// Announce a conflict if remote data are newer than local
+//						if ([matchingOnlineTrip.lastUpdate timeIntervalSinceDate:localTrip.lastUpdate] > 0)
+//						{
+//							// Add Trips pair to conflicts holding structure
+//							TKTripConflict *conflict = [TKTripConflict new];
+//							conflict.localTrip = localTrip;
+//							conflict.remoteTrip = matchingOnlineTrip;
+//							[_tripConflicts addObject:conflict];
+//						}
 //
-//							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
-//							[self checkState];
+//						// Otherwise force-push local data
+//						else
+//						{
+//							localTrip.version = matchingOnlineTrip.version;
+//							localTrip.lastUpdate = [NSDate now];
+//							localTrip.rights = matchingOnlineTrip.rights;
 //
-//						} failure:^(APIError *e, Trip *trip){
+//							SyncLog(@"Trip NOT up-to-date on server – sending: %@", localTrip);
+//							APIRequest *request = [[APIRequest alloc] initAsUpdateTripRequestForTrip:
+//							  localTrip success:^(Trip *trip) {
 //
-//							APIResponse *response = e.response;
-//							NSString *resolution = [response.data[@"conflict_resolution"] parsedString];
-//
-//							// If pushed Trip update has been ignored,
-//							// add Trips pair to conflicts holding structure
-//							if (trip && [resolution containsSubstring:@"ignored"])
-//							{
-//								NSDictionary *conflictDict = [response.data[@"conflict_info"] parsedDictionary];
-//								TKTripConflict *conflict = [TKTripConflict new];
-//								conflict.localTrip = localTrip;
-//								conflict.remoteTrip = trip;
-//								conflict.lastEditor = [conflictDict[@"last_user_name"] parsedString];
-//								NSString *dateStr = [conflictDict[@"last_updated_at"] parsedString];
-//								conflict.lastUpdate = (dateStr) ? [NSDate dateFrom8601DateTimeString:dateStr] : nil;
-//								[_tripConflicts addObject:conflict];
-//							}
-//
-//							// Otherwise process received Trip
-//							else if (trip)
 //								[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+//								[self checkState];
 //
-//							[self checkTripConflicts];
-//							[self checkState];
-//						}];
+//							} failure:^(APIError *e, Trip* trip){
+//								[self checkState];
+//							}];
 //
-//						request.accessToken = _currentAccessToken;
-//						[_requests addObject:request];
-//						[request start];
-//
-//						//////////////////////////
-//						// Method B: Try some local-side rules
-//						// Note: Not maintained
-//						//////////////////////////
-//
-////						BOOL canSafelyPush = matchingOnlineTrip.rights & TripRightsEdit;
-////
-////						// Break if I can't push any changes so local data will be overwritten later
-////						if (!canSafelyPush)
-////							continue;
-////
-////						// Do not further process matching remote Trip, we decide what to do here
-////						[currentOnlineTrips removeObject:matchingOnlineTrip];
-////
-////						// Announce a conflict if remote data are newer than local
-////						if ([matchingOnlineTrip.lastUpdate timeIntervalSinceDate:localTrip.lastUpdate] > 0)
-////						{
-////							// Add Trips pair to conflicts holding structure
-////							TKTripConflict *conflict = [TKTripConflict new];
-////							conflict.localTrip = localTrip;
-////							conflict.remoteTrip = matchingOnlineTrip;
-////							[_tripConflicts addObject:conflict];
-////						}
-////
-////						// Otherwise force-push local data
-////						else
-////						{
-////							localTrip.version = matchingOnlineTrip.version;
-////							localTrip.lastUpdate = [NSDate now];
-////							localTrip.rights = matchingOnlineTrip.rights;
-////
-////							SyncLog(@"Trip NOT up-to-date on server – sending: %@", localTrip);
-////							APIRequest *request = [[APIRequest alloc] initAsUpdateTripRequestForTrip:
-////							  localTrip success:^(Trip *trip) {
-////
-////								[self processResponseWithTrip:trip sentTripID:localTrip.ID];
-////								[self checkState];
-////
-////							} failure:^(APIError *e, Trip* trip){
-////								[self checkState];
-////							}];
-////
-////							request.accessToken = _currentAccessToken;
-////							[_requests addObject:request];
-////							[request start];
-////						}
-//
-//					}
-//
-//				}
-//
-//			}
-//
-//			NSMutableArray *tripsToFetch = [NSMutableArray arrayWithCapacity:5];
-//
-//			// Walk through the server trips
-//			for (NSString *onlineTripID in currentOnlineTripIDs) {
-//
-//				// Initial rule for app type
-//				BOOL shouldProcess = YES;
-//				NSUInteger onlineTripVersion = [updatedTripsDict[onlineTripID] unsignedIntegerValue];
-//
-//				// If found in the DB and up-to-date, do not request it except for
-//				// the case the Trip is foreign -- changes in collaborators and its rights
-//				// do not change Trip version
-//				for (Trip *dbTrip in currentDBTrips)
-//					if ([dbTrip.ID isEqualToString:onlineTripID])
-//					{
-//						if (dbTrip.version == onlineTripVersion)
-//							if ([dbTrip.userID isEqual:dbTrip.ownerID])
-//								shouldProcess = NO;
-//						break;
-//					}
-//
-//				if (!shouldProcess) continue;
-//
-//				SyncLog(@"Trip updated on server - queueing: %@", onlineTripID);
-//				[tripsToFetch addObject:onlineTripID];
-//			}
-//
-//			_tripIDsToFetch = [tripsToFetch copy];
+//							[self enqueueAPIRequest:request];
+//						}
+
+					}
+
+				}
+
+			}
+
+			NSMutableArray *tripsToFetch = [NSMutableArray arrayWithCapacity:5];
+
+			// Walk through the server trips
+			for (NSString *onlineTripID in currentOnlineTripIDs) {
+
+				// Initial rule for app type
+				BOOL shouldProcess = YES;
+				NSUInteger onlineTripVersion = [updatedTripsDict[onlineTripID] unsignedIntegerValue];
+
+				// If found in the DB and up-to-date, do not request it except for
+				// the case the Trip is foreign -- changes in collaborators and its rights
+				// do not change Trip version
+				for (TKTrip *dbTrip in currentDBTrips)
+					if ([dbTrip.ID isEqualToString:onlineTripID])
+					{
+						if (dbTrip.version == onlineTripVersion)
+							if ([dbTrip.userID isEqual:dbTrip.ownerID])
+								shouldProcess = NO;
+						break;
+					}
+
+				if (!shouldProcess) continue;
+
+				SyncLog(@"Trip updated on server - queueing: %@", onlineTripID);
+				[tripsToFetch addObject:onlineTripID];
+			}
+
+			_tripIDsToFetch = [tripsToFetch copy];
 
 			// Process Favourite fields
 
-			[session storeServerFavoriteIDsAdded:updatedFavouriteIDs removed:deletedFavouriteIDs];
+			[_session storeServerFavoriteIDsAdded:updatedFavouriteIDs removed:deletedFavouriteIDs];
 
 			if (updatedFavouriteIDs.count || deletedFavouriteIDs.count)
 				_significantUpdatePerformed = YES;
@@ -634,9 +629,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 			[self checkState];
 		}];
 
-//		listRequest.accessToken = _currentAccessToken;
-		[_requests addObject:listRequest];
-		[listRequest start];
+		[self enqueueAPIRequest:listRequest];
 
 		[self checkState];
 }
@@ -645,40 +638,38 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	else [self checkState];
 }
 
-//- (void)synchronizeUpdatedTrips
-//{
-//	NSMutableSet *storedIDs = [NSMutableSet setWithCapacity:_tripIDsToFetch.count];
-//
-//	// Iterate the Trip IDs from API
-//	for (NSString *tripID in _tripIDsToFetch)
-//	{
-//		[storedIDs addObject:tripID];
-//
-//		if (storedIDs.count >= 25 || (storedIDs.count && tripID == _tripIDsToFetch.lastObject))
-//		{
-//			APIRequest *request = [[APIRequest alloc] initAsBatchTripRequestForIDs:
-//			  storedIDs.allObjects success:^(NSArray<Trip *> *trips) {
-//
-//				for (Trip *t in trips)
-//					[self processResponseWithTrip:t sentTripID:t.ID];
-//
-//				[self checkState];
-//
-//			} failure:^{
-//				[self checkState];
-//			}];
-//
-//			request.accessToken = _currentAccessToken;
-//			[_requests addObject:request];
-//			[request silentStart];
-//
-//			[storedIDs removeAllObjects];
-//		}
-//	}
-//
-//	// Check state
-//	[self checkState];
-//}
+- (void)synchronizeUpdatedTrips
+{
+	NSMutableSet *storedIDs = [NSMutableSet setWithCapacity:_tripIDsToFetch.count];
+
+	// Iterate the Trip IDs from API
+	for (NSString *tripID in _tripIDsToFetch)
+	{
+		[storedIDs addObject:tripID];
+
+		if (storedIDs.count >= 25 || (storedIDs.count && tripID == _tripIDsToFetch.lastObject))
+		{
+			TKAPIRequest *request = [[TKAPIRequest alloc] initAsBatchTripRequestForIDs:
+			  storedIDs.allObjects success:^(NSArray<TKTrip *> *trips) {
+
+				for (TKTrip *t in trips)
+					[self processResponseWithTrip:t sentTripID:t.ID];
+
+				[self checkState];
+
+			  } failure:^(TKAPIError *__unused e) {
+				[self checkState];
+			}];
+
+			[self enqueueAPIRequest:request];
+
+			[storedIDs removeAllObjects];
+		}
+	}
+
+	// Check state
+	[self checkState];
+}
 
 //- (void)synchronizeMissingItems
 //{
@@ -748,40 +739,17 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 - (void)processResponseWithTrip:(TKTrip *)trip sentTripID:(NSString *)originalTripID
 {
-//	SyncLog(@"Processing Trip: %@", trip);
-//
-//	TripsManager *tm = [TripsManager defaultManager];
-//	SessionManager *sm = [SessionManager defaultSession];
-//	Trip *activeTrip = sm.activeTrip;
-//
-//	BOOL activeUpdated = ([activeTrip.ID isEqualToString:trip.ID] ||
-//						  [activeTrip.ID isEqualToString:originalTripID]);
-//
-//	// Update Trip ID if needed
-//	if (originalTripID && ![originalTripID isEqualToString:trip.ID])
-//		[tm changeTripWithID:originalTripID toID:trip.ID];
-//
-//	if (activeUpdated)
-//	{
-//		// If changed since last synchronization, do not update with these data, only update
-//		// ID and version to prevent sending duplicate trips with same past version
-//		if (activeTrip.changedSinceLastSynchronization) {
-//			activeTrip.ID = trip.ID;
-//			activeTrip.version = trip.version;
-//			[sm saveActiveTripUpdates];
-//			return;
-//		}
-//	}
-//
+	SyncLog(@"Processing Trip: %@", trip);
+
+	// Update Trip ID if needed
+	if (originalTripID && ![originalTripID isEqualToString:trip.ID])
+		[_tripsManager changeTripWithID:originalTripID toID:trip.ID];
+
 //	// Fill in handling User ID information
 //	if (!trip.userID) trip.userID = _currentUserID;
-//
-//	// If there's already a Trip in the DB, update, otherwise add new Trip
-//	[tm saveOrUpdateTrip:trip forUserWithID:_currentUserID];
-//
-//	// Refresh active Trip if changed
-//	if (activeUpdated)
-//		sm.activeTrip = trip;
+
+	// If there's already a Trip in the DB, update, otherwise add new Trip
+	[_tripsManager saveOrUpdateTrip:trip];
 }
 
 - (void)processResponseWithBatchActivities:(NSArray *)activities
@@ -894,8 +862,8 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 		[self synchronizeChanges];
 
 	// Fetch Trips updated on API
-//	else if (_state == TKSynchronizationStateUpdatedTrips)
-//		[self synchronizeUpdatedTrips];
+	else if (_state == TKSynchronizationStateUpdatedTrips)
+		[self synchronizeUpdatedTrips];
 
 	// Fetch missing items from API
 //	else if (_state == TKSynchronizationStateMissingItems)
@@ -962,6 +930,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 - (void)sendNotification:(TKSynchronizationNotificationType)notification
 {
+	if (false) { NSLog(@""); }
 //	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
 //
 //		switch (notification)

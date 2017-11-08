@@ -294,9 +294,11 @@
 - (BOOL)changeTripWithID:(NSString *)originalID toID:(NSString *)newID
 {
 	BOOL ok = [_database runUpdate:@"UPDATE %@ SET id = ? WHERE id = ?;"
-						   tableName:kDatabaseTableTrips data:@[ newID, originalID ]];
+						 tableName:kDatabaseTableTrips data:@[ newID, originalID ]];
 	    ok &= [_database runUpdate:@"UPDATE %@ SET trip_id = ? WHERE trip_id = ?;"
-						   tableName:kDatabaseTableTripDayItems data:@[ newID, originalID ]];
+						 tableName:kDatabaseTableTripDays data:@[ newID, originalID ]];
+	    ok &= [_database runUpdate:@"UPDATE %@ SET trip_id = ? WHERE trip_id = ?;"
+						 tableName:kDatabaseTableTripDayItems data:@[ newID, originalID ]];
 
 //	[[NotificationCenter defaultCenter] postNotificationName:kNotificationTripsManagerDidUpdateTripID
 //		object:@{ @"original_id": originalID, @"new_id": newID }];

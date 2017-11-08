@@ -58,6 +58,11 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 	return self;
 }
 
+- (void)dealloc
+{
+	[self commit];
+}
+
 - (void)load
 {
 	_changesTimestamp = [_defaults doubleForKey:TKSettingsKeyChangesTimestamp];

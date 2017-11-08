@@ -651,6 +651,9 @@
 		NSDateFormatter *fmt = [NSDateFormatter sharedDateFormatter];
 		dict[@"starts_on"] = [fmt stringFromDate:_dateStart];
 		dict[@"ends_on"] = [fmt stringFromDate:[_dateStart dateByAddingNumberOfDays:daysCount-1]];
+	} else {
+		dict[@"starts_on"] = [NSNull null];
+		dict[@"ends_on"] = [NSNull null];
 	}
 
 	dict[@"privacy_level"] =

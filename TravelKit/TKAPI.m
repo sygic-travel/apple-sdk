@@ -162,6 +162,19 @@
 	case TKAPIRequestTypeMediaGET: // GET
 		return [NSString stringWithFormat:@"/places/%@/media", ID];
 
+	case TKAPIRequestTypeTripGET: // GET
+	case TKAPIRequestTypeTripUPDATE: // PUT
+		return [NSString stringWithFormat:@"/trips/%@", ID];
+
+	case TKAPIRequestTypeTripNEW: // POST
+		return @"/trips";
+
+	case TKAPIRequestTypeTrashEMPTY: // POST
+		return @"/trips/empty-trash";
+
+	case TKAPIRequestTypeTripsBatchGET: // GET
+		return @"/trips";
+
 	case TKAPIRequestTypeFavoriteADD: // POST
 	case TKAPIRequestTypeFavoriteDELETE: // DELETE
 		return @"/favorites";
@@ -184,7 +197,12 @@
 	switch (type)
 	{
 		case TKAPIRequestTypeFavoriteADD:
+		case TKAPIRequestTypeTripNEW:
+		case TKAPIRequestTypeTrashEMPTY:
 			return @"POST";
+
+		case TKAPIRequestTypeTripUPDATE:
+			return @"PUT";
 
 		case TKAPIRequestTypeFavoriteDELETE:
 			return @"DELETE";
