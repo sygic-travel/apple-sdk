@@ -316,6 +316,37 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	}];
 }
 
+- (void)performMagicAuthWithMagicLink:(NSString *)magicLink
+	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure
+{
+	NSString *path = @"/oauth2/token";
+
+	NSDictionary *post = @{
+		@"client_id": @"sygictravel_ios",
+		@"grant_type": @"magic_link",
+		@"token": objectOrNull(magicLink),
+		@"device_code": [TKUserSettings sharedSettings].uniqueID,
+		@"device_platform": @"ios",
+	};
+
+	NSData *data = [post asJSONData];
+
+	NSString *urlString = [[self domain] stringByAppendingString:path];
+	NSURL *URL = [NSURL URLWithString:urlString];
+
+	NSMutableURLRequest *request = [self.class standardRequestWithURL:URL data:data];
+
+	[self performRequest:request completion:
+	 ^(NSInteger __unused status, NSDictionary * __unused response, NSError *__unused error) {
+
+		TKUserCredentials *credentials = [[TKUserCredentials alloc] initFromDictionary:response];
+
+		if (credentials && success) success(credentials);
+		if (!credentials && failure) failure([TKAPIError errorWithCode:-20934 userInfo:nil]);
+
+	}];
+}
+
 - (void)performUserRegisterWithToken:(NSString *)accessToken fullName:(NSString *)fullName email:(NSString *)email
 	password:(NSString *)password success:(void (^)(void))success failure:(TKAPIFailureBlock)failure
 {
@@ -377,6 +408,44 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 
 		if (success) success();
 
+	}];
+}
+
+- (void)performMagicLinkFetchWithToken:(NSString *)accessToken
+	success:(void (^)(NSString *magicLink))success failure:(TKAPIFailureBlock)failure
+{
+	NSString *path = @"/user/magic-link";
+
+	NSString *authHeader = [NSString stringWithFormat:@"Bearer %@", accessToken];
+
+	NSData *data = [@{ @"destination" : @"travel_app", @"send_mail": @NO } asJSONData];
+
+	NSString *urlString = [[self domain] stringByAppendingString:path];
+	NSURL *URL = [NSURL URLWithString:urlString];
+
+	NSMutableURLRequest *request = [self.class standardRequestWithURL:URL data:data];
+
+	[request setValue:authHeader forHTTPHeaderField:@"Authorization"];
+
+	[self performRequest:request completion:
+	 ^(NSInteger __unused status, NSDictionary *response, NSError *error) {
+
+		if (error) {
+			if (failure) failure([TKAPIError errorWithCode:error.code userInfo:error.userInfo]);
+			return;
+		}
+
+		NSString *link = [response[@"magic_link"] parsedString];
+
+		NSRegularExpression *regex = [NSRegularExpression regularExpressionWithPattern:@"[a-z0-9]{32,}" options:NSRegularExpressionCaseInsensitive error:nil];
+		NSTextCheckingResult *result = [regex matchesInString:link options:0 range:NSMakeRange(0, link.length)].firstObject;
+
+		@try {
+			link = (result) ? [link substringWithRange:result.range] : nil;
+		} @catch (NSException *e) { link = nil; }
+
+		if (success && link) success(link);
+		if (failure && !link) failure([TKAPIError errorWithCode:23409 userInfo:nil]);
 	}];
 }
 

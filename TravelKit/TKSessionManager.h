@@ -51,12 +51,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)performJWTAuthWithToken:(NSString *)jwtToken
     success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure;
 
+- (void)performMagicLinkAuthWithToken:(NSString *)magicToken
+    success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure;
+
 - (void)performUserRegisterWithToken:(NSString *)accessToken
   fullName:(NSString *)fullName email:(NSString *)email password:(NSString *)password
     success:(void (^)(void))success failure:(void (^)(NSError *))failure;
 
 - (void)performUserResetPasswordWithToken:(NSString *)accessToken email:(NSString *)email
     success:(void (^)(void))success failure:(void (^)(NSError *))failure;
+
+- (void)performMagicLinkeFetchWithToken:(NSString *)accessToken
+	success:(void (^)(NSString *magicLinkToken))success failure:(void (^)(NSError *))failure;
 
 - (void)performSignOutWithCompletion:(void (^)(void))completion;
 

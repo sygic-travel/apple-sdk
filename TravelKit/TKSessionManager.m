@@ -163,6 +163,18 @@
 	} failure:failure];
 }
 
+- (void)performMagicLinkAuthWithToken:(NSString *)magicToken
+    success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure
+{
+	[[TKSSOAPI sharedAPI] performMagicAuthWithMagicLink:magicToken success:^(TKUserCredentials *credentials) {
+
+		self.credentials = credentials;
+
+		if (success) success(credentials);
+
+	} failure:failure];
+}
+
 - (void)performUserRegisterWithToken:(NSString *)accessToken
   fullName:(NSString *)fullName email:(NSString *)email password:(NSString *)password
     success:(void (^)(void))success failure:(void (^)(NSError *))failure
@@ -176,6 +188,17 @@
 {
 	[[TKSSOAPI sharedAPI] performUserResetPasswordWithToken:accessToken
 		email:email success:success failure:failure];
+}
+
+- (void)performMagicLinkeFetchWithToken:(NSString *)accessToken
+	success:(void (^)(NSString *magicLinkToken))success failure:(void (^)(NSError *))failure
+{
+	[[TKSSOAPI sharedAPI] performMagicLinkFetchWithToken:accessToken success:^(NSString *magicLink) {
+		if (success && magicLink) success(magicLink);
+		if (failure && !magicLink) failure([TKAPIError errorWithCode:87234 userInfo:nil]);
+	} failure:^(TKAPIError *err) {
+		if (failure) failure(err);
+	}];
 }
 
 - (void)performSignOutWithCompletion:(void (^)(void))completion

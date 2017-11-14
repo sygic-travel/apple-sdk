@@ -103,6 +103,9 @@
 		D69831A81EF7AE8A002776BE /* TKToursManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D69831A41EF7AE8A002776BE /* TKToursManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D69831A91EF7AE8A002776BE /* TKToursManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D69831A41EF7AE8A002776BE /* TKToursManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D69831AA1EF7AE8A002776BE /* TKToursManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D69831A41EF7AE8A002776BE /* TKToursManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6B0AD921FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6B0AD911FBAE35400E8CE12 /* TKAPIDefinitions.h */; };
+		D6B0AD931FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6B0AD911FBAE35400E8CE12 /* TKAPIDefinitions.h */; };
+		D6B0AD941FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6B0AD911FBAE35400E8CE12 /* TKAPIDefinitions.h */; };
 		D6B2A1311E530B11005509E8 /* TKAPI+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */; };
 		D6B2A1321E530B11005509E8 /* TKAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0711E4DE7B400EBB54F /* TKAPI.m */; };
 		D6B2A1371E530B11005509E8 /* TKMapWorker.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* TKMapWorker.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -264,6 +267,7 @@
 		D698319F1EF3F051002776BE /* TKTour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTour.m; sourceTree = "<group>"; };
 		D69831A31EF7AE8A002776BE /* TKToursManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKToursManager.m; sourceTree = "<group>"; };
 		D69831A41EF7AE8A002776BE /* TKToursManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKToursManager.h; sourceTree = "<group>"; };
+		D6B0AD911FBAE35400E8CE12 /* TKAPIDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKAPIDefinitions.h; sourceTree = "<group>"; };
 		D6B2A1291E530AFD005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B2A1541E530F60005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6C3D04C1E4DD36200EBB54F /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -559,6 +563,7 @@
 		EF0E92901EFAA9590036D13D /* API */ = {
 			isa = PBXGroup;
 			children = (
+				D6B0AD911FBAE35400E8CE12 /* TKAPIDefinitions.h */,
 				D6C3D0711E4DE7B400EBB54F /* TKAPI.m */,
 				D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */,
 				D6CB14421F84D5D000E59C95 /* TKSSOAPI.m */,
@@ -595,6 +600,7 @@
 				D6122CE11FA7369000791EAB /* TKTrip+Private.h in Headers */,
 				D6CB14481F84D64D00E59C95 /* TKSSOAPI+Private.h in Headers */,
 				D6B2A1371E530B11005509E8 /* TKMapWorker.h in Headers */,
+				D6B0AD941FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D698319A1EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831AA1EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144D1F84D84500E59C95 /* TKUserCredentials.h in Headers */,
@@ -641,6 +647,7 @@
 				D6B2A16C1E531097005509E8 /* TKPlacesQuery.h in Headers */,
 				D6CB14431F84D5D000E59C95 /* TKSSOAPI+Private.h in Headers */,
 				D6E1531C1EAA257400FC0838 /* TKMedium+Private.h in Headers */,
+				D6B0AD921FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D69831981EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831A81EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144B1F84D84500E59C95 /* TKUserCredentials.h in Headers */,
@@ -687,6 +694,7 @@
 				D6122CE01FA7369000791EAB /* TKTrip+Private.h in Headers */,
 				D6CB14471F84D64D00E59C95 /* TKSSOAPI+Private.h in Headers */,
 				D6C3D05E1E4DDE0A00EBB54F /* TKReference.h in Headers */,
+				D6B0AD931FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D69831991EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831A91EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144C1F84D84500E59C95 /* TKUserCredentials.h in Headers */,

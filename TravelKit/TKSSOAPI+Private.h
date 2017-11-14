@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "TKUserCredentials.h"
-#import "TKAPI+Private.h"
+#import "TKAPIDefinitions.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -44,11 +44,18 @@
 - (void)performJWTAuthWithToken:(NSString *)jwtToken
     success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure;
 
+- (void)performMagicAuthWithMagicLink:(NSString *)magicLink
+	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure;
+
 - (void)performUserRegisterWithToken:(NSString *)accessToken
   fullName:(NSString *)fullName email:(NSString *)email password:(NSString *)password
     success:(void (^)(void))success failure:(TKAPIFailureBlock)failure;
 
 - (void)performUserResetPasswordWithToken:(NSString *)accessToken email:(NSString *)email
     success:(void (^)(void))success failure:(TKAPIFailureBlock)failure;
+
+- (void)performMagicLinkFetchWithToken:(NSString *)accessToken
+	success:(void (^)(NSString *magicLink))success failure:(TKAPIFailureBlock)failure;
+
 
 @end
