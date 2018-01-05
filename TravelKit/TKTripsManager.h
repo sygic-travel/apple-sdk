@@ -47,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<NSString *> *)yearsOfTrips;
 
 // Trip savers
-- (BOOL)saveOrUpdateTrip:(TKTrip *)trip;
+- (BOOL)saveTrip:(TKTrip *)trip;
 
 @end
 

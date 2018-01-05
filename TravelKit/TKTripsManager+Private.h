@@ -17,8 +17,8 @@
 #pragma mark - Methods
 
 // Trip database manipulation
-- (BOOL)insertTrip:(TKTrip *)trip forUserWithID:(NSString *)userID;
-- (BOOL)updateTrip:(TKTrip *)trip forUserWithID:(NSString *)userID;
+- (BOOL)insertTrip:(TKTrip *)trip;
+- (BOOL)updateTrip:(TKTrip *)trip;
 
 // Trip archiving & deletion
 - (BOOL)archiveTripWithID:(NSString *)tripID;

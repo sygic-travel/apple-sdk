@@ -10,107 +10,160 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Definitions
+///-----------------------------------------------------------------------------
+
+
+/**
+ Mode of transport used to indicate the mean of transportation between places.
+ */
 typedef NS_ENUM(NSUInteger, TKDirectionTransportMode) {
-	TKDirectionTransportModeUnknown = 0,
-	TKDirectionTransportModeWalk,
-	TKDirectionTransportModeCar,
-	TKDirectionTransportModeFlight,
-	TKDirectionTransportModeBike,
-	TKDirectionTransportModeBus,
-	TKDirectionTransportModeTrain,
-	TKDirectionTransportModeBoat,
+	TKDirectionTransportModeUnknown = 0, /// Unknown mode.
+	TKDirectionTransportModeWalk, /// Walk mode.
+	TKDirectionTransportModeCar, /// Car mode.
+	TKDirectionTransportModeFlight, /// Flight mode.
+//	TKDirectionTransportModeBike,
+//	TKDirectionTransportModeBus,
+//	TKDirectionTransportModeTrain,
+//	TKDirectionTransportModeBoat,
 }; // ABI-EXPORTED
 
-typedef NS_ENUM(NSUInteger, TKDirectionTransportType) {
-	TKDirectionTransportTypeFastest = 0,
-	TKDirectionTransportTypeShortest,
-	TKDirectionTransportTypeEconomic,
-}; // ABI-EXPORTED
-
+/**
+ Enum indicating options to fine-tune transport options. Only useful with Car mode.
+ */
 typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
-	TKTransportAvoidOptionNone        = (0),
-	TKTransportAvoidOptionTolls       = (1 << 0),
-	TKTransportAvoidOptionHighways    = (1 << 1),
-	TKTransportAvoidOptionFerries     = (1 << 2),
-	TKTransportAvoidOptionUnpaved     = (1 << 3),
+	TKTransportAvoidOptionNone        = (0), /// No Avoid options. Default.
+	TKTransportAvoidOptionTolls       = (1 << 0), /// A bit indicating an option to avoid Tolls.
+	TKTransportAvoidOptionHighways    = (1 << 1), /// A bit indicating an option to avoid Highways.
+	TKTransportAvoidOptionFerries     = (1 << 2), /// A bit indicating an option to avoid Ferries.
+	TKTransportAvoidOptionUnpaved     = (1 << 3), /// A bit indicating an option to avoid Unpaved paths.
 }; // ABI-EXPORTED
 
+/**
+ Enum indicating Trip privacy state.
+ */
 typedef NS_ENUM(NSUInteger, TKTripPrivacy) {
-	TKTripPrivacyPrivate = 0,
-	TKTripPrivacyShareable,
-	TKTripPrivacyPublic,
+	TKTripPrivacyPrivate = 0, /// Private Trip.
+	TKTripPrivacyShareable, /// Sharable Trip. Can be shared via URL.
+	TKTripPrivacyPublic, /// Public Trip. May be joined by other users.
 }; // ABI-EXPORTED
 
+/**
+ Enum indicating Trip rights.
+ */
 typedef NS_OPTIONS(NSUInteger, TKTripRights) {
-	TKTripRightsNoRights    = (0),
-	TKTripRightsEdit        = (1 << 0),
-	TKTripRightsManage      = (1 << 1),
-	TKTripRightsDelete      = (1 << 2),
+	TKTripRightsNoRights    = (0), /// No rights.
+	TKTripRightsEdit        = (1 << 0), /// Editing rights. Allows editing all properties not mentioned below.
+	TKTripRightsManage      = (1 << 1), /// Managing rights. Allows managing the privacy setting and Trip collaborators.
+	TKTripRightsDelete      = (1 << 2), /// Deleting rights. Allows moving the Trip to the Trash.
 	TKTripRightsAllRights   = TKTripRightsEdit | TKTripRightsManage | TKTripRightsDelete,
 }; // ABI-EXPORTED
 
 
-///////////////
-#pragma mark - Trip Day Item model
-///////////////
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Trip Day Item model
+///-----------------------------------------------------------------------------
 
 
+/**
+ <#Description#>
+ */
 @interface TKTripDayItem : NSObject
 
-/// Item ID
+/// Item ID.
 @property (nonatomic, copy) NSString *itemID;
 
+/// Timestamp (in number of seconds from the midnight) indicating the planned start time of the Item.
 @property (nonatomic, strong, nullable) NSNumber *startTime;
+
+/// Planned duration of the Item.
 @property (nonatomic, strong, nullable) NSNumber *duration;
+
+/// A note string attached to the Item.
 @property (nonatomic, copy, nullable) NSString *note;
 
+///
 @property (nonatomic) TKDirectionTransportMode transportMode;
-@property (atomic) TKDirectionTransportType transportType;
 @property (atomic) TKTransportAvoidOption transportAvoid;
 @property (nonatomic, strong, nullable) NSNumber *transportStartTime;
 @property (nonatomic, strong, nullable) NSNumber *transportDuration;
 @property (nonatomic, copy, nullable) NSString *transportNote;
 @property (nonatomic, copy, nullable) NSString *transportPolyline;
 
++ (instancetype)new UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)itemForItemWithID:(NSString *)itemID;
 
 @end
 
 
-///////////////
-#pragma mark - Trip Day model
-///////////////
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Trip Day model
+///-----------------------------------------------------------------------------
 
 
+/**
+ <#Description#>
+ */
 @interface TKTripDay : NSObject
 
-/// Array of Item IDs
+/// Working array of Item IDs.
 @property (nonatomic, copy, readonly) NSArray<NSString *> *itemIDs;
 
-/// Array of Item objects
-@property (nonatomic, strong) NSMutableArray<TKTripDayItem *> *items;
+/// Array of Item objects.
+@property (nonatomic, strong) NSArray<TKTripDayItem *> *items;
 
-/// String with a note
-@property (nonatomic, copy) NSString *note;
+/// String with a note.
+@property (nonatomic, copy, nullable) NSString *note;
+
+// Insertion & removal methods
+- (void)addItemWithID:(NSString *)itemID;
+- (void)insertItemWithID:(NSString *)itemID atIndex:(NSUInteger)index;
+- (void)removeItemWithID:(NSString *)itemID;
+
+// Test for presence
+- (BOOL)containsItemWithID:(NSString *)itemID;
 
 @end
 
 
-///////////////
-#pragma mark - Trip model
-///////////////
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Trip model
+///-----------------------------------------------------------------------------
 
 
+/**
+ <#Description#>
+ */
 @interface TKTrip : NSObject
 
+/// Trip identifier.
 @property (nonatomic, readonly) NSString *ID NS_SWIFT_NAME(ID);
+
+/// Trip name.
 @property (nonatomic, copy) NSString *name;
+
+/// Working Trip version.
 @property (nonatomic, readonly) NSUInteger version;
-@property (nonatomic, strong, nullable) NSDate *dateStart;
+
+/// Start date of the Trip.
+@property (nonatomic, strong, nullable) NSDate *startDate;
+
+/// Last Trip update timestamp.
 @property (nonatomic, strong, readonly, nullable) NSDate *lastUpdate;
+
+/// Flag indicating whether the Trip is currently placed in the Trash.
 @property (nonatomic, assign) BOOL isTrashed;
 
-/** Array of Trip Day objects */
+/// Array of Trip Destination IDs. Customisable.
+@property (nonatomic, copy) NSArray<NSString *> *destinationIDs;
+
+/// Array of Trip Day objects.
 @property (nonatomic, copy) NSArray<TKTripDay *> *days;
 
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
@@ -124,15 +177,7 @@ typedef NS_OPTIONS(NSUInteger, TKTripRights) {
  */
 - (instancetype)initWithName:(NSString *)name;
 
-// Day workers
-- (void)addNewDay;
-- (void)removeDay:(TKTripDay *)day;
-
 // Item workers
-- (void)addItem:(NSString *)itemID toDay:(NSUInteger)dayIndex;
-- (void)removeItem:(NSString *)itemID fromDay:(NSUInteger)dayIndex;
-- (void)removeItem:(NSString *)itemID;
-
 - (NSArray<TKTripDayItem *> *)occurrencesOfItemWithID:(NSString *)itemID;
 
 // Information providers
@@ -141,30 +186,43 @@ typedef NS_OPTIONS(NSUInteger, TKTripRights) {
 - (NSArray<NSNumber *> *)indexesOfDaysContainingItemWithID:(NSString *)itemID;
 - (BOOL)isEmpty;
 
-// Manipulation methods
-- (BOOL)moveDayAtIndex:(NSUInteger)sourceIndex toIndex:(NSUInteger)destinationIndex;
-- (BOOL)moveActivityAtDay:(NSUInteger)dayIndex withIndex:(NSUInteger)activityIndex toDay:(NSUInteger)destDayIndex withIndex:(NSUInteger)destIndex;
-- (BOOL)removeActivityAtDay:(NSUInteger)dayIndex withIndex:(NSUInteger)activityIndex;
-
 @end
 
 
-///////////////
-#pragma mark - Trip info
-///////////////
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Trip info object
+///-----------------------------------------------------------------------------
 
 
 @interface TKTripInfo : NSObject
 
+/// Trip identifier.
 @property (nonatomic, copy, readonly) NSString *ID NS_SWIFT_NAME(ID);
+
+/// Trip name.
 @property (nonatomic, copy, readonly) NSString *name;
+
+/// Working Trip version.
 @property (nonatomic, readonly) NSUInteger version;
 
+/// Start date of the Trip.
 @property (nonatomic, strong, readonly, nullable) NSDate *startDate;
+
+/// Last Trip update timestamp.
 @property (nonatomic, strong, readonly, nullable) NSDate *lastUpdate;
 
-@property (nonatomic, readonly) NSUInteger daysCount;
+/// Flag indicating whether the Trip is currently placed in the Trash.
 @property (nonatomic, readonly) BOOL isTrashed;
+
+/// Array of Trip Destination IDs. Customisable.
+@property (nonatomic, copy) NSArray<NSString *> *destinationIDs;
+
+/// A number of days/day length defined for the Trip.
+@property (nonatomic, readonly) NSUInteger daysCount;
+
++ (instancetype)new UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
 @end
 

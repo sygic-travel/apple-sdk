@@ -9,15 +9,15 @@
 #import <Foundation/Foundation.h>
 
 // Exported table names
-extern NSString * const kDatabaseTablePlaces;
-extern NSString * const kDatabaseTablePlaceDetails;
-extern NSString * const kDatabaseTablePlaceParents;
-extern NSString * const kDatabaseTableMedia;
-extern NSString * const kDatabaseTableReferences;
-extern NSString * const kDatabaseTableFavorites;
-extern NSString * const kDatabaseTableTrips;
-extern NSString * const kDatabaseTableTripDays;
-extern NSString * const kDatabaseTableTripDayItems;
+extern NSString * const kTKDatabaseTablePlaces;
+extern NSString * const kTKDatabaseTablePlaceDetails;
+extern NSString * const kTKDatabaseTablePlaceParents;
+extern NSString * const kTKDatabaseTableMedia;
+extern NSString * const kTKDatabaseTableReferences;
+extern NSString * const kTKDatabaseTableFavorites;
+extern NSString * const kTKDatabaseTableTrips;
+extern NSString * const kTKDatabaseTableTripDays;
+extern NSString * const kTKDatabaseTableTripDayItems;
 
 
 @interface TKDatabaseManager : NSObject

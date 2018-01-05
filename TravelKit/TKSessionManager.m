@@ -69,7 +69,7 @@
 - (void)clearUserData
 {
 	// Clear Favorites
-	[_database runQuery:@"DELETE FROM %@;" tableName:kDatabaseTableFavorites];
+	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableFavorites];
 
 	// Reset User settings
 	[[TKUserSettings sharedSettings] reset];
@@ -216,7 +216,7 @@
 - (NSArray<NSString *> *)favoritePlaceIDs
 {
 	NSArray *results = [_database runQuery:
-		@"SELECT id FROM %@ WHERE state >= 0;" tableName:kDatabaseTableFavorites];
+		@"SELECT id FROM %@ WHERE state >= 0;" tableName:kTKDatabaseTableFavorites];
 
 	return [results mappedArrayUsingBlock:^NSString *(NSDictionary *res) {
 		return [res[@"id"] parsedString];
@@ -229,16 +229,16 @@
 
 	if (favorite)
 		[_database runQuery:@"INSERT OR IGNORE INTO %@ VALUES (?, 1);"
-			tableName:kDatabaseTableFavorites data:@[ favoriteID ]];
+			tableName:kTKDatabaseTableFavorites data:@[ favoriteID ]];
 	else
 		[_database runQuery:@"UPDATE %@ SET state = -1 WHERE id = ?;"
-			tableName:kDatabaseTableFavorites data:@[ favoriteID ]];
+			tableName:kTKDatabaseTableFavorites data:@[ favoriteID ]];
 }
 
 - (NSDictionary<NSString *,NSNumber *> *)favoritePlaceIDsToSynchronize
 {
 	NSArray<NSDictionary *> *results = [_database runQuery:
-		@"SELECT * FROM %@ WHERE state != 0;" tableName:kDatabaseTableFavorites];
+		@"SELECT * FROM %@ WHERE state != 0;" tableName:kTKDatabaseTableFavorites];
 
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:results.count];
 
@@ -266,14 +266,14 @@
 	NSString *remString = joinIDs(removedIDs);
 
 	if (addString) [_database runQuery:[NSString stringWithFormat:
-		@"UPDATE %@ SET state = 0 WHERE id IN (%@);", kDatabaseTableFavorites, addString]];
+		@"UPDATE %@ SET state = 0 WHERE id IN (%@);", kTKDatabaseTableFavorites, addString]];
 
 	for (NSString *ID in addedIDs)
 		[_database runQuery:@"INSERT OR IGNORE INTO %@ (id) VALUES (?);"
-			tableName:kDatabaseTableFavorites data:@[ ID ]];
+			tableName:kTKDatabaseTableFavorites data:@[ ID ]];
 
 	if (remString) [_database runQuery:[NSString stringWithFormat:
-		@"DELETE FROM %@ WHERE id IN (%@);", kDatabaseTableFavorites, remString]];
+		@"DELETE FROM %@ WHERE id IN (%@);", kTKDatabaseTableFavorites, remString]];
 }
 
 @end

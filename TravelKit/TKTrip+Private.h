@@ -9,9 +9,6 @@
 #import "TKTrip.h"
 
 #define LOCAL_TRIP_PREFIX         "*"
-#define GENERIC_TRIP_NAME         @"My Trip"
-
-// Note: Trip name definitions need to be updated in .m to be translated properly.
 
 
 ///////////////
@@ -35,28 +32,10 @@
 
 @interface TKTripDay ()
 
-// Set of (hopefully set) properties
-@property (atomic) NSUInteger dayIndex;
-@property (nonatomic, strong) NSDate *date;
-@property (nonatomic, copy) NSString *dayName;
-@property (nonatomic, copy) NSString *dayNumber;
-@property (nonatomic, copy) NSString *shortDateString;
-
 // Handled initializers
 - (instancetype)initFromResponse:(NSDictionary *)dict;
 - (instancetype)initFromDatabase:(NSDictionary *)dict
 					   itemDicts:(NSArray<NSDictionary *> *)itemDicts;
-
-// Test for presence
-- (BOOL)containsItemWithID:(NSString *)itemID;
-
-// Insertion & removal methods
-- (void)addItemWithID:(NSString *)itemID;
-- (void)insertItemWithID:(NSString *)itemID atIndex:(NSUInteger)index;
-- (void)removeItemWithID:(NSString *)itemID;
-
-// Helpers
-- (NSString *)formattedDayName;
 
 @end
 
@@ -70,15 +49,12 @@
 
 @property (nonatomic, assign) TKTripPrivacy privacy;
 @property (nonatomic, assign) TKTripRights rights;
-@property (nonatomic, copy) NSString *ownerID, *userID; // Trip owner and Local record holder
+@property (nonatomic, copy) NSString *ownerID; // Trip owner and Local record holder
 @property (nonatomic, assign) BOOL changed;
 
 @property (nonatomic, readonly) BOOL isEditable;
 @property (nonatomic, readonly) BOOL isManageable;
 @property (nonatomic, readonly) BOOL isDeletable;
-
-// Dirty flag for synchronization
-@property (atomic, assign) BOOL changedSinceLastSynchronization;
 
 /**
  * Init object from dictionary taken from API
@@ -102,12 +78,6 @@
 // Serialization methods
 - (NSDictionary *)asRequestDictionary;
 
-// Returns Trip day object with additional properties set
-- (TKTripDay *)dayWithDateAtIndex:(NSUInteger)index;
-
-// Duration string
-- (NSString *)formattedDuration;
-
 @end
 
 
@@ -118,7 +88,7 @@
 
 @interface TKTripInfo ()
 
-@property (nonatomic, copy) NSString *ownerID, *userID;
+@property (nonatomic, copy) NSString *ownerID;
 
 @property (nonatomic, readonly) BOOL isEditable;
 @property (nonatomic, readonly) BOOL isManageable;

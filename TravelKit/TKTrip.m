@@ -45,6 +45,30 @@
 	return self;
 }
 
+- (instancetype)copy
+{
+	TKTripDayItem *item = [TKTripDayItem itemForItemWithID:_itemID];
+	item.duration = _duration;
+	item.note = [_note copy];
+	item.startTime = _startTime;
+
+	item.transportMode = _transportMode;
+	item.transportAvoid = _transportAvoid;
+	item.transportStartTime = _transportStartTime;
+	item.transportDuration = _transportDuration;
+	item.transportNote = [_transportNote copy];
+
+	item.transportPolyline = [_transportPolyline copy];
+
+	return item;
+}
+
+- (BOOL)isEqual:(TKTripDayItem *)object
+{
+	return ([object isKindOfClass:[TKTripDayItem class]] &&
+	        [[self asRequestDictionary] isEqual:[object asRequestDictionary]]);
+}
+
 - (instancetype)initFromDatabase:(NSDictionary *)dict
 {
 	if (self = [super init])
@@ -55,7 +79,6 @@
 		_startTime = [dict[@"start_time"] parsedNumber];
 
 		_transportMode = [[dict[@"transport_mode"] parsedNumber] unsignedIntegerValue];
-		_transportType = [[dict[@"transport_type"] parsedNumber] unsignedIntegerValue];
 		_transportAvoid = [[dict[@"transport_avoid"] parsedNumber] unsignedIntegerValue];
 		_transportStartTime = [dict[@"transport_start_time"] parsedNumber];
 		_transportDuration = [dict[@"transport_duration"] parsedNumber];
@@ -80,27 +103,21 @@
 
 		if (transport) {
 
-			id obj = [transport[@"mode"] parsedString];
-			_transportMode = ([obj isEqual:@"pedestrian"]) ? TKDirectionTransportModeWalk :
-			                 ([obj isEqual:@"car"]) ? TKDirectionTransportModeCar :
-			                 ([obj isEqual:@"plane"]) ? TKDirectionTransportModeFlight :
-			                 ([obj isEqual:@"bike"]) ? TKDirectionTransportModeBike :
-			                 ([obj isEqual:@"bus"]) ? TKDirectionTransportModeBus :
-			                 ([obj isEqual:@"train"]) ? TKDirectionTransportModeTrain :
-			                 ([obj isEqual:@"boat"]) ? TKDirectionTransportModeBoat :
+			NSString *mode = [transport[@"mode"] parsedString];
+			_transportMode = ([mode isEqual:@"pedestrian"]) ? TKDirectionTransportModeWalk :
+			                 ([mode isEqual:@"car"]) ? TKDirectionTransportModeCar :
+			                 ([mode isEqual:@"plane"]) ? TKDirectionTransportModeFlight :
+//			                 ([mode isEqual:@"bike"]) ? TKDirectionTransportModeBike :
+//			                 ([mode isEqual:@"bus"]) ? TKDirectionTransportModeBus :
+//			                 ([mode isEqual:@"train"]) ? TKDirectionTransportModeTrain :
+//			                 ([mode isEqual:@"boat"]) ? TKDirectionTransportModeBoat :
 			                                           TKDirectionTransportModeUnknown;
 
-			obj = [transport[@"type"] parsedString];
-			_transportType = ([obj isEqual:@"fastest"]) ? TKDirectionTransportTypeFastest :
-			                 ([obj isEqual:@"shortest"]) ? TKDirectionTransportTypeShortest :
-			                 ([obj isEqual:@"economic"]) ? TKDirectionTransportTypeEconomic :
-			                                               TKDirectionTransportTypeFastest;
-
-			obj = [transport[@"avoid"] parsedArray];
-			if ([obj containsObject:@"tolls"]) _transportAvoid |= TKTransportAvoidOptionTolls;
-			if ([obj containsObject:@"highways"]) _transportAvoid |= TKTransportAvoidOptionHighways;
-			if ([obj containsObject:@"ferries"]) _transportAvoid |= TKTransportAvoidOptionFerries;
-			if ([obj containsObject:@"unpaved"]) _transportAvoid |= TKTransportAvoidOptionUnpaved;
+			NSArray<NSString *> *avoidOpts = [transport[@"avoid"] parsedArray];
+			if ([avoidOpts containsObject:@"tolls"]) _transportAvoid |= TKTransportAvoidOptionTolls;
+			if ([avoidOpts containsObject:@"highways"]) _transportAvoid |= TKTransportAvoidOptionHighways;
+			if ([avoidOpts containsObject:@"ferries"]) _transportAvoid |= TKTransportAvoidOptionFerries;
+			if ([avoidOpts containsObject:@"unpaved"]) _transportAvoid |= TKTransportAvoidOptionUnpaved;
 
 			_transportStartTime = [transport[@"start_time"] parsedNumber];
 			_transportDuration = [transport[@"duration"] parsedNumber];
@@ -138,14 +155,11 @@
 		trans[@"mode"] = (_transportMode == TKDirectionTransportModeWalk) ? @"pedestrian" :
 		                 (_transportMode == TKDirectionTransportModeCar) ? @"car" :
 		                 (_transportMode == TKDirectionTransportModeFlight) ? @"plane" :
-		                 (_transportMode == TKDirectionTransportModeBike) ? @"bike" :
-		                 (_transportMode == TKDirectionTransportModeBus) ? @"bus" :
-		                 (_transportMode == TKDirectionTransportModeTrain) ? @"train" :
-		                 (_transportMode == TKDirectionTransportModeBoat) ? @"boat" : @"car";
-
-		trans[@"type"] = (_transportType == TKDirectionTransportTypeFastest) ? @"fastest" :
-		                 (_transportType == TKDirectionTransportTypeShortest) ? @"shortest" :
-		                 (_transportType == TKDirectionTransportTypeEconomic) ? @"economic" : @"fastest";
+//		                 (_transportMode == TKDirectionTransportModeBike) ? @"bike" :
+//		                 (_transportMode == TKDirectionTransportModeBus) ? @"bus" :
+//		                 (_transportMode == TKDirectionTransportModeTrain) ? @"train" :
+//		                 (_transportMode == TKDirectionTransportModeBoat) ? @"boat" :
+		                     @"car";
 
 		trans[@"avoid"] = [@[ @"tolls", @"highways", @"ferries", @"unpaved"  ]
 		mappedArrayUsingBlock:^NSString *(NSString *avoid) {
@@ -179,7 +193,6 @@
 	_transportMode = transportMode;
 
 	if (transportMode == TKDirectionTransportModeUnknown) {
-		_transportType = TKDirectionTransportTypeFastest;
 		_transportAvoid = TKTransportAvoidOptionNone;
 		_transportStartTime = nil;
 		_transportDuration = nil;
@@ -217,14 +230,16 @@
 	if (self = [super init])
 	{
 		_note = [dict[@"note"] parsedString];
-		_items = [NSMutableArray arrayWithCapacity:10];
+		NSMutableArray *items = [NSMutableArray arrayWithCapacity:10];
 
 		for (NSDictionary *itemDict in [dict[@"itinerary"] parsedArray])
 		{
 			if (![itemDict parsedDictionary]) continue;
 			TKTripDayItem *item = [[TKTripDayItem alloc] initFromResponse:itemDict];
-			if (item) [_items addObject:item];
+			if (item) [items addObject:item];
 		}
+
+		_items = [items copy];
 	}
 
 	return self;
@@ -237,17 +252,24 @@
 	{
 		_note = [dict[@"note"] parsedString];
 
-		_items = [NSMutableArray arrayWithCapacity:10];
+		NSMutableArray *items = [NSMutableArray arrayWithCapacity:10];
 
 		for (NSDictionary *itemDict in itemDicts)
 		{
 			if (![itemDict parsedDictionary]) continue;
 			TKTripDayItem *item = [[TKTripDayItem alloc] initFromDatabase:itemDict];
-			if (item) [_items addObject:item];
+			if (item) [items addObject:item];
 		}
+
+		_items = [items copy];
 	}
 
 	return self;
+}
+
+- (instancetype)copy
+{
+	return [[TKTripDay alloc] initFromResponse:[self asRequestDictionary]];
 }
 
 - (NSDictionary *)asRequestDictionary
@@ -284,7 +306,9 @@
 
 - (void)addItemWithID:(NSString *)itemID
 {
-	[_items addObject:[TKTripDayItem itemForItemWithID:itemID]];
+	NSMutableArray *items = [_items mutableCopy];
+	[items addObject:[TKTripDayItem itemForItemWithID:itemID]];
+	_items = [items copy];
 }
 
 - (void)insertItemWithID:(NSString *)itemID atIndex:(NSUInteger)index
@@ -308,28 +332,6 @@
 {
 	return [NSString stringWithFormat:@"<Trip day | items: %tu>", _items.count];
 }
-
-- (BOOL)isToday
-{
-	if (_date) return [_date isToday];
-	return NO;
-}
-
-- (NSString *)formattedDayName
-{
-	if (!_date)
-		return [NSString stringWithFormat:NSLocalizedString(@"Day %tu", @"View title with number"), _dayIndex+1];
-
-	if ([_date isToday])
-		return NSLocalizedString(@"Today", @"View heading");
-	else if ([_date isTomorrow])
-		return NSLocalizedString(@"Tomorrow", @"View heading");
-	else if ([_date isYesterday])
-		return NSLocalizedString(@"Yesterday", @"View heading");
-
-	return [[NSDateFormatter sharedDEFormatDateFormatter] stringFromDate:_date];
-}
-
 
 @end
 
@@ -359,27 +361,12 @@
 	return randomString;
 }
 
-- (instancetype)init
-{
-    if (self = [super init])
-	{
-		_ID = [self.class randomTripID];
-		_name = GENERIC_TRIP_NAME;
-		_version = 1;
-        _days = [NSMutableArray array];
-		_privacy = TKTripPrivacyPrivate;
-		_rights = TKTripRightsAllRights;
-    }
-
-    return self;
-}
-
 - (instancetype)initWithName:(NSString *)name
 {
     if (self = [super init])
 	{
 		_ID = [self.class randomTripID];
-		_name = name ?: GENERIC_TRIP_NAME;
+		_name = name;
 		_version = 1;
         _days = [NSMutableArray array];
 		_privacy = TKTripPrivacyPrivate;
@@ -401,13 +388,12 @@
 
 		// Basic attributes
 
-		_name = [dict[@"name"] parsedString] ?: GENERIC_TRIP_NAME;
+		_name = [dict[@"name"] parsedString] ?: @"";
 		_version = [[dict[@"version"] parsedNumber] unsignedIntegerValue] ?: 1;
-		_userID = [dict[@"user_id"] parsedString];
-		_ownerID = [dict[@"owner_id"] parsedString] ?: _userID;
+		_ownerID = [dict[@"owner_id"] parsedString];
 
 		NSString *stored = [dict[@"starts_on"] parsedString];
-		if (stored) _dateStart = [NSDate dateFromDateString:stored];
+		if (stored) _startDate = [NSDate dateFromDateString:stored];
 
 		stored = [dict[@"updated_at"] parsedString];
 		if (stored) _lastUpdate = [NSDate dateFrom8601DateTimeString:stored];
@@ -437,6 +423,8 @@
 		}
 
 		_days = [days copy];
+
+		_destinationIDs = [[dict[@"destination_ids"] parsedString] componentsSeparatedByString:@"|"] ?: @[ ];
 	}
 
 	return self;
@@ -452,13 +440,12 @@
 
 		// Basic attributes
 
-		_name = [dict[@"name"] parsedString] ?: GENERIC_TRIP_NAME;
+		_name = [dict[@"name"] parsedString] ?: @"";
 		_version = [[dict[@"version"] parsedNumber] unsignedIntegerValue] ?: 1;
-		_userID = [dict[@"user_id"] parsedString];
-		_ownerID = [dict[@"owner_id"] parsedString] ?: _userID;
+		_ownerID = [dict[@"owner_id"] parsedString];
 
 		NSString *stored = [dict[@"starts_on"] parsedString];
-		if (stored) _dateStart = [NSDate dateFromDateString:stored];
+		if (stored) _startDate = [NSDate dateFromDateString:stored];
 
 		stored = [dict[@"updated_at"] parsedString];
 		if (stored) _lastUpdate = [NSDate dateFrom8601DateTimeString:stored];
@@ -483,6 +470,10 @@
 			[days addObject:( [[TKTripDay alloc] initFromResponse:dayDict] ?: [TKTripDay new] )];
 
 		_days = [days copy];
+
+		_destinationIDs = [[dict[@"destinations"] parsedArray] filteredArrayUsingBlock:^BOOL(id obj) {
+			return [obj isKindOfClass:[NSString class]];
+		}] ?: @[ ];
 	}
 
 	return self;
@@ -538,33 +529,7 @@
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<Trip | ID: %@>\n\tName: %@\n\tVersion: %zd\n\tStart date: %@\n\tLast update: %@",
-			_ID, _name, _version, _dateStart, _lastUpdate];
-}
-
-- (NSString *)formattedDuration
-{
-	NSString * retString = @"";
-
-	if (_dateStart) {
-		NSDateFormatter *formatter = [NSDateFormatter sharedLLLLDFormatDateFormatter];
-
-		retString = [formatter stringFromDate:_dateStart];
-
-		if (_days.count > 1) {
-			NSInteger daysCount = (NSInteger)_days.count;
-			NSDate *dateEnd = [_dateStart dateByAddingNumberOfDays:(daysCount-1)];
-			NSString *endString = [formatter stringFromDate:dateEnd];
-
-			retString = [retString stringByAppendingFormat:@" – %@", endString];
-		}
-	}
-	else
-	{
-		retString = NSLocalizedString(@"%tu days", @"Number of days label, f.e. 3 days");
-		retString = [NSString localizedStringWithFormat:retString, _days.count];
-	}
-
-	return retString;
+			_ID, _name, _version, _startDate, _lastUpdate];
 }
 
 - (NSArray<NSNumber *> *)indexesOfDaysContainingItemWithID:(NSString *)itemID
@@ -578,52 +543,6 @@
 			[indexes addObject:@( [_days indexOfObject:day] )];
 
 	return indexes;
-}
-
-- (TKTripDay *)dayWithDateAtIndex:(NSUInteger)index
-{
-	if (index >= _days.count)
-		return nil;
-
-	TKTripDay *day = _days[index];
-
-	day.dayIndex = index;
-	day.date = [[_dateStart dateByAddingNumberOfDays:(NSInteger)index] midnight];
-
-	if (day.date) {
-
-		static NSDateFormatter *shortDate = nil;
-		static NSDateFormatter *dayNumber = nil;
-		static NSDateFormatter *dayName = nil;
-		static dispatch_once_t once;
-		dispatch_once(&once, ^{
-			shortDate = [NSDateFormatter new];
-			shortDate.locale = [NSLocale currentLocale];
-			shortDate.timeZone = [NSTimeZone systemTimeZone];
-			shortDate.dateFormat = @"MMM d";
-			dayNumber = [NSDateFormatter new];
-			dayNumber.locale = [NSLocale currentLocale];
-			dayNumber.timeZone = [NSTimeZone systemTimeZone];
-			dayNumber.dateFormat = @"d";
-			dayName = [NSDateFormatter new];
-			dayName.locale = [NSLocale currentLocale];
-			dayName.timeZone = [NSTimeZone systemTimeZone];
-			dayName.dateFormat = @"E";
-		});
-
-		day.dayNumber = [dayNumber stringFromDate:day.date];
-		day.dayName = [dayName stringFromDate:day.date];
-		day.shortDateString = [shortDate stringFromDate:day.date];
-
-	} else {
-
-		day.dayNumber = [NSString stringWithFormat:@"%tu", index+1];
-		day.dayName = NSLocalizedString(@"day", @"Day name label");
-		day.shortDateString = [NSString stringWithFormat:@"%@ %@", day.dayName, day.dayNumber];
-
-	}
-	
-	return day;
 }
 
 
@@ -646,11 +565,11 @@
 	if (_lastUpdate) dict[@"updated_at"] =
 		[[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:_lastUpdate];
 
-	if (_dateStart) {
+	if (_startDate) {
 		NSInteger daysCount = (NSInteger)_days.count;
 		NSDateFormatter *fmt = [NSDateFormatter sharedDateFormatter];
-		dict[@"starts_on"] = [fmt stringFromDate:_dateStart];
-		dict[@"ends_on"] = [fmt stringFromDate:[_dateStart dateByAddingNumberOfDays:daysCount-1]];
+		dict[@"starts_on"] = [fmt stringFromDate:_startDate];
+		dict[@"ends_on"] = [fmt stringFromDate:[_startDate dateByAddingNumberOfDays:daysCount-1]];
 	} else {
 		dict[@"starts_on"] = [NSNull null];
 		dict[@"ends_on"] = [NSNull null];
@@ -675,42 +594,6 @@
 #pragma mark Workers
 
 
-- (void)addNewDay
-{
-	_days = [_days arrayByAddingObject:[TKTripDay new]];
-}
-
-- (void)removeDay:(TKTripDay *)day
-{
-	if (!day) return;
-
-	NSMutableArray *days = [_days mutableCopy];
-
-	if (days.count <= 1) return;
-
-	[days removeObject:day];
-	_days = [days copy];
-}
-
-- (void)addItem:(NSString *)itemID toDay:(NSUInteger)dayIndex {
-    if (dayIndex < [_days count]) {
-        TKTripDay *day = _days[dayIndex];
-        [day addItemWithID:itemID];
-    }
-}
-
-- (void)removeItem:(NSString *)itemID fromDay:(NSUInteger)dayIndex {
-    if (dayIndex < [_days count]) {
-        TKTripDay *day = _days[dayIndex];
-        [day removeItemWithID:itemID];
-    }
-}
-
-- (void)removeItem:(NSString *)itemID {
-	for (TKTripDay *day in _days)
-        [day removeItemWithID:itemID];
-}
-
 - (NSArray<TKTripDayItem *> *)occurrencesOfItemWithID:(NSString *)itemID
 {
 	NSMutableArray *occurrences = [NSMutableArray arrayWithCapacity:3];
@@ -721,68 +604,6 @@
 				[occurrences addObject:item];
 
 	return [occurrences copy];
-}
-
-- (BOOL)moveDayAtIndex:(NSUInteger)sourceIndex toIndex:(NSUInteger)destinationIndex
-{
-	BOOL ok = NO;
-	if (sourceIndex != destinationIndex && sourceIndex < _days.count && destinationIndex < _days.count) {
-		TKTripDay *movedDay = _days[sourceIndex];
-		if (movedDay) {
-
-			NSMutableArray *days = [_days mutableCopy];
-			[days removeObjectAtIndex:sourceIndex];
-			[days insertObject:movedDay atIndex:destinationIndex];
-			_days = days;
-			ok = YES;
-		}
-	}
-	return ok;
-}
-
-- (BOOL)moveActivityAtDay:(NSUInteger)dayIndex withIndex:(NSUInteger)activityIndex
-                    toDay:(NSUInteger)destDayIndex withIndex:(NSUInteger)destActivityIndex
-{
-	// NEW-TRIPS-TODO: Perform all the sticky/moving/transport-cropping magic 🎩
-
-	BOOL ok = NO;
-	if (dayIndex < _days.count && destDayIndex < _days.count) {
-		if (dayIndex == destDayIndex) { // the same day
-			if (activityIndex != destActivityIndex) {
-				TKTripDay *tripDay = _days[dayIndex];
-				if (activityIndex < tripDay.items.count && destActivityIndex < tripDay.items.count) {
-					NSString *activityID = tripDay.items[activityIndex].itemID;
-					[tripDay.items removeObjectAtIndex:activityIndex];
-					[tripDay.items insertObject:[TKTripDayItem itemForItemWithID:activityID] atIndex:destActivityIndex];
-					ok = YES;
-				}
-			}
-		}
-		else { // different days
-			TKTripDay *srcDay = _days[dayIndex];
-			TKTripDay *dstDay = _days[destDayIndex];
-			if (activityIndex < srcDay.items.count && destActivityIndex <= dstDay.items.count) {
-				NSString *activityID = srcDay.items[activityIndex].itemID;
-				[srcDay.items removeObjectAtIndex:activityIndex];
-				[dstDay.items insertObject:[TKTripDayItem itemForItemWithID:activityID] atIndex:destActivityIndex];
-				ok = YES;
-			}
-		}
-	}
-	return ok;
-}
-
-- (BOOL)removeActivityAtDay:(NSUInteger)dayIndex withIndex:(NSUInteger)activityIndex
-{
-	BOOL ok = NO;
-	if (dayIndex < _days.count) {
-		TKTripDay *tripDay = _days[dayIndex];
-		if (activityIndex < tripDay.items.count) {
-			[tripDay.items removeObjectAtIndex:activityIndex];
-			ok = YES;
-		}
-	}
-	return ok;
 }
 
 @end
@@ -809,8 +630,10 @@
 		_name = [dict[@"name"] parsedString];
 		_version = [[dict[@"version"] parsedNumber] unsignedIntegerValue];
 		_daysCount = [[dict[@"days"] parsedNumber] unsignedIntegerValue];
-		_userID = [dict[@"user_id"] parsedString];
 		_ownerID = [dict[@"owner_id"] parsedString];
+
+		_destinationIDs = [[dict[@"destination_ids"] parsedString]
+			componentsSeparatedByString:@"|"] ?: @[ ];
 
 		NSString *stored = [dict[@"starts_on"] parsedString];
 		if (stored) _startDate = [NSDate dateFromDateString:stored];

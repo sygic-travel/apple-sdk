@@ -210,7 +210,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	_significantUpdatePerformed = NO;
 
 	// Fire up
-	SyncLog(@"Started for user: %@ (%@)", userInfo.userID, userInfo.fullName);
+//	SyncLog(@"Started for user: %@ (%@)", userInfo.userID, userInfo.fullName);
 
 	[self checkState];
 
@@ -291,7 +291,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 //{
 //	BOOL changesAvailable = NO;
 //
-//	NSArray *leavedTrips = [[TripsManager defaultManager] getArchivedTripsForUserWithID:_currentUserID];
+//	NSArray *leavedTrips = [[TripsManager defaultManager] getArchivedTrips];
 //
 //	for (TripInfo *trip in leavedTrips)
 //	{
@@ -383,7 +383,8 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 		TKAPIRequest *listRequest = [[TKAPIRequest alloc] initAsChangesRequestSince:since
 		success:^(NSDictionary<NSString *,NSNumber *> *updatedTripsDict, NSArray<NSString *> *deletedTripIDs,
-		NSArray<NSString *> *updatedFavouriteIDs, NSArray<NSString *> *deletedFavouriteIDs, BOOL updatedSettings, NSDate *timestamp) {
+		NSArray<NSString *> *updatedFavouriteIDs, NSArray<NSString *> *deletedFavouriteIDs,
+		BOOL __unused updatedSettings, NSDate *timestamp) {
 
 			// Report online statistics
 			SyncLog(@"Got list with %tu Trip updates and %tu Favourite updates",
@@ -602,8 +603,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 					if ([dbTrip.ID isEqualToString:onlineTripID])
 					{
 						if (dbTrip.version == onlineTripVersion)
-							if ([dbTrip.userID isEqual:dbTrip.ownerID])
-								shouldProcess = NO;
+							shouldProcess = NO;
 						break;
 					}
 
@@ -749,11 +749,12 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 //	if (!trip.userID) trip.userID = _currentUserID;
 
 	// If there's already a Trip in the DB, update, otherwise add new Trip
-	[_tripsManager saveOrUpdateTrip:trip];
+	[_tripsManager saveTrip:trip];
 }
 
-- (void)processResponseWithBatchActivities:(NSArray *)activities
+- (void)processResponseWithBatchActivities:(NSArray *__unused)activities
 {
+	// TODO
 //	// Size of Activities array to save in batch
 //	NSUInteger savingBatch = ([[UIDevice currentDevice] isPowerfulDevice]) ? 100:50;
 //
@@ -928,9 +929,9 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	[self sendNotification:TKSynchronizationNotificationTypeDone];
 }
 
-- (void)sendNotification:(TKSynchronizationNotificationType)notification
+- (void)sendNotification:(TKSynchronizationNotificationType __unused)notification
 {
-	if (false) { NSLog(@""); }
+	// TODO
 //	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
 //
 //		switch (notification)
