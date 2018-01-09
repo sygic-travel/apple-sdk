@@ -210,29 +210,18 @@
 	return ok;
 }
 
-- (BOOL)updateTrip:(TKTrip *)trip
+- (BOOL)saveTrip:(TKTrip *)trip
+{
+	trip.changed = YES;
+	trip.lastUpdate = [NSDate now];
+
+	return [self storeTrip:trip];
+}
+
+- (BOOL)storeTrip:(TKTrip *)trip
 {
 	[self deleteTripWithID:trip.ID];
 	return [self insertTrip:trip];
-}
-
-- (BOOL)saveTrip:(TKTrip *)trip
-{
-	TKTripInfo *oldRecord = [self infoForTripWithID:trip.ID];
-
-	if (oldRecord != nil) { // already in database
-		if ([trip.name isEqual:oldRecord.name] &&
-			trip.version == oldRecord.version &&
-			[trip.lastUpdate isEqual:oldRecord.lastUpdate] &&
-			trip.rights == oldRecord.rights &&
-			trip.privacy == oldRecord.privacy &&
-			[trip.ownerID isEqual:oldRecord.ownerID])
-			return YES; // up to date
-		else
-			return [self updateTrip:trip];
-	}
-	else
-		return [self insertTrip:trip];
 }
 
 - (BOOL)archiveTripWithID:(NSString *)tripID

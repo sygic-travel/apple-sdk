@@ -18,7 +18,7 @@
 
 // Trip database manipulation
 - (BOOL)insertTrip:(TKTrip *)trip;
-- (BOOL)updateTrip:(TKTrip *)trip;
+- (BOOL)storeTrip:(TKTrip *)trip;
 
 // Trip archiving & deletion
 - (BOOL)archiveTripWithID:(NSString *)tripID;

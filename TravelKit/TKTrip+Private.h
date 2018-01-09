@@ -8,12 +8,40 @@
 
 #import "TKTrip.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
 #define LOCAL_TRIP_PREFIX         "*"
 
 
-///////////////
+///-----------------------------------------------------------------------------
+#pragma mark - Trip definitions
+///-----------------------------------------------------------------------------
+
+
+/**
+ Enum indicating Trip privacy state.
+ */
+typedef NS_ENUM(NSUInteger, TKTripPrivacy) {
+	TKTripPrivacyPrivate = 0, /// Private Trip.
+	TKTripPrivacyShareable, /// Sharable Trip. Can be shared via URL.
+	TKTripPrivacyPublic, /// Public Trip. May be joined by other users.
+}; // ABI-EXPORTED
+
+/**
+ Enum indicating Trip rights.
+ */
+typedef NS_OPTIONS(NSUInteger, TKTripRights) {
+	TKTripRightsNoRights    = (0), /// No rights.
+	TKTripRightsEdit        = (1 << 0), /// Editing rights. Allows editing all properties not mentioned below.
+	TKTripRightsManage      = (1 << 1), /// Managing rights. Allows managing the privacy setting and Trip collaborators.
+	TKTripRightsDelete      = (1 << 2), /// Deleting rights. Allows moving the Trip to the Trash.
+	TKTripRightsAllRights   = TKTripRightsEdit | TKTripRightsManage | TKTripRightsDelete,
+}; // ABI-EXPORTED
+
+
+///-----------------------------------------------------------------------------
 #pragma mark - Trip Day Item model
-///////////////
+///-----------------------------------------------------------------------------
 
 
 @interface TKTripDayItem ()
@@ -25,9 +53,9 @@
 @end
 
 
-///////////////
+///-----------------------------------------------------------------------------
 #pragma mark - Trip Day model
-///////////////
+///-----------------------------------------------------------------------------
 
 
 @interface TKTripDay ()
@@ -40,17 +68,19 @@
 @end
 
 
-///////////////
+///-----------------------------------------------------------------------------
 #pragma mark - Trip model
-///////////////
+///-----------------------------------------------------------------------------
 
 
 @interface TKTrip ()
 
+@property (nonatomic, strong, readwrite, nullable) NSDate *lastUpdate;
+@property (nonatomic, assign) BOOL changed;
+
 @property (nonatomic, assign) TKTripPrivacy privacy;
 @property (nonatomic, assign) TKTripRights rights;
-@property (nonatomic, copy) NSString *ownerID; // Trip owner and Local record holder
-@property (nonatomic, assign) BOOL changed;
+@property (nonatomic, copy, nullable) NSString *ownerID; // Trip owner and Local record holder
 
 @property (nonatomic, readonly) BOOL isEditable;
 @property (nonatomic, readonly) BOOL isManageable;
@@ -81,9 +111,9 @@
 @end
 
 
-///////////////
+///-----------------------------------------------------------------------------
 #pragma mark - Trip info
-///////////////
+///-----------------------------------------------------------------------------
 
 
 @interface TKTripInfo ()
@@ -104,17 +134,17 @@
 @end
 
 
-///////////////
+///-----------------------------------------------------------------------------
 #pragma mark - Trip collaborator model
-///////////////
+///-----------------------------------------------------------------------------
 
 
 @interface TKTripCollaborator : NSObject
 
 @property (nonatomic, strong) NSNumber *ID;
-@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy, nullable) NSString *name;
 @property (nonatomic, copy) NSString *email;
-@property (nonatomic, strong) NSURL *photoURL;
+@property (nonatomic, strong, nullable) NSURL *photoURL;
 @property (atomic) BOOL accepted;
 @property (atomic) BOOL hasWriteAccess;
 
@@ -123,19 +153,21 @@
 @end
 
 
-///////////////
+///-----------------------------------------------------------------------------
 #pragma mark - Trip template model
-///////////////
+///-----------------------------------------------------------------------------
 
 
 @interface TKTripTemplate : NSObject
 
 @property (nonatomic, strong) NSNumber *ID;
 @property (nonatomic, strong) TKTrip *trip;
-@property (nonatomic, copy) NSString *perex;
-@property (nonatomic, strong) NSNumber *duration;
+@property (nonatomic, copy, nullable) NSString *perex;
+@property (nonatomic, strong, nullable) NSNumber *duration;
 
 - (instancetype)initFromResponse:(NSDictionary *)dictionary;
 - (NSArray<NSString *> *)allItemIDs;
 
 @end
+
+NS_ASSUME_NONNULL_END

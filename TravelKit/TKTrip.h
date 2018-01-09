@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///-----------------------------------------------------------------------------
 #pragma mark -
-#pragma mark Definitions
+#pragma mark Type Definitions
 ///-----------------------------------------------------------------------------
 
 
@@ -24,10 +24,10 @@ typedef NS_ENUM(NSUInteger, TKDirectionTransportMode) {
 	TKDirectionTransportModeWalk, /// Walk mode.
 	TKDirectionTransportModeCar, /// Car mode.
 	TKDirectionTransportModeFlight, /// Flight mode.
-//	TKDirectionTransportModeBike,
-//	TKDirectionTransportModeBus,
-//	TKDirectionTransportModeTrain,
-//	TKDirectionTransportModeBoat,
+//	TKDirectionTransportModeBike, /// Bike mode.
+//	TKDirectionTransportModeBus, /// Bus mode.
+//	TKDirectionTransportModeTrain, /// Train mode.
+//	TKDirectionTransportModeBoat, /// Boat mode.
 }; // ABI-EXPORTED
 
 /**
@@ -41,26 +41,6 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
 	TKTransportAvoidOptionUnpaved     = (1 << 3), /// A bit indicating an option to avoid Unpaved paths.
 }; // ABI-EXPORTED
 
-/**
- Enum indicating Trip privacy state.
- */
-typedef NS_ENUM(NSUInteger, TKTripPrivacy) {
-	TKTripPrivacyPrivate = 0, /// Private Trip.
-	TKTripPrivacyShareable, /// Sharable Trip. Can be shared via URL.
-	TKTripPrivacyPublic, /// Public Trip. May be joined by other users.
-}; // ABI-EXPORTED
-
-/**
- Enum indicating Trip rights.
- */
-typedef NS_OPTIONS(NSUInteger, TKTripRights) {
-	TKTripRightsNoRights    = (0), /// No rights.
-	TKTripRightsEdit        = (1 << 0), /// Editing rights. Allows editing all properties not mentioned below.
-	TKTripRightsManage      = (1 << 1), /// Managing rights. Allows managing the privacy setting and Trip collaborators.
-	TKTripRightsDelete      = (1 << 2), /// Deleting rights. Allows moving the Trip to the Trash.
-	TKTripRightsAllRights   = TKTripRightsEdit | TKTripRightsManage | TKTripRightsDelete,
-}; // ABI-EXPORTED
-
 
 ///-----------------------------------------------------------------------------
 #pragma mark -
@@ -69,7 +49,7 @@ typedef NS_OPTIONS(NSUInteger, TKTripRights) {
 
 
 /**
- <#Description#>
+ Trip Day Item model.
  */
 @interface TKTripDayItem : NSObject
 
@@ -107,7 +87,7 @@ typedef NS_OPTIONS(NSUInteger, TKTripRights) {
 
 
 /**
- <#Description#>
+ Trip Day model.
  */
 @interface TKTripDay : NSObject
 
@@ -138,7 +118,7 @@ typedef NS_OPTIONS(NSUInteger, TKTripRights) {
 
 
 /**
- <#Description#>
+ Trip model.
  */
 @interface TKTrip : NSObject
 
@@ -195,6 +175,9 @@ typedef NS_OPTIONS(NSUInteger, TKTripRights) {
 ///-----------------------------------------------------------------------------
 
 
+/**
+ Trip Info model
+ */
 @interface TKTripInfo : NSObject
 
 /// Trip identifier.

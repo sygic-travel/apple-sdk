@@ -414,9 +414,8 @@
 		_type = TKAPIRequestTypeChangesGET;
 
 		NSString *sinceString = (sinceDate) ? [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:sinceDate] : nil;
-		sinceString = [sinceString stringByReplacingOccurrencesOfString:@"+" withString:@"%2B"];
 
-		if (sinceString) _path = [_path stringByAppendingFormat:@"?since=%@", sinceString];
+		if (sinceString) _query = @{ @"since": sinceString };
 
 		_successBlock = ^(TKAPIResponse *response){
 

@@ -9,7 +9,6 @@
 #import "TKAPI+Private.h"
 #import "TKSynchronizationManager.h"
 #import "TKTripsManager+Private.h"
-#import "TKPlacesManager.h"
 #import "TKSessionManager+Private.h"
 #import "TKUserSettings+Private.h"
 #import "Foundation+TravelKit.h"
@@ -21,18 +20,15 @@
 #endif
 
 
-#define kSynchronizationTimerPeriod  15
-#define kSynchronizationMinPeriod    60
+#define kTKSynchronizationTimerPeriod  15
+#define kTKSynchronizationMinPeriod    60
 
 typedef NS_ENUM(NSUInteger, TKSynchronizationState) {
 	TKSynchronizationStateStandby = 0,
 	TKSynchronizationStateInitializing,
-//	TKSynchronizationStateCustomPlaces,
-//	TKSynchronizationStateLeavedTrips,
 	TKSynchronizationStateFavourites,
 	TKSynchronizationStateChanges,
 	TKSynchronizationStateUpdatedTrips,
-//	TKSynchronizationStateMissingItems,
 	TKSynchronizationStateClearing,
 };
 
@@ -134,7 +130,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 	if (periodicSyncEnabled)
 	{
-		_repeatTimer = [NSTimer timerWithTimeInterval:kSynchronizationTimerPeriod target:self
+		_repeatTimer = [NSTimer timerWithTimeInterval:kTKSynchronizationTimerPeriod target:self
 			selector:@selector(synchronizePeriodic) userInfo:nil repeats:YES];
 		[[NSRunLoop mainRunLoop] addTimer:_repeatTimer forMode:NSRunLoopCommonModes];
 	}
@@ -187,7 +183,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 		NSTimeInterval now = [NSDate timeIntervalSinceReferenceDate];
 
-		if ((now - _lastSynchronization) > kSynchronizationMinPeriod)
+		if ((now - _lastSynchronization) > kTKSynchronizationMinPeriod)
 		{
 			SyncLog(@"Scheduled synchronization");
 			[self synchronizeAtomicWithCredentials:_session.credentials];
@@ -210,7 +206,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	_significantUpdatePerformed = NO;
 
 	// Fire up
-//	SyncLog(@"Started for user: %@ (%@)", userInfo.userID, userInfo.fullName);
+	SyncLog(@"Synchronization started");
 
 	[self checkState];
 
@@ -221,7 +217,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 #pragma mark - API requests worker
 
 
-- (void)enqueueAPIRequest:(TKAPIRequest *)request
+- (void)enqueueRequest:(TKAPIRequest *)request
 {
 	request.accessToken = _currentAccessToken;
 	[_requests addObject:request];
@@ -231,92 +227,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 #pragma mark - Phase initializers
 
-
-//- (void)synchronizeCustomPlaces
-//{
-//	// Get local Custom Places from the DB and perform PUT/POST requests to Activity API
-//
-//	BOOL changesAvailable = NO;
-//	NSArray *customActivities = [[ActivityManager defaultManager] customActivitiesForUserWithID:_currentUserID];
-//
-//	for (Activity *a in customActivities)
-//	{
-//		BOOL activityIsLocal = (a.type & ActivityTypeLocal) > 0;
-//
-//		if (!activityIsLocal && !a.changed) continue;
-//
-//		changesAvailable = YES;
-//
-//		if (activityIsLocal)
-//			SyncLog(@"Activity NOT on server – sending: %@", a.ID);
-//		else
-//			SyncLog(@"Activity NOT up-to-date on server – sending: %@", a.ID);
-//
-//		void (^success)(Activity *) = ^(Activity *received) {
-//
-//			if (received) [self processResponseWithActivity:received sentID:a.ID];
-//
-//			[self checkState];
-//
-//		};
-//
-//		void (^failure)(APIError *e) = ^(APIError *e) {
-//
-//			if (e.response.code == 404) {
-//
-//				SyncLog(@"Activity NOT on server – deleting: %@", a.ID);
-//
-//				[[ActivityManager defaultManager] removeActivity:a];
-//				_significantUpdatePerformed = YES;
-//			}
-//
-//			[self checkState];
-//		};
-//
-//		APIRequest *request = nil;
-//
-//		if (activityIsLocal)
-//			request = [[APIRequest alloc] initAsNewPlaceRequestWithActivity:a success:success failure:failure];
-//		else
-//			request = [[APIRequest alloc] initAsUpdatePlaceRequestWithActivity:a success:success failure:failure];
-//
-//		[self enqueueAPIRequest:request];
-//	}
-//
-//	if (!changesAvailable)
-//		[self checkState];
-//}
-
-//- (void)synchronizeLeavedTrips
-//{
-//	BOOL changesAvailable = NO;
-//
-//	NSArray *leavedTrips = [[TripsManager defaultManager] getArchivedTrips];
-//
-//	for (TripInfo *trip in leavedTrips)
-//	{
-//		if ([trip.ownerID isEqualToString:_currentUserID])
-//			continue;
-//
-//		changesAvailable = YES;
-//
-//		APIRequest *request = [[APIRequest alloc] initAsUnsubscribeTripRequestForTripWithID:trip.ID success:^{
-//
-//			[[TripsManager defaultManager] deleteTripWithID:trip.ID];
-//
-//			if ([[SessionManager defaultSession].activeTrip.ID isEqualToString:trip.ID])
-//				[[SessionManager defaultSession] reloadActiveTrip];
-//
-//			[self checkState];
-//
-//		} failure:^{ [self checkState]; }];
-//
-//		[self enqueueAPIRequest:request];
-//	}
-//
-//	if (!changesAvailable)
-//		[self checkState];
-//}
 
 - (void)synchronizeFavourites
 {
@@ -333,7 +243,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	}];
 
 
-	TKAPIRequest *request = nil;
 	void (^failure)(TKAPIError *) = ^(TKAPIError *__unused e){
 		[self checkState];
 	};
@@ -341,27 +250,23 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	// Locally added Favourites
 	for (NSString *itemID in favouritesToAdd)
 	{
-		request = [[TKAPIRequest alloc] initAsFavoriteItemAddRequestWithID:itemID success:^{
+		[self enqueueRequest:[[TKAPIRequest alloc] initAsFavoriteItemAddRequestWithID:itemID success:^{
 
 			[_session storeServerFavoriteIDsAdded:@[ itemID ] removed:@[ ]];
 			[self checkState];
 
-		} failure:failure];
-
-		[self enqueueAPIRequest:request];
+		} failure:failure]];
 	}
 
 	// Locally removed Favourites
 	for (NSString *itemID in favouritesToRemove)
 	{
-		request = [[TKAPIRequest alloc] initAsFavoriteItemDeleteRequestWithID:itemID success:^{
+		[self enqueueRequest:[[TKAPIRequest alloc] initAsFavoriteItemDeleteRequestWithID:itemID success:^{
 
 			[_session storeServerFavoriteIDsAdded:@[ ] removed:@[ itemID ]];
 			[self checkState];
 
-		} failure:failure];
-
-		[self enqueueAPIRequest:request];
+		} failure:failure]];
 	}
 
 	[self checkState];
@@ -415,16 +320,14 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 						SyncLog(@"Trip NOT on server yet – sending: %@", localTrip);
 
-						TKAPIRequest *request = [[TKAPIRequest alloc] initAsNewTripRequestForTrip:localTrip success:^(TKTrip *trip) {
+						[self enqueueRequest:[[TKAPIRequest alloc] initAsNewTripRequestForTrip:localTrip success:^(TKTrip *trip) {
 
 							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
 							[self checkState];
 
 						} failure:^(TKAPIError *__unused error) {
 							[self checkState];
-						}];
-
-						[self enqueueAPIRequest:request];
+						}]];
 					}
 
 					// ...if locally modified, send updates to the server
@@ -465,7 +368,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 							[self checkState];
 						}];
 
-						[self enqueueAPIRequest:updateTripRequest];
+						[self enqueueRequest:updateTripRequest];
 					}
 
 					// ...otherwise:
@@ -484,10 +387,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 				else {
 
-					//////////////////////////
-					// Method A: Push changes to server so it can tell us what to do
-					//////////////////////////
-					//
 					// Success: Changes accepted
 					// Error: Begin conflict resolution of Trip if verbosely ignored, ignore otherwise
 					//
@@ -534,57 +433,9 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 							[self checkState];
 						}];
 
-						[self enqueueAPIRequest:request];
-
-						//////////////////////////
-						// Method B: Try some local-side rules
-						// Note: Not maintained
-						//////////////////////////
-
-//						BOOL canSafelyPush = matchingOnlineTrip.rights & TripRightsEdit;
-//
-//						// Break if I can't push any changes so local data will be overwritten later
-//						if (!canSafelyPush)
-//							continue;
-//
-//						// Do not further process matching remote Trip, we decide what to do here
-//						[currentOnlineTrips removeObject:matchingOnlineTrip];
-//
-//						// Announce a conflict if remote data are newer than local
-//						if ([matchingOnlineTrip.lastUpdate timeIntervalSinceDate:localTrip.lastUpdate] > 0)
-//						{
-//							// Add Trips pair to conflicts holding structure
-//							TKTripConflict *conflict = [TKTripConflict new];
-//							conflict.localTrip = localTrip;
-//							conflict.remoteTrip = matchingOnlineTrip;
-//							[_tripConflicts addObject:conflict];
-//						}
-//
-//						// Otherwise force-push local data
-//						else
-//						{
-//							localTrip.version = matchingOnlineTrip.version;
-//							localTrip.lastUpdate = [NSDate now];
-//							localTrip.rights = matchingOnlineTrip.rights;
-//
-//							SyncLog(@"Trip NOT up-to-date on server – sending: %@", localTrip);
-//							APIRequest *request = [[APIRequest alloc] initAsUpdateTripRequestForTrip:
-//							  localTrip success:^(Trip *trip) {
-//
-//								[self processResponseWithTrip:trip sentTripID:localTrip.ID];
-//								[self checkState];
-//
-//							} failure:^(APIError *e, Trip* trip){
-//								[self checkState];
-//							}];
-//
-//							[self enqueueAPIRequest:request];
-//						}
-
+						[self enqueueRequest:request];
 					}
-
 				}
-
 			}
 
 			NSMutableArray *tripsToFetch = [NSMutableArray arrayWithCapacity:5];
@@ -629,7 +480,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 			[self checkState];
 		}];
 
-		[self enqueueAPIRequest:listRequest];
+		[self enqueueRequest:listRequest];
 
 		[self checkState];
 }
@@ -649,7 +500,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 		if (storedIDs.count >= 25 || (storedIDs.count && tripID == _tripIDsToFetch.lastObject))
 		{
-			TKAPIRequest *request = [[TKAPIRequest alloc] initAsBatchTripRequestForIDs:
+			[self enqueueRequest:[[TKAPIRequest alloc] initAsBatchTripRequestForIDs:
 			  storedIDs.allObjects success:^(NSArray<TKTrip *> *trips) {
 
 				for (TKTrip *t in trips)
@@ -659,9 +510,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 			  } failure:^(TKAPIError *__unused e) {
 				[self checkState];
-			}];
-
-			[self enqueueAPIRequest:request];
+			}]];
 
 			[storedIDs removeAllObjects];
 		}
@@ -670,68 +519,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	// Check state
 	[self checkState];
 }
-
-//- (void)synchronizeMissingItems
-//{
-//	// Get missing IDs from the DB
-//	NSArray *missingIDs = [[ActivityManager defaultManager] missingActivityIDs];
-//
-//	NSMutableSet *storedIDs = [NSMutableSet setWithCapacity:missingIDs.count];
-//	NSMutableSet *storedCustomIDs = [NSMutableSet setWithCapacity:missingIDs.count];
-//
-//	// Fetch Items missing from the DB from API
-//
-//	for (NSString *itemID in missingIDs)
-//	{
-//		ActivityType type = itemID.typeOfActivityID;
-//
-//		if (!itemID || type & ActivityTypeLocal) {}
-//		else if (type & ActivityTypeCustom) [storedCustomIDs addObject:itemID];
-//		else [storedIDs addObject:itemID];
-//
-//		// Ask for missing IDs in batches of 25
-//		if (storedIDs.count >= 25 || (storedIDs.count && itemID == missingIDs.lastObject))
-//		{
-//			APIRequest *request = [[APIRequest alloc] initAsBatchPlaceRequestForItemIDs:
-//			   storedIDs.allObjects success:^(NSArray<Activity *> *activities) {
-//
-//				[self processResponseWithBatchActivities:activities];
-//				[self checkState];
-//
-//			} failure:^{
-//				[self checkState];
-//			}];
-//
-//			request.accessToken = _currentAccessToken;
-//			[_requests addObject:request];
-//			[request silentStart];
-//
-//			[storedIDs removeAllObjects];
-//		}
-//
-//		if (storedCustomIDs.count >= 25 || (storedCustomIDs.count && itemID == missingIDs.lastObject))
-//		{
-//			APIRequest *request = [[APIRequest alloc] initAsBatchPlaceRequestForItemIDs:
-//			  storedCustomIDs.allObjects success:^(NSArray<Activity *> *activities) {
-//
-//				[self processResponseWithBatchActivities:activities];
-//				[self checkState];
-//
-//			} failure:^{
-//				[self checkState];
-//			}];
-//
-//			request.accessToken = _currentAccessToken;
-//			[_requests addObject:request];
-//			[request silentStart];
-//
-//			[storedCustomIDs removeAllObjects];
-//		}
-//	}
-//
-//	// Check state
-//	[self checkState];
-//}
 
 
 #pragma mark - API responses workers
@@ -749,74 +536,8 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 //	if (!trip.userID) trip.userID = _currentUserID;
 
 	// If there's already a Trip in the DB, update, otherwise add new Trip
-	[_tripsManager saveTrip:trip];
+	[_tripsManager storeTrip:trip];
 }
-
-- (void)processResponseWithBatchActivities:(NSArray *__unused)activities
-{
-	// TODO
-//	// Size of Activities array to save in batch
-//	NSUInteger savingBatch = ([[UIDevice currentDevice] isPowerfulDevice]) ? 100:50;
-//
-//	NSMutableArray *toSave = [NSMutableArray array];
-//
-//	for (Activity *a in activities)
-//	{
-//		SyncLog(@"Got Activity: %@", a);
-//
-//		// Update Activity owner in case of Custom Activity
-//		if (a.type & ActivityTypeCustom && !a.owner)
-//			a.owner = _currentUserID;
-//
-//		// Stack current Activity
-//		[toSave addObject:a];
-//
-//		// Save stacked Activities if needed
-//		if (toSave.count >= savingBatch || a == activities.lastObject)
-//		{
-//			[[ActivityManager defaultManager] batchSaveActivities:toSave];
-//			[toSave removeAllObjects];
-//		}
-//	}
-//
-//	_significantUpdatePerformed = YES;
-}
-
-//- (void)processResponseWithActivity:(Activity *)activity sentID:(NSString *)sentID
-//{
-//	if (!activity) return;
-//
-//	SyncLog(@"Got Activity: %@", activity);
-//
-//	// Update Activity ID in the DB if changed
-//	if (![sentID isEqualToString:activity.ID])
-//		[[ActivityManager defaultManager] changeIDOfActivityWithID:sentID toID:activity.ID];
-//
-//	// Update Activity owner in case of Custom Activity
-//	if (activity.type & ActivityTypeCustom)
-//		activity.owner = _currentUserID;
-//
-//	[[ActivityManager defaultManager] saveActivity:activity];
-//	_significantUpdatePerformed = YES;
-//}
-//
-//- (void)processResponseWithBatchDestinations:(NSArray *)destinations
-//{
-//#ifdef LOG_SYNC
-//	for (Activity *d in destinations)
-//		SyncLog(@"Got destination: %@", d);
-//#endif
-//
-//	[[DestinationManager defaultManager] batchSaveDestinations:destinations];
-//
-//}
-//
-//- (void)processResponseWithDestination:(Activity *)destination
-//{
-//	if (!destination) return;
-//
-//	[self processResponseWithBatchDestinations:@[ destination ]];
-//}
 
 
 #pragma mark - Actions
@@ -845,16 +566,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	// Move to a next phase
 	_state++;
 
-	// Push locally created Custom Places phase if required
-//	if (_state == TKSynchronizationStateCustomPlaces)
-//		[self synchronizeCustomPlaces];
-
-	// Push locally leaved foreign Trips
-//	else if (_state == TKSynchronizationStateLeavedTrips)
-//		[self synchronizeLeavedTrips];
-
 	// Push locally marked Favourites phase if required
-//	else
 	if (_state == TKSynchronizationStateFavourites)
 		[self synchronizeFavourites];
 
@@ -865,10 +577,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	// Fetch Trips updated on API
 	else if (_state == TKSynchronizationStateUpdatedTrips)
 		[self synchronizeUpdatedTrips];
-
-	// Fetch missing items from API
-//	else if (_state == TKSynchronizationStateMissingItems)
-//		[self synchronizeMissingItems];
 
 	// Otherwise finish synchronization loop
 	else [self finishSynchronization];
