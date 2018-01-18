@@ -96,6 +96,7 @@
 		_trips = [TKTripsManager sharedManager];
 		_session = [TKSessionManager sharedSession];
 		_sync = [TKSynchronizationManager sharedManager];
+		__directions = [TKDirectionsManager sharedManager];
 	}
 
 	return self;

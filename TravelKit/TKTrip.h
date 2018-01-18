@@ -7,40 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <TravelKit/TKDirectionDefinitions.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
-///-----------------------------------------------------------------------------
-#pragma mark -
-#pragma mark Type Definitions
-///-----------------------------------------------------------------------------
-
-
-/**
- Mode of transport used to indicate the mean of transportation between places.
- */
-typedef NS_ENUM(NSUInteger, TKDirectionTransportMode) {
-	TKDirectionTransportModeUnknown = 0, /// Unknown mode.
-	TKDirectionTransportModeWalk, /// Walk mode.
-	TKDirectionTransportModeCar, /// Car mode.
-	TKDirectionTransportModeFlight, /// Flight mode.
-//	TKDirectionTransportModeBike, /// Bike mode.
-//	TKDirectionTransportModeBus, /// Bus mode.
-//	TKDirectionTransportModeTrain, /// Train mode.
-//	TKDirectionTransportModeBoat, /// Boat mode.
-}; // ABI-EXPORTED
-
-/**
- Enum indicating options to fine-tune transport options. Only useful with Car mode.
- */
-typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
-	TKTransportAvoidOptionNone        = (0), /// No Avoid options. Default.
-	TKTransportAvoidOptionTolls       = (1 << 0), /// A bit indicating an option to avoid Tolls.
-	TKTransportAvoidOptionHighways    = (1 << 1), /// A bit indicating an option to avoid Highways.
-	TKTransportAvoidOptionFerries     = (1 << 2), /// A bit indicating an option to avoid Ferries.
-	TKTransportAvoidOptionUnpaved     = (1 << 3), /// A bit indicating an option to avoid Unpaved paths.
-}; // ABI-EXPORTED
-
 
 ///-----------------------------------------------------------------------------
 #pragma mark -

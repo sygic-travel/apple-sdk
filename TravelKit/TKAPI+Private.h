@@ -16,6 +16,7 @@
 #import <TravelKit/TKMedium.h>
 #import <TravelKit/TKPlacesQuery.h>
 #import <TravelKit/TKToursQuery.h>
+#import <TravelKit/TKDirectionsManager.h>
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -53,6 +54,7 @@ typedef NS_ENUM(NSInteger, TKAPIRequestType)
 	TKAPIRequestTypeTrashEMPTY,
 	TKAPIRequestTypeTripsBatchGET,
 	TKAPIRequestTypeChangesGET,
+	TKAPIRequestTypeDirectionsGET,
 	TKAPIRequestTypeExchangeRatesGET,
 	TKAPIRequestTypeCustomGET,
 	TKAPIRequestTypeCustomPOST,
@@ -195,6 +197,13 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 
 - (instancetype)initAsFavoriteItemDeleteRequestWithID:(NSString *)itemID
 	success:(void (^)(void))success failure:(TKAPIFailureBlock)failure;
+
+////////////////////
+// Directions
+
+- (instancetype)initAsDirectionsRequestForQuery:(TKDirectionsQuery *)query
+	success:(void (^)(TKDirectionsSet *directionsSet))success
+		failure:(TKAPIFailureBlock)failure;
 
 ////////////////////
 // Exchange rates

@@ -104,9 +104,9 @@
 		if (transport) {
 
 			NSString *mode = [transport[@"mode"] parsedString];
-			_transportMode = ([mode isEqual:@"pedestrian"]) ? TKDirectionTransportModeWalk :
+			_transportMode = ([mode isEqual:@"pedestrian"]) ? TKDirectionTransportModePedestrian :
 			                 ([mode isEqual:@"car"]) ? TKDirectionTransportModeCar :
-			                 ([mode isEqual:@"plane"]) ? TKDirectionTransportModeFlight :
+			                 ([mode isEqual:@"plane"]) ? TKDirectionTransportModePlane :
 //			                 ([mode isEqual:@"bike"]) ? TKDirectionTransportModeBike :
 //			                 ([mode isEqual:@"bus"]) ? TKDirectionTransportModeBus :
 //			                 ([mode isEqual:@"train"]) ? TKDirectionTransportModeTrain :
@@ -152,9 +152,9 @@
 
 		NSMutableDictionary *trans = [NSMutableDictionary dictionaryWithCapacity:7];
 
-		trans[@"mode"] = (_transportMode == TKDirectionTransportModeWalk) ? @"pedestrian" :
+		trans[@"mode"] = (_transportMode == TKDirectionTransportModePedestrian) ? @"pedestrian" :
 		                 (_transportMode == TKDirectionTransportModeCar) ? @"car" :
-		                 (_transportMode == TKDirectionTransportModeFlight) ? @"plane" :
+		                 (_transportMode == TKDirectionTransportModePlane) ? @"plane" :
 //		                 (_transportMode == TKDirectionTransportModeBike) ? @"bike" :
 //		                 (_transportMode == TKDirectionTransportModeBus) ? @"bus" :
 //		                 (_transportMode == TKDirectionTransportModeTrain) ? @"train" :

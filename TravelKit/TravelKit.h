@@ -31,6 +31,7 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKTripsManager.h>
 #import <TravelKit/TKSessionManager.h>
 #import <TravelKit/TKSynchronizationManager.h>
+#import <TravelKit/TKDirectionsManager.h>
 
 #import <TravelKit/Foundation+TravelKit.h>
 #import <TravelKit/NSDate+Tripomatic.h>
@@ -139,6 +140,14 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  Shared Synchronization Manager instance to provide Sync-related stuff.
  */
 @property (nonatomic, strong, readonly) TKSynchronizationManager *sync;
+
+/**
+ Shared Directions Manager instance to provide directions- & routing-related stuff.
+
+ @warning Experimental.
+ */
+@property (nonatomic, strong, readonly) TKDirectionsManager *_directions
+	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
 
 @end
 

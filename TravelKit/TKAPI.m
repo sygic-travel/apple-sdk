@@ -182,6 +182,9 @@
 	case TKAPIRequestTypeChangesGET: // GET
 		return @"/changes";
 
+	case TKAPIRequestTypeDirectionsGET: // POST
+		return @"/directions";
+
 //	case TKAPIRequestTypeExchangeRatesGET: // GET
 //		return @"/exchange-rates";
 
@@ -199,6 +202,7 @@
 		case TKAPIRequestTypeFavoriteADD:
 		case TKAPIRequestTypeTripNEW:
 		case TKAPIRequestTypeTrashEMPTY:
+		case TKAPIRequestTypeDirectionsGET:
 			return @"POST";
 
 		case TKAPIRequestTypeTripUPDATE:
@@ -968,6 +972,116 @@
 
 
 ////////////////////
+#pragma mark - Directions
+////////////////////
+
+
+- (instancetype)initAsDirectionsRequestForQuery:(TKDirectionsQuery *)query
+	success:(void (^)(TKDirectionsSet *))success failure:(TKAPIFailureBlock)failure
+{
+	if (self = [super init])
+	{
+		_type = TKAPIRequestTypeDirectionsGET;
+
+		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
+
+		dict[@"origin"] = (query.sourceLocation) ?
+		@{
+			@"lat": @(query.sourceLocation.coordinate.latitude),
+			@"lng": @(query.sourceLocation.coordinate.longitude)
+		} : [NSNull null];
+
+		dict[@"destination"] = (query.destinationLocation) ?
+		@{
+			@"lat": @(query.destinationLocation.coordinate.latitude),
+			@"lng": @(query.destinationLocation.coordinate.longitude)
+		} : [NSNull null];
+
+		if (query.waypointsPolyline) {
+			NSArray<CLLocation *> *points = [TKMapWorker pointsFromPolyline:query.waypointsPolyline];
+			NSMutableArray *pointDicts = [NSMutableArray arrayWithCapacity:points.count];
+
+			for (CLLocation *pt in points)
+				[pointDicts addObject:
+					@{ @"location": @{
+						@"lat": @(pt.coordinate.latitude), @"lng": @(pt.coordinate.longitude) }
+				}];
+
+			dict[@"waypoints"] = pointDicts;
+		}
+		else dict[@"waypoints"] = @[ ];
+
+		if (query.avoidOption) {
+			NSMutableArray *opts = [NSMutableArray arrayWithCapacity:4];
+			if (query.avoidOption & TKTransportAvoidOptionTolls)
+				[opts addObject:@"tolls"];
+			if (query.avoidOption & TKTransportAvoidOptionHighways)
+				[opts addObject:@"highways"];
+			if (query.avoidOption & TKTransportAvoidOptionFerries)
+				[opts addObject:@"ferries"];
+			if (query.avoidOption & TKTransportAvoidOptionUnpaved)
+				[opts addObject:@"unpaved"];
+			dict[@"avoid"] = opts;
+		}
+		else dict[@"avoid"] = @[ ];
+
+		_data = [dict asJSONData];
+
+		_successBlock = ^(TKAPIResponse *response){
+
+			TKDirectionsSet *set = [TKDirectionsSet new];
+
+			set.startLocation = query.sourceLocation;
+			set.endLocation = query.destinationLocation;
+			set.airDistance = [query.destinationLocation distanceFromLocation:query.sourceLocation];
+
+			NSMutableArray<TKDirection *> *pedestrianDirs = [NSMutableArray arrayWithCapacity:2];
+			NSMutableArray<TKDirection *> *carDirs = [NSMutableArray arrayWithCapacity:2];
+			NSMutableArray<TKDirection *> *planeDirs = [NSMutableArray arrayWithCapacity:2];
+
+			NSArray<NSDictionary *> *directions = [response.data[@"directions"] parsedArray];
+
+			TKDirection *d = nil;
+			for (NSDictionary *dir in directions) {
+				d = [TKDirection new];
+				d.startLocation = query.sourceLocation;
+				d.endLocation = query.destinationLocation;
+
+				NSString *mode = [dir[@"mode"] parsedString];
+				if ([mode isEqualToString:@"pedestrian"]) {
+					d.mode = TKDirectionTransportModePedestrian;
+					[pedestrianDirs addObject:d]; }
+				else if ([mode isEqualToString:@"car"]) {
+					d.mode = TKDirectionTransportModeCar;
+					[carDirs addObject:d]; }
+				else if ([mode isEqualToString:@"plane"]) {
+					d.mode = TKDirectionTransportModePlane;
+					[planeDirs addObject:d]; }
+				else continue;
+
+				d.duration = [[dir[@"duration"] parsedNumber] doubleValue];
+				d.distance = [[dir[@"distance"] parsedNumber] doubleValue];
+				d.polyline = [dir[@"polyline"] parsedString];
+				d.avoidOption = query.avoidOption;
+				d.waypointsPolyline = query.waypointsPolyline;
+			}
+
+			set.pedestrianDirections = pedestrianDirs;
+			set.carDirections = carDirs;
+			set.planeDirections = planeDirs;
+
+			if (success) success(set);
+
+		}; _failureBlock = ^(TKAPIError *error){
+			if (failure) failure(error);
+		};
+	}
+
+	return self;
+}
+
+
+////////////////////
 #pragma mark - Exchange rates
 ////////////////////
 
@@ -983,7 +1097,7 @@
 
 			NSMutableDictionary<NSString *, NSNumber *> *exchangeRates = [NSMutableDictionary dictionaryWithCapacity:10];
 
-			for (NSDictionary *e in [response.data parsedArray])
+			for (NSDictionary *e in [response.data[@"exchange_rates"] parsedArray])
 			{
 				if (![e parsedDictionary]) continue;
 

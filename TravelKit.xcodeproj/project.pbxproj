@@ -67,6 +67,15 @@
 		D649BAA11ED6E23D003EF406 /* TravelKit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */; };
 		D64B13961EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */; };
 		D64B13971EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */; };
+		D64B612820064D940098ADDF /* TKDirectionsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612620064D940098ADDF /* TKDirectionsManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D64B612920064D940098ADDF /* TKDirectionsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D64B612720064D940098ADDF /* TKDirectionsManager.m */; };
+		D64B612A200651C70098ADDF /* TKDirectionsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D64B612720064D940098ADDF /* TKDirectionsManager.m */; };
+		D64B612B200651C80098ADDF /* TKDirectionsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D64B612720064D940098ADDF /* TKDirectionsManager.m */; };
+		D64B612C200651CC0098ADDF /* TKDirectionsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612620064D940098ADDF /* TKDirectionsManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D64B612D200651CC0098ADDF /* TKDirectionsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612620064D940098ADDF /* TKDirectionsManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D64B612F200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D64B6130200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D64B6131200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D666C4051EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
 		D666C4061EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
 		D666C4071EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
@@ -257,6 +266,9 @@
 		D645398C1F8CB94100C3683D /* TKUserSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKUserSettings.m; sourceTree = "<group>"; };
 		D645398D1F8CB94100C3683D /* TKUserSettings+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKUserSettings+Private.h"; sourceTree = "<group>"; };
 		D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TravelKit-Prefix.pch"; sourceTree = "<group>"; };
+		D64B612620064D940098ADDF /* TKDirectionsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKDirectionsManager.h; sourceTree = "<group>"; };
+		D64B612720064D940098ADDF /* TKDirectionsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDirectionsManager.m; sourceTree = "<group>"; };
+		D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDirectionDefinitions.h; sourceTree = "<group>"; };
 		D666C4041EAE2C5300085915 /* TKReference+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKReference+Private.h"; sourceTree = "<group>"; };
 		D68E94781F05354E009E2C9C /* TKSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSessionManager.h; sourceTree = "<group>"; };
 		D68E94791F05354E009E2C9C /* TKSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSessionManager.m; sourceTree = "<group>"; };
@@ -356,6 +368,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D64B612520064C720098ADDF /* Directions */ = {
+			isa = PBXGroup;
+			children = (
+				D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */,
+				D64B612620064D940098ADDF /* TKDirectionsManager.h */,
+				D64B612720064D940098ADDF /* TKDirectionsManager.m */,
+			);
+			name = Directions;
+			sourceTree = "<group>";
+		};
 		D68E94771F0533CE009E2C9C /* Session */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,6 +444,7 @@
 				EF0D9D671EFAAB3800C50AE2 /* Database */,
 				D68E94771F0533CE009E2C9C /* Session */,
 				D6FEE0281FA8B24500996876 /* Synchronization */,
+				D64B612520064C720098ADDF /* Directions */,
 				EF0E92901EFAA9590036D13D /* API */,
 				D68E94801F06301F009E2C9C /* General */,
 				D6EF38EB1EB9EA6E00260E82 /* Foundation+TravelKit.h */,
@@ -600,10 +623,12 @@
 				D6122CE11FA7369000791EAB /* TKTrip+Private.h in Headers */,
 				D6CB14481F84D64D00E59C95 /* TKSSOAPI+Private.h in Headers */,
 				D6B2A1371E530B11005509E8 /* TKMapWorker.h in Headers */,
+				D64B612D200651CC0098ADDF /* TKDirectionsManager.h in Headers */,
 				D6B0AD941FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D698319A1EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831AA1EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144D1F84D84500E59C95 /* TKUserCredentials.h in Headers */,
+				D64B6131200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */,
 				D6EF38F41EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */,
 				D64B13971EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */,
 				D6E3B7CA1FA226D400E1CCAC /* NSDate+Tripomatic.h in Headers */,
@@ -633,6 +658,7 @@
 				D645398F1F8CB94100C3683D /* TKUserSettings+Private.h in Headers */,
 				D6B2A1661E531097005509E8 /* TKMapRegion.h in Headers */,
 				D698319C1EF3EB79002776BE /* TKTour+Private.h in Headers */,
+				D64B612820064D940098ADDF /* TKDirectionsManager.h in Headers */,
 				D6B2A16A1E531097005509E8 /* TKPlace.h in Headers */,
 				D6B2A1641E531097005509E8 /* NSObject+Parsing.h in Headers */,
 				D61B92571ED4798200645489 /* TKReachability+Private.h in Headers */,
@@ -651,6 +677,7 @@
 				D69831981EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831A81EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144B1F84D84500E59C95 /* TKUserCredentials.h in Headers */,
+				D64B612F200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */,
 				D6B2A1621E531097005509E8 /* TKMapWorker.h in Headers */,
 				D649BAA11ED6E23D003EF406 /* TravelKit-Prefix.pch in Headers */,
 				D6E3B7C81FA2237E00E1CCAC /* TKTrip+Private.h in Headers */,
@@ -694,10 +721,12 @@
 				D6122CE01FA7369000791EAB /* TKTrip+Private.h in Headers */,
 				D6CB14471F84D64D00E59C95 /* TKSSOAPI+Private.h in Headers */,
 				D6C3D05E1E4DDE0A00EBB54F /* TKReference.h in Headers */,
+				D64B612C200651CC0098ADDF /* TKDirectionsManager.h in Headers */,
 				D6B0AD931FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D69831991EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831A91EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144C1F84D84500E59C95 /* TKUserCredentials.h in Headers */,
+				D64B6130200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */,
 				D6EF38F31EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */,
 				D64B13961EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */,
 				D6E3B7C91FA226D400E1CCAC /* NSDate+Tripomatic.h in Headers */,
@@ -866,6 +895,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D64B612B200651C80098ADDF /* TKDirectionsManager.m in Sources */,
 				D6F0E4711ED6EF5800A0D3D5 /* FMDatabase.m in Sources */,
 				D6122CDD1FA712D400791EAB /* TKTripsManager.m in Sources */,
 				D64539911F8CC08A00C3683D /* TKUserSettings.m in Sources */,
@@ -930,6 +960,7 @@
 				D69831A01EF3F051002776BE /* TKTour.m in Sources */,
 				D68E947D1F05354E009E2C9C /* TKSessionManager.m in Sources */,
 				D61B92521ED476B500645489 /* TKPlacesManager.m in Sources */,
+				D64B612920064D940098ADDF /* TKDirectionsManager.m in Sources */,
 				D6B2A1691E531097005509E8 /* TKMedium.m in Sources */,
 				EF0D9D6B1EFAAF7400C50AE2 /* TKDatabaseManager.m in Sources */,
 				D6B2A1741E532002005509E8 /* TravelKit.m in Sources */,
@@ -940,6 +971,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D64B612A200651C70098ADDF /* TKDirectionsManager.m in Sources */,
 				D6F0E4701ED6EF5800A0D3D5 /* FMDatabase.m in Sources */,
 				D6122CDC1FA712D300791EAB /* TKTripsManager.m in Sources */,
 				D64539901F8CC08A00C3683D /* TKUserSettings.m in Sources */,
