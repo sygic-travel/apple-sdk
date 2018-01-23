@@ -8,22 +8,23 @@
 
 
 #import <Availability.h>
+#import <TargetConditionals.h>
 
 // Target conditionals
 
-#ifdef TARGET_OS_OSX
-#ifndef __MAC_10_9
-#warning "This project uses features only available in macOS SDK 10.9 and later."
-#endif // __MAC_10_9
+#if TARGET_OS_OSX == 1
+#ifndef __MAC_10_10
+#warning "This project uses features only available in macOS SDK 10.10 and later."
+#endif // __MAC_10_10
 #endif // TARGET_OS_OSX
 
-#ifdef TARGET_OS_IOS
+#if TARGET_OS_IOS == 1
 #ifndef __IPHONE_8_2
 	#warning "This project uses features only available in iOS SDK 8.2 and later."
 #endif // __IPHONE_8_2
 #endif // TARGET_OS_IOS
 
-#ifdef TARGET_OS_TV
+#if TARGET_OS_TV == 1
 #ifndef __TVOS_9_0
 	#warning "This project uses features only available in tvOS SDK 9.0 and later."
 #endif // __TVOS_9_0

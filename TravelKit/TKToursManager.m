@@ -6,13 +6,13 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKToursManager+Private.h"
+#import "TKToursManager.h"
 #import "TKAPI+Private.h"
 
 
 @implementation TKToursManager
 
-+ (instancetype)sharedManager
++ (TKToursManager *)sharedManager
 {
 	static TKToursManager *shared = nil;
 

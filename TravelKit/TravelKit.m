@@ -8,10 +8,7 @@
 
 #import "TravelKit.h"
 #import "TKAPI+Private.h"
-#import "TKPlacesManager+Private.h"
-#import "TKToursManager+Private.h"
-#import "TKSessionManager+Private.h"
-#import "TKMapWorker+Private.h"
+#import "TKMapWorker.h"
 #import "Foundation+TravelKit.h"
 
 
@@ -90,9 +87,37 @@
 #pragma mark Generic methods
 
 
+- (instancetype)init
+{
+	if (self = [super init])
+	{
+		_places = [TKPlacesManager sharedManager];
+		__tours = [TKToursManager sharedManager];
+		_trips = [TKTripsManager sharedManager];
+		_session = [TKSessionManager sharedManager];
+		_sync = [TKSynchronizationManager sharedManager];
+		__directions = [TKDirectionsManager sharedManager];
+	}
+
+	return self;
+}
+
+@end
+
+
+#pragma mark -
+#pragma mark Deprecated namespace
+
+
+@implementation TravelKit (NSDeprecated)
+
+#pragma mark -
+#pragma mark Session-related methods
+
+
 - (void)clearUserData
 {
-	[[TKSessionManager sharedSession] clearUserData];
+	[_session clearUserData];
 }
 
 
@@ -142,12 +167,12 @@
 
 - (NSArray<NSString *> *)favoritePlaceIDs
 {
-	return [[TKSessionManager sharedSession] favoritePlaceIDs];
+	return [[TKSessionManager sharedManager] favoritePlaceIDs];
 }
 
 - (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
 {
-	[[TKSessionManager sharedSession] updateFavoritePlaceID:favoriteID setFavorite:favorite];
+	[[TKSessionManager sharedManager] updateFavoritePlaceID:favoriteID setFavorite:favorite];
 }
 
 

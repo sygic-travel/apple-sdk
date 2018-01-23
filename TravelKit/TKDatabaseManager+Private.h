@@ -9,29 +9,28 @@
 #import <Foundation/Foundation.h>
 
 // Exported table names
-extern NSString * const kDatabaseTablePlaces;
-extern NSString * const kDatabaseTablePlaceDetails;
-extern NSString * const kDatabaseTablePlaceParents;
-extern NSString * const kDatabaseTableMedia;
-extern NSString * const kDatabaseTableReferences;
-extern NSString * const kDatabaseTableFavorites;
+extern NSString * const kTKDatabaseTablePlaces;
+extern NSString * const kTKDatabaseTablePlaceDetails;
+extern NSString * const kTKDatabaseTablePlaceParents;
+extern NSString * const kTKDatabaseTableMedia;
+extern NSString * const kTKDatabaseTableReferences;
+extern NSString * const kTKDatabaseTableFavorites;
+extern NSString * const kTKDatabaseTableTrips;
+extern NSString * const kTKDatabaseTableTripDays;
+extern NSString * const kTKDatabaseTableTripDayItems;
 
 
 @interface TKDatabaseManager : NSObject
 
-/**
- * Shared instance
- *
- * @return singleton instance of this class
- */
-+ (TKDatabaseManager *)sharedInstance;
+/** Shared instance */
+@property (class, readonly, strong) TKDatabaseManager *sharedManager;
 
 /** Default path of the database file */
 + (NSString *)databasePath;
 
 /** Disqualified initializer */
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
 /** Check consistency, run proper migrations etc. */
 - (void)checkConsistency;

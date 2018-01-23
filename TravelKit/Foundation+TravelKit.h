@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#ifdef USE_FOUNDATION_TRAVELKIT
+#ifdef USE_TRAVELKIT_FOUNDATION
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -30,7 +30,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param original Selector referencing the original implementation.
  @param originalClass Class providing the `original` selector.
  */
-+ (void)swizzleSelector:(SEL)swizzled ofClass:(Class)swizzledClass withSelector:(SEL)original ofClass:(Class)originalClass;
++ (void)swizzleSelector:(SEL)swizzled ofClass:(Class)swizzledClass
+           withSelector:(SEL)original ofClass:(Class)originalClass;
 
 @end
 
@@ -38,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSArray<ObjectType> (TravelKit)
 
 /**
- Index picking from the array, a bit safer.
+ Index-picking from the array, a bit safer.
 
  @param index Index of the requested object.
  @return Desired object.
@@ -46,7 +47,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (nullable ObjectType)safeObjectAtIndex:(NSUInteger)index;
 
 /**
- Array mapping method for complex transformations.
+ Array-mapping method for complex transformations.
 
  @param block Block used for customisable mapping.
  @return Mapped array.
@@ -54,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
  @note Any objects returned via block are included in the array returned. No type-checking is performed.
        Returning `nil` within the block works as filtering.
  */
-- (NSArray *)mappedArrayUsingBlock:(id _Nullable (^)(ObjectType obj, NSUInteger idx))block;
+- (NSArray *)mappedArrayUsingBlock:(id _Nullable (^)(ObjectType obj))block;
 
 /**
  Array method for quick filtering purposes.
@@ -62,7 +63,15 @@ NS_ASSUME_NONNULL_BEGIN
  @param block Block used to determine `obj` inclusion in the array returned.
  @return Filtered array.
  */
-- (NSArray<ObjectType> *)filteredArrayUsingBlock:(BOOL (^)(ObjectType obj, NSUInteger idx))block;
+- (NSArray<ObjectType> *)filteredArrayUsingBlock:(BOOL (^)(ObjectType obj))block;
+
+@end
+
+
+@interface NSDictionary<KeyType, ObjectType> (TravelKit)
+
+- (nullable NSString *)asJSONString;
+- (nullable NSData *)asJSONData;
 
 @end
 
@@ -84,20 +93,36 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSString *)stringByTrimmingCharactersInRegexString:(NSString *)regexString;
 
-@end
+/**
+ <#Description#>
 
-
-@interface NSDateFormatter (TravelKit)
+ @param str <#str description#>
+ @param ignoreCase <#ignoreCase description#>
+ @return <#return value description#>
+ */
+- (BOOL)containsSubstring:(NSString *)str ignoreCase:(BOOL)ignoreCase;
+- (BOOL)containsSubstring:(NSString *)str;
 
 /**
- Shared _ISO 8601_ Datetime formatter for generic use.
+ Index-safe variant of `substringToIndex:` providing a substring even if the position exceeds the string length.
 
- @return Shared `NSDateFormatter` processing _ISO 8601_ formatted strings.
+ @param to Index of a position where to trim the string from.
+ @return Resulting substring.
  */
-+ (NSDateFormatter *)shared8601DateTimeFormatter;
+- (NSString *)substringToPosition:(NSUInteger)to;
+
+- (nullable NSString *)substringBetweenStarters:(NSArray<NSString *> *)starters andEnding:(NSString *)ending;
+
+/**
+ A method returing a string without any occurrence of a given substring.
+
+ @param str Substring to cut from the string.
+ @return Resulting string.
+ */
+- (NSString *)stringByDeletingOccurrencesOfString:(NSString *)str;
 
 @end
 
 NS_ASSUME_NONNULL_END
 
-#endif // USE_FOUNDATION_TRAVELKIT
+#endif // USE_TRAVELKIT_FOUNDATION

@@ -1,13 +1,13 @@
 //
 //  TKMapWorker.m
-//  Tripomatic
+//  TravelKit
 //
 //  Created by Michal Zelinka on 03/02/16.
 //  Copyright © 2016 Tripomatic. All rights reserved.
 //
 
 #import "Foundation+TravelKit.h"
-#import "TKMapWorker+Private.h"
+#import "TKMapWorker.h"
 
 #define MINMAX(a, x, b) MIN(MAX(a, x), b)
 
@@ -183,7 +183,7 @@ typedef struct {
 	}
 	@catch (NSException *exception)
 	{
-		return nil;
+		return @[ ];
 	}
 }
 
@@ -288,7 +288,7 @@ typedef struct {
 	}
 
 	NSArray<TKMapPlaceAnnotation *> *classAnnotations = [firstClass
-	  mappedArrayUsingBlock:^id _Nullable(TKPlace * _Nonnull place, NSUInteger __unused idx) {
+	  mappedArrayUsingBlock:^id _Nullable(TKPlace * _Nonnull place) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
 		anno.pixelSize = 64;
 		return anno;
@@ -297,7 +297,7 @@ typedef struct {
 	[annotations addObjectsFromArray:classAnnotations];
 
 	classAnnotations = [secondClass
-	  mappedArrayUsingBlock:^id _Nullable(TKPlace * _Nonnull place, NSUInteger __unused idx) {
+	  mappedArrayUsingBlock:^id _Nullable(TKPlace * _Nonnull place) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
 		anno.pixelSize = 42;
 		return anno;
@@ -306,7 +306,7 @@ typedef struct {
 	[annotations addObjectsFromArray:classAnnotations];
 
 	classAnnotations = [thirdClass
-	  mappedArrayUsingBlock:^id _Nullable(TKPlace * _Nonnull place, NSUInteger __unused idx) {
+	  mappedArrayUsingBlock:^id _Nullable(TKPlace * _Nonnull place) {
 		TKMapPlaceAnnotation *anno = [[TKMapPlaceAnnotation alloc] initWithPlace:place];
 		anno.pixelSize = 14;
 		return anno;
@@ -324,7 +324,7 @@ typedef struct {
                          toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove
 {
 	NSArray<NSString *> *displayedIDs = [newAnnotations
-	  mappedArrayUsingBlock:^id _Nullable(TKMapPlaceAnnotation * _Nonnull p, NSUInteger __unused idx) {
+	  mappedArrayUsingBlock:^id _Nullable(TKMapPlaceAnnotation *p) {
 		return p.place.ID;
 	}];
 

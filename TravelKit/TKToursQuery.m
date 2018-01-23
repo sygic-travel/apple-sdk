@@ -20,10 +20,11 @@
 {
 	NSMutableString *key = [NSMutableString string];
 
-	if (_parentID) [key appendString:_parentID];
-	[key appendString:[@(_sortingType) stringValue]];
-	[key appendString:(_descendingSortingOrder ? @"DESC":@"ASC")];
-	[key appendString:([_pageNumber stringValue] ?: @"0")];
+	[key appendFormat:@"source:%tu", _source];
+	if (_parentID) [key appendFormat:@"|parent:%@", _parentID];
+	[key appendFormat:@"|sort:%tu", _sortingType];
+	[key appendFormat:@"|desc:%tu", _descendingSortingOrder];
+	[key appendFormat:@"|page:%tu", _pageNumber.unsignedIntegerValue];
 
 	return key.hash;
 }
