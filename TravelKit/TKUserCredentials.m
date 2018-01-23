@@ -66,4 +66,10 @@
 	return [[self.class alloc] initFromDictionary:[self asDictionary]];
 }
 
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"%@\n\tToken: %@\n\tExpiration: %@",
+		super.description, _accessToken, _expiration];
+}
+
 @end

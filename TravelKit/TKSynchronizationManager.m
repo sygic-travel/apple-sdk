@@ -8,6 +8,7 @@
 
 #import "TKAPI+Private.h"
 #import "TKSynchronizationManager.h"
+#import "TKEventsManager.h"
 #import "TKTripsManager+Private.h"
 #import "TKSessionManager+Private.h"
 #import "TKUserSettings+Private.h"
@@ -50,6 +51,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 @end
 
 @implementation TKTripConflict @end
+@implementation TKSynchronizationResult @end
 
 
 @interface TKSynchronizationManager ()
@@ -58,8 +60,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 @property (nonatomic, copy) NSString *currentAccessToken;
 
-@property (atomic) BOOL verboseSynchronization;
-@property (atomic) BOOL significantUpdatePerformed;
 @property (nonatomic, strong) NSTimer *repeatTimer;
 @property (nonatomic, assign) NSTimeInterval lastSynchronization;
 
@@ -75,8 +75,11 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 @interface TKSynchronizationManager ()
 
 @property (nonatomic, strong) TKSessionManager *session;
+@property (nonatomic, strong) TKEventsManager *events;
 @property (nonatomic, strong) TKTripsManager *tripsManager;
+
 @property (atomic) TKSynchronizationState state;
+@property (nonatomic, strong) TKSynchronizationResult *result;
 
 @end
 
@@ -100,6 +103,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	if (self = [super init])
 	{
 		_session = [TKSessionManager sharedManager];
+		_events = [TKEventsManager sharedManager];
 		_tripsManager = [TKTripsManager sharedManager];
 		_state = TKSynchronizationStateStandby;
 		_queue = [NSOperationQueue new];
@@ -149,8 +153,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 		{
 			if (_state == TKSynchronizationStateStandby)
 			{
-				[self sendNotification:TKSynchronizationNotificationTypeBegin];
-
 				_lastSynchronization = [NSDate timeIntervalSinceReferenceDate];
 
 				// Create targetted operation
@@ -163,9 +165,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 			}
 			else
 				SyncLog(@"Skipping, still %tu items in queue", _requests.count + _tripConflicts.count);
-
 		}
-		else [self sendNotification:TKSynchronizationNotificationTypeCancel];
 	}
 }
 
@@ -200,10 +200,11 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	[NSThread currentThread].name = @"Synchronization";
 
 	_state = TKSynchronizationStateInitializing;
+	_result = [TKSynchronizationResult new];
+	_result.success = YES;
 
 	// Set up fields for current synchronization loop
 	_currentAccessToken = [userCredentials.accessToken copy];
-	_significantUpdatePerformed = NO;
 
 	// Fire up
 	SyncLog(@"Synchronization started");
@@ -241,7 +242,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	  [toSync.allKeys filteredArrayUsingBlock:^BOOL(NSString *key) {
 		return toSync[key].integerValue < 0;
 	}];
-
 
 	void (^failure)(TKAPIError *) = ^(TKAPIError *__unused e){
 		[self checkState];
@@ -471,7 +471,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 			[_session storeServerFavoriteIDsAdded:updatedFavouriteIDs removed:deletedFavouriteIDs];
 
 			if (updatedFavouriteIDs.count || deletedFavouriteIDs.count)
-				_significantUpdatePerformed = YES;
+				_result.favoritesUpdated = YES;
 
 			[self checkTripConflicts];
 			[self checkState];
@@ -530,7 +530,12 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 	// Update Trip ID if needed
 	if (originalTripID && ![originalTripID isEqualToString:trip.ID])
+	{
 		[_tripsManager changeTripWithID:originalTripID toID:trip.ID];
+
+		if (_events.updatedTripIDHandler)
+			_events.updatedTripIDHandler(originalTripID, trip.ID);
+	}
 
 //	// Fill in handling User ID information
 //	if (!trip.userID) trip.userID = _currentUserID;
@@ -618,10 +623,11 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 //	[SessionManager defaultSession].changesTimestamp = _lastChangesTimestamp;
 
 	SyncLog(@"Synchronization finished");
+
 	_state = TKSynchronizationStateStandby;
-	if (_significantUpdatePerformed)
-		[self sendNotification:TKSynchronizationNotificationTypeSignificantUpdate];
-	[self sendNotification:TKSynchronizationNotificationTypeDone];
+
+	if (_events.syncCompletionHandler)
+		_events.syncCompletionHandler(_result);
 }
 
 - (void)cancelSynchronization
@@ -634,30 +640,10 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	SyncLog(@"Synchronization cancelled");
 
 	_state = TKSynchronizationStateStandby;
-	[self sendNotification:TKSynchronizationNotificationTypeDone];
-}
+	_result.success = NO;
 
-- (void)sendNotification:(TKSynchronizationNotificationType __unused)notification
-{
-	// TODO
-//	[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-//
-//		switch (notification)
-//		{
-//			case TKSynchronizationNotificationTypeBegin:
-//				[[NotificationCenter defaultCenter] postNotificationName:kNotificationSynchronizationManagerWillStart];
-//				break;
-//
-//			case TKSynchronizationNotificationTypeDone:
-//				[[NotificationCenter defaultCenter] postNotificationName:kNotificationSynchronizationManagerDidFinish];
-//				break;
-//
-//			case TKSynchronizationNotificationTypeSignificantUpdate:
-//				[[NotificationCenter defaultCenter] postNotificationName:kNotificationSynchronizationManagerDidSignificantUpdate];
-//				break;
-//		}
-//
-//	}];
+	if (_events.syncCompletionHandler)
+		_events.syncCompletionHandler(_result);
 }
 
 - (BOOL)syncInProgress

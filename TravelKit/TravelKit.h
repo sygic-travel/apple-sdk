@@ -32,6 +32,7 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKSessionManager.h>
 #import <TravelKit/TKSynchronizationManager.h>
 #import <TravelKit/TKDirectionsManager.h>
+#import <TravelKit/TKEventsManager.h>
 
 #import <TravelKit/Foundation+TravelKit.h>
 #import <TravelKit/NSDate+Tripomatic.h>
@@ -145,6 +146,14 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  @warning Experimental.
  */
 @property (nonatomic, strong, readonly) TKDirectionsManager *_directions
+	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
+
+/**
+ Shared Events Manager instance to handle event handlers.
+
+ @warning Experimental.
+ */
+@property (nonatomic, strong, readonly) TKEventsManager *_events
 	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
 
 @end
