@@ -99,7 +99,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 {
 	if (self = [super init])
 	{
-		_session = [TKSessionManager sharedSession];
+		_session = [TKSessionManager sharedManager];
 		_tripsManager = [TKTripsManager sharedManager];
 		_state = TKSynchronizationStateStandby;
 		_queue = [NSOperationQueue new];

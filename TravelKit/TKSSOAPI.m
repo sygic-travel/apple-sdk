@@ -21,13 +21,13 @@
 ////////////////////////////////////////////////////////////////////////////////
 
 #define tkAPIEndpoint        @"https://auth.sygic.com"
-#define tkClientID           @"sdk.sygictravel.ios"
+#define tkAPIClientID        @"sdk.sygictravel.ios"
 
 #ifdef DEBUG
 #undef  tkAPIEndpoint
 #define tkAPIEndpoint        @"https://tripomatic-auth-master-testing.sygic.com"
-#undef  tkClientID
-#define tkClientID           @"sygictravel_ios_sdk_demo"
+#undef  tkAPIClientID
+#define tkAPIClientID        @"sygictravel_ios_sdk_demo"
 #endif
 
 // SSO endpoint URLs // TODO: Remove testing stage
@@ -164,7 +164,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *path = @"/oauth2/token";
 
 	NSDictionary *post = @{
-		@"client_id": tkClientID,
+		@"client_id": tkAPIClientID,
 		@"grant_type": @"client_credentials",
 		@"device_code": [TKUserSettings sharedSettings].uniqueID,
 		@"device_platform": tkPlatform,
@@ -194,7 +194,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *path = @"/oauth2/token";
 
 	NSDictionary *post = @{
-		@"client_id": tkClientID,
+		@"client_id": tkAPIClientID,
 		@"grant_type": @"refresh_token",
 		@"device_code": [TKUserSettings sharedSettings].uniqueID,
 		@"device_platform": tkPlatform,
@@ -225,7 +225,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *path = @"/oauth2/token";
 
 	NSDictionary *post = @{
-		@"client_id": tkClientID,
+		@"client_id": tkAPIClientID,
 		@"grant_type": @"password",
 		@"username": objectOrNull(username),
 		@"password": objectOrNull(password),
@@ -260,7 +260,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *type = facebookToken ? @"facebook" : googleToken ? @"google" : nil;
 
 	NSDictionary *post = @{
-		@"client_id": tkClientID,
+		@"client_id": tkAPIClientID,
 		@"grant_type": objectOrNull(type),
 		@"access_token": objectOrNull(accessToken),
 		@"device_code": [TKUserSettings sharedSettings].uniqueID,
@@ -291,7 +291,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *path = @"/oauth2/token";
 
 	NSDictionary *post = @{
-		@"client_id": tkClientID,
+		@"client_id": tkAPIClientID,
 		@"grant_type": @"external",
 		@"token": objectOrNull(jwtToken),
 		@"device_code": [TKUserSettings sharedSettings].uniqueID,
@@ -355,7 +355,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *authHeader = [NSString stringWithFormat:@"Bearer %@", accessToken];
 
 	NSDictionary *post = @{
-		@"client_id": tkClientID,
+		@"client_id": tkAPIClientID,
 		@"device_code": [TKUserSettings sharedSettings].uniqueID,
 		@"device_platform": tkPlatform,
 		@"username" : objectOrNull(email),

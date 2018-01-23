@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Shared Places managing instance.
 @property (class, readonly, strong) TKPlacesManager *sharedManager;
 
-+ (instancetype)new UNAVAILABLE_ATTRIBUTE;
++ (instancetype)new  UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
 ///---------------------------------------------------------------------------------------

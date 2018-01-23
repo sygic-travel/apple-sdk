@@ -16,7 +16,7 @@
 /// @name Shared interface
 ///---------------------------------------------------------------------------------------
 
-/// Shared Trips managing instance.
+/// Shared Synchronization managing instance.
 @property (class, readonly, strong) TKSynchronizationManager *sharedManager;
 
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;

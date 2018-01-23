@@ -22,8 +22,9 @@
 
 @interface TKSSOAPI : NSObject
 
-/** Shared sigleton */
-+ (TKSSOAPI *)sharedAPI;
+// Shared sigleton
+@property (class, readonly, strong) TKSSOAPI *sharedAPI;
+
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
 

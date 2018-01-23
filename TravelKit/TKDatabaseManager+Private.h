@@ -29,8 +29,8 @@ extern NSString * const kTKDatabaseTableTripDayItems;
 + (NSString *)databasePath;
 
 /** Disqualified initializer */
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
 /** Check consistency, run proper migrations etc. */
 - (void)checkConsistency;

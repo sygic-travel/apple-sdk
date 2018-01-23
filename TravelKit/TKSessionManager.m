@@ -26,7 +26,7 @@
 
 @implementation TKSessionManager
 
-+ (TKSessionManager *)sharedSession
++ (TKSessionManager *)sharedManager
 {
     static dispatch_once_t once = 0;
     static TKSessionManager *shared = nil;

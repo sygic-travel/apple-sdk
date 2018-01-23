@@ -14,82 +14,7 @@
 /////////////////////////////////
 /////////////////////////////////
 
-#pragma mark - Direction record
-
-/////////////////////////////////
-/////////////////////////////////
-
-
-@implementation TKDirectionsQuery
-
-- (instancetype)initFromLocation:(CLLocation *)sourceLocation toLocation:(CLLocation *)destinationLocation
-{
-	if (self = [super init])
-	{
-		_sourceLocation = sourceLocation;
-		_destinationLocation = destinationLocation;
-	}
-
-	return self;
-}
-
-+ (instancetype)queryFromLocation:(CLLocation *)sourceLocation toLocation:(CLLocation *)destinationLocation
-{
-	if (!sourceLocation || !destinationLocation) return nil;
-
-	return [[self alloc] initFromLocation:sourceLocation toLocation:destinationLocation];
-}
-
-@end
-
-
-/////////////////////////////////
-/////////////////////////////////
-
-#pragma mark - Directions set
-
-/////////////////////////////////
-/////////////////////////////////
-
-
-@implementation TKDirectionsSet
-
-- (NSString *)description
-{
-	return [NSString stringWithFormat:
-		@"<TKDirectionsSet %p>\n%@%@%@\n",
-			self, _pedestrianDirections, _carDirections, _planeDirections];
-}
-
-@end
-
-
-/////////////////////////////////
-/////////////////////////////////
-
-#pragma mark - Direction record
-
-/////////////////////////////////
-/////////////////////////////////
-
-
-@implementation TKDirection
-
-- (NSString *)description
-{
-	return [NSString stringWithFormat:
-		@"<TKDirection %p | Mode %tu | Time: %.0f min | Distance: %.0f m>",
-			self, _mode, round(_duration/60.0), round(_distance)];
-}
-
-@end
-
-
-
-/////////////////////////////////
-/////////////////////////////////
-
-#pragma mark - Planning manager
+#pragma mark - Directions manager
 
 /////////////////////////////////
 /////////////////////////////////
@@ -143,7 +68,7 @@
 	TKDirectionsSet *estimated = [self estimatedDirectionsSetForQuery:query];
 
 	// Check equality of locations
-	if ([query.sourceLocation distanceFromLocation:query.destinationLocation] < 16) {
+	if ([query.startLocation distanceFromLocation:query.endLocation] < 16) {
 		if (completion) completion(estimated);
 		return;
 	}
@@ -191,17 +116,17 @@
 - (TKDirectionsSet *)estimatedDirectionsSetForQuery:(TKDirectionsQuery *)query
 {
 	TKDirectionsSet *set = [TKDirectionsSet new];
-	set.startLocation = query.sourceLocation;
-	set.endLocation = query.destinationLocation;
+	set.startLocation = query.startLocation;
+	set.endLocation = query.endLocation;
 	CLLocationDistance airDistance =
-		set.airDistance = round([query.destinationLocation
-			distanceFromLocation:query.sourceLocation]);
+		set.airDistance = round([query.endLocation
+			distanceFromLocation:query.startLocation]);
 
 	// Pedestrian
 
 	TKDirection *direction = [TKDirection new];
-	direction.startLocation = query.sourceLocation;
-	direction.endLocation = query.destinationLocation;
+	direction.startLocation = query.startLocation;
+	direction.endLocation = query.endLocation;
 	direction.mode = TKDirectionTransportModePedestrian;
 	direction.estimated = YES;
 	direction.distance = round(airDistance * (airDistance <= 2000 ? 1.35 : airDistance <= 6000 ? 1.22 : 1.106));
@@ -214,8 +139,8 @@
 	// Car
 
 	direction = [TKDirection new];
-	direction.startLocation = query.sourceLocation;
-	direction.endLocation = query.destinationLocation;
+	direction.startLocation = query.startLocation;
+	direction.endLocation = query.endLocation;
 	direction.mode = TKDirectionTransportModeCar;
 	direction.estimated = YES;
 	direction.distance = round(airDistance * (airDistance <= 2000 ? 1.8 : airDistance <= 6000 ? 1.6 : 1.2));
@@ -228,8 +153,8 @@
 	// Plane
 
 	direction = [TKDirection new];
-	direction.startLocation = query.sourceLocation;
-	direction.endLocation = query.destinationLocation;
+	direction.startLocation = query.startLocation;
+	direction.endLocation = query.endLocation;
 	direction.mode = TKDirectionTransportModePlane;
 	direction.estimated = YES;
 	direction.distance = set.airDistance;
@@ -251,8 +176,8 @@
 - (NSString *)cacheKeyForQuery:(TKDirectionsQuery *)query
 {
 	NSMutableString *str = [[NSString stringWithFormat:@"%.5f,%.5f|%.5f,%.5f",
-		query.sourceLocation.coordinate.latitude, query.sourceLocation.coordinate.longitude,
-		query.destinationLocation.coordinate.latitude, query.destinationLocation.coordinate.longitude] mutableCopy];
+		query.startLocation.coordinate.latitude, query.startLocation.coordinate.longitude,
+		query.endLocation.coordinate.latitude, query.endLocation.coordinate.longitude] mutableCopy];
 
 	if (query.avoidOption)
 		[str appendFormat:@"|A:%tu", query.avoidOption];

@@ -14,12 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TKSessionManager : NSObject
 
-/** Shared instance */
-@property (class, readonly, strong) TKSessionManager *sharedSession;
+/// Shared Session managing instance.
+@property (class, readonly, strong) TKSessionManager *sharedManager;
 
-/** Disqualified initializer */
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
 @property (nonatomic, strong, nullable) TKUserCredentials *credentials;
 

@@ -181,6 +181,9 @@
 		D6CB144E1F84D84500E59C95 /* TKUserCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKUserCredentials.m */; };
 		D6CB144F1F84D84500E59C95 /* TKUserCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKUserCredentials.m */; };
 		D6CB14501F84D84500E59C95 /* TKUserCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKUserCredentials.m */; };
+		D6D1F76A20160A79009E6249 /* TKDirectionDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */; };
+		D6D1F76B20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */; };
+		D6D1F76C20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */; };
 		D6E1531C1EAA257400FC0838 /* TKMedium+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */; };
 		D6E1531D1EAA257400FC0838 /* TKMedium+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */; };
 		D6E1531E1EAA257400FC0838 /* TKMedium+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */; };
@@ -306,6 +309,7 @@
 		D6CB14421F84D5D000E59C95 /* TKSSOAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSSOAPI.m; sourceTree = "<group>"; };
 		D6CB14491F84D84500E59C95 /* TKUserCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKUserCredentials.h; sourceTree = "<group>"; };
 		D6CB144A1F84D84500E59C95 /* TKUserCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKUserCredentials.m; sourceTree = "<group>"; };
+		D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDirectionDefinitions.m; sourceTree = "<group>"; };
 		D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKMedium+Private.h"; sourceTree = "<group>"; };
 		D6E3B7B01FA0A00700E1CCAC /* TKTrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTrip.h; sourceTree = "<group>"; };
 		D6E3B7B11FA0A00800E1CCAC /* TKTrip.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTrip.m; sourceTree = "<group>"; };
@@ -372,6 +376,7 @@
 			isa = PBXGroup;
 			children = (
 				D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */,
+				D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */,
 				D64B612620064D940098ADDF /* TKDirectionsManager.h */,
 				D64B612720064D940098ADDF /* TKDirectionsManager.m */,
 			);
@@ -910,6 +915,7 @@
 				D6B2A1441E530B11005509E8 /* TKReference.m in Sources */,
 				D6E3B7BD1FA0A31700E1CCAC /* TKTrip.m in Sources */,
 				D6B2A1401E530B11005509E8 /* TKPlace.m in Sources */,
+				D6D1F76C20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */,
 				D6B2A1421E530B11005509E8 /* TKPlacesQuery.m in Sources */,
 				D69831961EF3D4B4002776BE /* TKToursQuery.m in Sources */,
 				D6B2A13C1E530B11005509E8 /* TKMapRegion.m in Sources */,
@@ -948,6 +954,7 @@
 				D6E3B7B51FA0A00800E1CCAC /* TKTrip.m in Sources */,
 				D6B2A16B1E531097005509E8 /* TKPlace.m in Sources */,
 				D6B2A16D1E531097005509E8 /* TKPlacesQuery.m in Sources */,
+				D6D1F76A20160A79009E6249 /* TKDirectionDefinitions.m in Sources */,
 				D69831941EF3D4B4002776BE /* TKToursQuery.m in Sources */,
 				D6EF38EA1EB9D11400260E82 /* TKMapPlaceAnnotation.m in Sources */,
 				D689DBF01EBB062B00708599 /* Foundation+TravelKit.m in Sources */,
@@ -986,6 +993,7 @@
 				D6C3D0731E4DE7B400EBB54F /* TKAPI.m in Sources */,
 				D6E3B7B91FA0A31600E1CCAC /* TKTrip.m in Sources */,
 				D6C3D07F1E4DFCA700EBB54F /* TKPlacesQuery.m in Sources */,
+				D6D1F76B20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */,
 				D69831951EF3D4B4002776BE /* TKToursQuery.m in Sources */,
 				D6C3D07B1E4DFACB00EBB54F /* TKMapWorker.m in Sources */,
 				D6C3D0671E4DE29C00EBB54F /* NSObject+Parsing.m in Sources */,

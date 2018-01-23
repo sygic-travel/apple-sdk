@@ -985,16 +985,16 @@
 
 		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
 
-		dict[@"origin"] = (query.sourceLocation) ?
+		dict[@"origin"] = (query.startLocation) ?
 		@{
-			@"lat": @(query.sourceLocation.coordinate.latitude),
-			@"lng": @(query.sourceLocation.coordinate.longitude)
+			@"lat": @(query.startLocation.coordinate.latitude),
+			@"lng": @(query.startLocation.coordinate.longitude)
 		} : [NSNull null];
 
-		dict[@"destination"] = (query.destinationLocation) ?
+		dict[@"destination"] = (query.endLocation) ?
 		@{
-			@"lat": @(query.destinationLocation.coordinate.latitude),
-			@"lng": @(query.destinationLocation.coordinate.longitude)
+			@"lat": @(query.endLocation.coordinate.latitude),
+			@"lng": @(query.endLocation.coordinate.longitude)
 		} : [NSNull null];
 
 		if (query.waypointsPolyline) {
@@ -1031,9 +1031,9 @@
 
 			TKDirectionsSet *set = [TKDirectionsSet new];
 
-			set.startLocation = query.sourceLocation;
-			set.endLocation = query.destinationLocation;
-			set.airDistance = [query.destinationLocation distanceFromLocation:query.sourceLocation];
+			set.startLocation = query.startLocation;
+			set.endLocation = query.endLocation;
+			set.airDistance = [query.endLocation distanceFromLocation:query.startLocation];
 
 			NSMutableArray<TKDirection *> *pedestrianDirs = [NSMutableArray arrayWithCapacity:2];
 			NSMutableArray<TKDirection *> *carDirs = [NSMutableArray arrayWithCapacity:2];
@@ -1044,8 +1044,8 @@
 			TKDirection *d = nil;
 			for (NSDictionary *dir in directions) {
 				d = [TKDirection new];
-				d.startLocation = query.sourceLocation;
-				d.endLocation = query.destinationLocation;
+				d.startLocation = query.startLocation;
+				d.endLocation = query.endLocation;
 
 				NSString *mode = [dir[@"mode"] parsedString];
 				if ([mode isEqualToString:@"pedestrian"]) {

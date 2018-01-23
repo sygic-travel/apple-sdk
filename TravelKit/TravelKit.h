@@ -100,11 +100,9 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 /**
  Shared singleton object to work with.
 
- @return Singleton `TravelKit` object.
-
  @warning Regular `-init` and `+new` methods are not available.
  */
-+ (nonnull TravelKit *)sharedKit NS_SWIFT_NAME(shared());
+@property (class, readonly, strong) TravelKit *sharedKit NS_SWIFT_NAME(shared);
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 - (instancetype)new UNAVAILABLE_ATTRIBUTE;
@@ -155,7 +153,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 /// @name Deprecated interface stuff
 ///---------------------------------------------------------------------------------------
 
-@interface TravelKit (Deprecated)
+@interface TravelKit (NSDeprecated)
 
 ///---------------------------------------------------------------------------------------
 /// @name Place working queries

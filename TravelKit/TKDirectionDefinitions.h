@@ -10,6 +10,12 @@
 #define TKDirectionDefinitions_h
 
 #import <Foundation/Foundation.h>
+#import <CoreLocation/CoreLocation.h>
+
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Directions-related definitions
+///-----------------------------------------------------------------------------
 
 /**
  The mode of transport used to indicate the mean of transportation between places.
@@ -43,5 +49,69 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
 #define kTKDistanceIdealCarLimit   1000000.0  //  1000 kilometers
 #define kTKDistanceMaxCarLimit     2000000.0  //  2000 kilometers
 #define kTKDistanceMinFlightLimit    50000.0  //    50 kilometers
+
+@class TKDirectionsSet, TKDirection, TKDirectionsQuery;
+
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Directions query
+///-----------------------------------------------------------------------------
+
+
+@interface TKDirectionsQuery : NSObject
+
+@property (nonatomic, strong, readonly) CLLocation *startLocation;
+@property (nonatomic, strong, readonly) CLLocation *endLocation;
+
+@property (atomic) TKTransportAvoidOption avoidOption;
+@property (nonatomic, copy) NSString *waypointsPolyline;
+
++ (instancetype)new UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
++ (instancetype)queryFromLocation:(CLLocation *)startLocation toLocation:(CLLocation *)endLocation;
+
+@end
+
+
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Directions set
+///-----------------------------------------------------------------------------
+
+
+@interface TKDirectionsSet : NSObject
+
+@property (nonatomic, strong) CLLocation *startLocation;
+@property (nonatomic, strong) CLLocation *endLocation;
+@property (atomic) CLLocationDistance airDistance;
+
+@property (nonatomic, copy) NSArray<TKDirection *> *pedestrianDirections;
+@property (nonatomic, copy) NSArray<TKDirection *> *carDirections;
+@property (nonatomic, copy) NSArray<TKDirection *> *planeDirections;
+
+@end
+
+
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Direction record
+///-----------------------------------------------------------------------------
+
+
+@interface TKDirection : NSObject
+
+@property (nonatomic, strong) CLLocation *startLocation;
+@property (nonatomic, strong) CLLocation *endLocation;
+@property (atomic) TKDirectionTransportMode mode;
+@property (atomic) BOOL estimated;
+
+@property (atomic) NSTimeInterval duration;
+@property (atomic) CLLocationDistance distance;
+@property (nonatomic, copy) NSString *polyline;
+
+@property (atomic) TKTransportAvoidOption avoidOption;
+@property (nonatomic, copy) NSString *waypointsPolyline;
+
+@end
 
 #endif /* TKDirectionDefinitions_h */

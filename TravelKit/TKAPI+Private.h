@@ -89,9 +89,11 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 @property (nonatomic, copy, readonly) NSString *hostname;
 @property (nonatomic, readonly) BOOL isAlphaEnvironment; // Private
 
-/** Shared sigleton */
-+ (TKAPI *)sharedAPI;
-- (instancetype)init OBJC_UNAVAILABLE("Use +[TKAPI sharedAPI].");
+// Shared sigleton
+@property (class, readonly, strong) TKAPI *sharedAPI;
+
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
++ (instancetype)new UNAVAILABLE_ATTRIBUTE;
 
 // Standard supported + custom API calls
 - (NSString *)pathForRequestType:(TKAPIRequestType)type;
