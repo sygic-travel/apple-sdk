@@ -17,7 +17,7 @@ import PlaygroundSupport
 PlaygroundPage.current.needsIndefiniteExecution = true
 
 // Assign a shared instance to work with
-let travelKit = TravelKit.shared()
+let travelKit = TravelKit.shared
 
 // Create a lock used for results printing sync
 let printLock = NSLock()

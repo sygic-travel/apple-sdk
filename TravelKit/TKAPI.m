@@ -169,8 +169,8 @@
 	case TKAPIRequestTypeTripNEW: // POST
 		return @"/trips";
 
-	case TKAPIRequestTypeTrashEMPTY: // POST
-		return @"/trips/empty-trash";
+	case TKAPIRequestTypeTrashEMPTY: // DELETE
+		return @"/trips/trash";
 
 	case TKAPIRequestTypeTripsBatchGET: // GET
 		return @"/trips";
@@ -201,7 +201,6 @@
 	{
 		case TKAPIRequestTypeFavoriteADD:
 		case TKAPIRequestTypeTripNEW:
-		case TKAPIRequestTypeTrashEMPTY:
 		case TKAPIRequestTypeDirectionsGET:
 			return @"POST";
 
@@ -209,6 +208,7 @@
 			return @"PUT";
 
 		case TKAPIRequestTypeFavoriteDELETE:
+		case TKAPIRequestTypeTrashEMPTY:
 			return @"DELETE";
 
 		default: return @"GET";
