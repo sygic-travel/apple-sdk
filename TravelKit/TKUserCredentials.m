@@ -22,11 +22,12 @@
 		_refreshToken = [dictionary[@"refreshToken"] parsedString] ?:
 		                [dictionary[@"refresh_token"] parsedString];
 
-		NSNumber *expiration = [dictionary[@"expires_in"] parsedNumber];
-		if (expiration) _expiration = [[NSDate new] dateByAddingTimeInterval:expiration.doubleValue];
+		NSNumber *expiration = [dictionary[@"expiration"] parsedNumber];
+		if (expiration) _expiration = [NSDate dateWithTimeIntervalSince1970:expiration.doubleValue];
 		else {
-			expiration = [dictionary[@"expiration"] parsedNumber];
-			if (expiration) _expiration = [NSDate dateWithTimeIntervalSince1970:expiration.doubleValue];
+			expiration = [dictionary[@"expires_in"] parsedNumber];
+			NSTimeInterval interval = floor(expiration.doubleValue * 0.8);
+			if (expiration) _expiration = [[NSDate new] dateByAddingTimeInterval:interval];
 		}
 
 		if (!_accessToken || !_refreshToken || !_expiration)

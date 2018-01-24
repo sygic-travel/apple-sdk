@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
-@property (nonatomic, strong, nullable) TKUserCredentials *credentials;
+@property (nonatomic, strong, nullable, readonly) TKUserCredentials *credentials;
 
 ///---------------------------------------------------------------------------------------
 /// @name Generic methods

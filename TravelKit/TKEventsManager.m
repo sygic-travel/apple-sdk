@@ -6,7 +6,7 @@
 //  Copyright © 2018 Tripomatic. All rights reserved.
 //
 
-#import "TKEventsManager.h"
+#import "TKEventsManager+Private.h"
 
 @implementation TKEventsManager
 

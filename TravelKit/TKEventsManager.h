@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <TravelKit/TKSynchronizationManager.h>
+#import <TravelKit/TKUserCredentials.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -17,7 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Shared interface
 ///---------------------------------------------------------------------------------------
 
-/// Shared Places managing instance.
+/// Shared Events managing instance.
 @property (class, readonly, strong) TKEventsManager *sharedManager;
 
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
@@ -27,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Event handlers
 ///---------------------------------------------------------------------------------------
 
+@property (nonatomic, copy, nullable) void (^updatedSessionCredentialsHandler)(TKUserCredentials *_Nullable credentials);
 @property (nonatomic, copy, nullable) void (^updatedTripIDHandler)(NSString *originalTripID, NSString *newTripID);
 @property (nonatomic, copy, nullable) void (^syncCompletionHandler)(TKSynchronizationResult *result);
 

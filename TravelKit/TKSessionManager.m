@@ -8,9 +8,12 @@
 
 #import "TKSessionManager+Private.h"
 #import "TKDatabaseManager+Private.h"
+#import "TKEventsManager+Private.h"
 #import "TKUserSettings+Private.h"
 #import "TKAPI+Private.h"
 #import "TKSSOAPI+Private.h"
+
+#import "TKReachability+Private.h"
 
 #import "Foundation+TravelKit.h"
 #import "NSObject+Parsing.h"
@@ -19,6 +22,7 @@
 @interface TKSessionManager ()
 
 @property (nonatomic, strong) TKDatabaseManager *database;
+@property (nonatomic, strong) TKEventsManager *events;
 @property (nonatomic, strong) TKUserSettings *settings;
 
 @end
@@ -38,10 +42,19 @@
 {
 	if (self = [super init])
 	{
+		__weak typeof(self) weakSelf = self;
+
+		_events.expiredSessionCredentialsHandler = ^{
+			[weakSelf refreshCredentials];
+		};
+
 		_database = [TKDatabaseManager sharedManager];
+		_events = [TKEventsManager sharedManager];
 		_settings = [TKUserSettings sharedSettings];
 
 		[self loadState];
+
+		[self checkCredentials];
 	}
 
 	return self;
@@ -90,9 +103,50 @@
 {
 	_credentials = credentials;
 
-	[TKAPI sharedAPI].accessToken = _credentials.accessToken;
+	[TKAPI sharedAPI].accessToken = credentials.accessToken;
 
 	[self saveState];
+
+	if (_events.updatedSessionCredentialsHandler)
+		_events.updatedSessionCredentialsHandler(credentials);
+}
+
+- (void)checkCredentials
+{
+	if (![TKReachability isConnected])
+		return;
+
+	if (!_credentials)
+		return;
+
+//	// Fetch if User credentials missing
+//
+//	if (!_credentials)
+//		[self fetchCredentials];
+
+	// Refresh if token is about to expire
+
+	else if (_credentials.isExpiring)
+		[self refreshCredentials];
+}
+
+- (void)refreshCredentials
+{
+	NSString *token = _credentials.refreshToken;
+
+	if (!token) return;
+
+	[[TKSSOAPI sharedAPI] performCredentialsRefreshWithToken:token success:^(TKUserCredentials *credentials) {
+
+		self.credentials = credentials;
+
+	} failure:^(TKAPIError *error) {
+
+		// TODO: More sophisticated solution?
+		if (error.code / 100 == 4)
+			self.credentials = nil;
+
+	}];
 }
 
 
