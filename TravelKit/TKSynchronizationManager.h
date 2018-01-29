@@ -8,9 +8,23 @@
 
 #import <Foundation/Foundation.h>
 
-@interface TKSynchronizationManager : NSObject
+///---------------------------------------------------------------------------------------
+/// @name Synchronization result object
+///---------------------------------------------------------------------------------------
 
-#pragma mark - Shared instance
+@interface TKSynchronizationResult : NSObject
+
+@property (atomic) BOOL success;
+@property (nonatomic, copy) NSArray<NSString *> *updatedTripIDs;
+@property (atomic) BOOL favoritesUpdated;
+
+@end
+
+///---------------------------------------------------------------------------------------
+/// @name Synchronization manager
+///---------------------------------------------------------------------------------------
+
+@interface TKSynchronizationManager : NSObject
 
 ///---------------------------------------------------------------------------------------
 /// @name Shared interface

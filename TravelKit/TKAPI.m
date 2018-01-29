@@ -16,6 +16,8 @@
 #import "NSDate+Tripomatic.h"
 #import "Foundation+TravelKit.h"
 
+#import "TKEventsManager+Private.h"
+
 #import "TravelKit.h"
 
 
@@ -1569,6 +1571,12 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 	if (response.code != 200) {
 
 		TKAPIError *e = [TKAPIError errorWithResponse:response];
+
+		if (response.code == 401) {
+			TKEventsManager *events = [TKEventsManager sharedManager];
+			if (events.expiredSessionCredentialsHandler)
+				events.expiredSessionCredentialsHandler();
+		}
 
 		if (_failureBlock) _failureBlock(e);
 

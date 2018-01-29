@@ -10,26 +10,45 @@
 #import "NSObject+Parsing.h"
 #import "Foundation+TravelKit.h"
 
+
+@interface TKUserCredentials ()
+
+@property (nonatomic, strong) NSDate *refreshDate;
+
+@end
+
+
 @implementation TKUserCredentials
 
 - (instancetype)initFromDictionary:(NSDictionary *)dictionary
 {
 	if (self = [super init])
 	{
+		// Tokens parsing
+
 		_accessToken = [dictionary[@"accessToken"] parsedString] ?:
 		               [dictionary[@"access_token"] parsedString];
 
 		_refreshToken = [dictionary[@"refreshToken"] parsedString] ?:
 		                [dictionary[@"refresh_token"] parsedString];
 
-		NSNumber *expiration = [dictionary[@"expires_in"] parsedNumber];
-		if (expiration) _expiration = [[NSDate new] dateByAddingTimeInterval:expiration.doubleValue];
+		// Expiration parsing
+		// Local part
+
+		NSNumber *refresh = [dictionary[@"refreshDate"] parsedNumber];
+		NSNumber *expiration = [dictionary[@"expirationDate"] parsedNumber];
+
+		if (refresh) _refreshDate = [NSDate dateWithTimeIntervalSince1970:refresh.doubleValue];
+		if (expiration) _expirationDate = [NSDate dateWithTimeIntervalSince1970:expiration.doubleValue];
 		else {
-			expiration = [dictionary[@"expiration"] parsedNumber];
-			if (expiration) _expiration = [NSDate dateWithTimeIntervalSince1970:expiration.doubleValue];
+			expiration = [dictionary[@"expires_in"] parsedNumber];
+			NSTimeInterval refreshInterval = floor(expiration.doubleValue * 0.8);
+			NSTimeInterval expiryInterval = expiration.doubleValue;
+			if (expiration) _refreshDate = [[NSDate new] dateByAddingTimeInterval:refreshInterval];
+			if (expiration) _expirationDate = [[NSDate new] dateByAddingTimeInterval:expiryInterval];
 		}
 
-		if (!_accessToken || !_refreshToken || !_expiration)
+		if (!_accessToken || !_refreshToken || !_expirationDate)
 			return nil;
 	}
 
@@ -38,7 +57,9 @@
 
 - (BOOL)isExpiring
 {
-	return !_expiration || [_expiration timeIntervalSinceNow] < 30*86400;
+	if (_refreshDate) return [_refreshDate timeIntervalSinceNow] < 0;
+	if (_expirationDate) return [_expirationDate timeIntervalSinceNow] < 3600;
+	return YES;
 }
 
 - (NSDictionary *)asDictionary
@@ -47,7 +68,8 @@
 
 	if (_accessToken) dict[@"accessToken"] = _accessToken;
 	if (_refreshToken) dict[@"refreshToken"] = _refreshToken;
-	if (_expiration) dict[@"expiration"] = @([_expiration timeIntervalSince1970]);
+	if (_refreshDate) dict[@"refreshDate"] = @([_refreshDate timeIntervalSince1970]);
+	if (_expirationDate) dict[@"expirationDate"] = @([_expirationDate timeIntervalSince1970]);
 
 	return dict;
 }
@@ -64,6 +86,12 @@
 - (instancetype)copy
 {
 	return [[self.class alloc] initFromDictionary:[self asDictionary]];
+}
+
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"%@\n\tToken: %@\n\tExpiration: %@",
+		super.description, _accessToken, _expirationDate];
 }
 
 @end

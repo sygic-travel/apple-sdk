@@ -62,7 +62,7 @@
 {
 	_APIKey = [APIKey copy];
 
-	[TKAPI sharedAPI].APIKey = _APIKey;
+	[TKAPI sharedAPI].APIKey = [APIKey copy];
 }
 
 - (NSString *)language
@@ -97,6 +97,7 @@
 		_session = [TKSessionManager sharedManager];
 		_sync = [TKSynchronizationManager sharedManager];
 		__directions = [TKDirectionsManager sharedManager];
+		__events = [TKEventsManager sharedManager];
 	}
 
 	return self;
