@@ -14,7 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, copy) NSString *accessToken;
 @property (nonatomic, copy) NSString *refreshToken;
-@property (nonatomic, strong) NSDate *expiration;
+@property (nonatomic, strong) NSDate *expirationDate;
 
 @property (atomic, readonly) BOOL isExpiring;
 
