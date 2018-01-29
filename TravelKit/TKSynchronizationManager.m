@@ -51,6 +51,14 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 @end
 
 @implementation TKTripConflict @end
+
+
+@interface TKSynchronizationResult ()
+
+@property (atomic) NSTimeInterval changesTimestamp;
+
+@end
+
 @implementation TKSynchronizationResult @end
 
 
@@ -66,8 +74,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 @property (nonatomic, strong) NSMutableArray *requests;
 @property (nonatomic, strong) NSMutableArray *tripConflicts;
 @property (nonatomic, strong) NSArray *tripIDsToFetch;
-
-@property (atomic) NSTimeInterval lastChangesTimestamp;
 
 @end
 
@@ -276,14 +282,12 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 {
 	// Get lastest updates from Changes API and do all the magic
 
-	TKUserSettings *settings = [TKUserSettings sharedSettings];
-
 	// Check for user's trip changes
 	if (_session.credentials != nil)
 	{
 		NSDate *since = nil;
 
-		NSTimeInterval changesTimestamp = settings.changesTimestamp;
+		NSTimeInterval changesTimestamp = [TKUserSettings sharedSettings].changesTimestamp;
 		if (changesTimestamp > 0) since = [NSDate dateWithTimeIntervalSince1970:changesTimestamp];
 
 		TKAPIRequest *listRequest = [[TKAPIRequest alloc] initAsChangesRequestSince:since
@@ -296,8 +300,8 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 			        updatedTripsDict.allKeys.count + deletedTripIDs.count,
 			        updatedFavouriteIDs.count + deletedFavouriteIDs.count);
 
-			// Update Changes API timestamp
-			_lastChangesTimestamp = settings.changesTimestamp = [timestamp timeIntervalSince1970];
+			// Mark down a Changes timestamp
+			_result.changesTimestamp = [timestamp timeIntervalSince1970];
 
 			// Set up comparable arrays
 			NSMutableArray<NSString *> *currentOnlineTripIDs = [updatedTripsDict.allKeys mutableCopy];
@@ -470,13 +474,29 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 			[_session storeServerFavoriteIDsAdded:updatedFavouriteIDs removed:deletedFavouriteIDs];
 
+			// Fill the result object
+
+			if (updatedTripsDict.count || deletedTripIDs.count) {
+				NSMutableArray<NSString *> *updatedTripIDs = [NSMutableArray arrayWithCapacity:10];
+				[updatedTripIDs addObjectsFromArray:updatedTripsDict.allKeys ?: @[ ]];
+				[updatedTripIDs addObjectsFromArray:deletedTripIDs ?: @[ ]];
+				_result.updatedTripIDs = updatedTripIDs;
+			}
+
 			if (updatedFavouriteIDs.count || deletedFavouriteIDs.count)
 				_result.favoritesUpdated = YES;
+
+			// Continue processing
 
 			[self checkTripConflicts];
 			[self checkState];
 
 		} failure:^(TKAPIError *__unused error) {
+
+			// Mark Sync as unsuccessful due to Changes failure
+			_result.success = NO;
+
+			// Continue processing
 			[self checkState];
 		}];
 
@@ -620,7 +640,12 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 {
 	// Set last sync date now to delay next sync appearance
 	_lastSynchronization = [NSDate timeIntervalSinceReferenceDate];
-//	[SessionManager defaultSession].changesTimestamp = _lastChangesTimestamp;
+
+	// Update Changes timestamp in User settings
+	if (_result.success) {
+		[TKUserSettings sharedSettings].changesTimestamp = _result.changesTimestamp;
+		[[TKUserSettings sharedSettings] commit];
+	}
 
 	SyncLog(@"Synchronization finished");
 
