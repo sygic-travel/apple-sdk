@@ -42,7 +42,19 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSNumber *rating;
 
 /// Duration string. Should be provided in a target language.
+///
+/// @note Duration may be specified by either a string or numeric values.
 @property (nonatomic, copy, nullable) NSString *duration;
+
+/// Minimal duration in seconds.
+///
+/// @note Duration may be specified by either a string or numeric values.
+@property (nonatomic, copy, nullable) NSNumber *durationMin;
+
+/// Maximal duration in seconds.
+///
+/// @note Duration may be specified by either a string or numeric values.
+@property (nonatomic, copy, nullable) NSNumber *durationMax;
 
 /// Online URL of the Tour.
 @property (nonatomic, strong, nullable) NSURL *URL;

@@ -36,7 +36,10 @@
 		_originalPrice = [dictionary[@"original_price"] parsedNumber];
 		if (_originalPrice.intValue == 0) _originalPrice = nil;
 		_reviewsCount = [dictionary[@"review_count"] parsedNumber];
+
 		_duration = [dictionary[@"duration"] parsedString];
+		_durationMin = [dictionary[@"duration_min"] parsedNumber];
+		_durationMax = [dictionary[@"duration_max"] parsedNumber];
     }
 
     return self;
