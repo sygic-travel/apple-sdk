@@ -548,7 +548,7 @@
 }
 
 - (instancetype)initAsUpdateTripRequestForTrip:(TKTrip *)trip
-	success:(void (^)(TKTrip *))success failure:(void (^)(TKAPIError *, TKTrip *))failure
+	success:(void (^)(TKTrip *, TKTripConflict *))success failure:(void (^)(TKAPIError *))failure
 {
 	if (self = [super init])
 	{
@@ -561,17 +561,27 @@
 			NSDictionary *tripDict = [response.data[@"trip"] parsedDictionary];
 			TKTrip *updatedTrip = (tripDict) ? [[TKTrip alloc] initFromResponse:tripDict] : nil;
 
-			if (trip && success) success(updatedTrip);
-			if (!trip && failure) failure([TKAPIError errorWithCode:16568
-				userInfo:@{ NSLocalizedDescriptionKey: @"Trip parsing failed" }], nil);
+			TKTripConflict *conflict = nil;
+			NSString *resolution = [response.data[@"conflict_resolution"] parsedString];
+
+			// If pushed Trip update has been ignored,
+			// add Trips pair to conflicts holding structure
+			if (trip && updatedTrip && [resolution containsSubstring:@"ignored"])
+			{
+				NSDictionary *conflictDict = [response.data[@"conflict_info"] parsedDictionary];
+				NSString *editor = [conflictDict[@"last_user_name"] parsedString];
+				NSString *dateStr = [conflictDict[@"last_updated_at"] parsedString];
+				NSDate *updateDate = [NSDate dateFrom8601DateTimeString:dateStr];
+
+				conflict = [[TKTripConflict alloc] initWithLocalTrip:trip remoteTrip:updatedTrip lastEditor:editor lastUpdate:updateDate];
+			}
+
+			if (updatedTrip && success) success(updatedTrip, conflict);
+			if (!updatedTrip && failure) failure([TKAPIError errorWithCode:16568
+				userInfo:@{ NSLocalizedDescriptionKey: @"Trip parsing failed" }]);
 
 		}; _failureBlock = ^(TKAPIError *error){
-
-			NSDictionary *tripDict = [error.response.data[@"trip"] parsedDictionary];
-			TKTrip *revertedTrip = (tripDict) ? [[TKTrip alloc] initFromResponse:tripDict] : nil;
-
-			if (failure) failure(error, revertedTrip);
-
+			if (failure) failure(error);
 		};
 	}
 

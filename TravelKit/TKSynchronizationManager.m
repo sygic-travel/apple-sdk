@@ -13,6 +13,8 @@
 #import "TKSessionManager+Private.h"
 #import "TKUserSettings+Private.h"
 #import "Foundation+TravelKit.h"
+#import "NSDate+Tripomatic.h"
+#import "NSObject+Parsing.h"
 
 #ifdef LOG_SYNC
 #define SyncLog(__FORMAT__, ...) NSLog(@"[SYNC] " __FORMAT__, ##__VA_ARGS__)
@@ -29,6 +31,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationState) {
 	TKSynchronizationStateInitializing,
 	TKSynchronizationStateFavourites,
 	TKSynchronizationStateChanges,
+	TKSynchronizationStateTripConflicts,
 	TKSynchronizationStateUpdatedTrips,
 	TKSynchronizationStateClearing,
 };
@@ -39,18 +42,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	TKSynchronizationNotificationTypeCancel,
 	TKSynchronizationNotificationTypeDone,
 };
-
-
-@interface TKTripConflict : NSObject
-
-@property (nonatomic, strong) TKTrip *localTrip;
-@property (nonatomic, strong) TKTrip *remoteTrip;
-@property (nonatomic, copy) NSString *lastEditor;
-@property (nonatomic, strong) NSDate *lastUpdate;
-
-@end
-
-@implementation TKTripConflict @end
 
 
 @interface TKSynchronizationResult ()
@@ -71,9 +62,9 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 @property (nonatomic, strong) NSTimer *repeatTimer;
 @property (nonatomic, assign) NSTimeInterval lastSynchronization;
 
-@property (nonatomic, strong) NSMutableArray *requests;
-@property (nonatomic, strong) NSMutableArray *tripConflicts;
-@property (nonatomic, strong) NSArray *tripIDsToFetch;
+@property (nonatomic, strong) NSMutableArray<TKAPIRequest *> *requests;
+@property (nonatomic, strong) NSMutableArray<TKTripConflict *> *tripConflicts;
+@property (nonatomic, strong) NSArray<NSString *> *tripIDsToFetch;
 
 @end
 
@@ -339,36 +330,20 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 					else if (!deletedOnRemote && localTrip.changed) {
 
 						SyncLog(@"Trip NOT up-to-date on server – sending: %@", localTrip);
-						TKAPIRequest *updateTripRequest = [[TKAPIRequest alloc] initAsUpdateTripRequestForTrip:localTrip success:^(TKTrip *trip) {
+						TKAPIRequest *updateTripRequest = [[TKAPIRequest alloc] initAsUpdateTripRequestForTrip:localTrip
+						success:^(TKTrip *remoteTrip, TKTripConflict *conflict) {
 
-							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+							// Enqueue the conflict if it's valid
+							if (conflict)
+								[_tripConflicts addObject:conflict];
+
+							// Otherwise process received Trip
+							else if (remoteTrip)
+								[self processResponseWithTrip:remoteTrip sentTripID:localTrip.ID];
+
 							[self checkState];
 
-						} failure:^(TKAPIError *__unused e, TKTrip *trip){
-
-// TODO: Conflicts
-//							TKAPIResponse *response = e.response;
-//							NSString *resolution = [response.data[@"conflict_resolution"] parsedString];
-//
-//							// If pushed Trip update has been ignored,
-//							// add Trips pair to conflicts holding structure
-//							if (trip && [resolution containsSubstring:@"ignored"])
-//							{
-//								NSDictionary *conflictDict = [response.data[@"conflict_info"] parsedDictionary];
-//								TKTripConflict *conflict = [TKTripConflict new];
-//								conflict.localTrip = localTrip;
-//								conflict.remoteTrip = trip;
-//								conflict.lastEditor = [conflictDict[@"last_user_name"] parsedString];
-//								NSString *dateStr = [conflictDict[@"last_updated_at"] parsedString];
-//								conflict.lastUpdate = (dateStr) ? [NSDate dateFrom8601DateTimeString:dateStr] : nil;
-//								[_tripConflicts addObject:conflict];
-//							}
-//
-//							// Otherwise process received Trip
-//							else if (trip)
-								[self processResponseWithTrip:trip sentTripID:localTrip.ID];
-
-							[self checkTripConflicts];
+						} failure:^(TKAPIError *__unused e){
 							[self checkState];
 						}];
 
@@ -386,7 +361,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 						[_tripsManager deleteTripWithID:localTrip.ID];
 					}
-
 				}
 
 				else {
@@ -404,36 +378,20 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 						[currentOnlineTripIDs removeObject:localTrip.ID];
 
 						SyncLog(@"Trip conflicting with server - sending: %@", localTrip);
-						TKAPIRequest *request = [[TKAPIRequest alloc] initAsUpdateTripRequestForTrip:localTrip success:^(TKTrip *trip) {
+						TKAPIRequest *request = [[TKAPIRequest alloc] initAsUpdateTripRequestForTrip:localTrip
+						success:^(TKTrip *remoteTrip, TKTripConflict *conflict) {
 
-							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+							// Enqueue the conflict if it's valid
+							if (conflict)
+								[_tripConflicts addObject:conflict];
+
+							// Otherwise process received Trip
+							else if (remoteTrip)
+								[self processResponseWithTrip:remoteTrip sentTripID:localTrip.ID];
+
 							[self checkState];
 
-						} failure:^(TKAPIError *__unused e, TKTrip *trip){
-
-// TODO: Conflicts
-//							APIResponse *response = e.response;
-//							NSString *resolution = [response.data[@"conflict_resolution"] parsedString];
-//
-//							// If pushed Trip update has been ignored,
-//							// add Trips pair to conflicts holding structure
-//							if (trip && [resolution containsSubstring:@"ignored"])
-//							{
-//								NSDictionary *conflictDict = [response.data[@"conflict_info"] parsedDictionary];
-//								TKTripConflict *conflict = [TKTripConflict new];
-//								conflict.localTrip = localTrip;
-//								conflict.remoteTrip = trip;
-//								conflict.lastEditor = [conflictDict[@"last_user_name"] parsedString];
-//								NSString *dateStr = [conflictDict[@"last_updated_at"] parsedString];
-//								conflict.lastUpdate = (dateStr) ? [NSDate dateFrom8601DateTimeString:dateStr] : nil;
-//								[_tripConflicts addObject:conflict];
-//							}
-//
-//							// Otherwise process received Trip
-//							else if (trip)
-								[self processResponseWithTrip:trip sentTripID:localTrip.ID];
-
-							[self checkTripConflicts];
+						} failure:^(TKAPIError *__unused e){
 							[self checkState];
 						}];
 
@@ -488,7 +446,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 			// Continue processing
 
-			[self checkTripConflicts];
 			[self checkState];
 
 		} failure:^(TKAPIError *__unused error) {
@@ -507,6 +464,63 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 	// Otherwise skip Trips processing
 	else [self checkState];
+}
+
+- (void)resolveTripConflicts
+{
+	if (!_tripConflicts.count) {
+		[self checkState];
+		return;
+	}
+
+	if (_events.tripConflictsHandler)
+	{
+		dispatch_semaphore_t sema = dispatch_semaphore_create(0);
+
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			_events.tripConflictsHandler(_tripConflicts, ^{
+
+				for (TKTripConflict *conf in _tripConflicts)
+				{
+					TKTrip *localTrip = conf.localTrip;
+
+					if (conf.forceLocalTrip)
+					{
+						localTrip.lastUpdate = [NSDate now];
+
+						SyncLog(@"Trip on server will be overwritten: %@", localTrip);
+
+						TKAPIRequest *request = [[TKAPIRequest alloc] initAsUpdateTripRequestForTrip:localTrip
+						success:^(TKTrip *remoteTrip, TKTripConflict *__unused conflict) {
+
+							// Process received Trip
+							[self processResponseWithTrip:remoteTrip sentTripID:localTrip.ID];
+							[self checkState];
+
+						} failure:^(TKAPIError *__unused e){
+							[self checkState];
+						}];
+
+						[self enqueueRequest:request];
+					}
+					else {
+						SyncLog(@"Trip will be overwritten from server: %@", conf.remoteTrip);
+						[self processResponseWithTrip:conf.remoteTrip sentTripID:conf.remoteTrip.ID];
+					}
+				}
+
+				dispatch_semaphore_signal(sema);
+			});
+		}];
+
+		dispatch_semaphore_wait(sema, DISPATCH_TIME_FOREVER);
+	}
+
+	else
+		for (TKTripConflict *conf in _tripConflicts.copy)
+			[self processResponseWithTrip:conf.remoteTrip sentTripID:conf.localTrip.ID];
+
+	[self checkState];
 }
 
 - (void)synchronizeUpdatedTrips
@@ -553,12 +567,9 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	{
 		[_tripsManager changeTripWithID:originalTripID toID:trip.ID];
 
-		if (_events.updatedTripIDHandler)
-			_events.updatedTripIDHandler(originalTripID, trip.ID);
+		if (_events.tripIDChangeHandler)
+			_events.tripIDChangeHandler(originalTripID, trip.ID);
 	}
-
-//	// Fill in handling User ID information
-//	if (!trip.userID) trip.userID = _currentUserID;
 
 	// If there's already a Trip in the DB, update, otherwise add new Trip
 	[_tripsManager storeTrip:trip];
@@ -584,10 +595,6 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	if (_requests.count != 0)
 		return;
 
-	// Leave when there's a pending Trip conflict
-	if (_tripConflicts.count != 0)
-		return;
-
 	// Move to a next phase
 	_state++;
 
@@ -599,41 +606,15 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	else if (_state == TKSynchronizationStateChanges)
 		[self synchronizeChanges];
 
+	else if (_state == TKSynchronizationStateTripConflicts)
+		[self resolveTripConflicts];
+
 	// Fetch Trips updated on API
 	else if (_state == TKSynchronizationStateUpdatedTrips)
 		[self synchronizeUpdatedTrips];
 
 	// Otherwise finish synchronization loop
 	else [self finishSynchronization];
-}
-
-- (void)checkTripConflicts
-{
-//	TKTripConflict *conflict = _tripConflicts.firstObject;
-//
-//	if (!conflict) return;
-//
-//	NSString *message = nil;
-//
-//	if (conflict.lastEditor && conflict.lastUpdate)
-//		message = [NSString stringWithFormat:NSLocalizedString(@"A newer version of trip “%@” "
-//			"edited by %@ at %@ is available on the server and your pending local changes cannot "
-//			"be merged. Which version do you want to keep?", @"Conflict " "alert message"),
-//				conflict.localTrip.name, conflict.lastEditor,
-//				[[NSDateFormatter sharedDatePickerStyleDateTimeFormatter]
-//					stringFromDate:conflict.lastUpdate]];
-//	else
-//		message = [NSString stringWithFormat:NSLocalizedString(@"A newer version of trip “%@” "
-//			"is available on the server and your pending local changes cannot be merged. "
-//			"Which version do you want to keep?", @"Conflict alert message"), conflict.localTrip.name];
-//
-//	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:
-//		NSLocalizedString(@"Trip Conflict", @"Alert title") message:message
-//		delegate:self cancelButtonTitle:NSLocalizedString(@"Local", @"Button title")
-//		otherButtonTitles:NSLocalizedString(@"Server", @"Button title"), nil];
-//	alert.tag = kTagAlertTripConflict;
-//	alert.tripomaticProperty = conflict;
-//	[alert performSelectorOnMainThread:@selector(show) withObject:nil waitUntilDone:NO];
 }
 
 - (void)finishSynchronization

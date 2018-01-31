@@ -107,8 +107,8 @@
 
 	[self saveState];
 
-	if (_events.updatedSessionCredentialsHandler)
-		_events.updatedSessionCredentialsHandler(credentials);
+	if (_events.sessionCredentialsUpdateHandler)
+		_events.sessionCredentialsUpdateHandler(credentials);
 }
 
 - (void)checkCredentials

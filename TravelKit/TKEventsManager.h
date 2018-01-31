@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <TravelKit/TKSynchronizationManager.h>
 #import <TravelKit/TKUserCredentials.h>
+#import <TravelKit/TKTrip.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -28,8 +29,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Event handlers
 ///---------------------------------------------------------------------------------------
 
-@property (nonatomic, copy, nullable) void (^updatedSessionCredentialsHandler)(TKUserCredentials *_Nullable credentials);
-@property (nonatomic, copy, nullable) void (^updatedTripIDHandler)(NSString *originalTripID, NSString *newTripID);
+@property (nonatomic, copy, nullable) void (^sessionCredentialsUpdateHandler)(TKUserCredentials *_Nullable credentials);
+@property (nonatomic, copy, nullable) void (^tripIDChangeHandler)(NSString *originalTripID, NSString *newTripID);
+@property (nonatomic, copy, nullable) void (^tripConflictsHandler)(NSArray<TKTripConflict *> *conflicts, void (^success)(void));
 @property (nonatomic, copy, nullable) void (^syncCompletionHandler)(TKSynchronizationResult *result);
 
 @end

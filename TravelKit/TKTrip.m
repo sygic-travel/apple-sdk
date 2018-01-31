@@ -748,3 +748,39 @@
 }
 
 @end
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+#pragma mark             - Trip conflict implementation -
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+@implementation TKTripConflict
+
+- (instancetype)initWithLocalTrip:(TKTrip *)localTrip remoteTrip:(TKTrip *)remoteTrip
+                       lastEditor:(NSString *)lastEditor lastUpdate:(NSDate *)lastUpdate
+{
+	if (!localTrip || !remoteTrip)
+		return nil;
+
+	if (self = [super init])
+	{
+		_localTrip = localTrip;
+		_remoteTrip = remoteTrip;
+		_lastEditor = lastEditor;
+		_lastUpdate = lastUpdate;
+	}
+
+	return self;
+}
+
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"<TripConflict %p | Trip: %@ | %@ on %@>", self, _localTrip.ID, _lastEditor, _lastUpdate];
+}
+
+@end

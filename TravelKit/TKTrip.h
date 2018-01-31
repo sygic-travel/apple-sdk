@@ -168,7 +168,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) BOOL isTrashed;
 
 /// Array of Trip Destination IDs. Customisable.
-@property (nonatomic, copy) NSArray<NSString *> *destinationIDs;
+@property (nonatomic, copy, readonly) NSArray<NSString *> *destinationIDs;
 
 /// A number of days/day length defined for the Trip.
 @property (nonatomic, readonly) NSUInteger daysCount;
@@ -178,5 +178,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Trip conflict object
+///-----------------------------------------------------------------------------
+
+
+@interface TKTripConflict : NSObject
+
+@property (nonatomic, strong, readonly) TKTrip *localTrip;
+@property (nonatomic, strong, readonly) TKTrip *remoteTrip;
+@property (nonatomic, copy, readonly, nullable) NSString *lastEditor;
+@property (nonatomic, strong, readonly, nullable) NSDate *lastUpdate;
+
+@property (atomic) BOOL forceLocalTrip;
+
++ (instancetype)new UNAVAILABLE_ATTRIBUTE;
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+
+@end
 
 NS_ASSUME_NONNULL_END

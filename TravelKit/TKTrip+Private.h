@@ -135,6 +135,19 @@ typedef NS_OPTIONS(NSUInteger, TKTripRights) {
 
 
 ///-----------------------------------------------------------------------------
+#pragma mark - Trip conflict model
+///-----------------------------------------------------------------------------
+
+
+@interface TKTripConflict ()
+
+- (instancetype)initWithLocalTrip:(TKTrip *)localTrip remoteTrip:(TKTrip *)remoteTrip
+                       lastEditor:(nullable NSString *)lastEditor lastUpdate:(nullable NSDate *)lastUpdate;
+
+@end
+
+
+///-----------------------------------------------------------------------------
 #pragma mark - Trip collaborator model
 ///-----------------------------------------------------------------------------
 

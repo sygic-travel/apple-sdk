@@ -148,7 +148,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 	success:(void (^)(TKTrip *trip))success failure:(TKAPIFailureBlock)failure;
 
 - (instancetype)initAsUpdateTripRequestForTrip:(TKTrip *)trip
-	success:(void (^)(TKTrip *))success failure:(void (^)(TKAPIError *, TKTrip *))failure;
+	success:(void (^)(TKTrip *, TKTripConflict *))success failure:(void (^)(TKAPIError *))failure;
 
 - (instancetype)initAsEmptyTrashRequestWithSuccess:(void (^)(NSArray<NSString *> *tripIDs))success
 	failure:(TKAPIFailureBlock)failure;
