@@ -83,6 +83,9 @@
 {
 	// Clear Favorites
 	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableFavorites];
+	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableTrips];
+	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableTripDays];
+	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableTripDayItems];
 
 	// Reset User settings
 	[[TKUserSettings sharedSettings] reset];
