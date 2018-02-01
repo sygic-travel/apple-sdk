@@ -12,38 +12,44 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-/**
- Query enum declaring the source from which the Tours will be queried.
- */
-typedef NS_ENUM(NSUInteger, TKToursQuerySource) {
-	/// Get results from Viator. Default.
-	TKToursQuerySourceViator        = 0,
-	/// Get results from GetYourGuide.
-	TKToursQuerySourceGetYourGuide  = 1,
-};
+
+#pragma mark - Definitions
+
 
 /**
- Query enum declaring the sorting option for the results returned.
+ Query enum declaring the sorting option for the Viator tour results returned.
  */
-typedef NS_ENUM(NSUInteger, TKToursQuerySorting) {
+typedef NS_ENUM(NSUInteger, TKViatorToursQuerySorting) {
 	/// Get results sorted by rating. Descending by default.
-	TKToursQuerySortingRating      = 0,
+	TKViatorToursQuerySortingRating      = 0,
 	/// Get results sorted by price. Ascending by default.
-	TKToursQuerySortingPrice       = 1,
+	TKViatorToursQuerySortingPrice       = 1,
 	/// Get results sorted by Top selling items. Descending by default.
-	TKToursQuerySortingTopSellers  = 2,
+	TKViatorToursQuerySortingTopSellers  = 2,
+};
+
+/**
+ Query enum declaring the sorting option for the GetYourGuide tour results returned.
+ */
+typedef NS_ENUM(NSUInteger, TKGYGToursQuerySorting) {
+	/// Get results sorted by rating. Descending by default.
+	TKGYGToursQuerySortingRating      = 0,
+	/// Get results sorted by price. Ascending by default.
+	TKGYGToursQuerySortingPrice       = 1,
+	/// Get results sorted by Top selling items. Descending by default.
+	TKGYGToursQuerySortingPopularity  = 2,
+	/// Get results sorted by duration. Ascending by default.
+	TKGYGToursQuerySortingDuration    = 3,
 };
 
 
-/**
- Query object used for fetching specific collections of `TKTour` objects.
- */
-@interface TKToursQuery : NSObject <NSCopying, NSMutableCopying>
+#pragma mark - Viator query
 
-/// Desired source of the Tours returned. May be either Viator (default) or GetYourGuide.
-///
-/// @see `TKToursQuerySource`
-@property (nonatomic) TKToursQuerySource source;
+
+/**
+ Query object used for fetching specific collections of `TKTour` objects from Viator.
+ */
+@interface TKViatorToursQuery : NSObject <NSCopying, NSMutableCopying>
 
 /// Desired identifier of parent node. _Example: `city:1`_
 ///
@@ -55,7 +61,7 @@ typedef NS_ENUM(NSUInteger, TKToursQuerySorting) {
 /// @note Changing this property may change current `descendingSortingOrder` setting.
 ///
 /// @see `TKToursQuerySorting`
-@property (nonatomic) TKToursQuerySorting sortingType;
+@property (nonatomic) TKViatorToursQuerySorting sortingType;
 
 /// Declaration of descending sorting order.
 ///
@@ -66,6 +72,53 @@ typedef NS_ENUM(NSUInteger, TKToursQuerySorting) {
 ///
 /// @note Accepted values: `1`--`X`. Implicit value is `1`.
 @property (nonatomic, strong, nullable) NSNumber *pageNumber;
+
+@end
+
+
+#pragma mark - GetYourGuide query
+
+
+/**
+ Query object used for fetching specific collections of `TKTour` objects from GetYourGuide.
+ */
+@interface TKGYGToursQuery : NSObject <NSCopying, NSMutableCopying>
+
+/// Desired identifier of parent node. _Example: `city:1`_
+///
+/// @note Requred attribute.
+@property (nonatomic, copy, nullable) NSString *parentID;
+
+/// Desired sorting type of Tours returned.
+///
+/// @note Changing this property may change current `descendingSortingOrder` setting.
+///
+/// @see `TKToursQuerySorting`
+@property (nonatomic) TKGYGToursQuerySorting sortingType;
+
+/// Declaration of descending sorting order.
+///
+/// @note _Descending_ order is not supported for `TKToursQuerySortingTopSellers` sorting type.
+@property (atomic) BOOL descendingSortingOrder;
+
+/// Requested page number with results.
+///
+/// @note Accepted values: `1`--`X`. Implicit value is `1`.
+@property (nonatomic, strong, nullable) NSNumber *pageNumber;
+
+
+
+/// Requested number of results on a single page.
+@property (nonatomic, strong, nullable) NSString *searchTerm;
+@property (nonatomic, strong, nullable) NSNumber *count;
+@property (nonatomic, strong, nullable) NSDate *startDate;
+@property (nonatomic, strong, nullable) NSDate *endDate;
+/// Duration range in seconds. Note: :7200 == 0:7200 and 3600: == 3600:43200.
+@property (nonatomic, strong, nullable) NSNumber *minimalDuration;
+@property (nonatomic, strong, nullable) NSNumber *maximalDuration;
+
+//bounds	optional	string	"41.78,12.34,41.99,12.64"
+//Limit results to area defined by bounds. Bounds are defined by string composed of four floats in format {south},{west},{north},{east}. The units are in degrees of latitude/longitude. This parameter is exclusive with parent_place_id"
 
 @end
 

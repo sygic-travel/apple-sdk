@@ -189,14 +189,6 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 		 DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 
 ///---------------------------------------------------------------------------------------
-/// @name Tours working queries
-///---------------------------------------------------------------------------------------
-
-- (void)toursForQuery:(TKToursQuery *)query
-	completion:(void (^)(NSArray<TKTour *>  * _Nullable tours, NSError * _Nullable error))completion
-		 DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKToursManager` instead.");
-
-///---------------------------------------------------------------------------------------
 /// @name Favorites
 ///---------------------------------------------------------------------------------------
 

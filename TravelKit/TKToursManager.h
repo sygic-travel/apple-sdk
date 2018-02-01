@@ -29,16 +29,29 @@ NS_ASSUME_NONNULL_BEGIN
 ///---------------------------------------------------------------------------------------
 
 /**
- Returns a collection of `TKTour` objects for the given query object.
+ Returns a collection of `TKTour` objects for the given Viator query object.
 
  This method is good for fetching Tours to use for lists and other batch uses.
 
- @param query `TKToursQuery` object containing the desired attributes to look for.
+ @param query `TKViatorToursQuery` object containing the desired attributes to look for.
  @param completion Completion block called on success or error.
 
  @note Experimental.
  */
-- (void)toursForQuery:(TKToursQuery *)query
+- (void)toursForViatorQuery:(TKViatorToursQuery *)query
+	completion:(void (^)(NSArray<TKTour *>  * _Nullable places, NSError * _Nullable error))completion;
+
+/**
+ Returns a collection of `TKTour` objects for the given GetYourGuide query object.
+
+ This method is good for fetching Tours to use for lists and other batch uses.
+
+ @param query `TKGYGToursQuery` object containing the desired attributes to look for.
+ @param completion Completion block called on success or error.
+
+ @note Experimental.
+ */
+- (void)toursForGYGQuery:(TKGYGToursQuery *)query
 	completion:(void (^)(NSArray<TKTour *>  * _Nullable places, NSError * _Nullable error))completion;
 
 @end

@@ -152,17 +152,6 @@
 
 
 #pragma mark -
-#pragma mark Tours
-
-
-- (void)toursForQuery:(TKToursQuery *)query
-           completion:(void (^)(NSArray<TKTour *> *, NSError *))completion
-{
-	[[TKToursManager sharedManager] toursForQuery:query completion:completion];
-}
-
-
-#pragma mark -
 #pragma mark Favorites
 
 

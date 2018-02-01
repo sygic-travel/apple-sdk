@@ -831,11 +831,11 @@
 
 
 ////////////////////
-#pragma mark - Tours Query
+#pragma mark - Tours Queries
 ////////////////////
 
 
-- (instancetype)initAsToursRequestForQuery:(TKToursQuery *)query
+- (instancetype)initAsViatorToursRequestForQuery:(TKViatorToursQuery *)query
 	success:(void (^)(NSArray<TKTour *> *))success failure:(TKAPIFailureBlock)failure
 {
 	if (self = [super init])
@@ -844,9 +844,7 @@
 
 		NSMutableString *path = [[[TKAPI sharedAPI] pathForRequestType:_type] mutableCopy];
 
-		[path appendFormat:@"/%@",
-			query.source == TKToursQuerySourceGetYourGuide ?
-				@"get-your-guide" : @"viator"];
+		[path appendFormat:@"/viator"];
 
 		_path = path;
 
@@ -858,8 +856,8 @@
 		if (query.sortingType)
 		{
 			NSString *type = @"rating";
-			if (query.sortingType == TKToursQuerySortingPrice) type = @"price";
-			else if (query.sortingType == TKToursQuerySortingTopSellers) type = @"top_sellers";
+			if (query.sortingType == TKViatorToursQuerySortingPrice) type = @"price";
+			else if (query.sortingType == TKViatorToursQuerySortingTopSellers) type = @"top_sellers";
 			queryDict[@"sort_by"] = type;
 		}
 
@@ -873,6 +871,87 @@
 			NSUInteger page = query.pageNumber.unsignedIntegerValue;
 			if (page > 1) queryDict[@"page"] = [query.pageNumber stringValue];
 		}
+
+		_query = queryDict;
+
+		_successBlock = ^(TKAPIResponse *response){
+
+			NSMutableArray *stored = [NSMutableArray array];
+			NSArray *items = [response.data[@"tours"] parsedArray];
+
+			for (NSDictionary *dict in items)
+			{
+				if (![dict parsedDictionary]) continue;
+				NSString *guid = [dict[@"id"] parsedString];
+				if (!guid) continue;
+
+				TKTour *a = [[TKTour alloc] initFromResponse:dict];
+				if (a) [stored addObject:a];
+			}
+
+			if (success) success(stored);
+
+		}; _failureBlock = ^(TKAPIError *error){
+			if (failure) failure(error);
+		};
+	}
+
+	return self;
+}
+
+- (instancetype)initAsGYGToursRequestForQuery:(TKGYGToursQuery *)query
+	success:(void (^)(NSArray<TKTour *> *))success failure:(TKAPIFailureBlock)failure
+{
+	if (self = [super init])
+	{
+		_type = TKAPIRequestTypeToursQueryGET;
+
+		NSMutableString *path = [[[TKAPI sharedAPI] pathForRequestType:_type] mutableCopy];
+
+		[path appendFormat:@"/get-your-guide"];
+
+		_path = path;
+
+		NSMutableDictionary *queryDict = [NSMutableDictionary dictionaryWithCapacity:10];
+
+		if (query.parentID)
+			queryDict[@"parent_place_id"] = query.parentID;
+
+		if (query.sortingType)
+		{
+			NSString *type = @"rating";
+			if (query.sortingType == TKGYGToursQuerySortingPrice) type = @"price";
+			else if (query.sortingType == TKGYGToursQuerySortingPopularity) type = @"popularity";
+			else if (query.sortingType == TKGYGToursQuerySortingDuration) type = @"duration";
+			queryDict[@"sort_by"] = type;
+		}
+
+		{
+			NSString *direction = (query.descendingSortingOrder) ? @"desc" : @"asc";
+			queryDict[@"sort_direction"] = direction;
+		}
+
+		if (query.pageNumber)
+		{
+			NSUInteger page = query.pageNumber.unsignedIntegerValue;
+			if (page > 1) queryDict[@"page"] = [query.pageNumber stringValue];
+		}
+
+		if (query.count)
+			queryDict[@"count"] = [query.count stringValue];
+
+		if (query.searchTerm)
+			queryDict[@"query"] = query.searchTerm;
+
+		if (query.minimalDuration || query.maximalDuration)
+			queryDict[@"duration"] = [NSString stringWithFormat:@"%@:%@",
+				query.minimalDuration ?: @"", query.maximalDuration ?: @""];
+
+		if (query.startDate)
+			queryDict[@"from"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:query.startDate] ?: @"";
+
+		if (query.endDate)
+			queryDict[@"to"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:query.endDate] ?: @"";
 
 		_query = queryDict;
 

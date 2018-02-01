@@ -180,7 +180,11 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 ////////////////////
 // Tours Query
 
-- (instancetype)initAsToursRequestForQuery:(TKToursQuery *)query
+- (instancetype)initAsViatorToursRequestForQuery:(TKViatorToursQuery *)query
+	success:(void (^)(NSArray<TKTour *> *tours))success
+		failure:(TKAPIFailureBlock)failure;
+
+- (instancetype)initAsGYGToursRequestForQuery:(TKGYGToursQuery *)query
 	success:(void (^)(NSArray<TKTour *> *tours))success
 		failure:(TKAPIFailureBlock)failure;
 
