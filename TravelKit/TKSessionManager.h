@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <TravelKit/TKUserCredentials.h>
+#import <TravelKit/TKSession.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -20,7 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
-@property (nonatomic, strong, nullable, readonly) TKUserCredentials *credentials;
+@property (nonatomic, strong, nullable, readonly) TKSession *session;
 
 ///---------------------------------------------------------------------------------------
 /// @name Generic methods
@@ -35,23 +35,23 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Authentication
 ///---------------------------------------------------------------------------------------
 
-- (void)performDeviceCredentialsFetchWithSuccess:(void (^)(TKUserCredentials *))success
+- (void)performDeviceSessionFetchWithSuccess:(void (^)(TKSession *))success
     failure:(void (^)(NSError *))failure;
 
 - (void)performUserCredentialsAuthWithUsername:(NSString *)username password:(NSString *)password
-    success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure;
+    success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure;
 
 - (void)performUserSocialAuthWithFacebookToken:(NSString *)facebookToken
-    success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure;
+    success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure;
 
 - (void)performUserSocialAuthWithGoogleToken:(NSString *)googleToken
-    success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure;
+    success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure;
 
 - (void)performJWTAuthWithToken:(NSString *)jwtToken
-    success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure;
+    success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure;
 
 - (void)performMagicLinkAuthWithToken:(NSString *)magicToken
-    success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure;
+    success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure;
 
 - (void)performUserRegisterWithToken:(NSString *)accessToken
   fullName:(NSString *)fullName email:(NSString *)email password:(NSString *)password

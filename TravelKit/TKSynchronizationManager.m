@@ -154,7 +154,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 				// Create targetted operation
 				NSBlockOperation *operation = [NSBlockOperation blockOperationWithBlock:^{
-					[self synchronizeAtomicWithCredentials:_session.credentials];
+					[self synchronizeAtomicWithSession:_session.session];
 				}];
 
 				// Add the operation to a self-handling queue
@@ -170,7 +170,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 {
 	@synchronized(self) {
 
-		if (!_session.credentials)
+		if (!_session.session)
 			return;
 
 		SyncLog(@"Tick Tock");
@@ -183,7 +183,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 		if ((now - _lastSynchronization) > kTKSynchronizationMinPeriod)
 		{
 			SyncLog(@"Scheduled synchronization");
-			[self synchronizeAtomicWithCredentials:_session.credentials];
+			[self synchronizeAtomicWithSession:_session.session];
 		}
 	}
 }
@@ -192,7 +192,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 #pragma mark - Atomic operation
 
 
-- (void)synchronizeAtomicWithCredentials:(TKUserCredentials *)userCredentials
+- (void)synchronizeAtomicWithSession:(TKSession *)session
 {
 	[NSThread currentThread].name = @"Synchronization";
 
@@ -201,7 +201,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	_result.success = YES;
 
 	// Set up fields for current synchronization loop
-	_currentAccessToken = [userCredentials.accessToken copy];
+	_currentAccessToken = [session.accessToken copy];
 
 	// Fire up
 	SyncLog(@"Synchronization started");
@@ -274,7 +274,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	// Get lastest updates from Changes API and do all the magic
 
 	// Check for user's trip changes
-	if (_session.credentials != nil)
+	if (_session.session != nil)
 	{
 		NSDate *since = nil;
 

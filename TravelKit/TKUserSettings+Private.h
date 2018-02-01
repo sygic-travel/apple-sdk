@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKUserSettings : NSObject
 
 // App settings
-@property (nonatomic, copy, nullable) NSDictionary *userCredentials;
+@property (nonatomic, copy, nullable) NSDictionary *session;
 @property (nonatomic, assign) NSTimeInterval changesTimestamp;
 @property (atomic, readonly) NSInteger launchNumber;
 @property (nonatomic, readonly, nullable) NSDate *installationDate;

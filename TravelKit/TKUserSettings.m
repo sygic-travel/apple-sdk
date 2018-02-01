@@ -12,7 +12,7 @@
 
 // Session stuff
 NSString * const TKSettingsKeyUniqueID = @"UniqueID";
-NSString * const TKSettingsKeyUserCredentials = @"UserCredentials";
+NSString * const TKSettingsKeySession = @"Session";
 NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 
 // App-wide flags
@@ -82,13 +82,13 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 
 	// Loading User info
 
-	_userCredentials = [_defaults objectForKey:TKSettingsKeyUserCredentials];
+	_session = [_defaults objectForKey:TKSettingsKeySession];
 }
 
 - (void)commit
 {
 	[_defaults setObject:_uniqueID forKey:TKSettingsKeyUniqueID];
-	[_defaults setObject:_userCredentials forKey:TKSettingsKeyUserCredentials];
+	[_defaults setObject:_session forKey:TKSettingsKeySession];
 
 	[_defaults setDouble:_changesTimestamp forKey:TKSettingsKeyChangesTimestamp];
 	[_defaults setInteger:_launchNumber forKey:TKSettingsKeyLaunchNumber];

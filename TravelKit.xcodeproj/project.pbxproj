@@ -175,12 +175,12 @@
 		D6CB14461F84D64600E59C95 /* TKSSOAPI.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB14421F84D5D000E59C95 /* TKSSOAPI.m */; };
 		D6CB14471F84D64D00E59C95 /* TKSSOAPI+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CB14411F84D5CF00E59C95 /* TKSSOAPI+Private.h */; };
 		D6CB14481F84D64D00E59C95 /* TKSSOAPI+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CB14411F84D5CF00E59C95 /* TKSSOAPI+Private.h */; };
-		D6CB144B1F84D84500E59C95 /* TKUserCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CB14491F84D84500E59C95 /* TKUserCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D6CB144C1F84D84500E59C95 /* TKUserCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CB14491F84D84500E59C95 /* TKUserCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D6CB144D1F84D84500E59C95 /* TKUserCredentials.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CB14491F84D84500E59C95 /* TKUserCredentials.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D6CB144E1F84D84500E59C95 /* TKUserCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKUserCredentials.m */; };
-		D6CB144F1F84D84500E59C95 /* TKUserCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKUserCredentials.m */; };
-		D6CB14501F84D84500E59C95 /* TKUserCredentials.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKUserCredentials.m */; };
+		D6CB144B1F84D84500E59C95 /* TKSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CB14491F84D84500E59C95 /* TKSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6CB144C1F84D84500E59C95 /* TKSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CB14491F84D84500E59C95 /* TKSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6CB144D1F84D84500E59C95 /* TKSession.h in Headers */ = {isa = PBXBuildFile; fileRef = D6CB14491F84D84500E59C95 /* TKSession.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6CB144E1F84D84500E59C95 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKSession.m */; };
+		D6CB144F1F84D84500E59C95 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKSession.m */; };
+		D6CB14501F84D84500E59C95 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKSession.m */; };
 		D6D1F76A20160A79009E6249 /* TKDirectionDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */; };
 		D6D1F76B20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */; };
 		D6D1F76C20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */; };
@@ -316,8 +316,8 @@
 		D6C3D0881E51A09200EBB54F /* TKMapRegion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKMapRegion.m; sourceTree = "<group>"; };
 		D6CB14411F84D5CF00E59C95 /* TKSSOAPI+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKSSOAPI+Private.h"; sourceTree = "<group>"; };
 		D6CB14421F84D5D000E59C95 /* TKSSOAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSSOAPI.m; sourceTree = "<group>"; };
-		D6CB14491F84D84500E59C95 /* TKUserCredentials.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKUserCredentials.h; sourceTree = "<group>"; };
-		D6CB144A1F84D84500E59C95 /* TKUserCredentials.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKUserCredentials.m; sourceTree = "<group>"; };
+		D6CB14491F84D84500E59C95 /* TKSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSession.h; sourceTree = "<group>"; };
+		D6CB144A1F84D84500E59C95 /* TKSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSession.m; sourceTree = "<group>"; };
 		D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDirectionDefinitions.m; sourceTree = "<group>"; };
 		D6D1F770201892D4009E6249 /* TKEventsManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKEventsManager+Private.h"; sourceTree = "<group>"; };
 		D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKMedium+Private.h"; sourceTree = "<group>"; };
@@ -398,11 +398,11 @@
 		D68E94771F0533CE009E2C9C /* Session */ = {
 			isa = PBXGroup;
 			children = (
+				D6CB14491F84D84500E59C95 /* TKSession.h */,
+				D6CB144A1F84D84500E59C95 /* TKSession.m */,
 				D68E94781F05354E009E2C9C /* TKSessionManager.h */,
 				D68E94791F05354E009E2C9C /* TKSessionManager.m */,
 				D625DEB81FA9F25400008617 /* TKSessionManager+Private.h */,
-				D6CB14491F84D84500E59C95 /* TKUserCredentials.h */,
-				D6CB144A1F84D84500E59C95 /* TKUserCredentials.m */,
 				D645398C1F8CB94100C3683D /* TKUserSettings.m */,
 				D645398D1F8CB94100C3683D /* TKUserSettings+Private.h */,
 			);
@@ -647,7 +647,7 @@
 				D6B0AD941FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D698319A1EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831AA1EF7AE8A002776BE /* TKToursManager.h in Headers */,
-				D6CB144D1F84D84500E59C95 /* TKUserCredentials.h in Headers */,
+				D6CB144D1F84D84500E59C95 /* TKSession.h in Headers */,
 				D64B6131200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */,
 				D6EF38F41EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */,
 				D64B13971EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */,
@@ -698,7 +698,7 @@
 				D6B0AD921FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D69831981EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831A81EF7AE8A002776BE /* TKToursManager.h in Headers */,
-				D6CB144B1F84D84500E59C95 /* TKUserCredentials.h in Headers */,
+				D6CB144B1F84D84500E59C95 /* TKSession.h in Headers */,
 				D64B612F200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */,
 				D6B2A1621E531097005509E8 /* TKMapWorker.h in Headers */,
 				D649BAA11ED6E23D003EF406 /* TravelKit-Prefix.pch in Headers */,
@@ -749,7 +749,7 @@
 				D6B0AD931FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D69831991EF3D7F9002776BE /* TKTour.h in Headers */,
 				D69831A91EF7AE8A002776BE /* TKToursManager.h in Headers */,
-				D6CB144C1F84D84500E59C95 /* TKUserCredentials.h in Headers */,
+				D6CB144C1F84D84500E59C95 /* TKSession.h in Headers */,
 				D64B6130200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */,
 				D6EF38F31EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */,
 				D64B13961EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */,
@@ -929,7 +929,7 @@
 				D6F0E48C1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */,
 				D6F0E4771ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */,
 				D6F0E47D1ED6EF5800A0D3D5 /* FMDatabasePool.m in Sources */,
-				D6CB14501F84D84500E59C95 /* TKUserCredentials.m in Sources */,
+				D6CB14501F84D84500E59C95 /* TKSession.m in Sources */,
 				D6CB14461F84D64600E59C95 /* TKSSOAPI.m in Sources */,
 				D625DE391FA9EC2B00008617 /* TKSynchronizationManager.m in Sources */,
 				D6F0E4831ED6EF5800A0D3D5 /* FMDatabaseQueue.m in Sources */,
@@ -968,7 +968,7 @@
 				D6F0E48A1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */,
 				D6F0E4751ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */,
 				D6F0E47B1ED6EF5800A0D3D5 /* FMDatabasePool.m in Sources */,
-				D6CB144E1F84D84500E59C95 /* TKUserCredentials.m in Sources */,
+				D6CB144E1F84D84500E59C95 /* TKSession.m in Sources */,
 				D6CB14441F84D5D000E59C95 /* TKSSOAPI.m in Sources */,
 				D6FEE02C1FA8B9E200996876 /* TKSynchronizationManager.m in Sources */,
 				D6F0E4811ED6EF5800A0D3D5 /* FMDatabaseQueue.m in Sources */,
@@ -1009,7 +1009,7 @@
 				D6F0E48B1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */,
 				D6F0E4761ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */,
 				D6F0E47C1ED6EF5800A0D3D5 /* FMDatabasePool.m in Sources */,
-				D6CB144F1F84D84500E59C95 /* TKUserCredentials.m in Sources */,
+				D6CB144F1F84D84500E59C95 /* TKSession.m in Sources */,
 				D6CB14451F84D64600E59C95 /* TKSSOAPI.m in Sources */,
 				D625DE381FA9EC2B00008617 /* TKSynchronizationManager.m in Sources */,
 				D6F0E4821ED6EF5800A0D3D5 /* FMDatabaseQueue.m in Sources */,

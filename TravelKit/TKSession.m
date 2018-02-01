@@ -1,24 +1,24 @@
 //
-//  TKUserCredentials.m
+//  TKSession.m
 //  TravelKit
 //
 //  Created by Michal Zelinka on 04/10/2017.
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKUserCredentials.h"
+#import "TKSession.h"
 #import "NSObject+Parsing.h"
 #import "Foundation+TravelKit.h"
 
 
-@interface TKUserCredentials ()
+@interface TKSession ()
 
 @property (nonatomic, strong) NSDate *refreshDate;
 
 @end
 
 
-@implementation TKUserCredentials
+@implementation TKSession
 
 - (instancetype)initFromDictionary:(NSDictionary *)dictionary
 {
@@ -76,11 +76,11 @@
 
 - (BOOL)isEqual:(id)object
 {
-	if (![object isKindOfClass:[TKUserCredentials class]]) return NO;
+	if (![object isKindOfClass:[TKSession class]]) return NO;
 
-	TKUserCredentials *userCredentials = object;
+	TKSession *session = object;
 
-	return [[self asDictionary] isEqualToDictionary:[userCredentials asDictionary]];
+	return [[self asDictionary] isEqualToDictionary:[session asDictionary]];
 }
 
 - (instancetype)copy

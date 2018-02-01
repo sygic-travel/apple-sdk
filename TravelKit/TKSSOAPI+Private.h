@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TKUserCredentials.h"
+#import "TKSession.h"
 #import "TKAPIDefinitions.h"
 
 
@@ -30,23 +30,23 @@
 
 // Standard supported API calls
 
-- (void)performDeviceCredentialsFetchWithSuccess:(void (^)(TKUserCredentials *))success
+- (void)performDeviceSessionFetchWithSuccess:(void (^)(TKSession *))success
     failure:(void (^)(TKAPIError *))failure;
 
-- (void)performCredentialsRefreshWithToken:(NSString *)refreshToken
-    success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure;
+- (void)performSessionRefreshWithToken:(NSString *)refreshToken
+    success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure;
 
 - (void)performUserCredentialsAuthWithUsername:(NSString *)username password:(NSString *)password
-    success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure;
+    success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure;
 
 - (void)performUserSocialAuthWithFacebookToken:(NSString *)facebookToken googleToken:(NSString *)googleToken
-    success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure;
+    success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure;
 
 - (void)performJWTAuthWithToken:(NSString *)jwtToken
-    success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure;
+    success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure;
 
 - (void)performMagicAuthWithMagicLink:(NSString *)magicLink
-	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure;
+	success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure;
 
 - (void)performUserRegisterWithToken:(NSString *)accessToken
   fullName:(NSString *)fullName email:(NSString *)email password:(NSString *)password

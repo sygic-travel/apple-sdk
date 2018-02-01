@@ -24,7 +24,7 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKMapRegion.h>
 #import <TravelKit/TKMapWorker.h>
 #import <TravelKit/TKMapPlaceAnnotation.h>
-#import <TravelKit/TKUserCredentials.h>
+#import <TravelKit/TKSession.h>
 
 #import <TravelKit/TKPlacesManager.h>
 #import <TravelKit/TKToursManager.h>
@@ -68,6 +68,20 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 @interface TravelKit : NSObject
 
 ///---------------------------------------------------------------------------------------
+/// @name Initialisation
+///---------------------------------------------------------------------------------------
+
+/**
+ Shared singleton object to work with.
+
+ @warning Regular `-init` and `+new` methods are not available.
+ */
+@property (class, readonly, strong) TravelKit *sharedKit NS_SWIFT_NAME(shared);
+
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)new UNAVAILABLE_ATTRIBUTE;
+
+///---------------------------------------------------------------------------------------
 /// @name Key properties
 ///---------------------------------------------------------------------------------------
 
@@ -93,20 +107,6 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  @warning This needs to be set in order to receive translated content.
  */
 @property (nonatomic, copy, null_resettable) NSString *language;
-
-///---------------------------------------------------------------------------------------
-/// @name Initialisation
-///---------------------------------------------------------------------------------------
-
-/**
- Shared singleton object to work with.
-
- @warning Regular `-init` and `+new` methods are not available.
- */
-@property (class, readonly, strong) TravelKit *sharedKit NS_SWIFT_NAME(shared);
-
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
-- (instancetype)new UNAVAILABLE_ATTRIBUTE;
 
 ///---------------------------------------------------------------------------------------
 /// @name Modules

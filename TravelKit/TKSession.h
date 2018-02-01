@@ -1,5 +1,5 @@
 //
-//  TKUserCredentials.h
+//  TKSession.h
 //  TravelKit
 //
 //  Created by Michal Zelinka on 04/10/2017.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface TKUserCredentials : NSObject
+@interface TKSession : NSObject
 
 @property (nonatomic, copy) NSString *accessToken;
 @property (nonatomic, copy) NSString *refreshToken;

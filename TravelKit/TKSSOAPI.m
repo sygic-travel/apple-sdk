@@ -159,7 +159,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 ////////////////////
 
 
-- (void)performDeviceCredentialsFetchWithSuccess:(void (^)(TKUserCredentials *))success failure:(void (^)(TKAPIError *))failure
+- (void)performDeviceSessionFetchWithSuccess:(void (^)(TKSession *))success failure:(void (^)(TKAPIError *))failure
 {
 	NSString *path = @"/oauth2/token";
 
@@ -180,16 +180,16 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	[self performRequest:request completion:
 	 ^(NSInteger __unused status, NSDictionary *response, NSError *error) {
 
-		TKUserCredentials *credentials = [[TKUserCredentials alloc] initFromDictionary:response];
+		TKSession *session = [[TKSession alloc] initFromDictionary:response];
 
-		if (credentials && success) success(credentials);
-		if (!credentials && failure) failure([TKAPIError errorWithCode:-20934 userInfo:error.userInfo]);
+		if (session && success) success(session);
+		if (!session && failure) failure([TKAPIError errorWithCode:-20934 userInfo:error.userInfo]);
 
 	}];
 }
 
-- (void)performCredentialsRefreshWithToken:(NSString *)refreshToken
-	success:(void (^)(TKUserCredentials *))success failure:(void (^)(TKAPIError *))failure
+- (void)performSessionRefreshWithToken:(NSString *)refreshToken
+	success:(void (^)(TKSession *))success failure:(void (^)(TKAPIError *))failure
 {
 	NSString *path = @"/oauth2/token";
 
@@ -211,16 +211,16 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	[self performRequest:request completion:
 	 ^(NSInteger __unused status, NSDictionary *response, NSError *error) {
 
-		TKUserCredentials *credentials = [[TKUserCredentials alloc] initFromDictionary:response];
+		TKSession *session = [[TKSession alloc] initFromDictionary:response];
 
-		if (credentials && success) success(credentials);
-		if (!credentials && failure) failure([TKAPIError errorWithCode:-20935 userInfo:error.userInfo]);
+		if (session && success) success(session);
+		if (!session && failure) failure([TKAPIError errorWithCode:-20935 userInfo:error.userInfo]);
 
 	}];
 }
 
 - (void)performUserCredentialsAuthWithUsername:(NSString *)username password:(NSString *)password
-	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure
+	success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/oauth2/token";
 
@@ -243,16 +243,16 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	[self performRequest:request completion:
 	 ^(NSInteger __unused status, NSDictionary *response, NSError *error) {
 
-		TKUserCredentials *credentials = [[TKUserCredentials alloc] initFromDictionary:response];
+		TKSession *session = [[TKSession alloc] initFromDictionary:response];
 
-		if (credentials && success) success(credentials);
-		if (!credentials && failure) failure([TKAPIError errorWithCode:-20936 userInfo:error.userInfo]);
+		if (session && success) success(session);
+		if (!session && failure) failure([TKAPIError errorWithCode:-20936 userInfo:error.userInfo]);
 
 	}];
 }
 
 - (void)performUserSocialAuthWithFacebookToken:(NSString *)facebookToken googleToken:(NSString *)googleToken
-	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure
+	success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/oauth2/token";
 
@@ -277,16 +277,16 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	[self performRequest:request completion:
 	 ^(NSInteger __unused status, NSDictionary *response, NSError *error) {
 
-		TKUserCredentials *credentials = [[TKUserCredentials alloc] initFromDictionary:response];
+		TKSession *session = [[TKSession alloc] initFromDictionary:response];
 
-		if (credentials && success) success(credentials);
-		if (!credentials && failure) failure([TKAPIError errorWithCode:-20937 userInfo:error.userInfo]);
+		if (session && success) success(session);
+		if (!session && failure) failure([TKAPIError errorWithCode:-20937 userInfo:error.userInfo]);
 
 	}];
 }
 
 - (void)performJWTAuthWithToken:(NSString *)jwtToken
-	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure
+	success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/oauth2/token";
 
@@ -308,16 +308,16 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	[self performRequest:request completion:
 	 ^(NSInteger __unused status, NSDictionary *response, NSError *error) {
 
-		TKUserCredentials *credentials = [[TKUserCredentials alloc] initFromDictionary:response];
+		TKSession *session = [[TKSession alloc] initFromDictionary:response];
 
-		if (credentials && success) success(credentials);
-		if (!credentials && failure) failure([TKAPIError errorWithCode:-20938 userInfo:error.userInfo]);
+		if (session && success) success(session);
+		if (!session && failure) failure([TKAPIError errorWithCode:-20938 userInfo:error.userInfo]);
 
 	}];
 }
 
 - (void)performMagicAuthWithMagicLink:(NSString *)magicLink
-	success:(void (^)(TKUserCredentials *))success failure:(TKAPIFailureBlock)failure
+	success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/oauth2/token";
 
@@ -339,10 +339,10 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	[self performRequest:request completion:
 	 ^(NSInteger __unused status, NSDictionary * __unused response, NSError *__unused error) {
 
-		TKUserCredentials *credentials = [[TKUserCredentials alloc] initFromDictionary:response];
+		TKSession *session = [[TKSession alloc] initFromDictionary:response];
 
-		if (credentials && success) success(credentials);
-		if (!credentials && failure) failure([TKAPIError errorWithCode:-20934 userInfo:nil]);
+		if (session && success) success(session);
+		if (!session && failure) failure([TKAPIError errorWithCode:-20934 userInfo:nil]);
 
 	}];
 }

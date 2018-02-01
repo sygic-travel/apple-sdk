@@ -142,7 +142,7 @@ typedef NS_OPTIONS(NSUInteger, TKTripRights) {
 @interface TKTripConflict ()
 
 - (instancetype)initWithLocalTrip:(TKTrip *)localTrip remoteTrip:(TKTrip *)remoteTrip
-                       lastEditor:(nullable NSString *)lastEditor lastUpdate:(nullable NSDate *)lastUpdate;
+                 remoteTripEditor:(NSString *)remoteTripEditor remoteTripUpdateDate:(NSDate *)remoteTripUpdateDate;
 
 @end
 

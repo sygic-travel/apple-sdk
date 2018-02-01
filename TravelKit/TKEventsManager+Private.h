@@ -12,7 +12,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TKEventsManager ()
 
-@property (nonatomic, copy, nullable) void (^expiredSessionCredentialsHandler)(void);
+@property (nonatomic, copy, nullable) void (^sessionExpirationHandler)(void);
 
 @end
 

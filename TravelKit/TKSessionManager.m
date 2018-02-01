@@ -44,8 +44,8 @@
 	{
 		__weak typeof(self) weakSelf = self;
 
-		_events.expiredSessionCredentialsHandler = ^{
-			[weakSelf refreshCredentials];
+		_events.sessionExpirationHandler = ^{
+			[weakSelf refreshSession];
 		};
 
 		_database = [TKDatabaseManager sharedManager];
@@ -54,7 +54,7 @@
 
 		[self loadState];
 
-		[self checkCredentials];
+		[self checkSession];
 	}
 
 	return self;
@@ -67,21 +67,21 @@
 
 - (void)loadState
 {
-	_credentials = [[TKUserCredentials alloc] initFromDictionary:_settings.userCredentials];
+	_session = [[TKSession alloc] initFromDictionary:_settings.session];
 
-	[TKAPI sharedAPI].accessToken = _credentials.accessToken;
+	[TKAPI sharedAPI].accessToken = _session.accessToken;
 }
 
 - (void)saveState
 {
-	_settings.userCredentials = [_credentials asDictionary];
+	_settings.session = [_session asDictionary];
 
 	[_settings commit];
 }
 
 - (void)clearUserData
 {
-	// Clear Favorites
+	// Clear database data
 	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableFavorites];
 	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableTrips];
 	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableTripDays];
@@ -99,27 +99,27 @@
 
 
 #pragma mark -
-#pragma mark User Credentials
+#pragma mark User Session
 
 
-- (void)setCredentials:(TKUserCredentials *)credentials
+- (void)setSession:(TKSession *)session
 {
-	_credentials = credentials;
+	_session = session;
 
-	[TKAPI sharedAPI].accessToken = credentials.accessToken;
+	[TKAPI sharedAPI].accessToken = session.accessToken;
 
 	[self saveState];
 
-	if (_events.sessionCredentialsUpdateHandler)
-		_events.sessionCredentialsUpdateHandler(credentials);
+	if (_events.sessionUpdateHandler)
+		_events.sessionUpdateHandler(session);
 }
 
-- (void)checkCredentials
+- (void)checkSession
 {
 	if (![TKReachability isConnected])
 		return;
 
-	if (!_credentials)
+	if (!_session)
 		return;
 
 //	// Fetch if User credentials missing
@@ -129,25 +129,25 @@
 
 	// Refresh if token is about to expire
 
-	else if (_credentials.isExpiring)
-		[self refreshCredentials];
+	else if (_session.isExpiring)
+		[self refreshSession];
 }
 
-- (void)refreshCredentials
+- (void)refreshSession
 {
-	NSString *token = _credentials.refreshToken;
+	NSString *token = _session.refreshToken;
 
 	if (!token) return;
 
-	[[TKSSOAPI sharedAPI] performCredentialsRefreshWithToken:token success:^(TKUserCredentials *credentials) {
+	[[TKSSOAPI sharedAPI] performSessionRefreshWithToken:token success:^(TKSession *session) {
 
-		self.credentials = credentials;
+		self.session = session;
 
 	} failure:^(TKAPIError *error) {
 
 		// TODO: More sophisticated solution?
 		if (error.code / 100 == 4)
-			self.credentials = nil;
+			self.session = nil;
 
 	}];
 }
@@ -157,77 +157,77 @@
 #pragma mark Authentication
 
 
-- (void)performDeviceCredentialsFetchWithSuccess:(void (^)(TKUserCredentials *))success
+- (void)performDeviceSessionFetchWithSuccess:(void (^)(TKSession *))success
     failure:(void (^)(NSError *))failure
 {
-	[[TKSSOAPI sharedAPI] performDeviceCredentialsFetchWithSuccess:^(TKUserCredentials *credentials) {
+	[[TKSSOAPI sharedAPI] performDeviceSessionFetchWithSuccess:^(TKSession *session) {
 
-		self.credentials = credentials;
+		self.session = session;
 
-		if (success) success(credentials);
+		if (success) success(session);
 
 	} failure:failure];
 }
 
 - (void)performUserCredentialsAuthWithUsername:(NSString *)username password:(NSString *)password
-    success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure
+    success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure
 {
 	[[TKSSOAPI sharedAPI] performUserCredentialsAuthWithUsername:username
-	password:password success:^(TKUserCredentials *credentials) {
+	password:password success:^(TKSession *session) {
 
-		self.credentials = credentials;
+		self.session = session;
 
-		if (success) success(credentials);
+		if (success) success(session);
 
 	} failure:failure];
 }
 
 - (void)performUserSocialAuthWithFacebookToken:(NSString *)facebookToken
-	success:(void (^)(TKUserCredentials * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
+	success:(void (^)(TKSession * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
 {
 	[[TKSSOAPI sharedAPI] performUserSocialAuthWithFacebookToken:facebookToken
-	googleToken:nil success:^(TKUserCredentials *credentials) {
+	googleToken:nil success:^(TKSession *session) {
 
-		self.credentials = credentials;
+		self.session = session;
 
-		if (success) success(credentials);
+		if (success) success(session);
 
 	} failure:failure];
 }
 
 - (void)performUserSocialAuthWithGoogleToken:(NSString *)googleToken
-	success:(void (^)(TKUserCredentials * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
+	success:(void (^)(TKSession * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
 {
 	[[TKSSOAPI sharedAPI] performUserSocialAuthWithFacebookToken:nil
-	googleToken:googleToken success:^(TKUserCredentials *credentials) {
+	googleToken:googleToken success:^(TKSession *session) {
 
-		self.credentials = credentials;
+		self.session = session;
 
-		if (success) success(credentials);
+		if (success) success(session);
 
 	} failure:failure];
 }
 
 - (void)performJWTAuthWithToken:(NSString *)jwtToken
-	success:(void (^)(TKUserCredentials * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
+	success:(void (^)(TKSession * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
 {
-	[[TKSSOAPI sharedAPI] performJWTAuthWithToken:jwtToken success:^(TKUserCredentials *credentials) {
+	[[TKSSOAPI sharedAPI] performJWTAuthWithToken:jwtToken success:^(TKSession *session) {
 
-		self.credentials = credentials;
+		self.session = session;
 
-		if (success) success(credentials);
+		if (success) success(session);
 
 	} failure:failure];
 }
 
 - (void)performMagicLinkAuthWithToken:(NSString *)magicToken
-    success:(void (^)(TKUserCredentials *))success failure:(void (^)(NSError *))failure
+    success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure
 {
-	[[TKSSOAPI sharedAPI] performMagicAuthWithMagicLink:magicToken success:^(TKUserCredentials *credentials) {
+	[[TKSSOAPI sharedAPI] performMagicAuthWithMagicLink:magicToken success:^(TKSession *session) {
 
-		self.credentials = credentials;
+		self.session = session;
 
-		if (success) success(credentials);
+		if (success) success(session);
 
 	} failure:failure];
 }

@@ -185,13 +185,25 @@ NS_ASSUME_NONNULL_BEGIN
 ///-----------------------------------------------------------------------------
 
 
+/**
+ Trip Conflict model
+
+ This object is used to specify the user's decision whether to keep a local (on device) version of a particular
+ trip or prefer the the remote (server) version contributed in the meantime.
+ */
 @interface TKTripConflict : NSObject
 
+/// Local (on device) Trip instance.
 @property (nonatomic, strong, readonly) TKTrip *localTrip;
+/// Remote (server) Trip instance.
 @property (nonatomic, strong, readonly) TKTrip *remoteTrip;
-@property (nonatomic, copy, readonly, nullable) NSString *lastEditor;
-@property (nonatomic, strong, readonly, nullable) NSDate *lastUpdate;
+/// Optional name of a person authoring the remote Trip instance.
+@property (nonatomic, copy, readonly, nullable) NSString *remoteTripEditor;
+/// Optional date when the remote Trip instance has been pushed.
+@property (nonatomic, strong, readonly, nullable) NSDate *remoteTripUpdateDate;
 
+/// A flag indicating whether the local Trip instance should be force-pushed to the server (`YES`) or rather
+/// overwritten by the server version (`NO`).
 @property (atomic) BOOL forceLocalTrip;
 
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;

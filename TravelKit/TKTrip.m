@@ -762,7 +762,7 @@
 @implementation TKTripConflict
 
 - (instancetype)initWithLocalTrip:(TKTrip *)localTrip remoteTrip:(TKTrip *)remoteTrip
-                       lastEditor:(NSString *)lastEditor lastUpdate:(NSDate *)lastUpdate
+                 remoteTripEditor:(NSString *)remoteTripEditor remoteTripUpdateDate:(NSDate *)remoteTripUpdateDate
 {
 	if (!localTrip || !remoteTrip)
 		return nil;
@@ -771,8 +771,8 @@
 	{
 		_localTrip = localTrip;
 		_remoteTrip = remoteTrip;
-		_lastEditor = lastEditor;
-		_lastUpdate = lastUpdate;
+		_remoteTripEditor = remoteTripEditor;
+		_remoteTripUpdateDate = remoteTripUpdateDate;
 	}
 
 	return self;
@@ -780,7 +780,8 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<TripConflict %p | Trip: %@ | %@ on %@>", self, _localTrip.ID, _lastEditor, _lastUpdate];
+	return [NSString stringWithFormat:@"<TripConflict %p | Trip: %@ | %@ on %@>",
+	        self, _localTrip.ID, _remoteTripEditor, _remoteTripUpdateDate];
 }
 
 @end

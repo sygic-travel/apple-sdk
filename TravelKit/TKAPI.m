@@ -573,7 +573,8 @@
 				NSString *dateStr = [conflictDict[@"last_updated_at"] parsedString];
 				NSDate *updateDate = [NSDate dateFrom8601DateTimeString:dateStr];
 
-				conflict = [[TKTripConflict alloc] initWithLocalTrip:trip remoteTrip:updatedTrip lastEditor:editor lastUpdate:updateDate];
+				conflict = [[TKTripConflict alloc] initWithLocalTrip:trip
+					remoteTrip:updatedTrip remoteTripEditor:editor remoteTripUpdateDate:updateDate];
 			}
 
 			if (updatedTrip && success) success(updatedTrip, conflict);
@@ -1663,8 +1664,8 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 
 		if (response.code == 401) {
 			TKEventsManager *events = [TKEventsManager sharedManager];
-			if (events.expiredSessionCredentialsHandler)
-				events.expiredSessionCredentialsHandler();
+			if (events.sessionExpirationHandler)
+				events.sessionExpirationHandler();
 		}
 
 		if (_failureBlock) _failureBlock(e);
