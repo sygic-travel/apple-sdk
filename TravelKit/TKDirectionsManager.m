@@ -7,6 +7,7 @@
 //
 
 #import "TKDirectionsManager.h"
+#import "TKMapWorker.h"
 #import "TKAPI+Private.h"
 #import "NSObject+Parsing.h"
 
@@ -122,6 +123,17 @@
 		set.airDistance = round([query.endLocation
 			distanceFromLocation:query.startLocation]);
 
+	if (query.waypointsPolyline) {
+		NSArray<CLLocation *> *points = [TKMapWorker pointsFromPolyline:query.waypointsPolyline];
+		CLLocation *prev = nil;
+		CLLocationDistance sum = 0;
+		for (CLLocation *p in points) {
+			if (prev) sum += [p distanceFromLocation:prev];
+			prev = p;
+		}
+		if (sum > 0) airDistance = set.airDistance = sum;
+	}
+
 	// Pedestrian
 
 	TKDirection *direction = [TKDirection new];
@@ -135,6 +147,20 @@
 	direction.waypointsPolyline = query.waypointsPolyline;
 
 	set.pedestrianDirections = @[ direction ];
+
+	// Bike
+
+	direction = [TKDirection new];
+	direction.startLocation = query.startLocation;
+	direction.endLocation = query.endLocation;
+	direction.mode = TKDirectionTransportModeBike;
+	direction.estimated = YES;
+	direction.distance = round(airDistance * (airDistance <= 2000 ? 1.35 : airDistance <= 6000 ? 1.22 : 1.106));
+	direction.duration = round(direction.distance / 3.9); // 14 km/h
+	direction.avoidOption = query.avoidOption;
+	direction.waypointsPolyline = query.waypointsPolyline;
+
+	set.bikeDirections = @[ direction ];
 
 	// Car
 
@@ -158,7 +184,7 @@
 	direction.mode = TKDirectionTransportModePlane;
 	direction.estimated = YES;
 	direction.distance = set.airDistance;
-	direction.duration = round(3*60*60 + direction.distance / 222); // 800 km/h
+	direction.duration = round(direction.distance / 222); // 800 km/h
 	direction.avoidOption = query.avoidOption;
 	direction.waypointsPolyline = query.waypointsPolyline;
 

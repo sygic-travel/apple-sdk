@@ -25,10 +25,10 @@ typedef NS_OPTIONS(NSUInteger, TKDirectionTransportMode) {
 	TKDirectionTransportModePedestrian = (1 << 0), /// Pedestrian mode.
 	TKDirectionTransportModeCar        = (1 << 1), /// Car mode.
 	TKDirectionTransportModePlane      = (1 << 2), /// Plane mode.
-//	TKDirectionTransportModeBike       = (1 << 3), /// Bike mode.
-//	TKDirectionTransportModeBus        = (1 << 4), /// Bus mode.
-//	TKDirectionTransportModeTrain      = (1 << 5), /// Train mode.
-//	TKDirectionTransportModeBoat       = (1 << 6), /// Boat mode.
+	TKDirectionTransportModeBike       = (1 << 3), /// Bike mode.
+	TKDirectionTransportModeBus        = (1 << 4), /// Bus mode.
+	TKDirectionTransportModeTrain      = (1 << 5), /// Train mode.
+	TKDirectionTransportModeBoat       = (1 << 6), /// Boat mode.
 }; // ABI-EXPORTED
 
 /**
@@ -88,6 +88,7 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
 @property (nonatomic, copy) NSArray<TKDirection *> *pedestrianDirections;
 @property (nonatomic, copy) NSArray<TKDirection *> *carDirections;
 @property (nonatomic, copy) NSArray<TKDirection *> *planeDirections;
+@property (nonatomic, copy) NSArray<TKDirection *> *bikeDirections;
 
 @end
 
