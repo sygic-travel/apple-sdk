@@ -57,7 +57,9 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
 #pragma mark Directions query
 ///-----------------------------------------------------------------------------
 
-
+/**
+ A query object used for fetching direction data.
+ */
 @interface TKDirectionsQuery : NSObject
 
 @property (nonatomic, strong, readonly) CLLocation *startLocation;
@@ -78,7 +80,9 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
 #pragma mark Directions set
 ///-----------------------------------------------------------------------------
 
-
+/**
+ A set of directions usable for display.
+ */
 @interface TKDirectionsSet : NSObject
 
 @property (nonatomic, strong) CLLocation *startLocation;
@@ -98,7 +102,9 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
 #pragma mark Direction record
 ///-----------------------------------------------------------------------------
 
-
+/**
+ A particular direction carrying information about a route, its distance and duration.
+ */
 @interface TKDirection : NSObject
 
 @property (nonatomic, strong) CLLocation *startLocation;

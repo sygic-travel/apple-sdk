@@ -76,12 +76,12 @@ travelKit.places.places(for: sightsQuery) { (places, error) in
 Querying for some Tours users would like to attend is very easy as well:
 */
 
-let toursQuery = TKViatorToursQuery()
+let toursQuery = TKToursViatorQuery()
 toursQuery.parentID = "city:1"
 toursQuery.sortingType = .price
 toursQuery.descendingSortingOrder = true
 
-travelKit._tours.tours(forViatorQuery: toursQuery) { (tours, error) in
+travelKit._tours.tours(for: toursQuery) { (tours, error) in
 	printLock.lock()
 	print("\nMost Expensive Tours in London:\n")
 	tours?.forEach({ (tour) in

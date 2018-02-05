@@ -11,7 +11,13 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
+///---------------------------------------------------------------------------------------
+/// @name Tour Model
+///---------------------------------------------------------------------------------------
+
 /**
+ @name Tour Model
+
  Basic Tour model keeping various information about its properties.
  */
 
@@ -22,48 +28,48 @@ NS_ASSUME_NONNULL_BEGIN
 ///---------------------------------------------------------------------------------------
 
 /// Global identifier.
-@property (nonatomic, copy) NSString *ID NS_SWIFT_NAME(ID);
+@property (nonatomic, copy, readonly) NSString *ID NS_SWIFT_NAME(ID);
 
 /// Displayable name of the tour, translated if possible. Example: _Buckingham Palace_.
-@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy, readonly) NSString *title;
 
 /// Short perex introducing the tour.
-@property (nonatomic, copy, nullable) NSString *perex;
+@property (nonatomic, copy, nullable, readonly) NSString *perex;
 
 /// Price value. Provided in `USD`.
-@property (nonatomic, strong, nullable) NSNumber *price;
+@property (nonatomic, strong, nullable, readonly) NSNumber *price;
 
 /// Original price value. Usable for discount calculation. Value in `USD`.
-@property (nonatomic, strong, nullable) NSNumber *originalPrice;
+@property (nonatomic, strong, nullable, readonly) NSNumber *originalPrice;
 
 /// Star rating value.
 ///
 /// @note Possible values: double in range `0`--`5`.
-@property (nonatomic, strong, nullable) NSNumber *rating;
+@property (nonatomic, strong, nullable, readonly) NSNumber *rating;
 
 /// Duration string. Should be provided in a target language.
 ///
 /// @note Duration may be specified by either a string or numeric values.
-@property (nonatomic, copy, nullable) NSString *duration;
+@property (nonatomic, copy, nullable, readonly) NSString *duration;
 
 /// Minimal duration in seconds.
 ///
 /// @note Duration may be specified by either a string or numeric values.
-@property (nonatomic, copy, nullable) NSNumber *durationMin;
+@property (nonatomic, copy, nullable, readonly) NSNumber *durationMin;
 
 /// Maximal duration in seconds.
 ///
 /// @note Duration may be specified by either a string or numeric values.
-@property (nonatomic, copy, nullable) NSNumber *durationMax;
+@property (nonatomic, copy, nullable, readonly) NSNumber *durationMax;
 
 /// Online URL of the Tour.
-@property (nonatomic, strong, nullable) NSURL *URL;
+@property (nonatomic, strong, nullable, readonly) NSURL *URL;
 
-/// Thumbnail URL to an image of approximate size 600x400 pixels.
-@property (nonatomic, strong, nullable) NSURL *photoURL;
+/// Thumbnail URL to an image of approximate size 600×400 pixels.
+@property (nonatomic, strong, nullable, readonly) NSURL *photoURL;
 
 /// Count of reviews.
-@property (nonatomic, strong, nullable) NSNumber *reviewsCount;
+@property (nonatomic, strong, nullable, readonly) NSNumber *reviewsCount;
 
 @end
 

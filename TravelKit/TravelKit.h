@@ -40,6 +40,10 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 
 NS_ASSUME_NONNULL_BEGIN
 
+///---------------------------------------------------------------------------------------
+/// @name TravelKit SDK
+///---------------------------------------------------------------------------------------
+
 /**
  The main class currently used for authentication and data fetching. It provides a singleton
  instance with the public `+sharedKit` method which may be used to work with the _Travel_
@@ -162,11 +166,16 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 /// @name Deprecated interface stuff
 ///---------------------------------------------------------------------------------------
 
+/**
+ A set of deprecated stuff on `TravelKit` class.
+ */
 @interface TravelKit (NSDeprecated)
 
 ///---------------------------------------------------------------------------------------
 /// @name Place working queries
 ///---------------------------------------------------------------------------------------
+
+/// :nodoc:
 
 - (void)placesForQuery:(TKPlacesQuery *)query
 	completion:(void (^)(NSArray<TKPlace *>  * _Nullable places, NSError * _Nullable error))completion
@@ -184,6 +193,8 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 /// @name Media working queries
 ///---------------------------------------------------------------------------------------
 
+/// :nodoc:
+
 - (void)mediaForPlaceWithID:(NSString *)placeID
 	completion:(void (^)(NSArray<TKMedium *> * _Nullable media, NSError * _Nullable error))completion
 		 DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
@@ -191,6 +202,8 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 ///---------------------------------------------------------------------------------------
 /// @name Favorites
 ///---------------------------------------------------------------------------------------
+
+/// :nodoc:
 
 - (NSArray<NSString *> *)favoritePlaceIDs DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKSessionManager` instead.");
 
@@ -200,6 +213,8 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 ///---------------------------------------------------------------------------------------
 /// @name Map-related methods
 ///---------------------------------------------------------------------------------------
+
+/// :nodoc:
 
 - (NSArray<NSString *> *)quadKeysForMapRegion:(MKCoordinateRegion)region
 	DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKMapWorker` instead.");
@@ -218,6 +233,8 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 ///---------------------------------------------------------------------------------------
 /// @name Session-related methods
 ///---------------------------------------------------------------------------------------
+
+/// :nodoc:
 
 - (void)clearUserData DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKSessionManager` instead.");
 

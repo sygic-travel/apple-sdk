@@ -100,7 +100,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///----------------------
 
 /// Global identifier.
-@property (nonatomic, copy) NSString *ID NS_SWIFT_NAME(ID);
+@property (nonatomic, copy, readonly) NSString *ID NS_SWIFT_NAME(ID);
 
 /// Displayable name of the place, translated if possible. Example: _Buckingham Palace_.
 @property (nonatomic, copy) NSString *name;

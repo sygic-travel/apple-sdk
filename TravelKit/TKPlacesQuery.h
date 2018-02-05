@@ -24,7 +24,7 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 };
 
 /**
- Query object used for fetching specific collections of `TKPlace` objects.
+ A query object used for fetching specific collections of `TKPlace` objects.
  
  To perform regional queries, use either `quadKeys` (preferred) or `bounds` property to specify the area of your interest.
  */

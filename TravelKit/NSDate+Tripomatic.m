@@ -2,8 +2,8 @@
 //  NSDate+Tripomatic.m
 //  Tripomatic
 //
-//  Created by Ondra Beneš on 8/29/12.
-//  Copyright (c) 2012 Trinerdis. All rights reserved.
+//  Created by Michal Zelinka on 20/03/17.
+//  Copyright © 2017 Tripomatic. All rights reserved.
 //
 //  Implementation sources:
 //  https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/DataFormatting/Articles/dfDateFormatting10_4.html

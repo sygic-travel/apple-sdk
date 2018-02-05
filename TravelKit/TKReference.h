@@ -20,33 +20,33 @@ NS_ASSUME_NONNULL_BEGIN
 ///---------------------------------------------------------------------------------------
 
 /// Reference identifier.
-@property (atomic) NSUInteger ID NS_SWIFT_NAME(ID);
+@property (atomic, readonly) NSUInteger ID NS_SWIFT_NAME(ID);
 
 /// Reference title.
-@property (nonatomic, copy) NSString *title;
+@property (nonatomic, copy, readonly) NSString *title;
 
 /// Reference type.
-@property (nonatomic, copy) NSString *type;
+@property (nonatomic, copy, readonly) NSString *type;
 
 /// Reference supplier.
-@property (nonatomic, copy, nullable) NSString *supplier;
+@property (nonatomic, copy, nullable, readonly) NSString *supplier;
 
 /// Potential price of the Reference if applicable. Value in `USD`.
-@property (nonatomic, copy, nullable) NSNumber *price;
+@property (nonatomic, copy, nullable, readonly) NSNumber *price;
 
 /// Reference language.
 ///
 /// @note May be `nil` if generic. 
-@property (nonatomic, copy, nullable) NSString *languageID;
+@property (nonatomic, copy, nullable, readonly) NSString *languageID;
 
 /// Online `NSURL` of the Reference.
-@property (nonatomic, copy) NSURL *onlineURL;
+@property (nonatomic, copy, readonly) NSURL *onlineURL;
 
 /// Additional flags.
-@property (nonatomic, copy, nullable) NSArray<NSString *> *flags;
+@property (nonatomic, copy, nullable, readonly) NSArray<NSString *> *flags;
 
 /// Reference priority. Higher means more important.
-@property (atomic) NSInteger priority;
+@property (atomic, readonly) NSInteger priority;
 
 /// Name of a proposed icon for the Reference.
 @property (nonatomic, copy, readonly) NSString *iconName;

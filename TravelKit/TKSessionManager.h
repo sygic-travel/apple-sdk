@@ -35,6 +35,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Authentication
 ///---------------------------------------------------------------------------------------
 
+/// :nodoc:
+
 - (void)performDeviceSessionFetchWithSuccess:(void (^)(TKSession *))success
     failure:(void (^)(NSError *))failure;
 

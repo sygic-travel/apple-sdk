@@ -11,12 +11,15 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-///-----------------------------------------------------------------------------
-#pragma mark -
 #pragma mark Directions manager
-///-----------------------------------------------------------------------------
 
+///---------------------------------------------------------------------------------------
+/// @name Directions manager
+///---------------------------------------------------------------------------------------
 
+/**
+ A working manager used to handle direction requests.
+ */
 @interface TKDirectionsManager : NSObject
 
 /// Shared Directions providing instance.
@@ -26,6 +29,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
 #pragma mark Directions stuff
+
+///---------------------------------------------------------------------------------------
+/// @name Directions stuff
+///---------------------------------------------------------------------------------------
 
 /**
  The query method for getting exact Directions set. Falls back to estimated on failure.

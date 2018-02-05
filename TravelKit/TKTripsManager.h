@@ -11,6 +11,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/**
+ A working manager used to work with `Trip` objects.
+ */
 @interface TKTripsManager : NSObject
 
 #pragma mark - Shared instance
@@ -25,16 +28,35 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
-#pragma mark - Trip getters
-
 ///---------------------------------------------------------------------------------------
 /// @name Trips working queries
 ///---------------------------------------------------------------------------------------
 
+#pragma mark - Trip getters
+
+/**
+ Main getter method to get a `TKTrip` object.
+
+ @param tripID An ID of a Trip.
+ @return Fully-loaded `TKTrip` object.
+ */
 - (nullable TKTrip *)tripWithID:(NSString *)tripID;
+
+/**
+ Method used to get a light `TKTripInfo` object.
+
+ @param tripID An ID of a Trip.
+ @return `TKTripInfo` object.
+ */
 - (nullable TKTripInfo *)infoForTripWithID:(NSString *)tripID;
 
-// Trip getters
+#pragma mark - Trip collection getters
+
+/**
+ A method used to get all locally stored Trips.
+
+ @return An array of `TKTrip` objects.
+ */
 - (NSArray<TKTrip *> *)allTrips;
 
 // Filtered Trip getters
@@ -46,7 +68,14 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<TKTripInfo *> *)trashedTripInfos;
 - (NSArray<NSString *> *)yearsOfTrips;
 
-// Trip savers
+#pragma mark - Trip saving
+
+/**
+ A method used to save a locally created or modified Trip.
+
+ @param trip `TKTrip` instance to save.
+ @return A boolean value indicating whether the saving operation was successful.
+ */
 - (BOOL)saveTrip:(TKTrip *)trip;
 
 @end

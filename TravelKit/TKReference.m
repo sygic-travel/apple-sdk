@@ -59,20 +59,27 @@
 	return self;
 }
 
+- (instancetype)initWithReference:(TKReference *)ref
+{
+	if (self = [super init])
+	{
+		_ID = ref.ID;
+		_title = ref.title;
+		_type = ref.type;
+		_supplier = ref.supplier;
+		_price = ref.price;
+		_languageID = ref.languageID;
+		_onlineURL = ref.onlineURL;
+		_flags = ref.flags;
+		_priority = ref.priority;
+	}
+
+	return self;
+}
+
 - (id)copy
 {
-	TKReference *ref = [[self class] new];
-	ref.ID = _ID;
-	ref.title = _title;
-	ref.type = _type;
-	ref.supplier = _supplier;
-	ref.price = _price;
-	ref.languageID = _languageID;
-	ref.onlineURL = _onlineURL;
-	ref.flags = _flags;
-	ref.priority = _priority;
-
-	return ref;
+	return [[self.class alloc] initWithReference:self];
 }
 
 - (id)copyWithZone:(__unused NSZone *)zone

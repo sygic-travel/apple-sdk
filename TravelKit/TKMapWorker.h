@@ -40,6 +40,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Regions
 ///---------------------------------------------------------------------------------------
 
+/**
+ A helper method used to receive an approximated zoom level value for a given latitude span.
+
+ @param latitudeSpan A latitude span to calculate the approximate zoom level for.
+ @return Approximate zoom level value.
+ */
 + (double)approximateZoomLevelForLatitudeSpan:(CLLocationDegrees)latitudeSpan;
 
 
@@ -47,7 +53,20 @@ NS_ASSUME_NONNULL_BEGIN
 /// @name Polylines
 ///---------------------------------------------------------------------------------------
 
+/**
+ A function used to convert a polyline into `CLLocation` points.
+
+ @param polyline Given polyline string.
+ @return Calculated array of `CLLocation` points.
+ */
 + (NSArray<CLLocation *> *)pointsFromPolyline:(NSString *)polyline;
+
+/**
+ A function used to convert `CLLocation` points into a polyline.
+
+ @param points Given array of `CLLocation` points.
+ @return Calculated polyline string.
+ */
 + (NSString *)polylineFromPoints:(NSArray<CLLocation *> *)points;
 
 
