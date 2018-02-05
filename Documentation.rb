@@ -14,6 +14,12 @@ rescue LoadError => e
   exit 1
 end
 
+begin
+  throw "This version of Jazzy is not verified" if
+    Gem.loaded_specs["jazzy"].version < Gem::Version.create('0.9') ||
+    Gem.loaded_specs["jazzy"].version > Gem::Version.create('0.9.100')
+end
+
 FileUtils.cd(File.dirname(File.expand_path(__FILE__)))
 
 $moduleVersion = `cat TravelKit.xcodeproj/project.pbxproj | grep TK_BUNDLE_VERSION | uniq | sed s/[^0-9.]//g`.strip
@@ -33,7 +39,6 @@ $moduleVersion = `cat TravelKit.xcodeproj/project.pbxproj | grep TK_BUNDLE_VERSI
  --theme Documentation/theme \
  --min-acl public \
  --skip-undocumented \
- --no-download-badge \
  --output Documentation/html`
 
 `find Documentation/html -name *.html -exec \

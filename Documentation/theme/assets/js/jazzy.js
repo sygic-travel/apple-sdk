@@ -24,7 +24,7 @@ $(window).load(function() {
       (window.location.pathname.indexOf('.html') == -1))
     $('head style.nav-group-highlight-style').remove();
   $('li.nav-group-name[data-name="Guides"] li.nav-group-task[data-name="Introduction"]').remove();
-  var orderedPrefixes = ["TravelKit", "TKPlace", "TKTour", "TKMedium", "TKReference", "TKMap"].reverse();
+  var orderedPrefixes = ["TravelKit", "TKPlace", "TKTrip", "TKTour", "TKMedium", "TKReference", "TKMap"].reverse();
   $.each(orderedPrefixes, function(i,e){
     var elms = $('li.nav-group-task[data-name*="'+e+'"]').toArray().reverse();
     $.each(elms, function(i,e){
@@ -70,9 +70,18 @@ function refreshFixedHeader() {
 }
 
 function fillCodeBlocksWithLanguageTag() {
-  $.each($('.highlight.objective_c'), function(i,o){ o.innerHTML = '<div><span class="codeblock-inserted-heading">Objective-C</span></div>'+o.innerHTML });
-  $.each($('.highlight.swift'), function(i,o){ o.innerHTML = '<div><span class="codeblock-inserted-heading">Swift</span></div>'+o.innerHTML });
-  $.each($('.highlight.json'), function(i,o){ o.innerHTML = '<div><span class="codeblock-inserted-heading">JSON</span></div>'+o.innerHTML });
+  $.each($('.highlight.objective_c'), function(i,o){
+    if ($(o.parentNode).find('p.aside-title').length > 0) return;
+    o.innerHTML = '<div><span class="codeblock-inserted-heading">Objective-C</span></div>'+o.innerHTML
+  });
+  $.each($('.highlight.swift'), function(i,o){
+    if ($(o.parentNode).find('p.aside-title').length > 0) return;
+    o.innerHTML = '<div><span class="codeblock-inserted-heading">Swift</span></div>'+o.innerHTML
+  });
+  $.each($('.highlight.json'), function(i,o){
+    if ($(o.parentNode).find('p.aside-title').length > 0) return;
+    o.innerHTML = '<div><span class="codeblock-inserted-heading">JSON</span></div>'+o.innerHTML
+  });
 }
 
 $(window).resize(function() {
