@@ -8,12 +8,12 @@
 
 #import "TKToursQuery.h"
 
-@implementation TKViatorToursQuery
+@implementation TKToursViatorQuery
 
-- (void)setSortingType:(TKViatorToursQuerySorting)sortingType
+- (void)setSortingType:(TKToursViatorQuerySorting)sortingType
 {
 	_sortingType = sortingType;
-	_descendingSortingOrder = (sortingType != TKViatorToursQuerySortingPrice);
+	_descendingSortingOrder = (sortingType != TKToursViatorQuerySortingPrice);
 }
 
 - (NSUInteger)hash
@@ -30,7 +30,7 @@
 
 - (id)copy
 {
-	TKViatorToursQuery *query = [TKViatorToursQuery new];
+	TKToursViatorQuery *query = [TKToursViatorQuery new];
 
 	query.parentID = [_parentID copy];
 	query.sortingType = _sortingType;
@@ -58,12 +58,12 @@
 @end
 
 
-@implementation TKGYGToursQuery
+@implementation TKToursGYGQuery
 
-- (void)setSortingType:(TKGYGToursQuerySorting)sortingType
+- (void)setSortingType:(TKToursGYGQuerySorting)sortingType
 {
 	_sortingType = sortingType;
-	_descendingSortingOrder = (sortingType != TKGYGToursQuerySortingPrice && sortingType != TKGYGToursQuerySortingDuration);
+	_descendingSortingOrder = (sortingType != TKToursGYGQuerySortingPrice && sortingType != TKToursGYGQuerySortingDuration);
 }
 
 - (NSUInteger)hash
@@ -85,7 +85,7 @@
 
 - (id)copy
 {
-	TKGYGToursQuery *query = [TKGYGToursQuery new];
+	TKToursGYGQuery *query = [TKToursGYGQuery new];
 
 	query.parentID = [_parentID copy];
 	query.sortingType = _sortingType;

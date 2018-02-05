@@ -83,17 +83,17 @@ NSNumber *number = @1;
 /// @name Fast access properties
 ///---------------------------------------------------------------------------------------
 
-/// Returns `self` if of an `NSArray` type, otherwise `nil`.
-@property (nonatomic, readonly, nullable) NSArray *parsedArray;
+/// Returns `self` if of an `NSArray` kind, otherwise `nil`.
+@property (nonatomic, readonly, nullable) __kindof NSArray *parsedArray;
 
-/// Returns `self` if of an `NSDictionary` type, otherwise `nil`.
-@property (nonatomic, readonly, nullable) NSDictionary *parsedDictionary;
+/// Returns `self` if of an `NSDictionary` kind, otherwise `nil`.
+@property (nonatomic, readonly, nullable) __kindof NSDictionary *parsedDictionary;
 
-/// Returns `self` if of an non-empty `NSString` type, otherwise `nil`.
-@property (nonatomic, readonly, nullable) NSString *parsedString;
+/// Returns `self` if of an non-empty `NSString` kind, otherwise `nil`.
+@property (nonatomic, readonly, nullable) __kindof NSString *parsedString;
 
-/// Returns `self` if of an `NSNumber` instance, otherwise `nil`.
-@property (nonatomic, readonly, nullable) NSNumber *parsedNumber;
+/// Returns `self` if of an `NSNumber` kind, otherwise `nil`.
+@property (nonatomic, readonly, nullable) __kindof NSNumber *parsedNumber;
 
 ///---------------------------------------------------------------------------------------
 /// @name Enumeration/collection methods
@@ -105,7 +105,7 @@ NSNumber *number = @1;
  @param index Index in an array.
  @return Object at index `index` of the array or nil.
  */
-- (nullable id)objectAtIndexedSubscript:(NSUInteger)index;
+- (nullable __kindof NSObject *)objectAtIndexedSubscript:(NSUInteger)index;
 
 /**
  Method for quick obtaining of dictionary members.
@@ -113,7 +113,7 @@ NSNumber *number = @1;
  @param key Key in the dictionary.
  @return Object for the key `key` of the dictionary or nil.
  */
-- (nullable id)objectForKeyedSubscript:(nonnull id)key;
+- (nullable __kindof NSObject *)objectForKeyedSubscript:(nonnull id)key;
 
 @end
 

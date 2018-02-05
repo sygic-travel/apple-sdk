@@ -87,7 +87,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Trip model.
+ @brief The primary Trip model to work with.
+
+ You may work with this object freely. Once you edit its contents according to needs, simply saving the trip
+ via `-[TKTripsManager saveTrip:]` will store it locally and eventually synchronize after a synchronization
+ loop occurs.
  */
 @interface TKTrip : NSObject
 
@@ -145,7 +149,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Trip Info model
+ Lightweight, read-only Trip Info model. Useful for listings, collections and similar stuff.
  */
 @interface TKTripInfo : NSObject
 
@@ -186,7 +190,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 
 /**
- Trip Conflict model
+ @brief Trip Conflict model.
 
  This object is used to specify the user's decision whether to keep a local (on device) version of a particular
  trip or prefer the the remote (server) version contributed in the meantime.

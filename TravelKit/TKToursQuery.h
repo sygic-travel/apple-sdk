@@ -19,27 +19,27 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Query enum declaring the sorting option for the Viator tour results returned.
  */
-typedef NS_ENUM(NSUInteger, TKViatorToursQuerySorting) {
+typedef NS_ENUM(NSUInteger, TKToursViatorQuerySorting) {
 	/// Get results sorted by rating. Descending by default.
-	TKViatorToursQuerySortingRating      = 0,
+	TKToursViatorQuerySortingRating      = 0,
 	/// Get results sorted by price. Ascending by default.
-	TKViatorToursQuerySortingPrice       = 1,
+	TKToursViatorQuerySortingPrice       = 1,
 	/// Get results sorted by Top selling items. Descending by default.
-	TKViatorToursQuerySortingTopSellers  = 2,
+	TKToursViatorQuerySortingTopSellers  = 2,
 };
 
 /**
  Query enum declaring the sorting option for the GetYourGuide tour results returned.
  */
-typedef NS_ENUM(NSUInteger, TKGYGToursQuerySorting) {
+typedef NS_ENUM(NSUInteger, TKToursGYGQuerySorting) {
 	/// Get results sorted by rating. Descending by default.
-	TKGYGToursQuerySortingRating      = 0,
+	TKToursGYGQuerySortingRating      = 0,
 	/// Get results sorted by price. Ascending by default.
-	TKGYGToursQuerySortingPrice       = 1,
+	TKToursGYGQuerySortingPrice       = 1,
 	/// Get results sorted by Top selling items. Descending by default.
-	TKGYGToursQuerySortingPopularity  = 2,
+	TKToursGYGQuerySortingPopularity  = 2,
 	/// Get results sorted by duration. Ascending by default.
-	TKGYGToursQuerySortingDuration    = 3,
+	TKToursGYGQuerySortingDuration    = 3,
 };
 
 
@@ -49,7 +49,7 @@ typedef NS_ENUM(NSUInteger, TKGYGToursQuerySorting) {
 /**
  Query object used for fetching specific collections of `TKTour` objects from Viator.
  */
-@interface TKViatorToursQuery : NSObject <NSCopying, NSMutableCopying>
+@interface TKToursViatorQuery : NSObject <NSCopying, NSMutableCopying>
 
 /// Desired identifier of parent node. _Example: `city:1`_
 ///
@@ -60,8 +60,8 @@ typedef NS_ENUM(NSUInteger, TKGYGToursQuerySorting) {
 ///
 /// @note Changing this property may change current `descendingSortingOrder` setting.
 ///
-/// @see `TKToursQuerySorting`
-@property (nonatomic) TKViatorToursQuerySorting sortingType;
+/// @see `TKToursViatorQuerySorting`
+@property (nonatomic) TKToursViatorQuerySorting sortingType;
 
 /// Declaration of descending sorting order.
 ///
@@ -82,7 +82,7 @@ typedef NS_ENUM(NSUInteger, TKGYGToursQuerySorting) {
 /**
  Query object used for fetching specific collections of `TKTour` objects from GetYourGuide.
  */
-@interface TKGYGToursQuery : NSObject <NSCopying, NSMutableCopying>
+@interface TKToursGYGQuery : NSObject <NSCopying, NSMutableCopying>
 
 /// Desired identifier of parent node. _Example: `city:1`_
 ///
@@ -93,8 +93,8 @@ typedef NS_ENUM(NSUInteger, TKGYGToursQuerySorting) {
 ///
 /// @note Changing this property may change current `descendingSortingOrder` setting.
 ///
-/// @see `TKToursQuerySorting`
-@property (nonatomic) TKGYGToursQuerySorting sortingType;
+/// @see `TKToursGYGQuerySorting`
+@property (nonatomic) TKToursGYGQuerySorting sortingType;
 
 /// Declaration of descending sorting order.
 ///

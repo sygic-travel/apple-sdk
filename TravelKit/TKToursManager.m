@@ -24,7 +24,7 @@
 	return shared;
 }
 
-- (void)toursForViatorQuery:(TKViatorToursQuery *)query
+- (void)toursForViatorQuery:(TKToursViatorQuery *)query
                  completion:(void (^)(NSArray<TKTour *> * _Nullable, NSError * _Nullable))completion
 {
 	static NSCache<NSNumber *, NSArray<TKTour *> *> *toursCache = nil;
@@ -57,7 +57,7 @@
 	}] start];
 }
 
-- (void)toursForGYGQuery:(TKGYGToursQuery *)query
+- (void)toursForGYGQuery:(TKToursGYGQuery *)query
               completion:(void (^)(NSArray<TKTour *> * _Nullable, NSError * _Nullable))completion
 {
 	static NSCache<NSNumber *, NSArray<TKTour *> *> *toursCache = nil;

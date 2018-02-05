@@ -1,5 +1,5 @@
 //
-//  TKPlacesManager+Private.h
+//  TKPlacesManager.h
 //  TravelKit
 //
 //  Created by Michal Zelinka on 23/05/17.

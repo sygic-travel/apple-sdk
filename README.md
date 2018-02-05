@@ -106,10 +106,11 @@ Class               | Description
 :-------------------|:---------------------
 **`TravelKit`**       | Singleton instance for fetching data
 **`TKPlace`**         | Basic `Place` entity
-**`TKPlaceDetail`**   | Detailed object including additional `Place` properties
 **`TKPlacesQuery`**   | Entity used when querying for `Places`
+**`TKTrip`**          | Primary `Trip` entity with detailed properties 
 **`TKTour`**          | Basic `Tour` entity
-**`TKToursQuery`**    | Entity used when querying for `Tours`
+**`TKToursViatorQuery`**    | Entity used when querying for `Tours` from _Viator_
+**`TKToursGYGQuery`**    | Entity used when querying for `Tours` from _GetYourGuide_
 **`TKMedium`**        | Basic `Medium` entity
 **`TKReference`**     | External `Reference` link
 

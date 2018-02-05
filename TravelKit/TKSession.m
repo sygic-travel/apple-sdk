@@ -38,12 +38,12 @@
 		NSNumber *refresh = [dictionary[@"refreshDate"] parsedNumber];
 		NSNumber *expiration = [dictionary[@"expirationDate"] parsedNumber];
 
-		if (refresh) _refreshDate = [NSDate dateWithTimeIntervalSince1970:refresh.doubleValue];
-		if (expiration) _expirationDate = [NSDate dateWithTimeIntervalSince1970:expiration.doubleValue];
+		if (refresh) _refreshDate = [NSDate dateWithTimeIntervalSince1970:floor(refresh.doubleValue)];
+		if (expiration) _expirationDate = [NSDate dateWithTimeIntervalSince1970:floor(expiration.doubleValue)];
 		else {
 			expiration = [dictionary[@"expires_in"] parsedNumber];
 			NSTimeInterval refreshInterval = floor(expiration.doubleValue * 0.8);
-			NSTimeInterval expiryInterval = expiration.doubleValue;
+			NSTimeInterval expiryInterval = floor(expiration.doubleValue);
 			if (expiration) _refreshDate = [[NSDate new] dateByAddingTimeInterval:refreshInterval];
 			if (expiration) _expirationDate = [[NSDate new] dateByAddingTimeInterval:expiryInterval];
 		}

@@ -201,6 +201,11 @@
 	}
 }
 
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"<Trip Day Item %p | item ID: %@>", self, _itemID];
+}
+
 @end
 
 
@@ -317,7 +322,6 @@
 
 	index = MIN(index, newItems.count);
 	[newItems insertObject:[TKTripDayItem itemForItemWithID:itemID] atIndex:index];
-
 	_items = newItems;
 }
 
@@ -330,7 +334,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<Trip day | items: %tu>", _items.count];
+	return [NSString stringWithFormat:@"<Trip Day %p | items: %tu>", self, _items.count];
 }
 
 @end
@@ -585,6 +589,7 @@
 	for (TKTripDay *day in _days.copy)
 		[dayDictsArray addObject:[day asRequestDictionary]];
 	dict[@"days"] = dayDictsArray;
+	dict[@"destinations"] = _destinationIDs ?: @[ ];
 
 	return dict;
 }

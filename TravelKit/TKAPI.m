@@ -836,7 +836,7 @@
 ////////////////////
 
 
-- (instancetype)initAsViatorToursRequestForQuery:(TKViatorToursQuery *)query
+- (instancetype)initAsViatorToursRequestForQuery:(TKToursViatorQuery *)query
 	success:(void (^)(NSArray<TKTour *> *))success failure:(TKAPIFailureBlock)failure
 {
 	if (self = [super init])
@@ -857,8 +857,8 @@
 		if (query.sortingType)
 		{
 			NSString *type = @"rating";
-			if (query.sortingType == TKViatorToursQuerySortingPrice) type = @"price";
-			else if (query.sortingType == TKViatorToursQuerySortingTopSellers) type = @"top_sellers";
+			if (query.sortingType == TKToursViatorQuerySortingPrice) type = @"price";
+			else if (query.sortingType == TKToursViatorQuerySortingTopSellers) type = @"top_sellers";
 			queryDict[@"sort_by"] = type;
 		}
 
@@ -900,7 +900,7 @@
 	return self;
 }
 
-- (instancetype)initAsGYGToursRequestForQuery:(TKGYGToursQuery *)query
+- (instancetype)initAsGYGToursRequestForQuery:(TKToursGYGQuery *)query
 	success:(void (^)(NSArray<TKTour *> *))success failure:(TKAPIFailureBlock)failure
 {
 	if (self = [super init])
@@ -921,9 +921,9 @@
 		if (query.sortingType)
 		{
 			NSString *type = @"rating";
-			if (query.sortingType == TKGYGToursQuerySortingPrice) type = @"price";
-			else if (query.sortingType == TKGYGToursQuerySortingPopularity) type = @"popularity";
-			else if (query.sortingType == TKGYGToursQuerySortingDuration) type = @"duration";
+			if (query.sortingType == TKToursGYGQuerySortingPrice) type = @"price";
+			else if (query.sortingType == TKToursGYGQuerySortingPopularity) type = @"popularity";
+			else if (query.sortingType == TKToursGYGQuerySortingDuration) type = @"duration";
 			queryDict[@"sort_by"] = type;
 		}
 
