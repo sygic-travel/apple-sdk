@@ -9,7 +9,6 @@
 #import "TKSessionManager+Private.h"
 #import "TKDatabaseManager+Private.h"
 #import "TKEventsManager+Private.h"
-#import "TKUserSettings+Private.h"
 #import "TKAPI+Private.h"
 #import "TKSSOAPI+Private.h"
 
@@ -19,11 +18,21 @@
 #import "NSObject+Parsing.h"
 
 
+// Session stuff
+NSString * const TKSettingsKeyUniqueID = @"UniqueID";
+NSString * const TKSettingsKeySession = @"Session";
+NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
+
+// App-wide flags
+NSString * const TKSettingsKeyLaunchNumber = @"LaunchNumber";
+NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
+
+
 @interface TKSessionManager ()
 
 @property (nonatomic, strong) TKDatabaseManager *database;
 @property (nonatomic, strong) TKEventsManager *events;
-@property (nonatomic, strong) TKUserSettings *settings;
+@property (nonatomic, strong) NSUserDefaults *defaults;
 
 @end
 
@@ -50,7 +59,9 @@
 
 		_database = [TKDatabaseManager sharedManager];
 		_events = [TKEventsManager sharedManager];
-		_settings = [TKUserSettings sharedSettings];
+
+		// TODO: Check the resulting path on different platforms
+		_defaults = [[NSUserDefaults alloc] initWithSuiteName:@"com.tripomatic.travelkit"];
 
 		[self loadState];
 
@@ -60,6 +71,11 @@
 	return self;
 }
 
+- (void)dealloc
+{
+	[self saveState];
+}
+
 
 #pragma mark -
 #pragma mark Generic methods
@@ -67,16 +83,39 @@
 
 - (void)loadState
 {
-	_session = [[TKSession alloc] initFromDictionary:_settings.session];
+	_changesTimestamp = [_defaults doubleForKey:TKSettingsKeyChangesTimestamp];
+	_launchNumber = [_defaults integerForKey:TKSettingsKeyLaunchNumber] + 1;
+	_installationDate = [_defaults objectForKey:TKSettingsKeyIntallationDate];
+	_uniqueID = [_defaults stringForKey:TKSettingsKeyUniqueID];
+
+	// Installation date
+
+	if (!_installationDate)
+		_installationDate = [NSDate new];
+
+	// Unique ID
+
+	if (!_uniqueID)
+		_uniqueID = [[NSUUID UUID] UUIDString];
+
+	// Session
+
+	NSDictionary *session = [_defaults objectForKey:TKSettingsKeySession];
+	_session = [[TKSession alloc] initFromDictionary:session];
 
 	[TKAPI sharedAPI].accessToken = _session.accessToken;
 }
 
 - (void)saveState
 {
-	_settings.session = [_session asDictionary];
+	[_defaults setObject:_uniqueID forKey:TKSettingsKeyUniqueID];
+	[_defaults setObject:[_session asDictionary] forKey:TKSettingsKeySession];
 
-	[_settings commit];
+	[_defaults setDouble:_changesTimestamp forKey:TKSettingsKeyChangesTimestamp];
+	[_defaults setInteger:_launchNumber forKey:TKSettingsKeyLaunchNumber];
+	[_defaults setObject:_installationDate forKey:TKSettingsKeyIntallationDate];
+
+	[_defaults synchronize];
 }
 
 - (void)clearUserData
@@ -88,7 +127,10 @@
 	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableTripDayItems];
 
 	// Reset User settings
-	[[TKUserSettings sharedSettings] reset];
+	// TODO: Check/fix me?
+	[_defaults removePersistentDomainForName:@"com.tripomatic.travelkit"];
+//	[_defaults removeSuiteNamed:@"com.tripomatic.travelkit"];
+	[_defaults synchronize];
 
 	// Reload Session state
 	[self loadState];
@@ -112,6 +154,13 @@
 
 	if (_events.sessionUpdateHandler)
 		_events.sessionUpdateHandler(session);
+}
+
+- (void)setChangesTimestamp:(NSTimeInterval)changesTimestamp
+{
+	_changesTimestamp = changesTimestamp;
+
+	[self saveState];
 }
 
 - (void)checkSession

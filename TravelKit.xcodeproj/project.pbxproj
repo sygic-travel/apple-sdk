@@ -58,12 +58,6 @@
 		D625DEB91FA9F25500008617 /* TKSessionManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D625DEB81FA9F25400008617 /* TKSessionManager+Private.h */; };
 		D635D7961FB20BF700A95868 /* TKSessionManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D625DEB81FA9F25400008617 /* TKSessionManager+Private.h */; };
 		D635D7971FB20BF700A95868 /* TKSessionManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D625DEB81FA9F25400008617 /* TKSessionManager+Private.h */; };
-		D645398E1F8CB94100C3683D /* TKUserSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = D645398C1F8CB94100C3683D /* TKUserSettings.m */; };
-		D645398F1F8CB94100C3683D /* TKUserSettings+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D645398D1F8CB94100C3683D /* TKUserSettings+Private.h */; };
-		D64539901F8CC08A00C3683D /* TKUserSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = D645398C1F8CB94100C3683D /* TKUserSettings.m */; };
-		D64539911F8CC08A00C3683D /* TKUserSettings.m in Sources */ = {isa = PBXBuildFile; fileRef = D645398C1F8CB94100C3683D /* TKUserSettings.m */; };
-		D64539921F8CD5B400C3683D /* TKUserSettings+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D645398D1F8CB94100C3683D /* TKUserSettings+Private.h */; };
-		D64539931F8CD5B500C3683D /* TKUserSettings+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D645398D1F8CB94100C3683D /* TKUserSettings+Private.h */; };
 		D649BAA11ED6E23D003EF406 /* TravelKit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */; };
 		D64B13961EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */; };
 		D64B13971EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */ = {isa = PBXBuildFile; fileRef = D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */; };
@@ -275,8 +269,6 @@
 		D61B92671ED47B6100645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		D61B92691ED4803D00645489 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
 		D625DEB81FA9F25400008617 /* TKSessionManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKSessionManager+Private.h"; sourceTree = "<group>"; };
-		D645398C1F8CB94100C3683D /* TKUserSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKUserSettings.m; sourceTree = "<group>"; };
-		D645398D1F8CB94100C3683D /* TKUserSettings+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKUserSettings+Private.h"; sourceTree = "<group>"; };
 		D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TravelKit-Prefix.pch"; sourceTree = "<group>"; };
 		D64B612620064D940098ADDF /* TKDirectionsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKDirectionsManager.h; sourceTree = "<group>"; };
 		D64B612720064D940098ADDF /* TKDirectionsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDirectionsManager.m; sourceTree = "<group>"; };
@@ -403,8 +395,6 @@
 				D68E94781F05354E009E2C9C /* TKSessionManager.h */,
 				D68E94791F05354E009E2C9C /* TKSessionManager.m */,
 				D625DEB81FA9F25400008617 /* TKSessionManager+Private.h */,
-				D645398C1F8CB94100C3683D /* TKUserSettings.m */,
-				D645398D1F8CB94100C3683D /* TKUserSettings+Private.h */,
 			);
 			name = Session;
 			sourceTree = "<group>";
@@ -626,7 +616,6 @@
 				D6B2A1451E530B18005509E8 /* TravelKit.h in Headers */,
 				D6B2A1431E530B11005509E8 /* TKReference.h in Headers */,
 				D6E3B7BC1FA0A31700E1CCAC /* TKTrip.h in Headers */,
-				D64539931F8CD5B500C3683D /* TKUserSettings+Private.h in Headers */,
 				D6B2A13B1E530B11005509E8 /* TKMapRegion.h in Headers */,
 				D698319E1EF3EB79002776BE /* TKTour+Private.h in Headers */,
 				D6B2A13F1E530B11005509E8 /* TKPlace.h in Headers */,
@@ -677,7 +666,6 @@
 				D6B2A1701E53109B005509E8 /* TravelKit.h in Headers */,
 				D6B2A16E1E531097005509E8 /* TKReference.h in Headers */,
 				D6E3B7B41FA0A00800E1CCAC /* TKTrip.h in Headers */,
-				D645398F1F8CB94100C3683D /* TKUserSettings+Private.h in Headers */,
 				D6B2A1661E531097005509E8 /* TKMapRegion.h in Headers */,
 				D698319C1EF3EB79002776BE /* TKTour+Private.h in Headers */,
 				D64B612820064D940098ADDF /* TKDirectionsManager.h in Headers */,
@@ -729,7 +717,6 @@
 				D6C3D0721E4DE7B400EBB54F /* TKAPI+Private.h in Headers */,
 				D6C3D0661E4DE29C00EBB54F /* NSObject+Parsing.h in Headers */,
 				D6E3B7B81FA0A31600E1CCAC /* TKTrip.h in Headers */,
-				D64539921F8CD5B400C3683D /* TKUserSettings+Private.h in Headers */,
 				D698319D1EF3EB79002776BE /* TKTour+Private.h in Headers */,
 				D6C3D0511E4DD36200EBB54F /* TravelKit.h in Headers */,
 				D6C3D05A1E4DDAE500EBB54F /* TKPlace.h in Headers */,
@@ -924,7 +911,6 @@
 				D64B612B200651C80098ADDF /* TKDirectionsManager.m in Sources */,
 				D6F0E4711ED6EF5800A0D3D5 /* FMDatabase.m in Sources */,
 				D6122CDD1FA712D400791EAB /* TKTripsManager.m in Sources */,
-				D64539911F8CC08A00C3683D /* TKUserSettings.m in Sources */,
 				D6E3B7CC1FA226E200E1CCAC /* NSDate+Tripomatic.m in Sources */,
 				D6F0E48C1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */,
 				D6F0E4771ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */,
@@ -963,7 +949,6 @@
 			files = (
 				D6F0E46F1ED6EF5800A0D3D5 /* FMDatabase.m in Sources */,
 				D6122CDB1FA712D300791EAB /* TKTripsManager.m in Sources */,
-				D645398E1F8CB94100C3683D /* TKUserSettings.m in Sources */,
 				D6E3B7C21FA1B7EF00E1CCAC /* NSDate+Tripomatic.m in Sources */,
 				D6F0E48A1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */,
 				D6F0E4751ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */,
@@ -1004,7 +989,6 @@
 				D64B612A200651C70098ADDF /* TKDirectionsManager.m in Sources */,
 				D6F0E4701ED6EF5800A0D3D5 /* FMDatabase.m in Sources */,
 				D6122CDC1FA712D300791EAB /* TKTripsManager.m in Sources */,
-				D64539901F8CC08A00C3683D /* TKUserSettings.m in Sources */,
 				D6E3B7CB1FA226E200E1CCAC /* NSDate+Tripomatic.m in Sources */,
 				D6F0E48B1ED6EF5800A0D3D5 /* FMResultSet.m in Sources */,
 				D6F0E4761ED6EF5800A0D3D5 /* FMDatabaseAdditions.m in Sources */,

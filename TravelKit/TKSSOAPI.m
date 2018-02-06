@@ -7,7 +7,7 @@
 //
 
 #import "TKSSOAPI+Private.h"
-#import "TKUserSettings+Private.h"
+#import "TKSessionManager+Private.h"
 #import "NSObject+Parsing.h"
 #import "Foundation+TravelKit.h"
 
@@ -166,7 +166,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSDictionary *post = @{
 		@"client_id": tkAPIClientID,
 		@"grant_type": @"client_credentials",
-		@"device_code": [TKUserSettings sharedSettings].uniqueID,
+		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
 	};
 
@@ -196,7 +196,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSDictionary *post = @{
 		@"client_id": tkAPIClientID,
 		@"grant_type": @"refresh_token",
-		@"device_code": [TKUserSettings sharedSettings].uniqueID,
+		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
 		@"refresh_token": objectOrNull(refreshToken),
 	};
@@ -229,7 +229,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 		@"grant_type": @"password",
 		@"username": objectOrNull(username),
 		@"password": objectOrNull(password),
-		@"device_code": [TKUserSettings sharedSettings].uniqueID,
+		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
 	};
 
@@ -263,7 +263,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 		@"client_id": tkAPIClientID,
 		@"grant_type": objectOrNull(type),
 		@"access_token": objectOrNull(accessToken),
-		@"device_code": [TKUserSettings sharedSettings].uniqueID,
+		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
 	};
 
@@ -294,7 +294,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 		@"client_id": tkAPIClientID,
 		@"grant_type": @"external",
 		@"token": objectOrNull(jwtToken),
-		@"device_code": [TKUserSettings sharedSettings].uniqueID,
+		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
 	};
 
@@ -325,7 +325,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 		@"client_id": @"sygictravel_ios",
 		@"grant_type": @"magic_link",
 		@"token": objectOrNull(magicLink),
-		@"device_code": [TKUserSettings sharedSettings].uniqueID,
+		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": @"ios",
 	};
 
@@ -356,7 +356,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 
 	NSDictionary *post = @{
 		@"client_id": tkAPIClientID,
-		@"device_code": [TKUserSettings sharedSettings].uniqueID,
+		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
 		@"username" : objectOrNull(email),
 		@"password" : objectOrNull(password),

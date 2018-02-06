@@ -11,7 +11,6 @@
 #import "TKEventsManager.h"
 #import "TKTripsManager+Private.h"
 #import "TKSessionManager+Private.h"
-#import "TKUserSettings+Private.h"
 #import "Foundation+TravelKit.h"
 #import "NSDate+Tripomatic.h"
 #import "NSObject+Parsing.h"
@@ -278,7 +277,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	{
 		NSDate *since = nil;
 
-		NSTimeInterval changesTimestamp = [TKUserSettings sharedSettings].changesTimestamp;
+		NSTimeInterval changesTimestamp = _session.changesTimestamp;
 		if (changesTimestamp > 0) since = [NSDate dateWithTimeIntervalSince1970:changesTimestamp];
 
 		TKAPIRequest *listRequest = [[TKAPIRequest alloc] initAsChangesRequestSince:since
@@ -623,10 +622,8 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	_lastSynchronization = [NSDate timeIntervalSinceReferenceDate];
 
 	// Update Changes timestamp in User settings
-	if (_result.success) {
-		[TKUserSettings sharedSettings].changesTimestamp = _result.changesTimestamp;
-		[[TKUserSettings sharedSettings] commit];
-	}
+	if (_result.success)
+		_session.changesTimestamp = _result.changesTimestamp;
 
 	SyncLog(@"Synchronization finished");
 
