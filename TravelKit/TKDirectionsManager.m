@@ -94,6 +94,9 @@
 			if (!directionsSet.pedestrianDirections.count)
 				directionsSet.pedestrianDirections = estimated.pedestrianDirections;
 
+			if (!directionsSet.bikeDirections.count)
+				directionsSet.bikeDirections = estimated.bikeDirections;
+
 			if (!directionsSet.carDirections.count)
 				directionsSet.carDirections = estimated.carDirections;
 
@@ -184,7 +187,7 @@
 	direction.mode = TKDirectionTransportModePlane;
 	direction.estimated = YES;
 	direction.distance = set.airDistance;
-	direction.duration = round(direction.distance / 222); // 800 km/h
+	direction.duration = round(direction.distance / 250 + 40*60); // 900 km/h + 40 min dispatch
 	direction.avoidOption = query.avoidOption;
 	direction.waypointsPolyline = query.waypointsPolyline;
 

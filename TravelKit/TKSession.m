@@ -57,8 +57,8 @@
 
 - (BOOL)isExpiring
 {
-	if (_refreshDate) return [_refreshDate timeIntervalSinceNow] < 0;
-	if (_expirationDate) return [_expirationDate timeIntervalSinceNow] < 3600;
+	if (_refreshDate) return [_refreshDate timeIntervalSinceNow] < 60;
+	if (_expirationDate) return [_expirationDate timeIntervalSinceNow] < 60*60;
 	return YES;
 }
 
