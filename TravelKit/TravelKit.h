@@ -29,6 +29,7 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKPlacesManager.h>
 #import <TravelKit/TKToursManager.h>
 #import <TravelKit/TKTripsManager.h>
+#import <TravelKit/TKFavoritesManager.h>
 #import <TravelKit/TKSessionManager.h>
 #import <TravelKit/TKSynchronizationManager.h>
 #import <TravelKit/TKDirectionsManager.h>
@@ -133,6 +134,11 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  Shared Trips Manager instance to provide Trips-related stuff.
  */
 @property (nonatomic, strong, readonly) TKTripsManager *trips;
+
+/**
+ Shared Trips Manager instance to provide Trips-related stuff.
+ */
+@property (nonatomic, strong, readonly) TKFavoritesManager *favorites;
 
 /**
  Shared Session Manager instance to provide Session-related stuff.

@@ -95,6 +95,7 @@
 		__tours = [TKToursManager sharedManager];
 		_trips = [TKTripsManager sharedManager];
 		_session = [TKSessionManager sharedManager];
+		_favorites = [TKFavoritesManager sharedManager];
 		_sync = [TKSynchronizationManager sharedManager];
 		__directions = [TKDirectionsManager sharedManager];
 		__events = [TKEventsManager sharedManager];
@@ -112,7 +113,6 @@
 
 @implementation TravelKit (NSDeprecated)
 
-#pragma mark -
 #pragma mark Session-related methods
 
 
@@ -122,7 +122,6 @@
 }
 
 
-#pragma mark -
 #pragma mark Places
 
 
@@ -151,22 +150,20 @@
 }
 
 
-#pragma mark -
 #pragma mark Favorites
 
 
 - (NSArray<NSString *> *)favoritePlaceIDs
 {
-	return [[TKSessionManager sharedManager] favoritePlaceIDs];
+	return [_favorites favoritePlaceIDs];
 }
 
 - (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
 {
-	[[TKSessionManager sharedManager] updateFavoritePlaceID:favoriteID setFavorite:favorite];
+	[_favorites updateFavoritePlaceID:favoriteID setFavorite:favorite];
 }
 
 
-#pragma mark -
 #pragma mark Map
 
 

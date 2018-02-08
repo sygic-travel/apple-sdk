@@ -66,7 +66,7 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
 @property (nonatomic, strong, readonly) CLLocation *endLocation;
 
 @property (atomic) TKTransportAvoidOption avoidOption;
-@property (nonatomic, copy) NSString *waypointsPolyline;
+@property (nonatomic, copy) NSArray<CLLocation *> *waypoints;
 
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
@@ -117,7 +117,7 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
 @property (nonatomic, copy) NSString *polyline;
 
 @property (atomic) TKTransportAvoidOption avoidOption;
-@property (nonatomic, copy) NSString *waypointsPolyline;
+@property (nonatomic, copy) NSArray<CLLocation *> *waypoints;
 
 @end
 

@@ -39,8 +39,8 @@
 - (void)performUserCredentialsAuthWithUsername:(NSString *)username password:(NSString *)password
     success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure;
 
-- (void)performUserSocialAuthWithFacebookToken:(NSString *)facebookToken googleToken:(NSString *)googleToken
-    success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure;
+- (void)performUserSocialAuthWithFacebookAccessToken:(NSString *)facebookAccessToken
+	googleIDToken:(NSString *)googleIDToken success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure;
 
 - (void)performJWTAuthWithToken:(NSString *)jwtToken
     success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure;

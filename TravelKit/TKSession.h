@@ -12,9 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TKSession : NSObject
 
-@property (nonatomic, copy) NSString *accessToken;
-@property (nonatomic, copy) NSString *refreshToken;
-@property (nonatomic, strong) NSDate *expirationDate;
+@property (nonatomic, copy, readonly) NSString *accessToken;
+@property (nonatomic, copy, readonly) NSString *refreshToken;
+@property (nonatomic, strong, readonly) NSDate *expirationDate;
 
 @property (atomic, readonly) BOOL isExpiring;
 

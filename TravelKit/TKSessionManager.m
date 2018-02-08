@@ -231,11 +231,11 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 	} failure:failure];
 }
 
-- (void)performUserSocialAuthWithFacebookToken:(NSString *)facebookToken
+- (void)performUserSocialAuthWithFacebookAccessToken:(NSString *)facebookAccessToken
 	success:(void (^)(TKSession * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
 {
-	[[TKSSOAPI sharedAPI] performUserSocialAuthWithFacebookToken:facebookToken
-	googleToken:nil success:^(TKSession *session) {
+	[[TKSSOAPI sharedAPI] performUserSocialAuthWithFacebookAccessToken:facebookAccessToken
+	googleIDToken:nil success:^(TKSession *session) {
 
 		self.session = session;
 
@@ -244,11 +244,11 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 	} failure:failure];
 }
 
-- (void)performUserSocialAuthWithGoogleToken:(NSString *)googleToken
+- (void)performUserSocialAuthWithGoogleIDToken:(NSString *)googleIDToken
 	success:(void (^)(TKSession * _Nonnull))success failure:(void (^)(NSError * _Nonnull))failure
 {
-	[[TKSSOAPI sharedAPI] performUserSocialAuthWithFacebookToken:nil
-	googleToken:googleToken success:^(TKSession *session) {
+	[[TKSSOAPI sharedAPI] performUserSocialAuthWithFacebookAccessToken:nil
+	googleIDToken:googleIDToken success:^(TKSession *session) {
 
 		self.session = session;
 
@@ -312,74 +312,6 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 	[self clearUserData];
 
 	if (completion) completion();
-}
-
-
-#pragma mark -
-#pragma mark Favorites
-
-
-- (NSArray<NSString *> *)favoritePlaceIDs
-{
-	NSArray *results = [_database runQuery:
-		@"SELECT id FROM %@ WHERE state >= 0;" tableName:kTKDatabaseTableFavorites];
-
-	return [results mappedArrayUsingBlock:^NSString *(NSDictionary *res) {
-		return [res[@"id"] parsedString];
-	}];
-}
-
-- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
-{
-	if (!favoriteID) return;
-
-	if (favorite)
-		[_database runQuery:@"INSERT OR IGNORE INTO %@ VALUES (?, 1);"
-			tableName:kTKDatabaseTableFavorites data:@[ favoriteID ]];
-	else
-		[_database runQuery:@"UPDATE %@ SET state = -1 WHERE id = ?;"
-			tableName:kTKDatabaseTableFavorites data:@[ favoriteID ]];
-}
-
-- (NSDictionary<NSString *,NSNumber *> *)favoritePlaceIDsToSynchronize
-{
-	NSArray<NSDictionary *> *results = [_database runQuery:
-		@"SELECT * FROM %@ WHERE state != 0;" tableName:kTKDatabaseTableFavorites];
-
-	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:results.count];
-
-	for (NSDictionary *f in results)
-	{
-		NSString *ID = [f[@"id"] parsedString];
-		NSNumber *state = [f[@"state"] parsedNumber];
-
-		if (!ID || ABS(state.integerValue) != 1) continue;
-
-		dict[ID] = state;
-	}
-
-	return dict;
-}
-
-- (void)storeServerFavoriteIDsAdded:(NSArray<NSString *> *)addedIDs removed:(NSArray<NSString *> *)removedIDs
-{
-	NSString *(^joinIDs)(NSArray<NSString *> *) = ^NSString *(NSArray<NSString *> *arr) {
-		if (!arr.count) return nil;
-		return [NSString stringWithFormat:@"'%@'", [arr componentsJoinedByString:@"','"]];
-	};
-
-	NSString *addString = joinIDs(addedIDs);
-	NSString *remString = joinIDs(removedIDs);
-
-	if (addString) [_database runQuery:[NSString stringWithFormat:
-		@"UPDATE %@ SET state = 0 WHERE id IN (%@);", kTKDatabaseTableFavorites, addString]];
-
-	for (NSString *ID in addedIDs)
-		[_database runQuery:@"INSERT OR IGNORE INTO %@ (id) VALUES (?);"
-			tableName:kTKDatabaseTableFavorites data:@[ ID ]];
-
-	if (remString) [_database runQuery:[NSString stringWithFormat:
-		@"DELETE FROM %@ WHERE id IN (%@);", kTKDatabaseTableFavorites, remString]];
 }
 
 @end

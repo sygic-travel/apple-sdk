@@ -1089,11 +1089,10 @@
 			@"lng": @(query.endLocation.coordinate.longitude)
 		} : [NSNull null];
 
-		if (query.waypointsPolyline) {
-			NSArray<CLLocation *> *points = [TKMapWorker pointsFromPolyline:query.waypointsPolyline];
-			NSMutableArray *pointDicts = [NSMutableArray arrayWithCapacity:points.count];
+		if (query.waypoints) {
+			NSMutableArray *pointDicts = [NSMutableArray arrayWithCapacity:query.waypoints.count];
 
-			for (CLLocation *pt in points)
+			for (CLLocation *pt in query.waypoints)
 				[pointDicts addObject:
 					@{ @"location": @{
 						@"lat": @(pt.coordinate.latitude), @"lng": @(pt.coordinate.longitude) }
@@ -1155,7 +1154,7 @@
 				d.distance = [[dir[@"distance"] parsedNumber] doubleValue];
 				d.polyline = [dir[@"polyline"] parsedString];
 				d.avoidOption = query.avoidOption;
-				d.waypointsPolyline = query.waypointsPolyline;
+				d.waypoints = query.waypoints;
 			}
 
 			set.pedestrianDirections = pedestrianDirs;

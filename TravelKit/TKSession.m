@@ -13,7 +13,7 @@
 
 @interface TKSession ()
 
-@property (nonatomic, strong) NSDate *refreshDate;
+@property (nonatomic, strong, readonly) NSDate *refreshDate;
 
 @end
 

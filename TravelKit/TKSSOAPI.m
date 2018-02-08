@@ -251,18 +251,19 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	}];
 }
 
-- (void)performUserSocialAuthWithFacebookToken:(NSString *)facebookToken googleToken:(NSString *)googleToken
-	success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure
+- (void)performUserSocialAuthWithFacebookAccessToken:(NSString *)facebookAccessToken
+	googleIDToken:(NSString *)googleIDToken success:(void (^)(TKSession *))success failure:(TKAPIFailureBlock)failure
 {
 	NSString *path = @"/oauth2/token";
 
-	NSString *accessToken = facebookToken ?: googleToken;
-	NSString *type = facebookToken ? @"facebook" : googleToken ? @"google" : nil;
+	NSString *type = facebookAccessToken ? @"facebook" : googleIDToken ? @"google" : nil;
+	NSString *key = googleIDToken ? @"id_token" : @"access_token";
+	NSString *token = facebookAccessToken ?: googleIDToken;
 
 	NSDictionary *post = @{
 		@"client_id": tkAPIClientID,
 		@"grant_type": objectOrNull(type),
-		@"access_token": objectOrNull(accessToken),
+		key: objectOrNull(token),
 		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
 	};

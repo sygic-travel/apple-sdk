@@ -20,11 +20,13 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKSynchronizationResult : NSObject
 
 /// A success flag of the synchronization loop.
-@property (atomic) BOOL success;
+@property (atomic, readonly) BOOL success;
 /// An array of Trip IDs affected by the synchronization.
-@property (nonatomic, copy) NSArray<NSString *> *updatedTripIDs;
-/// A flag indicating whether there's some change in Favorites.
-@property (atomic) BOOL favoritesUpdated;
+@property (nonatomic, copy, readonly) NSArray<NSString *> *changedTripIDs;
+/// An array of Trip IDs indicating a mapping of local Trip IDs and server IDs.
+@property (nonatomic, copy, readonly) NSDictionary<NSString *, NSString *> *createdTripIDsMap;
+/// An array of Favorite Place IDs affected by the synchronization.
+@property (nonatomic, copy, readonly) NSArray<NSString *> *changedFavoritePlaceIDs;
 
 @end
 

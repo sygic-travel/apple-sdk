@@ -43,10 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)performUserCredentialsAuthWithUsername:(NSString *)username password:(NSString *)password
     success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure;
 
-- (void)performUserSocialAuthWithFacebookToken:(NSString *)facebookToken
+- (void)performUserSocialAuthWithFacebookAccessToken:(NSString *)facebookAccessToken
     success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure;
 
-- (void)performUserSocialAuthWithGoogleToken:(NSString *)googleToken
+- (void)performUserSocialAuthWithGoogleIDToken:(NSString *)googleIDToken
     success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure;
 
 - (void)performJWTAuthWithToken:(NSString *)jwtToken
@@ -66,25 +66,6 @@ NS_ASSUME_NONNULL_BEGIN
 	success:(void (^)(NSString *magicLinkToken))success failure:(void (^)(NSError *))failure;
 
 - (void)performSignOutWithCompletion:(void (^)(void))completion;
-
-///---------------------------------------------------------------------------------------
-/// @name Favorites
-///---------------------------------------------------------------------------------------
-
-/**
- Fetches an array of IDs of Places previously marked as favorite.
-
- @return Array of Place IDs.
- */
-- (NSArray<NSString *> *)favoritePlaceIDs;
-
-/**
- Updates a favorite state for a specific Place ID.
-
- @param favoriteID Place ID to update.
- @param favorite Desired Favorite state, either `YES` or `NO`.
- */
-- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite;
 
 @end
 

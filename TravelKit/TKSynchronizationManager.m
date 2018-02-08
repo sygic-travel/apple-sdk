@@ -11,6 +11,7 @@
 #import "TKEventsManager.h"
 #import "TKTripsManager+Private.h"
 #import "TKSessionManager+Private.h"
+#import "TKFavoritesManager+Private.h"
 #import "Foundation+TravelKit.h"
 #import "NSDate+Tripomatic.h"
 #import "NSObject+Parsing.h"
@@ -47,9 +48,27 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 @property (atomic) NSTimeInterval changesTimestamp;
 
+@property (atomic) BOOL success;
+@property (nonatomic, copy) NSArray<NSString *> *changedTripIDs;
+@property (nonatomic, copy) NSDictionary<NSString *, NSString *> *createdTripIDsMap;
+@property (nonatomic, strong) NSMutableDictionary<NSString *, NSString *> *internalTripIDsMap;
+@property (nonatomic, copy) NSArray<NSString *> *changedFavoritePlaceIDs;
+
 @end
 
-@implementation TKSynchronizationResult @end
+@implementation TKSynchronizationResult
+
+- (instancetype)init
+{
+	if (self = [super init])
+	{
+		_internalTripIDsMap = [NSMutableDictionary dictionary];
+	}
+
+	return self;
+}
+
+@end
 
 
 @interface TKSynchronizationManager ()
@@ -71,6 +90,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 @interface TKSynchronizationManager ()
 
 @property (nonatomic, strong) TKSessionManager *session;
+@property (nonatomic, strong) TKFavoritesManager *favorites;
 @property (nonatomic, strong) TKEventsManager *events;
 @property (nonatomic, strong) TKTripsManager *tripsManager;
 
@@ -99,6 +119,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	if (self = [super init])
 	{
 		_session = [TKSessionManager sharedManager];
+		_favorites = [TKFavoritesManager sharedManager];
 		_events = [TKEventsManager sharedManager];
 		_tripsManager = [TKTripsManager sharedManager];
 		_state = TKSynchronizationStateStandby;
@@ -227,7 +248,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 - (void)synchronizeFavourites
 {
-	NSDictionary<NSString *, NSNumber *> *toSync = [_session favoritePlaceIDsToSynchronize];
+	NSDictionary<NSString *, NSNumber *> *toSync = [_favorites favoritePlaceIDsToSynchronize];
 
 	NSArray<NSString *> *favouritesToAdd =
 	  [toSync.allKeys filteredArrayUsingBlock:^BOOL(NSString *key) {
@@ -248,7 +269,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	{
 		[self enqueueRequest:[[TKAPIRequest alloc] initAsFavoriteItemAddRequestWithID:itemID success:^{
 
-			[_session storeServerFavoriteIDsAdded:@[ itemID ] removed:@[ ]];
+			[_favorites storeServerFavoriteIDsAdded:@[ itemID ] removed:@[ ]];
 			[self checkState];
 
 		} failure:failure]];
@@ -259,7 +280,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	{
 		[self enqueueRequest:[[TKAPIRequest alloc] initAsFavoriteItemDeleteRequestWithID:itemID success:^{
 
-			[_session storeServerFavoriteIDsAdded:@[ ] removed:@[ itemID ]];
+			[_favorites storeServerFavoriteIDsAdded:@[ ] removed:@[ itemID ]];
 			[self checkState];
 
 		} failure:failure]];
@@ -315,6 +336,10 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 						SyncLog(@"Trip NOT on server yet – sending: %@", localTrip);
 
 						[self enqueueRequest:[[TKAPIRequest alloc] initAsNewTripRequestForTrip:localTrip success:^(TKTrip *trip) {
+
+							if (localTrip.ID && trip.ID)
+								@synchronized(_result.internalTripIDsMap)
+									{ _result.internalTripIDsMap[localTrip.ID] = trip.ID; }
 
 							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
 							[self checkState];
@@ -429,19 +454,23 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 			// Process Favourite fields
 
-			[_session storeServerFavoriteIDsAdded:updatedFavouriteIDs removed:deletedFavouriteIDs];
+			[_favorites storeServerFavoriteIDsAdded:updatedFavouriteIDs removed:deletedFavouriteIDs];
 
 			// Fill the result object
 
 			if (updatedTripsDict.count || deletedTripIDs.count) {
-				NSMutableArray<NSString *> *updatedTripIDs = [NSMutableArray arrayWithCapacity:10];
-				[updatedTripIDs addObjectsFromArray:updatedTripsDict.allKeys ?: @[ ]];
-				[updatedTripIDs addObjectsFromArray:deletedTripIDs ?: @[ ]];
-				_result.updatedTripIDs = updatedTripIDs;
+				NSMutableArray<NSString *> *changedIDs = [NSMutableArray arrayWithCapacity:10];
+				[changedIDs addObjectsFromArray:updatedTripsDict.allKeys ?: @[ ]];
+				[changedIDs addObjectsFromArray:deletedTripIDs ?: @[ ]];
+				_result.changedTripIDs = changedIDs;
 			}
 
-			if (updatedFavouriteIDs.count || deletedFavouriteIDs.count)
-				_result.favoritesUpdated = YES;
+			if (updatedFavouriteIDs.count || deletedFavouriteIDs.count) {
+				NSMutableArray<NSString *> *changedIDs = [NSMutableArray arrayWithCapacity:10];
+				[changedIDs addObjectsFromArray:updatedFavouriteIDs ?: @[ ]];
+				[changedIDs addObjectsFromArray:deletedFavouriteIDs ?: @[ ]];
+				_result.changedFavoritePlaceIDs = changedIDs;
+			}
 
 			// Continue processing
 
@@ -548,6 +577,9 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 			[storedIDs removeAllObjects];
 		}
 	}
+
+	// Copy over mapping of pushed Trip IDs
+	_result.createdTripIDsMap = [_result.internalTripIDsMap copy];
 
 	// Check state
 	[self checkState];

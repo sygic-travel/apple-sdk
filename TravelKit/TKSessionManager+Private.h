@@ -18,10 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) NSDate *installationDate;
 @property (nonatomic, copy) NSString *uniqueID;
 
-// Private methods
-- (NSDictionary<NSString *, NSNumber *> *)favoritePlaceIDsToSynchronize;
-- (void)storeServerFavoriteIDsAdded:(NSArray<NSString *> *)addedIDs removed:(NSArray<NSString *> *)removedIDs;
-
 @end
 
 NS_ASSUME_NONNULL_END

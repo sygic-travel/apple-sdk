@@ -126,11 +126,12 @@
 		set.airDistance = round([query.endLocation
 			distanceFromLocation:query.startLocation]);
 
-	if (query.waypointsPolyline) {
-		NSArray<CLLocation *> *points = [TKMapWorker pointsFromPolyline:query.waypointsPolyline];
+	NSArray<CLLocation *> *waypoints = [query.waypoints copy];
+
+	if (waypoints) {
 		CLLocation *prev = nil;
 		CLLocationDistance sum = 0;
-		for (CLLocation *p in points) {
+		for (CLLocation *p in waypoints) {
 			if (prev) sum += [p distanceFromLocation:prev];
 			prev = p;
 		}
@@ -147,7 +148,7 @@
 	direction.distance = round(airDistance * (airDistance <= 2000 ? 1.35 : airDistance <= 6000 ? 1.22 : 1.106));
 	direction.duration = round(direction.distance / 1.35); // 4.8 km/h
 	direction.avoidOption = query.avoidOption;
-	direction.waypointsPolyline = query.waypointsPolyline;
+	direction.waypoints = waypoints;
 
 	set.pedestrianDirections = @[ direction ];
 
@@ -161,7 +162,7 @@
 	direction.distance = round(airDistance * (airDistance <= 2000 ? 1.35 : airDistance <= 6000 ? 1.22 : 1.106));
 	direction.duration = round(direction.distance / 3.9); // 14 km/h
 	direction.avoidOption = query.avoidOption;
-	direction.waypointsPolyline = query.waypointsPolyline;
+	direction.waypoints = waypoints;
 
 	set.bikeDirections = @[ direction ];
 
@@ -175,7 +176,7 @@
 	direction.distance = round(airDistance * (airDistance <= 2000 ? 1.8 : airDistance <= 6000 ? 1.6 : 1.2));
 	direction.duration = round(direction.distance / (airDistance > 40000 ? 25 : airDistance > 20000 ? 15 : 7.5)); // 90/54/27 km/h
 	direction.avoidOption = query.avoidOption;
-	direction.waypointsPolyline = query.waypointsPolyline;
+	direction.waypoints = waypoints;
 
 	set.carDirections = @[ direction ];
 
@@ -189,7 +190,7 @@
 	direction.distance = set.airDistance;
 	direction.duration = round(direction.distance / 250 + 40*60); // 900 km/h + 40 min dispatch
 	direction.avoidOption = query.avoidOption;
-	direction.waypointsPolyline = query.waypointsPolyline;
+	direction.waypoints = waypoints;
 
 	set.planeDirections = @[ direction ];
 
@@ -211,8 +212,8 @@
 	if (query.avoidOption)
 		[str appendFormat:@"|A:%tu", query.avoidOption];
 
-	if (query.waypointsPolyline)
-		[str appendFormat:@"|P:%@", query.waypointsPolyline];
+	if (query.waypoints)
+		[str appendFormat:@"|P:%tu", query.waypoints.hash];
 
 	return [str copy];
 }
