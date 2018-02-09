@@ -342,9 +342,7 @@
 
 - (NSArray<TKTripInfo *> *)tripInfosInYear:(NSInteger)year
 {
-	NSArray *results = nil;
-
-	results = [_database runQuery:@"SELECT * FROM %@ WHERE starts_on LIKE ? AND "
+	NSArray *results = [_database runQuery:@"SELECT * FROM %@ WHERE starts_on LIKE ? AND "
 		"(deleted != 1 OR deleted IS NULL) ORDER BY updated_at DESC" tableName:kTKDatabaseTableTrips
 			data:@[ [NSString stringWithFormat:@"%ld%%", (long)year] ]];
 
@@ -359,9 +357,7 @@
 
 - (NSArray<TKTripInfo *> *)unscheduledTripInfos
 {
-	NSArray *results = nil;
-
-	results = [_database runQuery:@"SELECT * FROM %@ WHERE starts_on IS NULL AND "
+	NSArray *results = [_database runQuery:@"SELECT * FROM %@ WHERE starts_on IS NULL AND "
 		"(deleted != 1 OR deleted IS NULL) ORDER BY updated_at DESC" tableName:kTKDatabaseTableTrips];
 
 	NSMutableArray *trips = [NSMutableArray arrayWithCapacity:results.count];
@@ -375,9 +371,7 @@
 
 - (NSArray<TKTripInfo *> *)deletedTripInfos
 {
-	NSArray *results = nil;
-
-	results = [_database runQuery:@"SELECT * FROM %@ WHERE "
+	NSArray *results = [_database runQuery:@"SELECT * FROM %@ WHERE "
 		"deleted = 1 ORDER BY updated_at DESC" tableName:kTKDatabaseTableTrips];
 
 	NSMutableArray *trips = [NSMutableArray arrayWithCapacity:results.count];
@@ -391,10 +385,60 @@
 
 - (NSArray<TKTripInfo *> *)changedTripInfos
 {
-	NSArray *results = nil;
-
-	results = [_database runQuery:@"SELECT * FROM %@ WHERE "
+	NSArray *results = [_database runQuery:@"SELECT * FROM %@ WHERE "
 		"changed = 1 ORDER BY updated_at DESC" tableName:kTKDatabaseTableTrips];
+
+	NSMutableArray *trips = [NSMutableArray arrayWithCapacity:results.count];
+	for (NSDictionary *row in results) {
+		TKTripInfo *trip = [[TKTripInfo alloc] initFromDatabase:row];
+		if (trip) [trips addObject:trip];
+	}
+
+	return trips;
+}
+
+- (NSArray<TKTripInfo *> *)tripInfosForStartDate:(NSDate *)startDate
+	endDate:(NSDate *)endDate includeOverlapping:(BOOL)includeOverlapping
+{
+	NSMutableArray<NSString *> *whereClauses = [NSMutableArray arrayWithCapacity:8];
+
+	if (startDate)
+	{
+		NSString *startFormat = [[NSDateFormatter sharedDateFormatter] stringFromDate:startDate];
+
+		if (includeOverlapping)
+			[whereClauses addObject:[NSString stringWithFormat:
+				@"DATE(starts_on,'+' || (days-1) || ' days', 'midnight') >= DATE(%@, 'midnight')", startFormat]];
+		else
+			[whereClauses addObject:[NSString stringWithFormat:
+				@"DATE(starts_on, 'midnight') >= DATE(%@, 'midnight')", startFormat]];
+	}
+
+	if (endDate)
+	{
+		NSString *endFormat = [[NSDateFormatter sharedDateFormatter] stringFromDate:[endDate dateByAddingNumberOfDays:1]];
+
+		if (includeOverlapping)
+			[whereClauses addObject:[NSString stringWithFormat:
+				@"DATE(starts_on, 'midnight') <= DATE(%@, 'midnight')", endFormat]];
+		else
+			[whereClauses addObject:[NSString stringWithFormat:
+				@"DATE(starts_on,'+' || (days-1) || ' days', 'midnight') < DATE(%@, 'midnight')", endFormat]];
+	}
+
+	// Build an SQL query
+
+	NSString *query = [NSString stringWithFormat:@"SELECT * FROM %@", kTKDatabaseTableTrips];
+
+	if (whereClauses.count)
+		query = [query stringByAppendingFormat:@" WHERE (%@)",
+			[whereClauses componentsJoinedByString:@" AND "]];
+
+	query = [query stringByAppendingString:@" ORDER BY starts_on ASC;"];
+
+	// Fetch results and process
+
+	NSArray *results = [_database runQuery:query];
 
 	NSMutableArray *trips = [NSMutableArray arrayWithCapacity:results.count];
 	for (NSDictionary *row in results) {
@@ -466,7 +510,7 @@
 
 		if (completion) completion(trip, nil);
 
-	} failure:^(TKAPIError *__unused error) {
+	} failure:^(TKAPIError *error) {
 
 		if (completion) completion(nil, error);
 

@@ -68,6 +68,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<TKTripInfo *> *)unscheduledTripInfos;
 - (NSArray<TKTripInfo *> *)deletedTripInfos;
 
+- (NSArray<TKTripInfo *> *)tripInfosForStartDate:(nullable NSDate *)startDate
+	endDate:(nullable NSDate *)endDate includeOverlapping:(BOOL)includeOverlapping;
+
 - (NSArray<NSNumber *> *)yearsOfActiveTrips;
 
 //async fun getTrip(from: DateTime?, to: DateTime?, includeOverlapping: Boolean = true): TripInfo[]
