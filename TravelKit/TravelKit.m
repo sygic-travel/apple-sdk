@@ -118,7 +118,7 @@
 
 - (void)clearUserData
 {
-	[_session clearUserData];
+	[_session clearAllData];
 }
 
 

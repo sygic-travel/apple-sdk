@@ -207,15 +207,23 @@
 	if (self = [super init])
 	{
 		_text = [response[@"text"] parsedString];
-		_provider = [response[@"provider"] parsedString];
 
 		if (!_text) return nil;
 
-		NSString *link = [response[@"link"] parsedString];
-		if (link) _link = [NSURL URLWithString:link];
+		NSString *provider = [response[@"provider"] parsedString];
+		if ([provider isEqualToString:@"wikipedia"])
+			_provider = TKPlaceDescriptionProviderWikipedia;
+		else if ([provider isEqualToString:@"wikivoyage"])
+			_provider = TKPlaceDescriptionProviderWikivoyage;
+
+		NSString *source = [response[@"link"] parsedString];
+		if (source) _sourceURL = [NSURL URLWithString:source];
 
 		_translated = [[response[@"is_translated"] parsedNumber] boolValue];
-		_translationProvider = [response[@"translation_provider"] parsedString];
+
+		provider = [response[@"translation_provider"] parsedString];
+		if ([provider isEqualToString:@"google"])
+			_translationProvider = TKTranslationProviderGoogle;
 	}
 
 	return self;

@@ -28,18 +28,18 @@
 
 @implementation TKTripDayItem
 
-+ (instancetype)itemForItemWithID:(NSString *)itemID
++ (instancetype)itemForPlaceWithID:(NSString *)placeID
 {
-	return [[self alloc] initForItemWithID:itemID];
+	return [[self alloc] itemForPlaceWithID:placeID];
 }
 
-- (instancetype)initForItemWithID:(NSString *)itemID
+- (instancetype)initForPlaceWithID:(NSString *)placeID
 {
-	if (!itemID) return nil;
+	if (!placeID) return nil;
 
 	if (self = [super init])
 	{
-		_itemID = [itemID copy];
+		_placeID = [placeID copy];
 	}
 
 	return self;
@@ -47,7 +47,7 @@
 
 - (instancetype)copy
 {
-	TKTripDayItem *item = [TKTripDayItem itemForItemWithID:_itemID];
+	TKTripDayItem *item = [TKTripDayItem itemForPlaceWithID:_placeID];
 	item.duration = _duration;
 	item.note = [_note copy];
 	item.startTime = _startTime;
@@ -73,7 +73,7 @@
 {
 	if (self = [super init])
 	{
-		_itemID = [dict[@"item_id"] parsedString];
+		_placeID = [dict[@"item_id"] parsedString];
 		_duration = [dict[@"duration"] parsedNumber];
 		_note = [dict[@"note"] parsedString];
 		_startTime = [dict[@"start_time"] parsedNumber];
@@ -94,7 +94,7 @@
 {
 	if (self = [super init])
 	{
-		_itemID = [dict[@"place_id"] parsedString];
+		_placeID = [dict[@"place_id"] parsedString];
 		_duration = [dict[@"duration"] parsedNumber];
 		_note = [dict[@"note"] parsedString];
 		_startTime = [dict[@"start_time"] parsedNumber];
@@ -143,7 +143,7 @@
 {
 	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:10];
 
-	dict[@"place_id"]   = _itemID ?: [NSNull null];
+	dict[@"place_id"]   = _placeID ?: [NSNull null];
 	dict[@"duration"]   = _duration ?: [NSNull null];
 	dict[@"note"]       = _note ?: [NSNull null];
 	dict[@"start_time"] = _startTime ?: [NSNull null];
@@ -203,7 +203,7 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<Trip Day Item %p | item ID: %@>", self, _itemID];
+	return [NSString stringWithFormat:@"<Trip Day Item %p | Place ID: %@>", self, _placeID];
 }
 
 @end
@@ -296,7 +296,7 @@
 - (BOOL)containsItemWithID:(NSString *)itemID
 {
 	for (TKTripDayItem *it in _items.copy)
-		if ([it.itemID isEqual:itemID])
+		if ([it.placeID isEqual:itemID])
 			return YES;
 
 	return NO;
@@ -305,14 +305,14 @@
 - (NSArray<NSString *> *)itemIDs
 {
 	return [_items mappedArrayUsingBlock:^NSString *(TKTripDayItem *item) {
-		return item.itemID;
+		return item.placeID;
 	}];
 }
 
 - (void)addItemWithID:(NSString *)itemID
 {
 	NSMutableArray *items = [_items mutableCopy];
-	[items addObject:[TKTripDayItem itemForItemWithID:itemID]];
+	[items addObject:[TKTripDayItem itemForPlaceWithID:itemID]];
 	_items = [items copy];
 }
 
@@ -321,14 +321,14 @@
 	NSMutableArray<TKTripDayItem *> *newItems = [_items mutableCopy];
 
 	index = MIN(index, newItems.count);
-	[newItems insertObject:[TKTripDayItem itemForItemWithID:itemID] atIndex:index];
+	[newItems insertObject:[TKTripDayItem itemForPlaceWithID:itemID] atIndex:index];
 	_items = newItems;
 }
 
 - (void)removeItemWithID:(NSString *)itemID
 {
 	_items = [[_items filteredArrayUsingBlock:^BOOL(TKTripDayItem *obj) {
-		return ![obj.itemID isEqual:itemID];
+		return ![obj.placeID isEqual:itemID];
 	}] mutableCopy];
 }
 
@@ -403,7 +403,7 @@
 		if (stored) _lastUpdate = [NSDate dateFrom8601DateTimeString:stored];
 
 		_changed = [[dict[@"changed"] parsedNumber] boolValue];
-		_isTrashed = [[dict[@"deleted"] parsedNumber] boolValue];
+		_deleted = [[dict[@"deleted"] parsedNumber] boolValue];
 
 		_privacy = [dict[@"privacy"] unsignedIntegerValue];
 		_rights  = [dict[@"rights"]  unsignedIntegerValue];
@@ -454,7 +454,7 @@
 		stored = [dict[@"updated_at"] parsedString];
 		if (stored) _lastUpdate = [NSDate dateFrom8601DateTimeString:stored];
 
-		_isTrashed = [[dict[@"is_deleted"] parsedNumber] boolValue];
+		_deleted = [[dict[@"is_deleted"] parsedNumber] boolValue];
 
 		stored = [dict[@"privacy_level"] parsedString];
 		_privacy = ([stored isEqual:@"shareable"]) ? TKTripPrivacyShareable :
@@ -583,7 +583,7 @@
 	    (_privacy == TKTripPrivacyShareable) ? @"shareable" :
 	    (_privacy == TKTripPrivacyPublic)    ? @"public"    : @"private";
 
-	dict[@"is_deleted"] = @(_isTrashed);
+	dict[@"is_deleted"] = @(_deleted);
 
 	NSMutableArray<NSDictionary *> *dayDictsArray = [NSMutableArray arrayWithCapacity:_days.count];
 	for (TKTripDay *day in _days.copy)
@@ -605,7 +605,7 @@
 
 	for (TKTripDay *day in _days.copy)
 		for (TKTripDayItem *item in day.items.copy)
-			if ([item.itemID isEqual:itemID])
+			if ([item.placeID isEqual:itemID])
 				[occurrences addObject:item];
 
 	return [occurrences copy];
@@ -646,7 +646,7 @@
 		if (stored) _lastUpdate = [NSDate dateFrom8601DateTimeString:stored];
 
 		_changed = [[dict[@"changed"] parsedNumber] boolValue];
-		_isTrashed = [[dict[@"deleted"] parsedNumber] boolValue];
+		_deleted = [[dict[@"deleted"] parsedNumber] boolValue];
 
 		_privacy = [[dict[@"privacy"] parsedNumber] unsignedIntegerValue];
 		_rights = [[dict[@"rights"] parsedNumber] unsignedIntegerValue];
@@ -702,7 +702,7 @@
 		_hasWriteAccess = [[dictionary[@"access_level"] parsedString] isEqual:@"read-write"];
 
 		NSString *image = [dictionary[@"user_photo_url"] parsedString];
-		if ([image containsSubstring:@"gravatar"]) {
+		if ([image containsString:@"gravatar"]) {
 			NSRange r = [image rangeOfString:@"&d="];
 			if (r.location != NSNotFound)
 				image = [[image substringToPosition:r.location] stringByAppendingString:@"&d=null"];

@@ -12,6 +12,7 @@
 #import "TKTripsManager+Private.h"
 
 #import "TKDatabaseManager+Private.h"
+#import "TKAPI+Private.h"
 
 
 @interface TKTripsManager ()
@@ -163,7 +164,7 @@
 		"owner_id, starts_on, updated_at, changed, deleted, privacy, rights) VALUES "
 		"(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);" tableName:kTKDatabaseTableTrips data:@[
 			tripID, tripName, @(trip.version), @(trip.days.count), destinationIDs, ownerID,
-			startDate, lastUpdate, @(trip.changed), @(trip.isTrashed), @(trip.privacy),
+			startDate, lastUpdate, @(trip.changed), @(trip.deleted), @(trip.privacy),
 			@(trip.rights)
 		]];
 
@@ -182,7 +183,7 @@
 
 		[day.items enumerateObjectsUsingBlock:^(TKTripDayItem *item, NSUInteger itemIndex, BOOL *__unused s2) {
 
-			id itemID = item.itemID ?: [NSNull null];
+			id itemID = item.placeID ?: [NSNull null];
 			id startTime = item.startTime ?: [NSNull null];
 			id duration = item.duration ?: [NSNull null];
 			id itemNote = item.note ?: [NSNull null];
@@ -224,34 +225,6 @@
 	return [self insertTrip:trip];
 }
 
-- (BOOL)archiveTripWithID:(NSString *)tripID
-{
-	if (!tripID) return NO;
-
-#ifdef ANALYTICS
-	[AnalyticsManager trackTripArchived];
-#endif
-
-	id lastUpdate = [[NSDate now] a8601DateTimeString] ?: [NSNull null];
-
-	return [_database runUpdate:@"UPDATE %@ SET changed = 1, updated_at = ?, deleted = 1 WHERE id = ?"
-					  tableName:kTKDatabaseTableTrips data:@[ lastUpdate, tripID ]];
-}
-
-- (BOOL)restoreTripWithID:(NSString *)tripID
-{
-	if (!tripID) return NO;
-
-#ifdef ANALYTICS
-	[AnalyticsManager trackTripUnarchived];
-#endif
-
-	id lastUpdate = [[NSDate now] a8601DateTimeString] ?: [NSNull null];
-
-	return [_database runUpdate:@"UPDATE %@ SET changed = 1, updated_at = ?, deleted = 0 WHERE id = ?"
-					  tableName:kTKDatabaseTableTrips data:@[ lastUpdate, tripID ]];
-}
-
 - (BOOL)deleteTripWithID:(NSString *)tripID
 {
 	if (!tripID) return NO;
@@ -285,16 +258,26 @@
 	    ok &= [_database runUpdate:@"UPDATE %@ SET trip_id = ? WHERE trip_id = ?;"
 						 tableName:kTKDatabaseTableTripDayItems data:@[ newID, originalID ]];
 
-	// TODO: Notification
-//	[[NotificationCenter defaultCenter] postNotificationName:kNotificationTripsManagerDidUpdateTripID
-//		object:@{ @"original_id": originalID, @"new_id": newID }];
-
 	return ok;
 }
 
 
 #pragma mark - Trip Info methods
 
+
+- (NSArray<TKTripInfo *> *)allTripInfos
+{
+	NSArray *results = [_database runQuery:@"SELECT * FROM %@ "
+		"ORDER BY updated_at DESC;" tableName:kTKDatabaseTableTrips];
+
+	NSMutableArray *trips = [NSMutableArray arrayWithCapacity:results.count];
+	for (NSDictionary *row in results) {
+		TKTripInfo *trip = [[TKTripInfo alloc] initFromDatabase:row];
+		if (trip) [trips addObject:trip];
+	}
+
+	return trips;
+}
 
 - (NSArray<TKTripInfo *> *)upcomingTripInfos
 {
@@ -374,7 +357,7 @@
 	return trips;
 }
 
-- (NSArray<TKTripInfo *> *)tripInfosWithNoDate
+- (NSArray<TKTripInfo *> *)unscheduledTripInfos
 {
 	NSArray *results = nil;
 
@@ -390,7 +373,7 @@
 	return trips;
 }
 
-- (NSArray<TKTripInfo *> *)trashedTripInfos
+- (NSArray<TKTripInfo *> *)deletedTripInfos
 {
 	NSArray *results = nil;
 
@@ -406,18 +389,32 @@
 	return trips;
 }
 
-- (NSArray<NSString *> *)yearsOfTrips
+- (NSArray<TKTripInfo *> *)changedTripInfos
 {
 	NSArray *results = nil;
 
-	results = [_database runQuery:@"SELECT DISTINCT SUBSTR(starts_on,1,4) year FROM %@ "
+	results = [_database runQuery:@"SELECT * FROM %@ WHERE "
+		"changed = 1 ORDER BY updated_at DESC" tableName:kTKDatabaseTableTrips];
+
+	NSMutableArray *trips = [NSMutableArray arrayWithCapacity:results.count];
+	for (NSDictionary *row in results) {
+		TKTripInfo *trip = [[TKTripInfo alloc] initFromDatabase:row];
+		if (trip) [trips addObject:trip];
+	}
+
+	return trips;
+}
+
+- (NSArray<NSNumber *> *)yearsOfActiveTrips
+{
+	NSArray *results = [_database runQuery:@"SELECT DISTINCT SUBSTR(starts_on,1,4) year FROM %@ "
 		"WHERE starts_on NOT NULL AND (deleted != 1 OR deleted IS NULL) "
 		"ORDER BY year DESC;" tableName:kTKDatabaseTableTrips];
 
-	NSMutableArray *years = [NSMutableArray arrayWithCapacity:results.count];
+	NSMutableArray<NSNumber *> *years = [NSMutableArray arrayWithCapacity:results.count];
 	for (NSDictionary *row in results) {
-		NSString *year = row[@"year"];
-		if (year.integerValue > 0) [years addObject:[year copy]];
+		NSNumber *year = @([row[@"year"] integerValue]);
+		if (year.integerValue > 0) [years addObject:year];
 	}
 
 	return years;
@@ -439,7 +436,7 @@
 	id tripDateStart = [trip.startDate dateString] ?: [NSNull null];
 	id tripLastUpdate = [[NSDate now] a8601DateTimeString] ?: [NSNull null];
 	id tripChanged = @(trip.changed);
-	id tripDeleted = @(trip.isTrashed);
+	id tripDeleted = @(trip.deleted);
 	id tripPrivacy = @(trip.privacy);
 	id tripRights = @(trip.rights);
 
@@ -460,21 +457,35 @@
 }
 
 
-#pragma mark - API fetching
+#pragma mark - API stuff
 
 
-// TODO
-//- (void)fetchTripWithID:(NSString *)tripID completion:(void (^)(TKTrip *))completion
-//{
-//	[[[APIRequest alloc] initAsTripRequestForTripWithID:tripID success:^(Trip *trip) {
-//
-//		if (completion) completion(trip);
-//
-//	} failure:^{
-//
-//		if (completion) completion(nil);
-//
-//	}] start];
-//}
+- (void)fetchTripWithID:(NSString *)tripID completion:(void (^)(TKTrip *_Nullable, NSError *_Nullable))completion
+{
+	[[[TKAPIRequest alloc] initAsTripRequestForTripWithID:tripID success:^(TKTrip *trip) {
+
+		if (completion) completion(trip, nil);
+
+	} failure:^(TKAPIError *__unused error) {
+
+		if (completion) completion(nil, error);
+
+	}] start];
+}
+
+- (void)emptyTrashWithCompletion:(void (^)(NSArray<NSString *> *_Nullable, NSError *_Nullable))completion
+{
+	[[[TKAPIRequest alloc] initAsEmptyTrashRequestWithSuccess:^(NSArray<NSString *> *tripIDs) {
+
+		[self deleteTripsWithIDs:tripIDs];
+
+		if (completion) completion(tripIDs, nil);
+
+	} failure:^(TKAPIError *error) {
+
+		if (completion) completion(nil, error);
+
+	}] start];
+}
 
 @end

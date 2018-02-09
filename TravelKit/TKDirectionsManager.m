@@ -126,7 +126,7 @@
 		set.airDistance = round([query.endLocation
 			distanceFromLocation:query.startLocation]);
 
-	NSArray<CLLocation *> *waypoints = [query.waypoints copy];
+	NSArray<CLLocation *> *waypoints = [query.waypoints copy] ?: @[ ];
 
 	if (waypoints) {
 		CLLocation *prev = nil;

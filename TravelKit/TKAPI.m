@@ -325,7 +325,7 @@
 		}];
 
 		NSString *query = [items componentsJoinedByString:@"&"];
-		NSString *sep = [urlString containsSubstring:@"?"] ? @"&":@"?";
+		NSString *sep = [urlString containsString:@"?"] ? @"&":@"?";
 		query = [NSString stringWithFormat:@"%@%@", sep, query];
 
 		urlString = [urlString stringByAppendingString:query];
@@ -566,7 +566,7 @@
 
 			// If pushed Trip update has been ignored,
 			// add Trips pair to conflicts holding structure
-			if (trip && updatedTrip && [resolution containsSubstring:@"ignored"])
+			if (trip && updatedTrip && [resolution containsString:@"ignored"])
 			{
 				NSDictionary *conflictDict = [response.data[@"conflict_info"] parsedDictionary];
 				NSString *editor = [conflictDict[@"last_user_name"] parsedString];
@@ -920,9 +920,9 @@
 
 		if (query.sortingType)
 		{
-			NSString *type = @"rating";
+			NSString *type = @"popularity";
 			if (query.sortingType == TKToursGYGQuerySortingPrice) type = @"price";
-			else if (query.sortingType == TKToursGYGQuerySortingPopularity) type = @"popularity";
+			else if (query.sortingType == TKToursGYGQuerySortingRating) type = @"rating";
 			else if (query.sortingType == TKToursGYGQuerySortingDuration) type = @"duration";
 			queryDict[@"sort_by"] = type;
 		}
@@ -932,11 +932,8 @@
 			queryDict[@"sort_direction"] = direction;
 		}
 
-		if (query.pageNumber)
-		{
-			NSUInteger page = query.pageNumber.unsignedIntegerValue;
-			if (page > 1) queryDict[@"page"] = [query.pageNumber stringValue];
-		}
+		if (query.pageNumber.unsignedIntegerValue > 1)
+			queryDict[@"page"] = [query.pageNumber stringValue];
 
 		if (query.count)
 			queryDict[@"count"] = [query.count stringValue];
@@ -953,6 +950,13 @@
 
 		if (query.endDate)
 			queryDict[@"to"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:query.endDate] ?: @"";
+
+		if (query.bounds)
+			queryDict[@"bounds"] = [NSString stringWithFormat:@"%.5f,%.5f,%.5f,%.5f",
+				query.bounds.southWestPoint.coordinate.latitude,
+				query.bounds.southWestPoint.coordinate.longitude,
+				query.bounds.northEastPoint.coordinate.latitude,
+				query.bounds.northEastPoint.coordinate.longitude];
 
 		_query = queryDict;
 

@@ -8,12 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-// Exported table names
-extern NSString * const kTKDatabaseTablePlaces;
-extern NSString * const kTKDatabaseTablePlaceDetails;
-extern NSString * const kTKDatabaseTablePlaceParents;
-extern NSString * const kTKDatabaseTableMedia;
-extern NSString * const kTKDatabaseTableReferences;
+/// Exported table names
+//extern NSString * const kTKDatabaseTablePlaces;
+//extern NSString * const kTKDatabaseTablePlaceDetails;
+//extern NSString * const kTKDatabaseTablePlaceParents;
+//extern NSString * const kTKDatabaseTableMedia;
+//extern NSString * const kTKDatabaseTableReferences;
 extern NSString * const kTKDatabaseTableFavorites;
 extern NSString * const kTKDatabaseTableTrips;
 extern NSString * const kTKDatabaseTableTripDays;
@@ -22,20 +22,20 @@ extern NSString * const kTKDatabaseTableTripDayItems;
 
 @interface TKDatabaseManager : NSObject
 
-/** Shared instance */
+/// Shared instance
 @property (class, readonly, strong) TKDatabaseManager *sharedManager;
 
-/** Default path of the database file */
+/// Default path of the database file
 + (NSString *)databasePath;
 
-/** Disqualified initializer */
+/// Disqualified initializer
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
-/** Check consistency, run proper migrations etc. */
+/// Check consistency, run proper migrations etc.
 - (void)checkConsistency;
 
-/** Check indexes presence. */
+/// Check indexes presence
 - (void)checkIndexes;
 
 // SELECT queries

@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TKMapWorker : NSObject
 
-
 ///---------------------------------------------------------------------------------------
 /// @name Quad keys
 ///---------------------------------------------------------------------------------------
@@ -35,7 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (UInt8)detailLevelForRegion:(MKCoordinateRegion)region;
 
-
 ///---------------------------------------------------------------------------------------
 /// @name Regions
 ///---------------------------------------------------------------------------------------
@@ -47,7 +45,6 @@ NS_ASSUME_NONNULL_BEGIN
  @return Approximate zoom level value.
  */
 + (double)approximateZoomLevelForLatitudeSpan:(CLLocationDegrees)latitudeSpan;
-
 
 ///---------------------------------------------------------------------------------------
 /// @name Polylines
@@ -68,7 +65,6 @@ NS_ASSUME_NONNULL_BEGIN
  @return Calculated polyline string.
  */
 + (NSString *)polylineFromPoints:(NSArray<CLLocation *> *)points;
-
 
 ///---------------------------------------------------------------------------------------
 /// @name Spreading

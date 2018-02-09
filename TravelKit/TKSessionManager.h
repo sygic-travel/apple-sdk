@@ -20,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 
+/// Currently valid Session instance.
 @property (nonatomic, strong, nullable, readonly) TKSession *session;
 
 ///---------------------------------------------------------------------------------------
@@ -29,7 +30,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Clears all cached and persisting user data.
  */
-- (void)clearUserData;
+- (void)clearAllData;
 
 ///---------------------------------------------------------------------------------------
 /// @name Authentication
@@ -37,10 +38,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// :nodoc:
 
-- (void)performDeviceSessionFetchWithSuccess:(void (^)(TKSession *))success
+- (void)performDeviceAuthWithSuccess:(void (^)(TKSession *))success
     failure:(void (^)(NSError *))failure;
 
-- (void)performUserCredentialsAuthWithUsername:(NSString *)username password:(NSString *)password
+- (void)performUserCredentialsAuthWithEmail:(NSString *)email password:(NSString *)password
     success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure;
 
 - (void)performUserSocialAuthWithFacebookAccessToken:(NSString *)facebookAccessToken
@@ -62,7 +63,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)performUserResetPasswordWithToken:(NSString *)accessToken email:(NSString *)email
     success:(void (^)(void))success failure:(void (^)(NSError *))failure;
 
-- (void)performMagicLinkeFetchWithToken:(NSString *)accessToken
+- (void)performMagicLinkFetchWithToken:(NSString *)accessToken
 	success:(void (^)(NSString *magicLinkToken))success failure:(void (^)(NSError *))failure;
 
 - (void)performSignOutWithCompletion:(void (^)(void))completion;

@@ -12,6 +12,8 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 ///-----------------------------------------------------------------------------
 #pragma mark -
 #pragma mark Directions-related definitions
@@ -120,5 +122,7 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
 @property (nonatomic, copy) NSArray<CLLocation *> *waypoints;
 
 @end
+
+NS_ASSUME_NONNULL_END
 
 #endif /* TKDirectionDefinitions_h */

@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 
 #import <TravelKit/TKTour.h>
+#import <TravelKit/TKMapRegion.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -32,12 +33,12 @@ typedef NS_ENUM(NSUInteger, TKToursViatorQuerySorting) {
  Query enum declaring the sorting option for the GetYourGuide tour results returned.
  */
 typedef NS_ENUM(NSUInteger, TKToursGYGQuerySorting) {
-	/// Get results sorted by rating. Descending by default.
-	TKToursGYGQuerySortingRating      = 0,
-	/// Get results sorted by price. Ascending by default.
-	TKToursGYGQuerySortingPrice       = 1,
 	/// Get results sorted by Top selling items. Descending by default.
-	TKToursGYGQuerySortingPopularity  = 2,
+	TKToursGYGQuerySortingPopularity  = 0,
+	/// Get results sorted by rating. Descending by default.
+	TKToursGYGQuerySortingRating      = 1,
+	/// Get results sorted by price. Ascending by default.
+	TKToursGYGQuerySortingPrice       = 2,
 	/// Get results sorted by duration. Ascending by default.
 	TKToursGYGQuerySortingDuration    = 3,
 };
@@ -101,24 +102,35 @@ typedef NS_ENUM(NSUInteger, TKToursGYGQuerySorting) {
 /// @note _Descending_ order is not supported for `TKToursQuerySortingTopSellers` sorting type.
 @property (atomic) BOOL descendingSortingOrder;
 
+/// A start date used to look for the tours.
+@property (nonatomic, strong, nullable) NSDate *startDate;
+
+/// An end date used to look for the tours.
+@property (nonatomic, strong, nullable) NSDate *endDate;
+
+/// Duration range in seconds.
+///
+/// @note Example value: `3600`.
+@property (nonatomic, strong, nullable) NSNumber *minimalDuration;
+
+/// Duration range in seconds.
+///
+/// @note Example value: `86400`.
+@property (nonatomic, strong, nullable) NSNumber *maximalDuration;
+
+/// A search term used to look for the tours.
+@property (nonatomic, strong, nullable) NSString *searchTerm;
+
+/// Limit results to an area defined by the given bounds.
+@property (nonatomic, strong, nullable) TKMapRegion *bounds;
+
+/// Requested number of results on a single page.
+@property (nonatomic, strong, nullable) NSNumber *count;
+
 /// Requested page number with results.
 ///
 /// @note Accepted values: `1`--`X`. Implicit value is `1`.
 @property (nonatomic, strong, nullable) NSNumber *pageNumber;
-
-
-
-/// Requested number of results on a single page.
-@property (nonatomic, strong, nullable) NSString *searchTerm;
-@property (nonatomic, strong, nullable) NSNumber *count;
-@property (nonatomic, strong, nullable) NSDate *startDate;
-@property (nonatomic, strong, nullable) NSDate *endDate;
-/// Duration range in seconds. Note: :7200 == 0:7200 and 3600: == 3600:43200.
-@property (nonatomic, strong, nullable) NSNumber *minimalDuration;
-@property (nonatomic, strong, nullable) NSNumber *maximalDuration;
-
-//bounds	optional	string	"41.78,12.34,41.99,12.64"
-//Limit results to area defined by bounds. Bounds are defined by string composed of four floats in format {south},{west},{north},{east}. The units are in degrees of latitude/longitude. This parameter is exclusive with parent_place_id"
 
 @end
 

@@ -159,7 +159,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 ////////////////////
 
 
-- (void)performDeviceSessionFetchWithSuccess:(void (^)(TKSession *))success failure:(void (^)(TKAPIError *))failure
+- (void)performDeviceAuthWithSuccess:(void (^)(TKSession *))success failure:(void (^)(TKAPIError *))failure
 {
 	NSString *path = @"/oauth2/token";
 

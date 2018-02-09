@@ -30,7 +30,7 @@
 
 // Standard supported API calls
 
-- (void)performDeviceSessionFetchWithSuccess:(void (^)(TKSession *))success
+- (void)performDeviceAuthWithSuccess:(void (^)(TKSession *))success
     failure:(void (^)(TKAPIError *))failure;
 
 - (void)performSessionRefreshWithToken:(NSString *)refreshToken

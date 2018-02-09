@@ -63,6 +63,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)synchronize;
 - (void)cancelSynchronization;
 
+- (BOOL)hasChangesToSynchronize;
+
 @end
 
 NS_ASSUME_NONNULL_END

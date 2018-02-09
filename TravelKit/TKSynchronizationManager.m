@@ -92,7 +92,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 @property (nonatomic, strong) TKSessionManager *session;
 @property (nonatomic, strong) TKFavoritesManager *favorites;
 @property (nonatomic, strong) TKEventsManager *events;
-@property (nonatomic, strong) TKTripsManager *tripsManager;
+@property (nonatomic, strong) TKTripsManager *trips;
 
 @property (atomic) TKSynchronizationState state;
 @property (nonatomic, strong) TKSynchronizationResult *result;
@@ -121,7 +121,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 		_session = [TKSessionManager sharedManager];
 		_favorites = [TKFavoritesManager sharedManager];
 		_events = [TKEventsManager sharedManager];
-		_tripsManager = [TKTripsManager sharedManager];
+		_trips = [TKTripsManager sharedManager];
 		_state = TKSynchronizationStateStandby;
 		_queue = [NSOperationQueue new];
 		_queue.name = @"Synchronization";
@@ -316,32 +316,33 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 			// Set up comparable arrays
 			NSMutableArray<NSString *> *currentOnlineTripIDs = [updatedTripsDict.allKeys mutableCopy];
-			NSArray<TKTrip *> *currentDBTrips = [[_tripsManager allTrips]
-				.reverseObjectEnumerator allObjects];
+			NSArray<TKTripInfo *> *currentDBTrips = [[_trips allTripInfos].reverseObjectEnumerator allObjects];
 
 			// Walk through the local trips to send to server (when signed in)
-			for (TKTrip *localTrip in currentDBTrips) {
+			for (TKTripInfo *localTripInfo in currentDBTrips) {
 
 				// Find out whether trip has been updated
-				BOOL updated = updatedTripsDict[localTrip.ID] != nil;
+				BOOL updated = updatedTripsDict[localTripInfo.ID] != nil;
 
 				// If not marked as updated on server...
 				if (!updated) {
 
-					BOOL deletedOnRemote = [deletedTripIDs containsObject:localTrip.ID];
+					BOOL deletedOnRemote = [deletedTripIDs containsObject:localTripInfo.ID];
 
 					// ...and is user-created (with no server-generated ID)
-					if ([localTrip.ID hasPrefix:@LOCAL_TRIP_PREFIX]) {
+					if ([localTripInfo.ID hasPrefix:@LOCAL_TRIP_PREFIX]) {
+
+						TKTrip *localTrip = [_trips tripWithID:localTripInfo.ID];
 
 						SyncLog(@"Trip NOT on server yet – sending: %@", localTrip);
 
 						[self enqueueRequest:[[TKAPIRequest alloc] initAsNewTripRequestForTrip:localTrip success:^(TKTrip *trip) {
 
-							if (localTrip.ID && trip.ID)
+							if (localTripInfo.ID && trip.ID)
 								@synchronized(_result.internalTripIDsMap)
-									{ _result.internalTripIDsMap[localTrip.ID] = trip.ID; }
+									{ _result.internalTripIDsMap[localTripInfo.ID] = trip.ID; }
 
-							[self processResponseWithTrip:trip sentTripID:localTrip.ID];
+							[self processResponseWithTrip:trip sentTripID:localTripInfo.ID];
 							[self checkState];
 
 						} failure:^(TKAPIError *__unused error) {
@@ -351,7 +352,9 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 					// ...if locally modified, send updates to the server
 
-					else if (!deletedOnRemote && localTrip.changed) {
+					else if (!deletedOnRemote && localTripInfo.changed) {
+
+						TKTrip *localTrip = [_trips tripWithID:localTripInfo.ID];
 
 						SyncLog(@"Trip NOT up-to-date on server – sending: %@", localTrip);
 						TKAPIRequest *updateTripRequest = [[TKAPIRequest alloc] initAsUpdateTripRequestForTrip:localTrip
@@ -363,7 +366,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 							// Otherwise process received Trip
 							else if (remoteTrip)
-								[self processResponseWithTrip:remoteTrip sentTripID:localTrip.ID];
+								[self processResponseWithTrip:remoteTrip sentTripID:localTripInfo.ID];
 
 							[self checkState];
 
@@ -381,9 +384,9 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 					else if (deletedOnRemote || changesTimestamp < 1)
 					{
-						SyncLog(@"Trip NOT on server – deleting: %@", localTrip);
+						SyncLog(@"Trip NOT on server – deleting: %@", localTripInfo);
 
-						[_tripsManager deleteTripWithID:localTrip.ID];
+						[_trips deleteTripWithID:localTripInfo.ID];
 					}
 				}
 
@@ -396,10 +399,12 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 					// Server sent updated Trip which is also locally modified.
 					// Try pushing it so we get one of [success, failure, conflict].
 
-					if (localTrip.changed) {
+					if (localTripInfo.changed) {
 
 						// Do not further process matching remote Trip, we decide what to do here
-						[currentOnlineTripIDs removeObject:localTrip.ID];
+						[currentOnlineTripIDs removeObject:localTripInfo.ID];
+
+						TKTrip *localTrip = [_trips tripWithID:localTripInfo.ID];
 
 						SyncLog(@"Trip conflicting with server - sending: %@", localTrip);
 						TKAPIRequest *request = [[TKAPIRequest alloc] initAsUpdateTripRequestForTrip:localTrip
@@ -436,7 +441,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 				// If found in the DB and up-to-date, do not request it except for
 				// the case the Trip is foreign -- changes in collaborators and its rights
 				// do not change Trip version
-				for (TKTrip *dbTrip in currentDBTrips)
+				for (TKTripInfo *dbTrip in currentDBTrips)
 					if ([dbTrip.ID isEqualToString:onlineTripID])
 					{
 						if (dbTrip.version == onlineTripVersion)
@@ -596,14 +601,14 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	// Update Trip ID if needed
 	if (originalTripID && ![originalTripID isEqualToString:trip.ID])
 	{
-		[_tripsManager changeTripWithID:originalTripID toID:trip.ID];
+		[_trips changeTripWithID:originalTripID toID:trip.ID];
 
 		if (_events.tripIDChangeHandler)
 			_events.tripIDChangeHandler(originalTripID, trip.ID);
 	}
 
 	// If there's already a Trip in the DB, update, otherwise add new Trip
-	[_tripsManager storeTrip:trip];
+	[_trips storeTrip:trip];
 }
 
 
@@ -684,6 +689,15 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 - (BOOL)syncInProgress
 {
     return (_state != TKSynchronizationStateStandby);
+}
+
+- (BOOL)hasChangesToSynchronize
+{
+	BOOL hasSomething = NO;
+	hasSomething |= [_favorites favoritePlaceIDsToSynchronize].allKeys.count > 0;
+	if (!hasSomething) hasSomething |= [_trips changedTripInfos].count > 0;
+
+	return hasSomething;
 }
 
 @end

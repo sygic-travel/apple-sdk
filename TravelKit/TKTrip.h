@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKTripDayItem : NSObject
 
 /// Item ID.
-@property (nonatomic, copy) NSString *itemID;
+@property (nonatomic, copy, readonly) NSString *placeID;
 
 /// Timestamp (in number of seconds from the midnight) indicating the planned start time of the Item.
 @property (nonatomic, strong, nullable) NSNumber *startTime;
@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
-+ (instancetype)itemForItemWithID:(NSString *)itemID;
++ (instancetype)itemForPlaceWithID:(NSString *)placeID;
 
 @end
 
@@ -111,7 +111,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly, nullable) NSDate *lastUpdate;
 
 /// Flag indicating whether the Trip is currently placed in the Trash.
-@property (nonatomic, assign) BOOL isTrashed;
+@property (nonatomic, assign) BOOL deleted;
 
 /// Array of Trip Destination IDs. Customisable.
 @property (nonatomic, copy) NSArray<NSString *> *destinationIDs;
@@ -169,7 +169,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, readonly, nullable) NSDate *lastUpdate;
 
 /// Flag indicating whether the Trip is currently placed in the Trash.
-@property (nonatomic, readonly) BOOL isTrashed;
+@property (nonatomic, readonly) BOOL deleted;
 
 /// Array of Trip Destination IDs. Customisable.
 @property (nonatomic, copy, readonly) NSArray<NSString *> *destinationIDs;

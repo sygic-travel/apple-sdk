@@ -43,10 +43,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///
 /// In case you get any Trip conflicts, you may present this conflict to a user so the proper version to be kept
 /// can be selected. To determine, use the `-forceLocalTrip` property on a `TKTripConflict` object. When all conflicts
-/// are resolved by user, you need to call the provided success block so the sync loop may continue.
+/// are resolved by user, you need to call the provided completion block so the sync loop may continue.
 ///
 /// @note In case you don't handle this event, local Trip instance will be replaced by the one provided by the server.
-@property (nonatomic, copy, nullable) void (^tripConflictsHandler)(NSArray<TKTripConflict *> *conflicts, void (^success)(void));
+@property (nonatomic, copy, nullable) void (^tripConflictsHandler)(NSArray<TKTripConflict *> *conflicts, void (^completion)(void));
 
 /// A handling block called whenever a synchronization loop completes (either successfully or not).
 @property (nonatomic, copy, nullable) void (^syncCompletionHandler)(TKSynchronizationResult *result);

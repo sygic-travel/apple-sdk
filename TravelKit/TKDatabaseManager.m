@@ -24,11 +24,11 @@ NSString * const kDatabaseFilename = @"database.sqlite";
 NSUInteger const kDatabaseSchemeVersionLatest = 20171026;
 
 // Table names // ABI-EXPORTED
-NSString * const kTKDatabaseTablePlaces = @"places";
-NSString * const kTKDatabaseTablePlaceDetails = @"place_details";
-NSString * const kTKDatabaseTablePlaceParents = @"place_parents";
-NSString * const kTKDatabaseTableMedia = @"media";
-NSString * const kTKDatabaseTableReferences = @"references";
+//NSString * const kTKDatabaseTablePlaces = @"places";
+//NSString * const kTKDatabaseTablePlaceDetails = @"place_details";
+//NSString * const kTKDatabaseTablePlaceParents = @"place_parents";
+//NSString * const kTKDatabaseTableMedia = @"media";
+//NSString * const kTKDatabaseTableReferences = @"references";
 NSString * const kTKDatabaseTableFavorites = @"favorites";
 NSString * const kTKDatabaseTableTrips = @"trips";
 NSString * const kTKDatabaseTableTripDays = @"trip_days";

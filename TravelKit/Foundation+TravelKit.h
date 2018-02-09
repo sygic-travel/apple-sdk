@@ -12,6 +12,10 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+// -----------------------------------------------------------------------
+/// @name Generic `NSObject` stuff
+// -----------------------------------------------------------------------
+
 @interface NSObject (TravelKit)
 
 /**
@@ -35,6 +39,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+// -----------------------------------------------------------------------
+/// @name `NSArray` stuff
+// -----------------------------------------------------------------------
 
 @interface NSArray<ObjectType> (TravelKit)
 
@@ -67,6 +74,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+// -----------------------------------------------------------------------
+/// @name `NSDictionary` stuff
+// -----------------------------------------------------------------------
 
 @interface NSDictionary<KeyType, ObjectType> (TravelKit)
 
@@ -75,6 +85,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+// -----------------------------------------------------------------------
+/// @name `NSString` stuff
+// -----------------------------------------------------------------------
 
 @interface NSString (TravelKit)
 
@@ -94,16 +107,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSString *)stringByTrimmingCharactersInRegexString:(NSString *)regexString;
 
 /**
- <#Description#>
-
- @param str <#str description#>
- @param ignoreCase <#ignoreCase description#>
- @return <#return value description#>
- */
-- (BOOL)containsSubstring:(NSString *)str ignoreCase:(BOOL)ignoreCase;
-- (BOOL)containsSubstring:(NSString *)str;
-
-/**
  Index-safe variant of `substringToIndex:` providing a substring even if the position exceeds the string length.
 
  @param to Index of a position where to trim the string from.
@@ -111,6 +114,14 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSString *)substringToPosition:(NSUInteger)to;
 
+/**
+ Simple and naive function parsing a specific substring between a given starters (searched in a given
+ order) and an ending.
+
+ @param starters An array of starter strings to consecutively look for before the parsed substring.
+ @param ending A string to look for after a parsed substring.
+ @return The resulting substring, if found.
+ */
 - (nullable NSString *)substringBetweenStarters:(NSArray<NSString *> *)starters andEnding:(NSString *)ending;
 
 /**

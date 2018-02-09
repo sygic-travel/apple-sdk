@@ -70,6 +70,10 @@ NS_ASSUME_NONNULL_BEGIN
 /// Medium height, if available.
 @property (atomic, readonly) CGFloat height;
 
+///---------------------------------------------------------------------------------------
+/// @name Attribution
+///---------------------------------------------------------------------------------------
+
 /// Medium title.
 @property (nonatomic, copy, nullable, readonly) NSString *title;
 

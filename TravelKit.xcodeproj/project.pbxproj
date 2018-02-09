@@ -51,9 +51,9 @@
 		D61B92661ED47B5B00645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92651ED47B5B00645489 /* SystemConfiguration.framework */; };
 		D61B92681ED47B6100645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92671ED47B6100645489 /* SystemConfiguration.framework */; };
 		D61B926A1ED4803D00645489 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92691ED4803D00645489 /* CoreTelephony.framework */; };
-		D61CB53A202C80AC00441FF6 /* TKFavoritesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */; };
-		D61CB53B202C80AC00441FF6 /* TKFavoritesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */; };
-		D61CB53C202C80AC00441FF6 /* TKFavoritesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */; };
+		D61CB53A202C80AC00441FF6 /* TKFavoritesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D61CB53B202C80AC00441FF6 /* TKFavoritesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D61CB53C202C80AC00441FF6 /* TKFavoritesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D61CB53D202C80AC00441FF6 /* TKFavoritesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D61CB539202C80AC00441FF6 /* TKFavoritesManager.m */; };
 		D61CB53E202C80AC00441FF6 /* TKFavoritesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D61CB539202C80AC00441FF6 /* TKFavoritesManager.m */; };
 		D61CB53F202C80AC00441FF6 /* TKFavoritesManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D61CB539202C80AC00441FF6 /* TKFavoritesManager.m */; };

@@ -60,13 +60,18 @@ NS_ASSUME_NONNULL_BEGIN
 - (NSArray<TKTrip *> *)allTrips;
 
 // Filtered Trip getters
+- (NSArray<TKTripInfo *> *)allTripInfos;
 - (NSArray<TKTripInfo *> *)upcomingTripInfos;
 - (NSArray<TKTripInfo *> *)pastTripInfos;
 - (NSArray<TKTripInfo *> *)futureTripInfos;
 - (NSArray<TKTripInfo *> *)tripInfosInYear:(NSInteger)year;
-- (NSArray<TKTripInfo *> *)tripInfosWithNoDate;
-- (NSArray<TKTripInfo *> *)trashedTripInfos;
-- (NSArray<NSString *> *)yearsOfTrips;
+- (NSArray<TKTripInfo *> *)unscheduledTripInfos;
+- (NSArray<TKTripInfo *> *)deletedTripInfos;
+
+- (NSArray<NSNumber *> *)yearsOfActiveTrips;
+
+//async fun getTrip(from: DateTime?, to: DateTime?, includeOverlapping: Boolean = true): TripInfo[]
+//async fun emptyTripsTrash(): void
 
 #pragma mark - Trip saving
 
@@ -78,6 +83,22 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (BOOL)saveTrip:(TKTrip *)trip;
 
+/**
+ A method used to fetch a specific Trip from the API.
+
+ @param tripID ID of the Trip to fetch.
+ @param completion Fetched Trip object or an error.
+ */
+- (void)fetchTripWithID:(NSString *)tripID completion:(void (^)(TKTrip *_Nullable, NSError *_Nullable))completion;
+
+/**
+ A method used to permanently wipe the Trips marked as deleted.
+
+ @param completion Completion block with a result or an error.
+ */
+- (void)emptyTrashWithCompletion:(void (^)(NSArray<NSString *> *_Nullable tripIDs, NSError *_Nullable error))completion;
+
 @end
 
 NS_ASSUME_NONNULL_END
+

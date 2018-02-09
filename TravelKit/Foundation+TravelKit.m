@@ -116,18 +116,6 @@
 		options:(NSMatchingOptions)0 range:NSMakeRange(0, self.length) withTemplate:@""];
 }
 
-- (BOOL)containsSubstring:(NSString *)str
-{
-	if (!str) return NO;
-	return [self rangeOfString:str].location != NSNotFound;
-}
-
-- (BOOL)containsSubstring:(NSString *)str ignoreCase:(BOOL)ignoreCase
-{
-	if (!str) return NO;
-	return [self rangeOfString:str options:(ignoreCase ? NSCaseInsensitiveSearch : 0)].location != NSNotFound;
-}
-
 - (NSString *)substringToPosition:(NSUInteger)to
 {
 	NSUInteger max = MIN(to, self.length);

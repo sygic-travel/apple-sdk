@@ -11,6 +11,7 @@
 
 #import "TKTrip+Private.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
 @interface TKTripsManager ()
 
@@ -19,17 +20,15 @@
 // Trip database manipulation
 - (BOOL)insertTrip:(TKTrip *)trip;
 - (BOOL)storeTrip:(TKTrip *)trip;
-
-// Trip archiving & deletion
-- (BOOL)archiveTripWithID:(NSString *)tripID;
-- (BOOL)restoreTripWithID:(NSString *)tripID;
 - (BOOL)deleteTripWithID:(NSString *)tripID;
 
 // Datatabse workers
 - (BOOL)changeTripWithID:(NSString *)originalID toID:(NSString *)newID;
 - (void)saveTripInfo:(TKTripInfo *)trip;
 
-//// API fetching
-//- (void)fetchTripWithID:(NSString *)tripID completion:(void (^)(TKTrip *))completion;
+// Synchronization
+- (NSArray<TKTripInfo *> *)changedTripInfos;
 
 @end
+
+NS_ASSUME_NONNULL_END

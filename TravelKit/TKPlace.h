@@ -79,6 +79,28 @@ typedef NS_OPTIONS(NSUInteger, TKPlaceCategory) {
 	TKPlaceCategorySleeping       = 1 << 10,
 };
 
+/**
+ Flag value indicating a source of a description.
+ */
+typedef NS_OPTIONS(NSUInteger, TKPlaceDescriptionProvider) {
+	/// No or in-house description.
+	TKPlaceDescriptionProviderNone           = 0,
+	/// Wikipedia description.
+	TKPlaceDescriptionProviderWikipedia      = 1 << 0,
+	/// Wikivoyage description.
+	TKPlaceDescriptionProviderWikivoyage     = 1 << 1,
+};
+
+/**
+ Flag value indicating a source of a translation.
+ */
+typedef NS_OPTIONS(NSUInteger, TKTranslationProvider) {
+	/// No or in-house translation.
+	TKTranslationProviderNone           = 0,
+	/// Google Translate.
+	TKTranslationProviderGoogle         = 1 << 0,
+};
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -171,22 +193,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Full-length text description.
 @property (nonatomic, copy) NSString *text;
 
-/// Text slug of the description provider, if available.
-///
-/// @note Possible values: `wikipedia`, `wikivoyage`.
-///
-/// @note Descriptions without any `provider` set are provided by Sygic Travel.
-@property (nonatomic, copy, nullable) NSString *provider;
+/// Flag of the description provider.
+@property (atomic) TKPlaceDescriptionProvider provider;
 
 /// URL address of the description source.
-@property (nonatomic, copy, nullable) NSURL *link;
+@property (nonatomic, copy, nullable) NSURL *sourceURL;
 
-/// Text slug of the translation provider, if available.
-///
-/// @note Possible values: `google`.
-///
-/// @note Translations without any `translationProvider` set are provided by Sygic Travel.
-@property (nonatomic, copy, nullable) NSString *translationProvider;
+/// Flag of the translation provider.
+@property (atomic) TKTranslationProvider translationProvider;
 
 /// Flag indicating whether the description provided is translated.
 @property (atomic) BOOL translated;
@@ -244,7 +258,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Email string.
 @property (nonatomic, copy, nullable) NSString *email;
 
-/// Average duration, in seconds.
+/// Typical duration, in seconds.
 @property (nonatomic, strong, nullable) NSNumber *duration;
 
 /// Opening hours string.

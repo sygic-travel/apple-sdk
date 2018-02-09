@@ -118,7 +118,7 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 	[_defaults synchronize];
 }
 
-- (void)clearUserData
+- (void)clearAllData
 {
 	// Clear database data
 	[_database runQuery:@"DELETE FROM %@;" tableName:kTKDatabaseTableFavorites];
@@ -206,10 +206,10 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 #pragma mark Authentication
 
 
-- (void)performDeviceSessionFetchWithSuccess:(void (^)(TKSession *))success
+- (void)performDeviceAuthWithSuccess:(void (^)(TKSession *))success
     failure:(void (^)(NSError *))failure
 {
-	[[TKSSOAPI sharedAPI] performDeviceSessionFetchWithSuccess:^(TKSession *session) {
+	[[TKSSOAPI sharedAPI] performDeviceAuthWithSuccess:^(TKSession *session) {
 
 		self.session = session;
 
@@ -218,10 +218,10 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 	} failure:failure];
 }
 
-- (void)performUserCredentialsAuthWithUsername:(NSString *)username password:(NSString *)password
+- (void)performUserCredentialsAuthWithEmail:(NSString *)email password:(NSString *)password
     success:(void (^)(TKSession *))success failure:(void (^)(NSError *))failure
 {
-	[[TKSSOAPI sharedAPI] performUserCredentialsAuthWithUsername:username
+	[[TKSSOAPI sharedAPI] performUserCredentialsAuthWithUsername:email
 	password:password success:^(TKSession *session) {
 
 		self.session = session;
@@ -296,7 +296,7 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 		email:email success:success failure:failure];
 }
 
-- (void)performMagicLinkeFetchWithToken:(NSString *)accessToken
+- (void)performMagicLinkFetchWithToken:(NSString *)accessToken
 	success:(void (^)(NSString *magicLinkToken))success failure:(void (^)(NSError *))failure
 {
 	[[TKSSOAPI sharedAPI] performMagicLinkFetchWithToken:accessToken success:^(NSString *magicLink) {
@@ -309,7 +309,7 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 
 - (void)performSignOutWithCompletion:(void (^)(void))completion
 {
-	[self clearUserData];
+	[self clearAllData];
 
 	if (completion) completion();
 }
