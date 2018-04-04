@@ -532,8 +532,8 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<Trip | ID: %@>\n\tName: %@\n\tVersion: %zd\n\tStart date: %@\n\tLast update: %@",
-			_ID, _name, _version, _startDate, _lastUpdate];
+	return [NSString stringWithFormat:@"<Trip | ID: %@>\n\tName: %@\n\tVersion: %lu\n\tStart date: %@\n\tLast update: %@",
+			_ID, _name, (unsigned long)_version, _startDate, _lastUpdate];
 }
 
 - (NSArray<NSNumber *> *)indexesOfDaysContainingItemWithID:(NSString *)itemID

@@ -346,7 +346,7 @@
 
 	results = [_database runQuery:@"SELECT * FROM %@ WHERE starts_on LIKE ? AND "
 		"(deleted != 1 OR deleted IS NULL) ORDER BY updated_at DESC" tableName:kTKDatabaseTableTrips
-			data:@[ [NSString stringWithFormat:@"%zd%%", year] ]];
+			data:@[ [NSString stringWithFormat:@"%ld%%", (long)year] ]];
 
 	NSMutableArray *trips = [NSMutableArray arrayWithCapacity:results.count];
 	for (NSDictionary *row in results) {

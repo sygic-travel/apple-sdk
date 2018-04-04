@@ -131,7 +131,7 @@
 	// Append path
 
 	if (![path hasPrefix:@"/"])
-		@throw [NSString stringWithFormat:@"Invalid path prefix for API request of type %zd", type];
+		@throw [NSString stringWithFormat:@"Invalid path prefix for API request of type %ld", (long)type];
 
 	[ret appendString:path];
 
@@ -1499,8 +1499,8 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 #endif
 
 		NSOperatingSystemVersion ver = [NSProcessInfo processInfo].operatingSystemVersion;
-		platformVersion = [NSString stringWithFormat:@"%zd.%zd.%zd",
-		                   ver.majorVersion, ver.minorVersion, ver.patchVersion];
+		platformVersion = [NSString stringWithFormat:@"%ld.%ld.%ld",
+		    (long)ver.majorVersion, (long)ver.minorVersion, (long)ver.patchVersion];
 
 		if (platformName && platformVersion)
 			[concat addObject:[NSString stringWithFormat:@"%@/%@", platformName, platformVersion]];

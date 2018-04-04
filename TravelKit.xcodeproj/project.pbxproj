@@ -532,8 +532,7 @@
 				D6F0E4691ED6EF5800A0D3D5 /* FMResultSet.h */,
 				D6F0E46A1ED6EF5800A0D3D5 /* FMResultSet.m */,
 			);
-			name = fmdb;
-			path = fmdb/src/fmdb;
+			path = fmdb;
 			sourceTree = SOURCE_ROOT;
 		};
 		D6FEE0281FA8B24500996876 /* Synchronization */ = {
@@ -851,7 +850,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = TK;
-				LastUpgradeCheck = 0900;
+				LastUpgradeCheck = 0930;
 				ORGANIZATIONNAME = Tripomatic;
 				TargetAttributes = {
 					D6B2A1281E530AFD005509E8 = {
