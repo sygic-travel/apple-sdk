@@ -71,8 +71,8 @@ typedef NS_OPTIONS(NSUInteger, TKPlaceCategory) {
 	TKPlaceCategoryGoingOut       = 1 << 6,
 	/// Hiking.
 	TKPlaceCategoryHiking         = 1 << 7,
-	/// Sports.
-	TKPlaceCategorySports         = 1 << 8,
+	/// Doing sports.
+	TKPlaceCategoryDoingSports    = 1 << 8,
 	/// Relaxing.
 	TKPlaceCategoryRelaxing       = 1 << 9,
 	/// Sleeping.

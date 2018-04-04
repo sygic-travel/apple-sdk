@@ -30,7 +30,7 @@
 			@(TKPlaceCategoryTraveling): @"traveling",
 			@(TKPlaceCategoryGoingOut): @"going_out",
 			@(TKPlaceCategoryHiking): @"hiking",
-			@(TKPlaceCategorySports): @"sports",
+			@(TKPlaceCategoryDoingSports): @"doing_sports",
 			@(TKPlaceCategoryRelaxing): @"relaxing",
 			@(TKPlaceCategorySleeping): @"sleeping",
 		};
@@ -185,7 +185,7 @@
 	if (_categories & TKPlaceCategoryTraveling)   return 0x6B91F6;
 	if (_categories & TKPlaceCategoryGoingOut)    return 0xE76CA0;
 	if (_categories & TKPlaceCategoryHiking)      return 0xD59B6B;
-	if (_categories & TKPlaceCategorySports)      return 0x68B277;
+	if (_categories & TKPlaceCategoryDoingSports) return 0x68B277;
 	if (_categories & TKPlaceCategoryRelaxing)    return 0xA06CF6;
 	if (_categories & TKPlaceCategorySleeping)    return 0xA4CB69;
 
