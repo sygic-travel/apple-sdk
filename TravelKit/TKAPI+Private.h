@@ -167,14 +167,14 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 // Places Batch
 
 - (instancetype)initAsPlacesRequestForIDs:(NSArray<NSString *> *)placeIDs
-	success:(void (^)(NSArray<TKPlace *> *places))success
+	success:(void (^)(NSArray<TKDetailedPlace *> *places))success
 		failure:(TKAPIFailureBlock)failure;
 
 ////////////////////
 // Place
 
 - (instancetype)initAsPlaceRequestForItemWithID:(NSString *)itemID
-	success:(void (^)(TKPlace *place))success
+	success:(void (^)(TKDetailedPlace *place))success
 		failure:(TKAPIFailureBlock)failure;
 
 ////////////////////

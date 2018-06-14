@@ -140,10 +140,6 @@
 					initWithSouthWestPoint:southWest northEastPoint:northEast];
 		}
 
-		// Activity details
-		if (dictionary[@"description"])
-			_detail = [[TKPlaceDetail alloc] initFromResponse:dictionary];
-
 		// Properties
 		_rating = [dictionary[@"rating"] parsedNumber];
 
@@ -195,6 +191,23 @@
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<TKPlace: %p | ID: %@ | Name: %@>", self, _ID, _name];
+}
+
+@end
+
+
+@implementation TKDetailedPlace
+
+- (instancetype)initFromResponse:(NSDictionary *)dictionary
+{
+	if (self = [super initFromResponse:dictionary])
+	{
+		// Place detail
+		if (dictionary[@"description"])
+			_detail = [[TKPlaceDetail alloc] initFromResponse:dictionary];
+	}
+
+	return self;
 }
 
 @end

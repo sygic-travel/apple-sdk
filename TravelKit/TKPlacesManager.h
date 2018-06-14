@@ -54,8 +54,8 @@ NS_ASSUME_NONNULL_BEGIN
  @param placeIDs Array of strings matching desired Place IDs.
  @param completion Completion block called on success or error.
  */
-- (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
-	completion:(void (^)(NSArray<TKPlace *> * _Nullable places, NSError * _Nullable error))completion;
+- (void)detailedPlacesWithIDs:(NSArray<NSString *> *)placeIDs
+	completion:(void (^)(NSArray<TKDetailedPlace *> * _Nullable places, NSError * _Nullable error))completion;
 
 /**
  Returns a Detailed `TKPlace` object for the given global Place identifier.

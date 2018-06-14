@@ -131,10 +131,10 @@
 	[[TKPlacesManager sharedManager] placesForQuery:query completion:completion];
 }
 
-- (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
+- (void)detailedPlacesWithIDs:(NSArray<NSString *> *)placeIDs
            completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion
 {
-	[[TKPlacesManager sharedManager] placesWithIDs:placeIDs completion:completion];
+	[[TKPlacesManager sharedManager] detailedPlacesWithIDs:placeIDs completion:completion];
 }
 
 - (void)detailedPlaceWithID:(NSString *)placeID

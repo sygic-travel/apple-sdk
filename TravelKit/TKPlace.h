@@ -167,15 +167,28 @@ NS_ASSUME_NONNULL_BEGIN
 /// Thumbnail URL to an image of size 150×150 pixels.
 @property (nonatomic, strong, nullable) NSURL *thumbnailURL;
 
-/// Place detail of `TKPlaceDetail` instance containing further attributes.
-@property (nonatomic, strong, nullable) TKPlaceDetail *detail;
-
 ///-------------------------
 /// @name Helping properties
 ///-------------------------
 
 /// Default _HEX_ colour value. Values `0x000000` through `0xFFFFFF`.
 @property (atomic, readonly) NSUInteger displayableHexColor;
+
+@end
+
+
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Detailed Place object
+///-----------------------------------------------------------------------------
+
+/**
+ Detailed Place object.
+ */
+@interface TKDetailedPlace : TKPlace
+
+/// Place detail of `TKPlaceDetail` instance containing further attributes.
+@property (nonatomic, strong, nullable) TKPlaceDetail *detail;
 
 @end
 

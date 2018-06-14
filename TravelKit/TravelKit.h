@@ -123,14 +123,6 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 @property (nonatomic, strong, readonly) TKPlacesManager *places;
 
 /**
- Shared Tours Manager instance to provide Tours-related stuff.
-
- @warning Experimental.
- */
-@property (nonatomic, strong, readonly) TKToursManager *_tours
-	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
-
-/**
  Shared Trips Manager instance to provide Trips-related stuff.
  */
 @property (nonatomic, strong, readonly) TKTripsManager *trips;
@@ -139,6 +131,14 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  Shared Trips Manager instance to provide Trips-related stuff.
  */
 @property (nonatomic, strong, readonly) TKFavoritesManager *favorites;
+
+/**
+ Shared Tours Manager instance to provide Tours-related stuff.
+
+ @warning Experimental.
+ */
+@property (nonatomic, strong, readonly) TKToursManager *_tours
+	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
 
 /**
  Shared Session Manager instance to provide Session-related stuff.
@@ -187,7 +187,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 	completion:(void (^)(NSArray<TKPlace *>  * _Nullable places, NSError * _Nullable error))completion
 		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 
-- (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
+- (void)detailedPlacesWithIDs:(NSArray<NSString *> *)placeIDs
 	completion:(void (^)(NSArray<TKPlace *> * _Nullable places, NSError * _Nullable error))completion
 		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 

@@ -745,7 +745,6 @@
 				if (!guid) continue;
 
 				TKPlace *a = [[TKPlace alloc] initFromResponse:dict];
-				if (a) a.detail = nil;
 				if (a) [stored addObject:a];
 			}
 
@@ -766,7 +765,7 @@
 
 
 - (instancetype)initAsPlacesRequestForIDs:(NSArray<NSString *> *)placeIDs
-	success:(void (^)(NSArray<TKPlace *> *))success failure:(TKAPIFailureBlock)failure
+	success:(void (^)(NSArray<TKDetailedPlace *> *))success failure:(TKAPIFailureBlock)failure
 {
 	if (self = [super init])
 	{
@@ -775,7 +774,7 @@
 
 		_successBlock = ^(TKAPIResponse *response){
 
-			NSMutableArray *stored = [NSMutableArray array];
+			NSMutableArray<TKDetailedPlace *> *stored = [NSMutableArray array];
 			NSArray *items = [response.data[@"places"] parsedArray];
 
 			for (NSDictionary *dict in items)
@@ -784,7 +783,7 @@
 				NSString *guid = [dict[@"id"] parsedString];
 				if (!guid) continue;
 
-				TKPlace *a = [[TKPlace alloc] initFromResponse:dict];
+				TKDetailedPlace *a = [[TKDetailedPlace alloc] initFromResponse:dict];
 				if (a) [stored addObject:a];
 			}
 
@@ -805,7 +804,7 @@
 
 
 - (instancetype)initAsPlaceRequestForItemWithID:(NSString *)itemID
-	success:(void (^)(TKPlace *))success failure:(TKAPIFailureBlock)failure
+	success:(void (^)(TKDetailedPlace *))success failure:(TKAPIFailureBlock)failure
 {
 	if (self = [super init])
 	{
@@ -814,10 +813,10 @@
 
 		_successBlock = ^(TKAPIResponse *response){
 
-			TKPlace *place = nil;
+			TKDetailedPlace *place = nil;
 			NSDictionary *item = [response.data[@"place"] parsedDictionary];
 
-			if (item) place = [[TKPlace alloc] initFromResponse:item];
+			if (item) place = [[TKDetailedPlace alloc] initFromResponse:item];
 
 			if (!place && failure) failure(nil);
 			if (place && success) success(place);

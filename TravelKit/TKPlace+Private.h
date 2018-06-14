@@ -28,6 +28,14 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 
+@interface TKDetailedPlace ()
+
+/// Initialiser
+- (nullable instancetype)initFromResponse:(NSDictionary *)response;
+
+@end
+
+
 @interface TKPlaceDetail ()
 
 /// Initialiser
