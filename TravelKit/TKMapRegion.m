@@ -46,6 +46,12 @@
 	return self;
 }
 
+- (CLLocation *)centerPoint
+{
+	return [[CLLocation alloc] initWithLatitude:_coordinateRegion.center.latitude
+	                                  longitude:_coordinateRegion.center.longitude];
+}
+
 - (CLLocation *)southWestPoint
 {
 	return [[CLLocation alloc] initWithLatitude:
