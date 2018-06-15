@@ -60,8 +60,8 @@ TravelKit *kit = [TravelKit sharedKit];
 // Set your API key
 kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
-// Ask kit for Eiffel Tower TKPlace object with details
-[kit detailedPlaceWithID:@"poi:530" completion:^(TKPlace *place, NSError *e) {
+// Ask kit for Eiffel Tower TKDetailedPlace object with details
+[kit detailedPlaceWithID:@"poi:530" completion:^(TKDetailedPlace *place, NSError *e) {
     if (place) NSLog(@"Let's visit %@!", place.name);
     else NSLog(@"Something went wrong :/");
 }];
@@ -102,7 +102,8 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
  @note Supported language codes: **`en`**, **`fr`**, **`de`**, **`es`**, **`nl`**,
        **`pt`**, **`it`**, **`ru`**, **`cs`**, **`sk`**, **`pl`**, **`tr`**,
-       **`zh`**, **`ko`**.
+       **`zh`**, **`ko`**, **`ar`**, **`da`**, **`el`**, **`fi`**, **`he`**,
+       **`hu`**, **`no`**, **`ro`**, **`sv`**, **`th`**, **`uk`**.
  
  Default language code is `en`.
 
@@ -187,12 +188,12 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 	completion:(void (^)(NSArray<TKPlace *>  * _Nullable places, NSError * _Nullable error))completion
 		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 
-- (void)detailedPlacesWithIDs:(NSArray<NSString *> *)placeIDs
-	completion:(void (^)(NSArray<TKPlace *> * _Nullable places, NSError * _Nullable error))completion
+- (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
+	completion:(void (^)(NSArray<TKDetailedPlace *> * _Nullable places, NSError * _Nullable error))completion
 		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 
 - (void)detailedPlaceWithID:(NSString *)placeID
-	completion:(void (^)(TKPlace * _Nullable place, NSError * _Nullable error))completion
+	completion:(void (^)(TKDetailedPlace * _Nullable place, NSError * _Nullable error))completion
 		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 
 ///---------------------------------------------------------------------------------------

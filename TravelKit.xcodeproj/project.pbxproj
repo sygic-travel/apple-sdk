@@ -480,12 +480,7 @@
 				EF0E92901EFAA9590036D13D /* API */,
 				EF0D9D671EFAAB3800C50AE2 /* Database */,
 				D68E94801F06301F009E2C9C /* General */,
-				D6EF38EB1EB9EA6E00260E82 /* Foundation+TravelKit.h */,
-				D6EF38EC1EB9EA6E00260E82 /* Foundation+TravelKit.m */,
-				D6E3B7C11FA1B7EE00E1CCAC /* NSDate+Tripomatic.h */,
-				D6E3B7C01FA1B7EE00E1CCAC /* NSDate+Tripomatic.m */,
-				D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */,
-				D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */,
+				D6F2CCE520D3BFFD00E06245 /* Categories */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -534,6 +529,19 @@
 			);
 			path = fmdb;
 			sourceTree = SOURCE_ROOT;
+		};
+		D6F2CCE520D3BFFD00E06245 /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				D6EF38EB1EB9EA6E00260E82 /* Foundation+TravelKit.h */,
+				D6EF38EC1EB9EA6E00260E82 /* Foundation+TravelKit.m */,
+				D6E3B7C11FA1B7EE00E1CCAC /* NSDate+Tripomatic.h */,
+				D6E3B7C01FA1B7EE00E1CCAC /* NSDate+Tripomatic.m */,
+				D6C3D0641E4DE29C00EBB54F /* NSObject+Parsing.h */,
+				D6C3D0651E4DE29C00EBB54F /* NSObject+Parsing.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
 		};
 		D6FEE0281FA8B24500996876 /* Synchronization */ = {
 			isa = PBXGroup;

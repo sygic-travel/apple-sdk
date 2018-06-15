@@ -66,7 +66,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion Completion block called on success or error.
  */
 - (void)detailedPlaceWithID:(NSString *)placeID
-	completion:(void (^)(TKPlace * _Nullable place, NSError * _Nullable error))completion;
+	completion:(void (^)(TKDetailedPlace * _Nullable place, NSError * _Nullable error))completion;
 
 ///---------------------------------------------------------------------------------------
 /// @name Place working queries

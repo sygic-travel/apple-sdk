@@ -218,7 +218,7 @@
 	}] start];
 }
 
-- (void)detailedPlaceWithID:(NSString *)placeID completion:(void (^)(TKPlace *, NSError *))completion
+- (void)detailedPlaceWithID:(NSString *)placeID completion:(void (^)(TKDetailedPlace *, NSError *))completion
 {
 	NSCache<NSString *, TKDetailedPlace *> *placeCache = [self.class detailedPlaceCache];
 
