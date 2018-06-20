@@ -8,6 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+/**
+ Flag value denoting some additional options of a `TKTour`.
+ */
+typedef NS_OPTIONS(NSUInteger, TKTourFlag) {
+	TKTourFlagNone                = 0,
+	TKTourFlagBestSeller          = 1 << 0,
+	TKTourFlagInstantConfirmation = 1 << 1,
+	TKTourFlagPortableTicket      = 1 << 2,
+	TKTourFlagWheelChairAccess    = 1 << 3,
+	TKTourFlagSkipTheLine         = 1 << 4,
+};
+
+
 NS_ASSUME_NONNULL_BEGIN
 
 
@@ -70,6 +83,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Count of reviews.
 @property (nonatomic, strong, nullable, readonly) NSNumber *reviewsCount;
+
+/// Some additional indicated flags.
+@property (atomic, readonly) TKTourFlag flags;
 
 @end
 

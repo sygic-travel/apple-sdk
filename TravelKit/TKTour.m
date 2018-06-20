@@ -40,6 +40,13 @@
 		_duration = [dictionary[@"duration"] parsedString];
 		_durationMin = [dictionary[@"duration_min"] parsedNumber];
 		_durationMax = [dictionary[@"duration_max"] parsedNumber];
+
+		NSArray *flags = [dictionary[@"flags"] parsedArray];
+		if ([flags containsObject:@"bestseller"]) _flags |= TKTourFlagBestSeller;
+		if ([flags containsObject:@"instant_confirmation"]) _flags |= TKTourFlagInstantConfirmation;
+		if ([flags containsObject:@"portable_ticket"]) _flags |= TKTourFlagPortableTicket;
+		if ([flags containsObject:@"wheelchair_access"]) _flags |= TKTourFlagWheelChairAccess;
+		if ([flags containsObject:@"skip_the_line"]) _flags |= TKTourFlagSkipTheLine;
     }
 
     return self;
