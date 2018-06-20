@@ -69,13 +69,18 @@ NSString * const kTKDatabaseTableTripDayItems = @"trip_day_items";
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 
+		NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
+
 		path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
 
 #if TARGET_OS_MAC
-		NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
 		if (!bundleID) @throw @"Database initialization error";
 		path = [path stringByAppendingPathComponent:bundleID];
 #endif
+
+		// Handle Playground runtime a bit better
+		if ([bundleID containsString:@"com.apple.dt.Xcode"])
+			path = [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) firstObject];
 
 		path = [path stringByAppendingPathComponent:@"TravelKit"];
 		path = [path stringByAppendingPathComponent:kDatabaseFilename];

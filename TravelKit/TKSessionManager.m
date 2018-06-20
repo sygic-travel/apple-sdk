@@ -60,8 +60,20 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 		_database = [TKDatabaseManager sharedManager];
 		_events = [TKEventsManager sharedManager];
 
+		NSString *suiteName = @"com.tripomatic.travelkit";
+
+		NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
+
+		// Handle Playground runtime a bit nicer
+		if ([bundleID containsString:@"com.apple.dt.Xcode"]) {
+			NSString *path = [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) firstObject];
+			path = [path stringByAppendingPathComponent:@"TravelKit"];
+			path = [path stringByAppendingPathComponent:suiteName];
+			suiteName = path;
+		}
+
 		// TODO: Check the resulting path on different platforms
-		_defaults = [[NSUserDefaults alloc] initWithSuiteName:@"com.tripomatic.travelkit"];
+		_defaults = [[NSUserDefaults alloc] initWithSuiteName:suiteName];
 
 		[self loadState];
 
