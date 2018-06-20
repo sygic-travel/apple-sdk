@@ -59,19 +59,73 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (NSArray<TKTrip *> *)allTrips;
 
-// Filtered Trip getters
+/**
+  A method used to get an info of all locally stored Trips.
+
+ @return An array of `TKTripInfo` objects.
+ */
 - (NSArray<TKTripInfo *> *)allTripInfos;
+
+/**
+  A method used to get an info of all upcoming Trips.
+
+ @return An array of `TKTripInfo` objects.
+ */
 - (NSArray<TKTripInfo *> *)upcomingTripInfos;
+
+/**
+  A method used to get an info of all past Trips.
+
+ @return An array of `TKTripInfo` objects.
+ */
 - (NSArray<TKTripInfo *> *)pastTripInfos;
+
+/**
+  A method used to get an info of all future Trips.
+
+ @return An array of `TKTripInfo` objects.
+ */
 - (NSArray<TKTripInfo *> *)futureTripInfos;
+
+/**
+  A method used to get an info of all Trips in a specific year.
+
+ @return An array of `TKTripInfo` objects.
+ */
 - (NSArray<TKTripInfo *> *)tripInfosInYear:(NSInteger)year;
+
+/**
+  A method used to get an info of all Trips with no date set.
+
+ @return An array of `TKTripInfo` objects.
+ */
 - (NSArray<TKTripInfo *> *)unscheduledTripInfos;
+
+/**
+  A method used to get an info of all Trips marked as deleted.
+
+ @return An array of `TKTripInfo` objects.
+ */
 - (NSArray<TKTripInfo *> *)deletedTripInfos;
 
-- (NSArray<NSNumber *> *)yearsOfActiveTrips;
+/**
+ A method used to get an info of Trips planned in a specified date range.
 
-//async fun getTrip(from: DateTime?, to: DateTime?, includeOverlapping: Boolean = true): TripInfo[]
-//async fun emptyTripsTrash(): void
+ @param startDate A start date to filter the Trips with. Optional.
+ @param endDate An end date to filter the Trips with. Optional.
+ @param includeOverlapping A flag indicating whether the Trips which overlap
+        the given bounds in any way should be included as well.
+ @return An array of `TKTripInfo` objects.
+ */
+- (NSArray<TKTripInfo *> *)tripInfosForStartDate:(nullable NSDate *)startDate
+	endDate:(nullable NSDate *)endDate includeOverlapping:(BOOL)includeOverlapping;
+
+/**
+  A method used to get a list of years where some Trip is planned.
+
+ @return An array of `NSNumber`s representing years with some Trip planned.
+ */
+- (NSArray<NSNumber *> *)yearsOfActiveTrips;
 
 #pragma mark - Trip saving
 
