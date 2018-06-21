@@ -14,8 +14,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 // App settings
 @property (nonatomic, assign) NSTimeInterval changesTimestamp;
-@property (atomic, readonly) NSInteger launchNumber;
-@property (nonatomic, readonly, nullable) NSDate *installationDate;
 @property (nonatomic, copy) NSString *uniqueID;
 
 @end

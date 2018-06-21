@@ -7,15 +7,7 @@
 //
 
 #import "TKPlacesManager.h"
-#import "TKDatabaseManager+Private.h"
 #import "TKAPI+Private.h"
-
-
-@interface TKPlacesManager ()
-
-@property (nonatomic, strong) TKDatabaseManager *database;
-
-@end
 
 
 @implementation TKPlacesManager
@@ -40,9 +32,7 @@
 - (instancetype)init
 {
 	if (self = [super init])
-	{
-		_database = [TKDatabaseManager sharedManager];
-	}
+	{}
 
 	return self;
 }

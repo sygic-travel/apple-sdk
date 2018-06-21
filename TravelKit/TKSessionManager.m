@@ -23,10 +23,6 @@ NSString * const TKSettingsKeyUniqueID = @"UniqueID";
 NSString * const TKSettingsKeySession = @"Session";
 NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 
-// App-wide flags
-NSString * const TKSettingsKeyLaunchNumber = @"LaunchNumber";
-NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
-
 
 @interface TKSessionManager ()
 
@@ -96,14 +92,7 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 - (void)loadState
 {
 	_changesTimestamp = [_defaults doubleForKey:TKSettingsKeyChangesTimestamp];
-	_launchNumber = [_defaults integerForKey:TKSettingsKeyLaunchNumber] + 1;
-	_installationDate = [_defaults objectForKey:TKSettingsKeyIntallationDate];
 	_uniqueID = [_defaults stringForKey:TKSettingsKeyUniqueID];
-
-	// Installation date
-
-	if (!_installationDate)
-		_installationDate = [NSDate new];
 
 	// Unique ID
 
@@ -122,10 +111,7 @@ NSString * const TKSettingsKeyIntallationDate = @"InstallationDate";
 {
 	[_defaults setObject:_uniqueID forKey:TKSettingsKeyUniqueID];
 	[_defaults setObject:[_session asDictionary] forKey:TKSettingsKeySession];
-
 	[_defaults setDouble:_changesTimestamp forKey:TKSettingsKeyChangesTimestamp];
-	[_defaults setInteger:_launchNumber forKey:TKSettingsKeyLaunchNumber];
-	[_defaults setObject:_installationDate forKey:TKSettingsKeyIntallationDate];
 
 	[_defaults synchronize];
 }

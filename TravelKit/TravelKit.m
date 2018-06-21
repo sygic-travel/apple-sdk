@@ -45,8 +45,10 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		langs = @[ @"en", @"fr", @"de", @"es", @"nl",
-				   @"pt", @"it", @"ru", @"cs", @"sk",
-				   @"pl", @"tr", @"zh", @"ko", @"en-GB",
+		           @"pt", @"it", @"ru", @"cs", @"sk",
+		           @"pl", @"tr", @"zh", @"ko", @"ar",
+		           @"da", @"el", @"fi", @"he", @"hu",
+		           @"no", @"ro", @"sv", @"th", @"uk",
 		];
 	});
 
@@ -93,15 +95,40 @@
 	{
 		_places = [TKPlacesManager sharedManager];
 		__tours = [TKToursManager sharedManager];
-		_trips = [TKTripsManager sharedManager];
-		_session = [TKSessionManager sharedManager];
-		_favorites = [TKFavoritesManager sharedManager];
-		_sync = [TKSynchronizationManager sharedManager];
+//		_trips = [TKTripsManager sharedManager];
+//		_session = [TKSessionManager sharedManager];
+//		_favorites = [TKFavoritesManager sharedManager];
+//		_sync = [TKSynchronizationManager sharedManager];
 		__directions = [TKDirectionsManager sharedManager];
 		__events = [TKEventsManager sharedManager];
 	}
 
 	return self;
+}
+
+
+#pragma mark -
+#pragma mark Lazyfied modules
+
+
+- (TKTripsManager *)trips
+{
+	return [TKTripsManager sharedManager];
+}
+
+- (TKSessionManager *)session
+{
+	return [TKSessionManager sharedManager];
+}
+
+- (TKFavoritesManager *)favorites
+{
+	return [TKFavoritesManager sharedManager];
+}
+
+- (TKSynchronizationManager *)sync
+{
+	return [TKSynchronizationManager sharedManager];
 }
 
 @end
@@ -118,7 +145,7 @@
 
 - (void)clearUserData
 {
-	[_session clearAllData];
+	[[self session] clearAllData];
 }
 
 
@@ -155,12 +182,12 @@
 
 - (NSArray<NSString *> *)favoritePlaceIDs
 {
-	return [_favorites favoritePlaceIDs];
+	return [self.favorites favoritePlaceIDs];
 }
 
 - (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
 {
-	[_favorites updateFavoritePlaceID:favoriteID setFavorite:favorite];
+	[self.favorites updateFavoritePlaceID:favoriteID setFavorite:favorite];
 }
 
 
