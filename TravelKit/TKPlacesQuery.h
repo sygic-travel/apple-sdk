@@ -89,6 +89,12 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 /// Flag controlling the matching rule for `parentIDs`.
 @property (atomic) TKPlacesQueryMatching parentIDsMatching;
 
+/// Minimum rating of the queried Places.
+@property (nonatomic, strong, nullable) NSNumber *minimumRating;
+
+/// Maximum rating of the queried Places.
+@property (nonatomic, strong, nullable) NSNumber *maximumRating;
+
 /// Maximum number of results returned.
 ///
 /// @note Accepted values: `0`--`512`.

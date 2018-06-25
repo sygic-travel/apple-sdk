@@ -36,6 +36,8 @@
 	if (_parentIDsMatching) [key appendString:@"@"];
 	if (_quadKeys.count) [key appendString:[_quadKeys componentsJoinedByString:@"+"]];
 	if (_mapSpread) [key appendString:[_mapSpread stringValue]];
+	if (_minimumRating || _maximumRating) [key appendFormat:@"%@-%@",
+		_minimumRating ?: @"", _maximumRating ?: @""];
 	if (_limit) [key appendString:[_limit stringValue]];
 	if (_bounds) [key appendString:_bounds.description];
 
@@ -56,6 +58,8 @@
 	query.parentIDsMatching = _parentIDsMatching;
 	query.quadKeys = [_quadKeys copy];
 	query.mapSpread = _mapSpread;
+	query.minimumRating = _minimumRating;
+	query.maximumRating = _maximumRating;
 	query.limit = _limit;
 	query.bounds = _bounds;
 

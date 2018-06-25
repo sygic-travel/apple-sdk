@@ -728,6 +728,16 @@
 			queryDict[@"parents"] = [query.parentIDs componentsJoinedByString:operator];
 		}
 
+		if (query.minimumRating || query.maximumRating)
+		{
+			NSString *minString = (query.minimumRating) ?
+				[NSString stringWithFormat:@"%.5f", query.minimumRating.floatValue] : @"";
+			NSString *maxString = (query.maximumRating) ?
+				[NSString stringWithFormat:@"%.5f", query.maximumRating.floatValue] : @"";
+			queryDict[@"rating"] = [NSString stringWithFormat:@"%@:%@",
+				minString, maxString];
+		}
+
 		if (query.limit.intValue > 0)
 			queryDict[@"limit"] = [query.limit stringValue];
 
