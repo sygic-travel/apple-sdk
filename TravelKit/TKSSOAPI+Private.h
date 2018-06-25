@@ -28,6 +28,10 @@
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
 
+// Authentication
+
+@property (nonatomic, copy) NSString *clientID;
+
 // Standard supported API calls
 
 - (void)performDeviceAuthWithSuccess:(void (^)(TKSession *))success

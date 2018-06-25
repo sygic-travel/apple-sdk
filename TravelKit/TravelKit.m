@@ -8,6 +8,7 @@
 
 #import "TravelKit.h"
 #import "TKAPI+Private.h"
+#import "TKSSOAPI+Private.h"
 #import "TKMapWorker.h"
 #import "Foundation+TravelKit.h"
 
@@ -62,9 +63,12 @@
 
 - (void)setAPIKey:(NSString *)APIKey
 {
-	_APIKey = [APIKey copy];
+	[TKAPI sharedAPI].APIKey = _APIKey = [APIKey copy];
+}
 
-	[TKAPI sharedAPI].APIKey = [APIKey copy];
+- (void)setClientID:(NSString *)clientID
+{
+	[TKSSOAPI sharedAPI].clientID = _clientID = [clientID copy];
 }
 
 - (NSString *)language

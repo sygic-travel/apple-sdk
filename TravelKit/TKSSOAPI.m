@@ -20,18 +20,8 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
-#define tkAPIEndpoint        @"https://auth.sygic.com"
-#define tkAPIClientID        @"sdk.sygictravel.ios"
-
-#ifdef DEBUG
-#undef  tkAPIEndpoint
-#define tkAPIEndpoint        @"https://tripomatic-auth-master-testing.sygic.com"
-#undef  tkAPIClientID
-#define tkAPIClientID        @"sygictravel_ios_sdk_demo"
-#endif
-
 // SSO endpoint URLs // TODO: Remove testing stage
-NSString *const TKSSOEndpointURL = tkAPIEndpoint;
+NSString *const TKSSOEndpointURL = @"https://auth.sygic.com";
 
 #define objectOrNull(x)      (x ?: [NSNull null])
 
@@ -164,7 +154,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *path = @"/oauth2/token";
 
 	NSDictionary *post = @{
-		@"client_id": tkAPIClientID,
+		@"client_id": objectOrNull(_clientID),
 		@"grant_type": @"client_credentials",
 		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
@@ -194,7 +184,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *path = @"/oauth2/token";
 
 	NSDictionary *post = @{
-		@"client_id": tkAPIClientID,
+		@"client_id": objectOrNull(_clientID),
 		@"grant_type": @"refresh_token",
 		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
@@ -225,7 +215,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *path = @"/oauth2/token";
 
 	NSDictionary *post = @{
-		@"client_id": tkAPIClientID,
+		@"client_id": objectOrNull(_clientID),
 		@"grant_type": @"password",
 		@"username": objectOrNull(username),
 		@"password": objectOrNull(password),
@@ -261,7 +251,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *token = facebookAccessToken ?: googleIDToken;
 
 	NSDictionary *post = @{
-		@"client_id": tkAPIClientID,
+		@"client_id": objectOrNull(_clientID),
 		@"grant_type": objectOrNull(type),
 		key: objectOrNull(token),
 		@"device_code": [TKSessionManager sharedManager].uniqueID,
@@ -292,7 +282,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *path = @"/oauth2/token";
 
 	NSDictionary *post = @{
-		@"client_id": tkAPIClientID,
+		@"client_id": objectOrNull(_clientID),
 		@"grant_type": @"external",
 		@"token": objectOrNull(jwtToken),
 		@"device_code": [TKSessionManager sharedManager].uniqueID,
@@ -323,7 +313,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *path = @"/oauth2/token";
 
 	NSDictionary *post = @{
-		@"client_id": @"sygictravel_ios",
+		@"client_id": objectOrNull(_clientID),
 		@"grant_type": @"magic_link",
 		@"token": objectOrNull(magicLink),
 		@"device_code": [TKSessionManager sharedManager].uniqueID,
@@ -356,7 +346,7 @@ NSString *const TKSSOEndpointURL = tkAPIEndpoint;
 	NSString *authHeader = [NSString stringWithFormat:@"Bearer %@", accessToken];
 
 	NSDictionary *post = @{
-		@"client_id": tkAPIClientID,
+		@"client_id": objectOrNull(_clientID),
 		@"device_code": [TKSessionManager sharedManager].uniqueID,
 		@"device_platform": tkPlatform,
 		@"username" : objectOrNull(email),

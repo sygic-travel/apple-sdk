@@ -33,11 +33,6 @@
 #define API_BASE_URL   "sygictravelapi.com"
 #define API_VERSION    "1.0"
 
-#ifdef DEBUG
-#undef  API_SUBDOMAIN
-#define API_SUBDOMAIN  "alpha-api"
-#endif
-
 typedef NS_ENUM(NSInteger, TKAPIRequestType)
 {
 	TKAPIRequestTypeUnknown = 0,

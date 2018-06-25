@@ -93,9 +93,16 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 /**
  Client API key you've obtained.
 
- @warning This needs to be set in order to perform data requests successfully.
+ @warning This needs to be set in order to perform static data requests successfully.
  */
 @property (nonatomic, copy, nullable) NSString *APIKey;
+
+/**
+ Client ID key you've obtained.
+
+ @warning This needs to be set in order to perform user-specific data requests successfully.
+ */
+@property (nonatomic, copy, nullable) NSString *clientID;
 
 /**
  Preferred language of response data to use.
