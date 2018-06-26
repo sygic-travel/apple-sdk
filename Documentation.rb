@@ -41,8 +41,13 @@ $moduleVersion = `cat TravelKit.xcodeproj/project.pbxproj | grep TK_BUNDLE_VERSI
  --skip-undocumented \
  --output Documentation/html`
 
+# Update titles
 `find Documentation/html -name *.html -exec \
  perl -pi -e 's/BRANDLESS_DOCSET_TITLE/SDK $1/, s/TravelKit\\s+(Docs|Reference)/Sygic Travel SDK $1/' {} \\;`
+
+# Update module version
+`find Documentation/html -name *.html -exec \
+ perl -pi -e 's/TK_MODULE_VERSION/#{$moduleVersion}/' {} \\;`
 
 # Additional examples:
 #  jazzy \
@@ -52,4 +57,5 @@ $moduleVersion = `cat TravelKit.xcodeproj/project.pbxproj | grep TK_BUNDLE_VERSI
 #  --root-url https://realm.io/docs/objc/2.2.0/api/ \
 #  --head "$(cat docs/custom_head.html)"
 
+# Open Safari with the generated content
 `open Documentation/html/index.html`

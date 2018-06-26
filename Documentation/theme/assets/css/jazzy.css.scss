@@ -5,7 +5,7 @@
 // ===========================================================================
 
 $body_background: #fff;
-$body_font: 14px/25px 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$body_font: 14px/25px -apple-system, 'Helvetica Neue', Helvetica, 'Open Sans', Arial, sans-serif;
 $text_color: #333;
 $gray_border: 1px solid #ddd;
 
@@ -38,9 +38,9 @@ $navigation_max_width: 300px;
 
 // ----- Header
 
-$header_weight: normal;
+$header_weight: 600;
 $header_color: #555;
-$header_font: 'Open Sans Bold', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$header_font: -apple-system, 'Helvetica Neue', Helvetica, 'Open Sans Bold', Arial, sans-serif;
 $header_link_color: #fff;
 $doc_coverage_color: #999;
 
@@ -393,7 +393,7 @@ pre code {
 }
 
 .nav-group-task {
-  font-size: 1em;
+  font-size: 1.2em;
   list-style-type: none;
   white-space: nowrap;
   overflow: hidden;
@@ -434,7 +434,7 @@ pre code {
 }
 
 .nav-group-task-link {
-   color: $color_darkblue_lighten;
+   color: rgba(34, 126, 178, 0.81);
 }
 // ===========================================================================
 //
@@ -686,6 +686,42 @@ h1 > .anchor-icon { margin-bottom: 2px; }
   margin: 10px 0 10px;
   display: inline-block;
   font-size: 13px;
+}
+
+.version-selector {
+  height: 26px;
+  border: 1px solid white;
+  background: none;
+  font-size: 1.2em;
+  color: white;
+}
+
+div.header .version-selector {
+  width: 80px;
+  vertical-align: 4px;
+  margin: 0 0 0 12px;
+  @media (max-width: 768px) {
+    display: none;
+    visibility: hidden;
+  }
+}
+
+section.footer .version-selector {
+  width: 100%;
+  height: 32px;
+  margin: 4px 0;
+  border: 1px solid black;
+  color: black;
+  display: none;
+  visibility: hidden;
+  @media (max-width: 768px) {
+    display: block;
+    visibility: visible;
+  }
+}
+
+.version-selector option {
+  font-size: 0.9em;
 }
 
 
