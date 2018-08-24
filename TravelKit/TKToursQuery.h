@@ -85,9 +85,15 @@ typedef NS_ENUM(NSUInteger, TKToursGYGQuerySorting) {
  */
 @interface TKToursGYGQuery : NSObject <NSCopying, NSMutableCopying>
 
-/// Desired identifier of parent node. _Example: `city:1`_
+/// Desired identifier of parent node.
+/// It represents the area where tour takes place in.
 ///
-/// @note Requred attribute.
+/// @note Required attribute. _Example: `city:1`_.
+///
+/// @note You can find IDs of countries in [Google Sheets](https://docs.google.com/spreadsheets/d/1qlTdvBlLDo3fxBTSqmbqQOQJXsynfukBHxI_Xpi2Srw/edit#gid=0)
+/// or [CSV file](https://admin.sygictraveldata.com/data-export/ijcw4rz32quouj3zwu1k70uhcgqfyp8g), you can also find IDs of top cities in [Google Sheets]
+/// (https://docs.google.com/spreadsheets/d/1qlTdvBlLDo3fxBTSqmbqQOQJXsynfukBHxI_Xpi2Srw/edit#gid=1588428987) and
+/// [CSV file](https://admin.sygictraveldata.com/data-export/zf8979vspcvz61dya3pyxbvsduyjtnh4) as well.
 @property (nonatomic, copy, nullable) NSString *parentID;
 
 /// Desired sorting type of Tours returned.
