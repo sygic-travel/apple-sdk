@@ -193,7 +193,7 @@
 	[[[TKAPIRequest alloc] initAsPlacesRequestForIDs:requestedIDs success:^(NSArray<TKDetailedPlace *> *places) {
 
 		for (TKDetailedPlace *p in places)
-			[placeCache setObject:place forKey:p.ID];
+			[placeCache setObject:p forKey:p.ID];
 
 		[ret addObjectsFromArray:places];
 
