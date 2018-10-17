@@ -11,7 +11,10 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Entity handling basic information about additional linked content.
+ Entity handling basic information about additional linked content. References are entities that
+ represent places' relations to other websites, articles, social networks, rental options, passes,
+ tickets, tours, accomodation providers, parkings, transfers and other services.
+ For more information please see [Sygic Travel API](http://docs.sygictravelapi.com/1.1/#section-references)
  */
 @interface TKReference : NSObject <NSCopying>
 
@@ -26,6 +29,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *title;
 
 /// Reference type.
+///
+/// @note For a complete list of nested reference types see [References sheet](https://docs.google.com/spreadsheets/d/1i8HQGVQ4eBvUrROGWIPMdrmUxRUAfS0tW914P16iJg4/edit?usp=sharing) .
 @property (nonatomic, copy, readonly) NSString *type;
 
 /// Reference supplier.
@@ -34,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Potential price of the Reference if applicable. Value in `USD`.
 @property (nonatomic, copy, nullable, readonly) NSNumber *price;
 
-/// Reference language.
+/// Reference language. See list of availabkle language IDs: `language`.
 ///
 /// @note May be `nil` if generic. 
 @property (nonatomic, copy, nullable, readonly) NSString *languageID;

@@ -95,7 +95,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @interface TKTrip : NSObject
 
-/// Trip identifier.
+/// Trip identifier. Has same value as ID in TKTripInfo for the same trip.
 @property (nonatomic, readonly) NSString *ID NS_SWIFT_NAME(ID);
 
 /// Trip name.
@@ -150,10 +150,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  Lightweight, read-only Trip Info model. Useful for listings, collections and similar stuff.
+ Includes same information as TKTrip, but does not carry whole TKTripDayItems, but only information about their count.
+ TKTripInfo can not be used to delete whole trip.
  */
 @interface TKTripInfo : NSObject
 
-/// Trip identifier.
+/// TripInfo identifier. Has same value as ID in TKTrip for the same trip.
 @property (nonatomic, copy, readonly) NSString *ID NS_SWIFT_NAME(ID);
 
 /// Trip name.

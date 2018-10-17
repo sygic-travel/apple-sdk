@@ -64,6 +64,10 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
  */
 @interface TKDirectionsQuery : NSObject
 
+///----------------------
+/// @name Properties
+///----------------------
+
 @property (nonatomic, strong, readonly) CLLocation *startLocation;
 @property (nonatomic, strong, readonly) CLLocation *endLocation;
 
@@ -87,6 +91,10 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
  */
 @interface TKDirectionsSet : NSObject
 
+///----------------------
+/// @name Properties
+///----------------------
+
 @property (nonatomic, strong) CLLocation *startLocation;
 @property (nonatomic, strong) CLLocation *endLocation;
 @property (atomic) CLLocationDistance airDistance;
@@ -108,6 +116,10 @@ typedef NS_OPTIONS(NSUInteger, TKTransportAvoidOption) {
  A particular direction carrying information about a route, its distance and duration.
  */
 @interface TKDirection : NSObject
+
+///----------------------
+/// @name Properties
+///----------------------
 
 @property (nonatomic, strong) CLLocation *startLocation;
 @property (nonatomic, strong) CLLocation *endLocation;

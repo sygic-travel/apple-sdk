@@ -87,12 +87,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable, readonly) NSString *license;
 
 /// Medium source URL.
+///
+/// @note Use this url in `-displayableImageURLForSize:` to get standard size image.
 @property (nonatomic, strong, nullable, readonly) NSURL *URL;
 
 /// Medium source Preview URL.
+///
+/// @note Use this url in `-displayableImageURLForSize:` to get smaller size image for preview.
 @property (nonatomic, strong, nullable, readonly) NSURL *previewURL;
 
-/// Origin URL of the Medium.
+/// URL for the original source of the image.
 @property (nonatomic, strong, nullable, readonly) NSURL *originURL;
 
 /// URL link to a Medium author.

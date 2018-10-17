@@ -66,8 +66,23 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
     else NSLog(@"Something went wrong :/");
 }];
 ```
+ 
+ ```swift
+ // Use shared instance to set your API key
+ TravelKit.shared.apiKey = "<YOUR_API_KEY_GOES_HERE>"
+ 
+ // Ask TKPlaceManager for Eiffel Tower TKDetailedPlace object with details
+ TKPlacesManager.shared.detailedPlace(withID: "poi:530") { (place, e) in
+     if let place = place {
+        print("Let's visit \(place.name)")
+     }
+     else {
+        print("Something went wrong :/")
+     }
+ }
+ ```
 
- @warning API key must be provided, otherwise using any methods listed below will result
+ @warning API key must be provided, otherwise using any methods listed above will result
  in an error being returned in a call completion block.
  */
 @interface TravelKit : NSObject
