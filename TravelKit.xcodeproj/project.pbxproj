@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 48;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXAggregateTarget section */
@@ -60,6 +60,9 @@
 		D61CB541202C81C800441FF6 /* TKFavoritesManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB540202C81C800441FF6 /* TKFavoritesManager+Private.h */; };
 		D61CB542202C81C800441FF6 /* TKFavoritesManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB540202C81C800441FF6 /* TKFavoritesManager+Private.h */; };
 		D61CB543202C81C800441FF6 /* TKFavoritesManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB540202C81C800441FF6 /* TKFavoritesManager+Private.h */; };
+		D620F30A21809357000AFF69 /* TKDirection+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D620F30921809357000AFF69 /* TKDirection+Private.h */; };
+		D620F30B21809357000AFF69 /* TKDirection+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D620F30921809357000AFF69 /* TKDirection+Private.h */; };
+		D620F30C21809357000AFF69 /* TKDirection+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D620F30921809357000AFF69 /* TKDirection+Private.h */; };
 		D625DE381FA9EC2B00008617 /* TKSynchronizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D6FEE02A1FA8B9E200996876 /* TKSynchronizationManager.m */; };
 		D625DE391FA9EC2B00008617 /* TKSynchronizationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D6FEE02A1FA8B9E200996876 /* TKSynchronizationManager.m */; };
 		D625DE3A1FA9EC2D00008617 /* TKSynchronizationManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D6FEE0291FA8B9E100996876 /* TKSynchronizationManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -76,9 +79,9 @@
 		D64B612B200651C80098ADDF /* TKDirectionsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D64B612720064D940098ADDF /* TKDirectionsManager.m */; };
 		D64B612C200651CC0098ADDF /* TKDirectionsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612620064D940098ADDF /* TKDirectionsManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D64B612D200651CC0098ADDF /* TKDirectionsManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612620064D940098ADDF /* TKDirectionsManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D64B612F200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D64B6130200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		D64B6131200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D64B612F200652BF0098ADDF /* TKDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D64B6130200652BF0098ADDF /* TKDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D64B6131200652BF0098ADDF /* TKDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D666C4051EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
 		D666C4061EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
 		D666C4071EAE2C5300085915 /* TKReference+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D666C4041EAE2C5300085915 /* TKReference+Private.h */; };
@@ -184,9 +187,9 @@
 		D6CB144E1F84D84500E59C95 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKSession.m */; };
 		D6CB144F1F84D84500E59C95 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKSession.m */; };
 		D6CB14501F84D84500E59C95 /* TKSession.m in Sources */ = {isa = PBXBuildFile; fileRef = D6CB144A1F84D84500E59C95 /* TKSession.m */; };
-		D6D1F76A20160A79009E6249 /* TKDirectionDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */; };
-		D6D1F76B20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */; };
-		D6D1F76C20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */; };
+		D6D1F76A20160A79009E6249 /* TKDirection.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirection.m */; };
+		D6D1F76B20160B2B009E6249 /* TKDirection.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirection.m */; };
+		D6D1F76C20160B2B009E6249 /* TKDirection.m in Sources */ = {isa = PBXBuildFile; fileRef = D6D1F76920160A79009E6249 /* TKDirection.m */; };
 		D6D1F771201892D5009E6249 /* TKEventsManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6D1F770201892D4009E6249 /* TKEventsManager+Private.h */; };
 		D6D1F7722018A44F009E6249 /* TKEventsManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6D1F770201892D4009E6249 /* TKEventsManager+Private.h */; };
 		D6D1F7732018A44F009E6249 /* TKEventsManager+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6D1F770201892D4009E6249 /* TKEventsManager+Private.h */; };
@@ -277,14 +280,15 @@
 		D61B92651ED47B5B00645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		D61B92671ED47B6100645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		D61B92691ED4803D00645489 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
-		D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKFavoritesManager.h; sourceTree = "<group>"; };
-		D61CB539202C80AC00441FF6 /* TKFavoritesManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKFavoritesManager.m; sourceTree = "<group>"; };
+		D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKFavoritesManager.h; sourceTree = "<group>"; };
+		D61CB539202C80AC00441FF6 /* TKFavoritesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKFavoritesManager.m; sourceTree = "<group>"; };
 		D61CB540202C81C800441FF6 /* TKFavoritesManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKFavoritesManager+Private.h"; sourceTree = "<group>"; };
+		D620F30921809357000AFF69 /* TKDirection+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKDirection+Private.h"; sourceTree = "<group>"; };
 		D625DEB81FA9F25400008617 /* TKSessionManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKSessionManager+Private.h"; sourceTree = "<group>"; };
 		D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TravelKit-Prefix.pch"; sourceTree = "<group>"; };
 		D64B612620064D940098ADDF /* TKDirectionsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKDirectionsManager.h; sourceTree = "<group>"; };
 		D64B612720064D940098ADDF /* TKDirectionsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDirectionsManager.m; sourceTree = "<group>"; };
-		D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKDirectionDefinitions.h; sourceTree = "<group>"; };
+		D64B612E200652BF0098ADDF /* TKDirection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKDirection.h; sourceTree = "<group>"; };
 		D666C4041EAE2C5300085915 /* TKReference+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKReference+Private.h"; sourceTree = "<group>"; };
 		D68E94781F05354E009E2C9C /* TKSessionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSessionManager.h; sourceTree = "<group>"; };
 		D68E94791F05354E009E2C9C /* TKSessionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSessionManager.m; sourceTree = "<group>"; };
@@ -322,7 +326,7 @@
 		D6CB14421F84D5D000E59C95 /* TKSSOAPI.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSSOAPI.m; sourceTree = "<group>"; };
 		D6CB14491F84D84500E59C95 /* TKSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKSession.h; sourceTree = "<group>"; };
 		D6CB144A1F84D84500E59C95 /* TKSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSession.m; sourceTree = "<group>"; };
-		D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDirectionDefinitions.m; sourceTree = "<group>"; };
+		D6D1F76920160A79009E6249 /* TKDirection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDirection.m; sourceTree = "<group>"; };
 		D6D1F770201892D4009E6249 /* TKEventsManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKEventsManager+Private.h"; sourceTree = "<group>"; };
 		D6E1531B1EAA257400FC0838 /* TKMedium+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKMedium+Private.h"; sourceTree = "<group>"; };
 		D6E3B7B01FA0A00700E1CCAC /* TKTrip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKTrip.h; sourceTree = "<group>"; };
@@ -352,8 +356,8 @@
 		D6FEE02A1FA8B9E200996876 /* TKSynchronizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSynchronizationManager.m; sourceTree = "<group>"; };
 		EF0D9D681EFAAB7500C50AE2 /* TKDatabaseManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKDatabaseManager+Private.h"; sourceTree = "<group>"; };
 		EF0D9D691EFAAB7500C50AE2 /* TKDatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDatabaseManager.m; sourceTree = "<group>"; };
-		EFD791E320177EA2005E3027 /* TKEventsManager.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TKEventsManager.h; sourceTree = "<group>"; };
-		EFD791E420177EA2005E3027 /* TKEventsManager.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = TKEventsManager.m; sourceTree = "<group>"; };
+		EFD791E320177EA2005E3027 /* TKEventsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKEventsManager.h; sourceTree = "<group>"; };
+		EFD791E420177EA2005E3027 /* TKEventsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKEventsManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -401,8 +405,9 @@
 		D64B612520064C720098ADDF /* Directions */ = {
 			isa = PBXGroup;
 			children = (
-				D64B612E200652BF0098ADDF /* TKDirectionDefinitions.h */,
-				D6D1F76920160A79009E6249 /* TKDirectionDefinitions.m */,
+				D64B612E200652BF0098ADDF /* TKDirection.h */,
+				D6D1F76920160A79009E6249 /* TKDirection.m */,
+				D620F30921809357000AFF69 /* TKDirection+Private.h */,
 				D64B612620064D940098ADDF /* TKDirectionsManager.h */,
 				D64B612720064D940098ADDF /* TKDirectionsManager.m */,
 			);
@@ -669,11 +674,12 @@
 				D61CB53C202C80AC00441FF6 /* TKFavoritesManager.h in Headers */,
 				D69831AA1EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144D1F84D84500E59C95 /* TKSession.h in Headers */,
-				D64B6131200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */,
+				D64B6131200652BF0098ADDF /* TKDirection.h in Headers */,
 				D6EF38F41EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */,
 				D64B13971EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */,
 				D6E3B7CA1FA226D400E1CCAC /* NSDate+Tripomatic.h in Headers */,
 				D6F0E4801ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */,
+				D620F30C21809357000AFF69 /* TKDirection+Private.h in Headers */,
 				D625DE3B1FA9EC2E00008617 /* TKSynchronizationManager.h in Headers */,
 				D6F0E4861ED6EF5800A0D3D5 /* FMDB.h in Headers */,
 				D6122CE31FA7369700791EAB /* TKTripsManager.h in Headers */,
@@ -721,11 +727,12 @@
 				D61CB53A202C80AC00441FF6 /* TKFavoritesManager.h in Headers */,
 				D69831A81EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144B1F84D84500E59C95 /* TKSession.h in Headers */,
-				D64B612F200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */,
+				D64B612F200652BF0098ADDF /* TKDirection.h in Headers */,
 				D6B2A1621E531097005509E8 /* TKMapWorker.h in Headers */,
 				D649BAA11ED6E23D003EF406 /* TravelKit-Prefix.pch in Headers */,
 				D6E3B7C81FA2237E00E1CCAC /* TKTrip+Private.h in Headers */,
 				D625DEB91FA9F25500008617 /* TKSessionManager+Private.h in Headers */,
+				D620F30A21809357000AFF69 /* TKDirection+Private.h in Headers */,
 				D6E3B7C31FA1B7EF00E1CCAC /* NSDate+Tripomatic.h in Headers */,
 				D6FEE02B1FA8B9E200996876 /* TKSynchronizationManager.h in Headers */,
 				D6F0E46C1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */,
@@ -773,11 +780,12 @@
 				D61CB53B202C80AC00441FF6 /* TKFavoritesManager.h in Headers */,
 				D69831A91EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144C1F84D84500E59C95 /* TKSession.h in Headers */,
-				D64B6130200652BF0098ADDF /* TKDirectionDefinitions.h in Headers */,
+				D64B6130200652BF0098ADDF /* TKDirection.h in Headers */,
 				D6EF38F31EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */,
 				D64B13961EDC1A8100C9468F /* TravelKit-Prefix.pch in Headers */,
 				D6E3B7C91FA226D400E1CCAC /* NSDate+Tripomatic.h in Headers */,
 				D6F0E46D1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */,
+				D620F30B21809357000AFF69 /* TKDirection+Private.h in Headers */,
 				D625DE3A1FA9EC2D00008617 /* TKSynchronizationManager.h in Headers */,
 				D6F0E4731ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */,
 				D6122CE21FA7369600791EAB /* TKTripsManager.h in Headers */,
@@ -880,7 +888,7 @@
 				};
 			};
 			buildConfigurationList = D6C3D0461E4DD36200EBB54F /* Build configuration list for PBXProject "TravelKit" */;
-			compatibilityVersion = "Xcode 8.0";
+			compatibilityVersion = "Xcode 10.0";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -959,7 +967,7 @@
 				D6B2A1441E530B11005509E8 /* TKReference.m in Sources */,
 				D6E3B7BD1FA0A31700E1CCAC /* TKTrip.m in Sources */,
 				D6B2A1401E530B11005509E8 /* TKPlace.m in Sources */,
-				D6D1F76C20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */,
+				D6D1F76C20160B2B009E6249 /* TKDirection.m in Sources */,
 				D6B2A1421E530B11005509E8 /* TKPlacesQuery.m in Sources */,
 				D69831961EF3D4B4002776BE /* TKToursQuery.m in Sources */,
 				D6B2A13C1E530B11005509E8 /* TKMapRegion.m in Sources */,
@@ -999,7 +1007,7 @@
 				D6E3B7B51FA0A00800E1CCAC /* TKTrip.m in Sources */,
 				D6B2A16B1E531097005509E8 /* TKPlace.m in Sources */,
 				D6B2A16D1E531097005509E8 /* TKPlacesQuery.m in Sources */,
-				D6D1F76A20160A79009E6249 /* TKDirectionDefinitions.m in Sources */,
+				D6D1F76A20160A79009E6249 /* TKDirection.m in Sources */,
 				D69831941EF3D4B4002776BE /* TKToursQuery.m in Sources */,
 				D6EF38EA1EB9D11400260E82 /* TKMapPlaceAnnotation.m in Sources */,
 				D689DBF01EBB062B00708599 /* Foundation+TravelKit.m in Sources */,
@@ -1039,7 +1047,7 @@
 				D6C3D0731E4DE7B400EBB54F /* TKAPI.m in Sources */,
 				D6E3B7B91FA0A31600E1CCAC /* TKTrip.m in Sources */,
 				D6C3D07F1E4DFCA700EBB54F /* TKPlacesQuery.m in Sources */,
-				D6D1F76B20160B2B009E6249 /* TKDirectionDefinitions.m in Sources */,
+				D6D1F76B20160B2B009E6249 /* TKDirection.m in Sources */,
 				D69831951EF3D4B4002776BE /* TKToursQuery.m in Sources */,
 				D6C3D07B1E4DFACB00EBB54F /* TKMapWorker.m in Sources */,
 				D6C3D0671E4DE29C00EBB54F /* NSObject+Parsing.m in Sources */,
@@ -1069,7 +1077,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
@@ -1081,7 +1093,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
 			};
@@ -1094,7 +1110,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				SDKROOT = macosx;
 			};
 			name = Debug;
@@ -1106,7 +1126,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+				);
 				SDKROOT = macosx;
 			};
 			name = Release;
@@ -1299,7 +1323,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -1312,7 +1340,11 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

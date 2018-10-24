@@ -39,6 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDateFormatter *)sharedLLLLYYYYFormatDateFormatter;
 + (NSDateFormatter *)sharedLLLLDFormatDateFormatter;
 + (NSDateFormatter *)shared8601DateTimeFormatter;
++ (NSDateFormatter *)shared8601RelativeDateTimeFormatter;
 
 @end
 

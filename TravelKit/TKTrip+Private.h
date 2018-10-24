@@ -46,6 +46,8 @@ typedef NS_OPTIONS(NSUInteger, TKTripRights) {
 
 @interface TKTripDayItem ()
 
+@property (nonatomic, copy, nullable) NSString *transportRouteID;
+
 // Handled initializers
 - (instancetype)initFromResponse:(NSDictionary *)dict;
 - (instancetype)initFromDatabase:(NSDictionary *)dict;

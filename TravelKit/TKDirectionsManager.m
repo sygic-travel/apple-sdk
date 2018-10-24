@@ -9,6 +9,7 @@
 #import "TKDirectionsManager.h"
 #import "TKMapWorker.h"
 #import "TKAPI+Private.h"
+#import "TKReachability+Private.h"
 #import "NSObject+Parsing.h"
 
 
@@ -62,160 +63,78 @@
 #pragma mark - Directions stuff
 
 
-- (void)directionsSetForQuery:(TKDirectionsQuery *)query
-                   completion:(nullable void (^)(TKDirectionsSet * _Nullable))completion
+- (void)directionsSetForQuery:(TKDirectionsQuery *)query completion:(nullable void (^)(TKDirectionsSet *_Nullable))completion
 {
-	// Get estimated set at first
-	TKDirectionsSet *estimated = [self estimatedDirectionsSetForQuery:query];
-
 	// Check equality of locations
-	if ([query.startLocation distanceFromLocation:query.endLocation] < 16) {
-		if (completion) completion(estimated);
+	if ([query.sourceLocation distanceFromLocation:query.destinationLocation] < 16)
+	{
+		if (completion) completion(nil);
 		return;
 	}
 
 	// Get coord key from locations
-	NSString *cacheKey = [self cacheKeyForQuery:query];
+	NSString *cacheKey = [query cacheKey];
 
 	// Return cached record when available
-	TKDirectionsSet *set = [_directionsCache objectForKey:cacheKey];
-	if (set) {
-		if (completion) completion(set);
+	TKDirectionsSet *record = [_directionsCache objectForKey:cacheKey];
+	if (record) {
+		if (completion) completion(record);
 		return;
 	}
 
-	// Also enqueue API request for the record
 	[_directionsQueue addOperationWithBlock:^{
-
 		[[[TKAPIRequest alloc] initAsDirectionsRequestForQuery:query success:^(TKDirectionsSet *directionsSet) {
 
-			// Fill with estimated data when no type-data available
+			if (directionsSet)
+				[_directionsCache setObject:directionsSet forKey:cacheKey];
 
-			if (!directionsSet.pedestrianDirections.count)
-				directionsSet.pedestrianDirections = estimated.pedestrianDirections;
-
-			if (!directionsSet.bikeDirections.count)
-				directionsSet.bikeDirections = estimated.bikeDirections;
-
-			if (!directionsSet.carDirections.count)
-				directionsSet.carDirections = estimated.carDirections;
-
-			if (!directionsSet.planeDirections.count)
-				directionsSet.planeDirections = estimated.planeDirections;
-
-			// Cache
-			[_directionsCache setObject:directionsSet forKey:cacheKey];
-
-			// Completion
 			if (completion) completion(directionsSet);
 
-		} failure:^(TKAPIError *__unused error) {
-
-			if (completion) completion(estimated);
-
-		}] start];
+		} failure:^(TKAPIError *__unused e) {
+			if (completion) completion(nil);
+		}] silentStart];
 	}];
 }
 
-- (TKDirectionsSet *)estimatedDirectionsSetForQuery:(TKDirectionsQuery *)query
+- (nullable TKEstimateDirectionsInfo *)estimatedDirectionsInfoForQuery:(TKDirectionsQuery *)query
 {
-	TKDirectionsSet *set = [TKDirectionsSet new];
-	set.startLocation = query.startLocation;
-	set.endLocation = query.endLocation;
-	CLLocationDistance airDistance =
-		set.airDistance = round([query.endLocation
-			distanceFromLocation:query.startLocation]);
+	if (!query) return nil;
 
-	NSArray<CLLocation *> *waypoints = [query.waypoints copy] ?: @[ ];
+	CLLocationDistance airDistance = [query.destinationLocation distanceFromLocation:query.sourceLocation];
 
-	if (waypoints) {
+	if (query.waypoints.count) {
+		airDistance = 0;
+		NSMutableArray<CLLocation *> *waypoints = [query.waypoints mutableCopy];
+		[waypoints insertObject:query.sourceLocation atIndex:0];
+		[waypoints addObject:query.destinationLocation];
 		CLLocation *prev = nil;
-		CLLocationDistance sum = 0;
-		for (CLLocation *p in waypoints) {
-			if (prev) sum += [p distanceFromLocation:prev];
-			prev = p;
+		for (CLLocation *wp in waypoints) {
+			if (prev) airDistance += [wp distanceFromLocation:prev];
+			prev = wp;
 		}
-		if (sum > 0) airDistance = set.airDistance = sum;
 	}
 
-	// Pedestrian
+	TKEstimateDirectionsInfo *record = [TKEstimateDirectionsInfo new];
 
-	TKDirection *direction = [TKDirection new];
-	direction.startLocation = query.startLocation;
-	direction.endLocation = query.endLocation;
-	direction.mode = TKDirectionTransportModePedestrian;
-	direction.estimated = YES;
-	direction.distance = round(airDistance * (airDistance <= 2000 ? 1.35 : airDistance <= 6000 ? 1.22 : 1.106));
-	direction.duration = round(direction.distance / 1.35); // 4.8 km/h
-	direction.avoidOption = query.avoidOption;
-	direction.waypoints = waypoints;
+	record.startLocation = query.sourceLocation;
+	record.endLocation = query.destinationLocation;
+	record.airDistance = airDistance;
+	record.avoidOption = query.avoidOption;
+	record.waypointsPolyline = [TKMapWorker polylineFromPoints:query.waypoints];
 
-	set.pedestrianDirections = @[ direction ];
+	record.airDistance = round([query.sourceLocation distanceFromLocation:query.destinationLocation]);
+	record.walkDistance = round(airDistance * (airDistance <= 2000 ? 1.35 : airDistance <= 6000 ? 1.22 : 1.106));
+	record.bikeDistance = round(record.walkDistance * 1.1);
+	record.carDistance = round(airDistance * (airDistance <= 2000 ? 1.8 : airDistance <= 6000 ? 1.6 : 1.2));
+	record.flyDistance = round(airDistance);
+	record.walkTime = round(record.walkDistance / 1.35); // 4.8 km/h
+	record.bikeTime = round(record.bikeDistance / 3.35); // 12 km/h
+	record.carTime = round(record.carDistance / (airDistance > 40000 ? 25 : airDistance > 20000 ? 15 : 7.5)); // 90/54/27 km/h
+	record.flyTime = round(40*60 + record.flyDistance / 250); // 900 km/h + 40 min
+//
+//	// TODO: ~Apply waypoints~, new multiplying constants for 'avoid' options?
 
-	// Bike
-
-	direction = [TKDirection new];
-	direction.startLocation = query.startLocation;
-	direction.endLocation = query.endLocation;
-	direction.mode = TKDirectionTransportModeBike;
-	direction.estimated = YES;
-	direction.distance = round(airDistance * (airDistance <= 2000 ? 1.35 : airDistance <= 6000 ? 1.22 : 1.106));
-	direction.duration = round(direction.distance / 3.9); // 14 km/h
-	direction.avoidOption = query.avoidOption;
-	direction.waypoints = waypoints;
-
-	set.bikeDirections = @[ direction ];
-
-	// Car
-
-	direction = [TKDirection new];
-	direction.startLocation = query.startLocation;
-	direction.endLocation = query.endLocation;
-	direction.mode = TKDirectionTransportModeCar;
-	direction.estimated = YES;
-	direction.distance = round(airDistance * (airDistance <= 2000 ? 1.8 : airDistance <= 6000 ? 1.6 : 1.2));
-	direction.duration = round(direction.distance / (airDistance > 40000 ? 25 : airDistance > 20000 ? 15 : 7.5)); // 90/54/27 km/h
-	direction.avoidOption = query.avoidOption;
-	direction.waypoints = waypoints;
-
-	set.carDirections = @[ direction ];
-
-	// Plane
-
-	direction = [TKDirection new];
-	direction.startLocation = query.startLocation;
-	direction.endLocation = query.endLocation;
-	direction.mode = TKDirectionTransportModePlane;
-	direction.estimated = YES;
-	direction.distance = set.airDistance;
-	direction.duration = round(direction.distance / 250 + 40*60); // 900 km/h + 40 min dispatch
-	direction.avoidOption = query.avoidOption;
-	direction.waypoints = waypoints;
-
-	set.planeDirections = @[ direction ];
-
-	// Return
-
-	return set;
-}
-
-
-#pragma mark - Helpers
-
-
-- (NSString *)cacheKeyForQuery:(TKDirectionsQuery *)query
-{
-	NSMutableString *str = [[NSString stringWithFormat:@"%.5f,%.5f|%.5f,%.5f",
-		query.startLocation.coordinate.latitude, query.startLocation.coordinate.longitude,
-		query.endLocation.coordinate.latitude, query.endLocation.coordinate.longitude] mutableCopy];
-
-	if (query.avoidOption)
-		[str appendFormat:@"|A:%tu", query.avoidOption];
-
-	if (query.waypoints)
-		[str appendFormat:@"|P:%tu", query.waypoints.hash];
-
-	return [str copy];
+	return record;
 }
 
 @end

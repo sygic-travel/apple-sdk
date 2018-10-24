@@ -10,6 +10,7 @@
 #import "TKPlace+Private.h"
 #import "TKTour+Private.h"
 #import "TKTrip+Private.h"
+#import "TKDirection+Private.h"
 #import "TKMedium+Private.h"
 #import "NSObject+Parsing.h"
 
@@ -1088,93 +1089,55 @@
 	{
 		_type = TKAPIRequestTypeDirectionsGET;
 
-		NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:4];
+		TKDirectionMode modeFlag = query.mode;
+		TKDirectionAvoidOption avoidFlag = query.avoidOption;
 
-		dict[@"origin"] = (query.startLocation) ?
-		@{
-			@"lat": @(query.startLocation.coordinate.latitude),
-			@"lng": @(query.startLocation.coordinate.longitude)
-		} : [NSNull null];
+		NSArray<NSString *> *modeOpts = [@[ @"pedestrian", @"car", @"public_transit" ]
+		mappedArrayUsingBlock:^NSString *(NSString *mode) {
+			if      ([mode isEqual:@"pedestrian"]) return (modeFlag & TKDirectionModeWalk) ? mode : nil;
+			else if ([mode isEqual:@"car"]) return (modeFlag & TKDirectionModeCar) ? mode : nil;
+			else if ([mode isEqual:@"public_transit"]) return (modeFlag & TKDirectionModePublicTransport) ? mode : nil;
+			return nil;
+		}];
 
-		dict[@"destination"] = (query.endLocation) ?
-		@{
-			@"lat": @(query.endLocation.coordinate.latitude),
-			@"lng": @(query.endLocation.coordinate.longitude)
-		} : [NSNull null];
+		NSArray<NSString *> *avoidOpts = [@[ @"tolls", @"highways", @"ferries", @"unpaved" ]
+		mappedArrayUsingBlock:^NSString *(NSString *avoid) {
+			if      ([avoid isEqual:@"tolls"]) return (avoidFlag & TKDirectionAvoidOptionTolls) ? avoid : nil;
+			else if ([avoid isEqual:@"highways"]) return (avoidFlag & TKDirectionAvoidOptionHighways) ? avoid : nil;
+			else if ([avoid isEqual:@"ferries"]) return (avoidFlag & TKDirectionAvoidOptionFerries) ? avoid : nil;
+			else if ([avoid isEqual:@"unpaved"]) return (avoidFlag & TKDirectionAvoidOptionUnpaved) ? avoid : nil;
+			return nil;
+		}];
 
-		if (query.waypoints) {
-			NSMutableArray *pointDicts = [NSMutableArray arrayWithCapacity:query.waypoints.count];
+		NSArray<NSDictionary *> *waypointObjs = [query.waypoints mappedArrayUsingBlock:^NSDictionary *(CLLocation *obj) {
+			return @{ @"location": @{ @"lat": @(obj.coordinate.latitude), @"lng": @(obj.coordinate.longitude) } };
+		}];
 
-			for (CLLocation *pt in query.waypoints)
-				[pointDicts addObject:
-					@{ @"location": @{
-						@"lat": @(pt.coordinate.latitude), @"lng": @(pt.coordinate.longitude) }
-				}];
+		NSDateFormatter *df = [NSDateFormatter shared8601RelativeDateTimeFormatter];
 
-			dict[@"waypoints"] = pointDicts;
-		}
-		else dict[@"waypoints"] = @[ ];
+		id departure = nil, arrival = nil;
+		if (query.relativeDepartureDate)
+			departure = [df stringFromDate:query.relativeDepartureDate];
+		if (query.relativeArrivalDate)
+			arrival = [df stringFromDate:query.relativeArrivalDate];
 
-		if (query.avoidOption) {
-			NSMutableArray *opts = [NSMutableArray arrayWithCapacity:4];
-			if (query.avoidOption & TKTransportAvoidOptionTolls)
-				[opts addObject:@"tolls"];
-			if (query.avoidOption & TKTransportAvoidOptionHighways)
-				[opts addObject:@"highways"];
-			if (query.avoidOption & TKTransportAvoidOptionFerries)
-				[opts addObject:@"ferries"];
-			if (query.avoidOption & TKTransportAvoidOptionUnpaved)
-				[opts addObject:@"unpaved"];
-			dict[@"avoid"] = opts;
-		}
-		else dict[@"avoid"] = @[ ];
+		NSDictionary *post = @{
+			@"modes": modeOpts,
+			@"origin": @{ @"lat": @(query.sourceLocation.coordinate.latitude), @"lng": @(query.sourceLocation.coordinate.longitude) },
+			@"destination": @{ @"lat": @(query.destinationLocation.coordinate.latitude), @"lng": @(query.destinationLocation.coordinate.longitude) },
+			@"waypoints": waypointObjs ?: @[ ], @"avoid": avoidOpts,
+			@"depart_at": departure ?: [NSNull null], @"arrive_at": arrival ?: [NSNull null],
+		};
 
-		_data = [dict asJSONData];
+		_data = [post asJSONData];
 
 		_successBlock = ^(TKAPIResponse *response){
 
-			TKDirectionsSet *set = [TKDirectionsSet new];
+			NSDictionary *reponseDict = [response.data parsedDictionary];
+			TKDirectionsSet *set = [[TKDirectionsSet alloc] initFromDictionary:reponseDict];
 
-			set.startLocation = query.startLocation;
-			set.endLocation = query.endLocation;
-			set.airDistance = [query.endLocation distanceFromLocation:query.startLocation];
-
-			NSMutableArray<TKDirection *> *pedestrianDirs = [NSMutableArray arrayWithCapacity:2];
-			NSMutableArray<TKDirection *> *carDirs = [NSMutableArray arrayWithCapacity:2];
-			NSMutableArray<TKDirection *> *planeDirs = [NSMutableArray arrayWithCapacity:2];
-
-			NSArray<NSDictionary *> *directions = [response.data[@"directions"] parsedArray];
-
-			TKDirection *d = nil;
-			for (NSDictionary *dir in directions) {
-				d = [TKDirection new];
-				d.startLocation = query.startLocation;
-				d.endLocation = query.endLocation;
-
-				NSString *mode = [dir[@"mode"] parsedString];
-				if ([mode isEqualToString:@"pedestrian"]) {
-					d.mode = TKDirectionTransportModePedestrian;
-					[pedestrianDirs addObject:d]; }
-				else if ([mode isEqualToString:@"car"]) {
-					d.mode = TKDirectionTransportModeCar;
-					[carDirs addObject:d]; }
-				else if ([mode isEqualToString:@"plane"]) {
-					d.mode = TKDirectionTransportModePlane;
-					[planeDirs addObject:d]; }
-				else continue;
-
-				d.duration = [[dir[@"duration"] parsedNumber] doubleValue];
-				d.distance = [[dir[@"distance"] parsedNumber] doubleValue];
-				d.polyline = [dir[@"polyline"] parsedString];
-				d.avoidOption = query.avoidOption;
-				d.waypoints = query.waypoints;
-			}
-
-			set.pedestrianDirections = pedestrianDirs;
-			set.carDirections = carDirs;
-			set.planeDirections = planeDirs;
-
-			if (success) success(set);
+			if (set && success) success(set);
+			if (!set && failure) failure(nil);
 
 		}; _failureBlock = ^(TKAPIError *error){
 			if (failure) failure(error);

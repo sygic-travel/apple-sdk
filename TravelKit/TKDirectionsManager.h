@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <TravelKit/TKDirectionDefinitions.h>
+#import <TravelKit/TKDirection.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -50,7 +50,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param query Directions query.
  @return Set of Directions to use.
  */
-- (nullable TKDirectionsSet *)estimatedDirectionsSetForQuery:(TKDirectionsQuery *)query;
+- (nullable TKEstimateDirectionsInfo *)estimatedDirectionsInfoForQuery:(TKDirectionsQuery *)query;
 
 @end
 

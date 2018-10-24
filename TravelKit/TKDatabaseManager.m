@@ -270,6 +270,12 @@ NSString * const kTKDatabaseTableTripDayItems = @"trip_day_items";
              tableName:kTKDatabaseTableTripDayItems];
 	}
 
+	// Missing Route ID attribute
+	if (currentScheme < 20181024) {
+		[self runUpdate:@"ALTER TABLE %@ ADD transport_route_id text;"
+			tableName:kTKDatabaseTableTripDayItems];
+	}
+
 	//////////////
 	// Update version pragma
 

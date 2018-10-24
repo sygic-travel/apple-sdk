@@ -2,9 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:TravelKit.playground">
+      location = "group:TravelKit.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:TravelKit.xcodeproj">
+      location = "group:TravelKit.playground">
    </FileRef>
 </Workspace>

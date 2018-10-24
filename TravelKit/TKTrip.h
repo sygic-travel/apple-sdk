@@ -7,7 +7,23 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <TravelKit/TKDirectionDefinitions.h>
+#import <TravelKit/TKDirection.h>
+
+/**
+ The mode of transport used to indicate the mean of transportation between places.
+ */
+typedef NS_OPTIONS(NSUInteger, TKTripTransportMode) {
+	TKTripTransportModeUnknown         = (0), /// Unknown mode.
+	TKTripTransportModePedestrian      = (1 << 0), /// Pedestrian mode.
+	TKTripTransportModeCar             = (1 << 1), /// Car mode.
+	TKTripTransportModePlane           = (1 << 2), /// Plane mode.
+	TKTripTransportModeBike            = (1 << 3), /// Bike mode.
+	TKTripTransportModeBus             = (1 << 4), /// Bus mode.
+	TKTripTransportModeTrain           = (1 << 5), /// Train mode.
+	TKTripTransportModeBoat            = (1 << 6), /// Boat mode.
+	TKTripTransportModePublicTransport = (1 << 7), /// Public transport mode.
+}; // ABI-EXPORTED
+
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,8 +51,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, nullable) NSString *note;
 
 ///
-@property (nonatomic) TKDirectionTransportMode transportMode;
-@property (atomic) TKTransportAvoidOption transportAvoid;
+@property (nonatomic) TKTripTransportMode transportMode;
+@property (atomic) TKDirectionAvoidOption transportAvoid;
 @property (nonatomic, strong, nullable) NSNumber *transportStartTime;
 @property (nonatomic, strong, nullable) NSNumber *transportDuration;
 @property (nonatomic, copy, nullable) NSString *transportNote;

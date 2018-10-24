@@ -193,16 +193,17 @@
 			id transStartTime = item.transportStartTime ?: [NSNull null];
 			id transDuration = item.transportDuration ?: [NSNull null];
 			id transNote = item.transportNote ?: [NSNull null];
+			id transRouteID = item.transportRouteID ?: [NSNull null];
 			id transPoly = item.transportPolyline ?: [NSNull null];
 
 			[queries addObject:[NSString stringWithFormat:
 			   @"INSERT INTO %@ (trip_id, day_index, item_index, item_id, start_time, "
 			    "duration, note, transport_mode, transport_avoid, "
-				"transport_start_time, transport_duration, transport_note, transport_polyline) "
-				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", kTKDatabaseTableTripDayItems]];
+				"transport_start_time, transport_duration, transport_note, transport_polyline, transport_route_id) "
+				"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", kTKDatabaseTableTripDayItems]];
 			[data addObject:@[ tripID, @(dayIndex), @(itemIndex), itemID,
 			   startTime, duration, itemNote, transMode, transAvoid,
-			   transStartTime, transDuration, transNote, transPoly ]];
+			   transStartTime, transDuration, transNote, transPoly, transRouteID ]];
 		}];
 	}];
 

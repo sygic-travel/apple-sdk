@@ -57,6 +57,7 @@
 	item.transportStartTime = _transportStartTime;
 	item.transportDuration = _transportDuration;
 	item.transportNote = [_transportNote copy];
+	item.transportRouteID = [_transportRouteID copy];
 
 	item.transportPolyline = [_transportPolyline copy];
 
@@ -83,6 +84,7 @@
 		_transportStartTime = [dict[@"transport_start_time"] parsedNumber];
 		_transportDuration = [dict[@"transport_duration"] parsedNumber];
 		_transportNote = [dict[@"transport_note"] parsedString];
+		_transportRouteID = [dict[@"transport_route_id"] parsedString];
 
 		_transportPolyline = [dict[@"transport_polyline"] parsedString];
 	}
@@ -104,24 +106,26 @@
 		if (transport) {
 
 			NSString *mode = [transport[@"mode"] parsedString];
-			_transportMode = ([mode isEqual:@"pedestrian"]) ? TKDirectionTransportModePedestrian :
-			                 ([mode isEqual:@"car"]) ? TKDirectionTransportModeCar :
-			                 ([mode isEqual:@"plane"]) ? TKDirectionTransportModePlane :
-//			                 ([mode isEqual:@"bike"]) ? TKDirectionTransportModeBike :
-//			                 ([mode isEqual:@"bus"]) ? TKDirectionTransportModeBus :
-//			                 ([mode isEqual:@"train"]) ? TKDirectionTransportModeTrain :
-//			                 ([mode isEqual:@"boat"]) ? TKDirectionTransportModeBoat :
-			                                           TKDirectionTransportModeUnknown;
+			_transportMode = ([mode isEqual:@"pedestrian"]) ? TKTripTransportModePedestrian :
+			                 ([mode isEqual:@"car"]) ? TKTripTransportModeCar :
+			                 ([mode isEqual:@"plane"]) ? TKTripTransportModePlane :
+			                 ([mode isEqual:@"bike"]) ? TKTripTransportModeBike :
+			                 ([mode isEqual:@"bus"]) ? TKTripTransportModeBus :
+			                 ([mode isEqual:@"train"]) ? TKTripTransportModeTrain :
+			                 ([mode isEqual:@"boat"]) ? TKTripTransportModeBoat :
+			                 ([mode isEqual:@"public_transit"]) ? TKTripTransportModePublicTransport :
+			                     TKTripTransportModeUnknown;
 
 			NSArray<NSString *> *avoidOpts = [transport[@"avoid"] parsedArray];
-			if ([avoidOpts containsObject:@"tolls"]) _transportAvoid |= TKTransportAvoidOptionTolls;
-			if ([avoidOpts containsObject:@"highways"]) _transportAvoid |= TKTransportAvoidOptionHighways;
-			if ([avoidOpts containsObject:@"ferries"]) _transportAvoid |= TKTransportAvoidOptionFerries;
-			if ([avoidOpts containsObject:@"unpaved"]) _transportAvoid |= TKTransportAvoidOptionUnpaved;
+			if ([avoidOpts containsObject:@"tolls"]) _transportAvoid |= TKDirectionAvoidOptionTolls;
+			if ([avoidOpts containsObject:@"highways"]) _transportAvoid |= TKDirectionAvoidOptionHighways;
+			if ([avoidOpts containsObject:@"ferries"]) _transportAvoid |= TKDirectionAvoidOptionFerries;
+			if ([avoidOpts containsObject:@"unpaved"]) _transportAvoid |= TKDirectionAvoidOptionUnpaved;
 
 			_transportStartTime = [transport[@"start_time"] parsedNumber];
 			_transportDuration = [transport[@"duration"] parsedNumber];
 			_transportNote = [transport[@"note"] parsedString];
+			_transportRouteID = [transport[@"route_id"] parsedString];
 
 			NSMutableArray *locs = [NSMutableArray arrayWithCapacity:6];
 			for (NSDictionary *point in [transport[@"waypoints"] parsedArray])
@@ -152,27 +156,29 @@
 
 		NSMutableDictionary *trans = [NSMutableDictionary dictionaryWithCapacity:7];
 
-		trans[@"mode"] = (_transportMode == TKDirectionTransportModePedestrian) ? @"pedestrian" :
-		                 (_transportMode == TKDirectionTransportModeCar) ? @"car" :
-		                 (_transportMode == TKDirectionTransportModePlane) ? @"plane" :
-//		                 (_transportMode == TKDirectionTransportModeBike) ? @"bike" :
-//		                 (_transportMode == TKDirectionTransportModeBus) ? @"bus" :
-//		                 (_transportMode == TKDirectionTransportModeTrain) ? @"train" :
-//		                 (_transportMode == TKDirectionTransportModeBoat) ? @"boat" :
+		trans[@"mode"] = (_transportMode == TKTripTransportModePedestrian) ? @"pedestrian" :
+		                 (_transportMode == TKTripTransportModeCar) ? @"car" :
+		                 (_transportMode == TKTripTransportModePlane) ? @"plane" :
+		                 (_transportMode == TKTripTransportModeBike) ? @"bike" :
+		                 (_transportMode == TKTripTransportModeBus) ? @"bus" :
+		                 (_transportMode == TKTripTransportModeTrain) ? @"train" :
+		                 (_transportMode == TKTripTransportModeBoat) ? @"boat" :
+		                 (_transportMode == TKDirectionModePublicTransport) ? @"public_transit" :
 		                     @"car";
 
 		trans[@"avoid"] = [@[ @"tolls", @"highways", @"ferries", @"unpaved"  ]
 		mappedArrayUsingBlock:^NSString *(NSString *avoid) {
-			if      ([avoid isEqual:@"tolls"]) return (_transportAvoid & TKTransportAvoidOptionTolls) ? avoid : nil;
-			else if ([avoid isEqual:@"highways"]) return (_transportAvoid & TKTransportAvoidOptionHighways) ? avoid : nil;
-			else if ([avoid isEqual:@"ferries"]) return (_transportAvoid & TKTransportAvoidOptionFerries) ? avoid : nil;
-			else if ([avoid isEqual:@"unpaved"]) return (_transportAvoid & TKTransportAvoidOptionUnpaved) ? avoid : nil;
+			if      ([avoid isEqual:@"tolls"]) return (_transportAvoid & TKDirectionAvoidOptionTolls) ? avoid : nil;
+			else if ([avoid isEqual:@"highways"]) return (_transportAvoid & TKDirectionAvoidOptionHighways) ? avoid : nil;
+			else if ([avoid isEqual:@"ferries"]) return (_transportAvoid & TKDirectionAvoidOptionFerries) ? avoid : nil;
+			else if ([avoid isEqual:@"unpaved"]) return (_transportAvoid & TKDirectionAvoidOptionUnpaved) ? avoid : nil;
 			return nil;
 		}];
 
 		trans[@"start_time"] = _transportStartTime ?: [NSNull null];
 		trans[@"duration"] = _transportDuration ?: [NSNull null];
 		trans[@"note"] = _transportNote ?: [NSNull null];
+		trans[@"route_id"] = _transportRouteID ?: [NSNull null];
 
 		NSArray<CLLocation *> *points = (_transportPolyline) ?
 			[TKMapWorker pointsFromPolyline:_transportPolyline] ?: @[ ] : @[ ];
@@ -188,15 +194,16 @@
 	return dict;
 }
 
-- (void)setTransportMode:(TKDirectionTransportMode)transportMode
+- (void)setTransportMode:(TKTripTransportMode)transportMode
 {
 	_transportMode = transportMode;
 
-	if (transportMode == TKDirectionTransportModeUnknown) {
-		_transportAvoid = TKTransportAvoidOptionNone;
+	if (transportMode == TKTripTransportModeUnknown) {
+		_transportAvoid = TKDirectionAvoidOptionNone;
 		_transportStartTime = nil;
 		_transportDuration = nil;
 		_transportNote = nil;
+		_transportRouteID = nil;
 		_transportPolyline = nil;
 	}
 }
