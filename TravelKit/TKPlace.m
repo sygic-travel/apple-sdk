@@ -145,7 +145,7 @@
 
 		// Parents
 		NSMutableArray *locationIDs = [NSMutableArray array];
-		for (NSString *parentID in [dictionary[@"parent_guids"] parsedArray])
+		for (NSString *parentID in [dictionary[@"parent_ids"] parsedArray])
 			if ([parentID parsedString]) [locationIDs addObject:parentID];
 		_parents = locationIDs;
 
