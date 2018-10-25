@@ -11,28 +11,32 @@
 NS_ASSUME_NONNULL_BEGIN
 
 
-@interface TKDirectionsSet (Private)
+@interface TKDirectionsSet ()
 
 - (nullable instancetype)initFromDictionary:(NSDictionary *)dictionary;
 
 @end
 
 
-@interface TKDirection (Private)
+@interface TKDirection ()
+
+@property (nonatomic, copy, nullable) NSString *routeID;
 
 - (nullable instancetype)initFromDictionary:(NSDictionary *)dictionary;
 
 @end
 
 
-@interface TKDirectionStep (Private)
+@interface TKDirectionStep ()
+
+@property (nonatomic, copy, nullable) NSString *displayMode;
 
 - (nullable instancetype)initFromDictionary:(NSDictionary *)dictionary;
 
 @end
 
 
-@interface TKDirectionIntermediateStop (Private)
+@interface TKDirectionIntermediateStop ()
 
 - (nullable instancetype)initFromDictionary:(NSDictionary *)dictionary;
 

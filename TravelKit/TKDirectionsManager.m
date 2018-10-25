@@ -98,43 +98,7 @@
 
 - (nullable TKEstimateDirectionsInfo *)estimatedDirectionsInfoForQuery:(TKDirectionsQuery *)query
 {
-	if (!query) return nil;
-
-	CLLocationDistance airDistance = [query.destinationLocation distanceFromLocation:query.sourceLocation];
-
-	if (query.waypoints.count) {
-		airDistance = 0;
-		NSMutableArray<CLLocation *> *waypoints = [query.waypoints mutableCopy];
-		[waypoints insertObject:query.sourceLocation atIndex:0];
-		[waypoints addObject:query.destinationLocation];
-		CLLocation *prev = nil;
-		for (CLLocation *wp in waypoints) {
-			if (prev) airDistance += [wp distanceFromLocation:prev];
-			prev = wp;
-		}
-	}
-
-	TKEstimateDirectionsInfo *record = [TKEstimateDirectionsInfo new];
-
-	record.startLocation = query.sourceLocation;
-	record.endLocation = query.destinationLocation;
-	record.airDistance = airDistance;
-	record.avoidOption = query.avoidOption;
-	record.waypointsPolyline = [TKMapWorker polylineFromPoints:query.waypoints];
-
-	record.airDistance = round([query.sourceLocation distanceFromLocation:query.destinationLocation]);
-	record.walkDistance = round(airDistance * (airDistance <= 2000 ? 1.35 : airDistance <= 6000 ? 1.22 : 1.106));
-	record.bikeDistance = round(record.walkDistance * 1.1);
-	record.carDistance = round(airDistance * (airDistance <= 2000 ? 1.8 : airDistance <= 6000 ? 1.6 : 1.2));
-	record.flyDistance = round(airDistance);
-	record.walkTime = round(record.walkDistance / 1.35); // 4.8 km/h
-	record.bikeTime = round(record.bikeDistance / 3.35); // 12 km/h
-	record.carTime = round(record.carDistance / (airDistance > 40000 ? 25 : airDistance > 20000 ? 15 : 7.5)); // 90/54/27 km/h
-	record.flyTime = round(40*60 + record.flyDistance / 250); // 900 km/h + 40 min
-//
-//	// TODO: ~Apply waypoints~, new multiplying constants for 'avoid' options?
-
-	return record;
+	return [TKEstimateDirectionsInfo infoForQuery:query];
 }
 
 @end

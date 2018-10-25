@@ -86,12 +86,12 @@
 	{
 		NSNumber *lat = [dictionary[@"origin"][@"lat"] parsedNumber];
 		NSNumber *lng = [dictionary[@"origin"][@"lng"] parsedNumber];
-		if (lat && lng) _startLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat && lng) _sourceLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 		lat = [dictionary[@"destination"][@"lat"] parsedNumber];
 		lng = [dictionary[@"destination"][@"lng"] parsedNumber];
-		if (lat && lng) _endLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat && lng) _destinationLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 
-		if (!_startLocation || !_endLocation)
+		if (!_sourceLocation || !_destinationLocation)
 			return nil;
 
 		_directions = [[dictionary[@"directions"] parsedArray]
@@ -307,4 +307,77 @@
 
 
 @implementation TKEstimateDirectionsInfo : NSObject
+
+- (nullable instancetype)initFromLocation:(CLLocation *)sourceLocation toLocation:(CLLocation *)destinationLocation
+{
+	if (!sourceLocation || !destinationLocation) return nil;
+
+	if (self = [super init])
+	{
+		_sourceLocation = sourceLocation;
+		_destinationLocation = destinationLocation;
+
+		[self recalculate];
+	}
+
+	return self;
+}
+
++ (nullable instancetype)infoFromLocation:(CLLocation *)sourceLocation toLocation:(CLLocation *)destinationLocation
+{
+	return [[self alloc] initFromLocation:sourceLocation toLocation:destinationLocation];
+}
+
+- (nullable instancetype)initForQuery:(TKDirectionsQuery *)query
+{
+	if (!query.sourceLocation || !query.destinationLocation) return nil;
+
+	if (self = [super init])
+	{
+		_sourceLocation = query.sourceLocation;
+		_destinationLocation = query.destinationLocation;
+		_avoidOption = query.avoidOption;
+		_waypoints = query.waypoints;
+
+		[self recalculate];
+	}
+
+	return self;
+}
+
++ (nullable instancetype)infoForQuery:(TKDirectionsQuery *)query
+{
+	return [[self alloc] initForQuery:query];
+}
+
+- (void)recalculate
+{
+	CLLocationDistance airDistance = [_destinationLocation distanceFromLocation:_sourceLocation];
+
+	if (_waypoints.count) {
+		airDistance = 0;
+		NSMutableArray<CLLocation *> *waypoints = [_waypoints mutableCopy];
+		[waypoints insertObject:_sourceLocation atIndex:0];
+		[waypoints addObject:_destinationLocation];
+		CLLocation *prev = nil;
+		for (CLLocation *wp in waypoints) {
+			if (prev) airDistance += [wp distanceFromLocation:prev];
+			prev = wp;
+		}
+	}
+
+	_airDistance = airDistance;
+
+	_walkDistance = round(airDistance * (airDistance <= 2000 ? 1.35 : airDistance <= 6000 ? 1.22 : 1.106));
+	_bikeDistance = round(_walkDistance * 1.1);
+	_carDistance = round(airDistance * (airDistance <= 2000 ? 1.8 : airDistance <= 6000 ? 1.6 : 1.2));
+	_flyDistance = round(airDistance);
+	_walkDuration = round(_walkDistance / 1.35); // 4.8 km/h
+	_bikeDuration = round(_bikeDistance / 3.35); // 12 km/h
+	_carDuration = round(_carDistance / (airDistance > 40000 ? 25 : airDistance > 20000 ? 15 : 7.5)); // 90/54/27 km/h
+	_flyDuration = round(40*60 + _flyDistance / 250); // 900 km/h + 40 min
+
+	// TODO: ~Apply waypoints~, new multiplying constants for 'avoid' options?
+}
+
 @end

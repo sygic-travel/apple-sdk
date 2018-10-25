@@ -80,7 +80,18 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSDictionary<KeyType, ObjectType> (TravelKit)
 
+/**
+ Simple method used to convert the dictionary to JSON string.
+
+ @return Resulting JSON string.
+ */
 - (nullable NSString *)asJSONString;
+
+/**
+ Simple method used to convert the dictionary to JSON data.
+
+ @return Resulting JSON data.
+ */
 - (nullable NSData *)asJSONData;
 
 @end
