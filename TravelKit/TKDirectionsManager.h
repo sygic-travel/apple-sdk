@@ -23,7 +23,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKDirectionsManager : NSObject
 
 /// Shared Directions providing instance.
-@property (class, readonly, strong) TKDirectionsManager *sharedManager;
+@property (class, readonly, strong) TKDirectionsManager *sharedManager DEPRECATED_MSG_ATTRIBUTE("Experimental.");
 
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;

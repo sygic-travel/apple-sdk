@@ -104,7 +104,7 @@
 //		_favorites = [TKFavoritesManager sharedManager];
 //		_sync = [TKSynchronizationManager sharedManager];
 		__directions = [TKDirectionsManager sharedManager];
-		__events = [TKEventsManager sharedManager];
+		_events = [TKEventsManager sharedManager];
 	}
 
 	return self;

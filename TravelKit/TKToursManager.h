@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///---------------------------------------------------------------------------------------
 
 /// Shared Tours managing instance.
-@property (class, readonly, strong) TKToursManager *sharedManager;
+@property (class, readonly, strong) TKToursManager *sharedManager DEPRECATED_MSG_ATTRIBUTE("Experimental.");
 
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;

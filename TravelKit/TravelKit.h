@@ -182,12 +182,9 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
 
 /**
- Shared Events Manager instance to handle event handlers.
-
- @warning Experimental.
+ Shared Events Manager instance to retain event handlers.
  */
-@property (nonatomic, strong, readonly) TKEventsManager *_events
-	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
+@property (nonatomic, strong, readonly) TKEventsManager *events;
 
 @end
 
