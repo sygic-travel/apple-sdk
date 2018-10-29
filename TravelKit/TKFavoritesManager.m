@@ -65,7 +65,7 @@
 	if (!favoriteID) return;
 
 	if (favorite)
-		[_database runQuery:@"INSERT OR IGNORE INTO %@ VALUES (?, 1);"
+		[_database runQuery:@"INSERT OR REPLACE INTO %@ VALUES (?, 1);"
 			tableName:kTKDatabaseTableFavorites data:@[ favoriteID ]];
 	else
 		[_database runQuery:@"UPDATE %@ SET state = -1 WHERE id = ?;"

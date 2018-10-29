@@ -61,7 +61,7 @@ TravelKit *kit = [TravelKit sharedKit];
 kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
 // Ask kit for Eiffel Tower TKDetailedPlace object with details
-[kit detailedPlaceWithID:@"poi:530" completion:^(TKDetailedPlace *place, NSError *e) {
+[kit.places detailedPlaceWithID:@"poi:530" completion:^(TKDetailedPlace *place, NSError *e) {
     if (place) NSLog(@"Let's visit %@!", place.name);
     else NSLog(@"Something went wrong :/");
 }];
@@ -72,7 +72,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  TravelKit.shared.apiKey = "<YOUR_API_KEY_GOES_HERE>"
  
  // Ask TKPlaceManager for Eiffel Tower TKDetailedPlace object with details
- TKPlacesManager.shared.detailedPlace(withID: "poi:530") { (place, e) in
+ TravelKit.shared.places.detailedPlace(withID: "poi:530") { (place, e) in
      if let place = place {
         print("Let's visit \(place.name)")
      }

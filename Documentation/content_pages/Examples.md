@@ -1,10 +1,12 @@
 # Examples
 
-## Places
+## Places module
+
 ### Get place detail
+
 ```objc
 // Get and print the name and description of Eiffel Tower (poi:530)
-TKPlacesManager *manager = [TKPlacesManager sharedManager];
+TKPlacesManager *manager = [[TravelKit sharedKit] places];
 
 [manager detailedPlaceWithID: @"poi:530" completion:^(TKDetailedPlace * _Nullable place, NSError * _Nullable error) {
     if (place) {
@@ -17,8 +19,8 @@ TKPlacesManager *manager = [TKPlacesManager sharedManager];
 
 ```swift
 // Get and print the name and description of Eiffel Tower (poi:530)
-TKPlacesManager.shared.detailedPlace(withID: "poi:530", completion:{ (detailedPlace, err) in
-    if let detailedPlace = detailedPlace, let description = detailedPlace.detail?.fullDescription?.text {
+TravelKit.shared.places.detailedPlace(withID: "poi:530", completion:{ (detailedPlace, err) in
+    if let description = detailedPlace?.detail?.fullDescription?.text {
         print("Description of \(detailedPlace.name) is: \(description)")
     }
     else {
@@ -26,27 +28,29 @@ TKPlacesManager.shared.detailedPlace(withID: "poi:530", completion:{ (detailedPl
     }
 })
 ```
+
 ### Get place media
+
 ```objc
-// Besides mainMedia, we can get all medias available for certain place
+// Besides main media, we can get all media available for a certain place
+TKPlacesManager *manager = [[TravelKit sharedKit] places];
+
 [manager mediaForPlaceWithID:@"poi:530" completion:^(NSArray<TKMedium *> * _Nullable media, NSError * _Nullable error) {
-    if (media) {
-        for (int i = 0; i < [media count]; i++) {
-            NSString * title = [media objectAtIndex:i].title;
-            // Print medium title if it has one
-            if (title) NSLog(@"Title: %@", title);
-            else NSLog(@"no title");
-        }
-        // To get the actual image from URL with certain size, we use method in TKMedium
-        TKMedium *first = media.firstObject;
-        [first displayableImageURLForSize:CGSizeMake(first.width, first.height)];
+    for (TKMedium *m in media) {
+        NSString *title = m.title;
+        // Print medium title if it has one
+        if (title) NSLog(@"Title: %@", title);
+        else NSLog(@"no title");
     }
+    // To get the actual image from URL with certain size, we use method in TKMedium
+    TKMedium *first = media.firstObject;
+    [first displayableImageURLForSize:CGSizeMake(first.width, first.height)];
 }];
 ```
 
 ```swift
-// Besides mainMedia, we can get all medias available for certain place
-TKPlacesManager.shared.mediaForPlace(withID: "poi:530", completion: { (media, err) in
+// Besides main media, we can get all media available for a certain place
+TravelKit.shared.places.mediaForPlace(withID: "poi:530", completion: { (media, err) in
     if let media = media, let first = media.first {
         // Print medium title if it has one
         for m in media {
@@ -58,7 +62,8 @@ TKPlacesManager.shared.mediaForPlace(withID: "poi:530", completion: { (media, er
 })
 ```
 
-## TKToursManager
+## Tours module
+
 ### Get tours
 
 ```objc
@@ -68,16 +73,14 @@ query.parentID = @"city:1";
 query.minimalDuration = [NSNumber numberWithInt: 3600];
 query.count = [NSNumber numberWithInt: 12];
 
-TKToursManager *manager = [TKToursManager sharedManager];
+TKToursManager *manager = [[TravelKit sharedKit] _tours];
 
 // Perform query and print a message containing tour's title
-[manager toursForGYGQuery:query completion:^(NSArray<TKTour *> * _Nullable places, NSError * _Nullable error) {
-    if (places) {
-        for (int i = 0; i < [places count]; i++) {
-            NSString * title = [places objectAtIndex:i].title;
-            if (title) NSLog(@"%@", title);
-            else NSLog(@"no title");
-        }
+[manager toursForGYGQuery:query completion:^(NSArray<TKTour *> * _Nullable tours, NSError * _Nullable error) {
+    for (TKTour *t in tours) {
+        NSString * title = t.title;
+        if (title) NSLog(@"%@", title);
+        else NSLog(@"no title");
     }
 }];
 ```
@@ -90,7 +93,7 @@ query.minimalDuration = 3600
 query.count = 12
 
 // Perform query and print a message containing tour's title
-TKToursManager.shared.tours(for: query) { (tours, err) in
+TravelKit.shared._tours.tours(for: query) { (tours, err) in
     if let tours = tours {
         for tour in tours {
             print("\(tour.title)")
@@ -99,11 +102,12 @@ TKToursManager.shared.tours(for: query) { (tours, err) in
 }
 ```
 
-## TKFavoritesManager
+## Favorites module
+
 ### Favorite & unfavorite places
 
 ```objc
-TKFavoritesManager *manager = [TKFavoritesManager sharedManager];
+TKFavoritesManager *manager = [[TravelKit sharedKit] favorites];
 // Add Eiffel Tower to favorites
 [manager updateFavoritePlaceID:@"poi:530" setFavorite:TRUE];
 // Get your favorites and print their IDs
@@ -114,9 +118,9 @@ NSLog(@"%@", [manager favoritePlaceIDs]);
 
 ```swift
 // Add Eiffel Tower to favorites
-TKFavoritesManager.shared.updateFavoritePlaceID("poi:530", setFavorite: true)
+TravelKit.shared.favorites.updateFavoritePlaceID("poi:530", setFavorite: true)
 // Get your favorites and print their IDs
-print(TKFavoritesManager.shared.favoritePlaceIDs())
+print(TravelKit.shared.favorites.favoritePlaceIDs())
 // Remove Eiffel Tower from favorites
-TKFavoritesManager.shared.updateFavoritePlaceID("poi:530", setFavorite: false)
+TravelKit.shared.favorites.updateFavoritePlaceID("poi:530", setFavorite: false)
 ```
