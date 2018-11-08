@@ -148,3 +148,17 @@
 }
 
 @end
+
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincomplete-implementation"
+
+@implementation NSString (TravelKitFoundationMutabilityType) @end
+
+@implementation NSArray (TravelKitFoundationMutabilityType) @end
+
+@implementation NSSet (TravelKitFoundationMutabilityType) @end
+
+@implementation NSDictionary (TravelKitFoundationMutabilityType) @end
+
+#pragma clang diagnostic pop

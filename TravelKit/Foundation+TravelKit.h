@@ -145,6 +145,58 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
+// -----------------------------------------------------------------------
+/// @name Mutability `NSString` stuff
+// -----------------------------------------------------------------------
+
+@interface NSString (TravelKitFoundationMutabilityType)
+
+/// Immutable copy of the string.
+- (NSString *)copy;
+/// Mutable copy of the string.
+- (NSMutableString *)mutableCopy;
+
+@end
+
+// -----------------------------------------------------------------------
+/// @name Mutability `NSArray` stuff
+// -----------------------------------------------------------------------
+
+@interface NSArray<ObjectType> (TravelKitFoundationMutabilityType)
+
+/// Immutable copy of the array.
+- (NSArray<ObjectType> *)copy;
+/// Mutable copy of the array.
+- (NSMutableArray<ObjectType> *)mutableCopy;
+
+@end
+
+// -----------------------------------------------------------------------
+/// @name Mutability `NSSet` stuff
+// -----------------------------------------------------------------------
+
+@interface NSSet<ObjectType> (TravelKitFoundationMutabilityType)
+
+/// Immutable copy of the set.
+- (NSSet<ObjectType> *)copy;
+/// Mutable copy of the set.
+- (NSMutableSet<ObjectType> *)mutableCopy;
+
+@end
+
+// -----------------------------------------------------------------------
+/// @name Mutability `NSDictionary` stuff
+// -----------------------------------------------------------------------
+
+@interface NSDictionary<KeyType, ObjectType> (TravelKitFoundationMutabilityType)
+
+/// Immutable copy of the dictionary.
+- (NSDictionary<KeyType, ObjectType> *)copy;
+/// Mutable copy of the dictionary.
+- (NSMutableDictionary<KeyType, ObjectType> *)mutableCopy;
+
+@end
+
 NS_ASSUME_NONNULL_END
 
 #endif // USE_TRAVELKIT_FOUNDATION
