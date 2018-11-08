@@ -886,6 +886,9 @@
 		if (query.offset.intValue > 0)
 			queryDict[@"offset"] = [query.offset stringValue];
 
+		if (query.preferUnique)
+			queryDict[@"prefer_unique"] = @"1";
+
 		_query = queryDict;
 
 		_successBlock = ^(TKAPIResponse *response){
