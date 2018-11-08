@@ -10,7 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
 @interface TKPlace ()
 
 /// Dictionary with @(TKPlaceLevel) key and NSString* values

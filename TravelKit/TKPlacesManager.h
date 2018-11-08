@@ -10,6 +10,8 @@
 
 #import <TravelKit/TKPlace.h>
 #import <TravelKit/TKPlacesQuery.h>
+#import <TravelKit/TKCollection.h>
+#import <TravelKit/TKCollectionsQuery.h>
 #import <TravelKit/TKMedium.h>
 
 NS_ASSUME_NONNULL_BEGIN
@@ -69,7 +71,7 @@ NS_ASSUME_NONNULL_BEGIN
 	completion:(void (^)(TKDetailedPlace * _Nullable place, NSError * _Nullable error))completion;
 
 ///---------------------------------------------------------------------------------------
-/// @name Place working queries
+/// @name Additional queries
 ///---------------------------------------------------------------------------------------
 
 /**
@@ -82,6 +84,17 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (void)mediaForPlaceWithID:(NSString *)placeID
 	completion:(void (^)(NSArray<TKMedium *> * _Nullable media, NSError * _Nullable error))completion;
+
+/**
+ Returns a collection of `TKCollection` objects for the given query object.
+
+ This method is good for fetching collections to display with a Destination to list the most interesting Places within.
+
+ @param query `TKCollectionsQuery` object containing the desired attributes to look for.
+ @param completion Completion block called on success or error.
+ */
+- (void)placeCollectionsForQuery:(TKCollectionsQuery *)query
+	completion:(void (^)(NSArray<TKCollection *>  * _Nullable collections, NSError * _Nullable error))completion;
 
 @end
 

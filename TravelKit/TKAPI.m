@@ -8,6 +8,7 @@
 
 #import "TKAPI+Private.h"
 #import "TKPlace+Private.h"
+#import "TKCollection+Private.h"
 #import "TKTour+Private.h"
 #import "TKTrip+Private.h"
 #import "TKDirection+Private.h"
@@ -158,6 +159,9 @@
 
 	case TKAPIRequestTypePlaceGET: // GET
 		return [NSString stringWithFormat:@"/places/%@", ID];
+
+	case TKAPIRequestTypeCollectionsQueryGET: // GET
+		return @"/collections";
 
 	case TKAPIRequestTypeToursQueryGET: // GET
 		return @"/tours";
@@ -742,6 +746,9 @@
 		if (query.limit.intValue > 0)
 			queryDict[@"limit"] = [query.limit stringValue];
 
+		if (query.offset.intValue > 0)
+			queryDict[@"offset"] = [query.offset stringValue];
+
 		_query = queryDict;
 
 		_successBlock = ^(TKAPIResponse *response){
@@ -831,6 +838,68 @@
 
 			if (!place && failure) failure(nil);
 			if (place && success) success(place);
+
+		}; _failureBlock = ^(TKAPIError *error){
+			if (failure) failure(error);
+		};
+	}
+
+	return self;
+}
+
+
+////////////////////
+#pragma mark - Collections Query
+////////////////////
+
+
+- (instancetype)initAsCollectionsRequestForQuery:(TKCollectionsQuery *)query
+	success:(void (^)(NSArray<TKCollection *> *))success failure:(TKAPIFailureBlock)failure
+{
+	if (self = [super init])
+	{
+		_type = TKAPIRequestTypeCollectionsQueryGET;
+
+		NSMutableDictionary *queryDict = [NSMutableDictionary dictionaryWithCapacity:10];
+
+		if (query.searchTerm.length)
+			queryDict[@"query"] = query.searchTerm;
+
+		if (query.parentPlaceID.length)
+			queryDict[@"parent_place_id"] = query.parentPlaceID;
+
+		if (query.placeIDs.count)
+		{
+			NSString *operator = (query.placeIDsMatching == TKCollectionsQueryMatchingAll) ? @"," : @"|";
+			queryDict[@"place_ids"] = [query.placeIDs componentsJoinedByString:operator];
+		}
+
+		if (query.tags.count)
+			queryDict[@"tags"] = [query.tags componentsJoinedByString:@","];
+
+		if (query.tagsToOmit.count)
+			queryDict[@"tags_not"] = [query.tagsToOmit componentsJoinedByString:@","];
+
+		if (query.limit.intValue > 0)
+			queryDict[@"limit"] = [query.limit stringValue];
+
+		if (query.offset.intValue > 0)
+			queryDict[@"offset"] = [query.offset stringValue];
+
+		_query = queryDict;
+
+		_successBlock = ^(TKAPIResponse *response){
+
+			NSMutableArray<TKCollection *> *stored = [NSMutableArray array];
+			NSArray *items = [response.data[@"collections"] parsedArray];
+
+			for (NSDictionary *dict in items)
+			{
+				TKCollection *c = [[TKCollection alloc] initFromResponse:dict];
+				if (c) [stored addObject:c];
+			}
+
+			if (success) success(stored);
 
 		}; _failureBlock = ^(TKAPIError *error){
 			if (failure) failure(error);

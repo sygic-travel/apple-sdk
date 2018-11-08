@@ -114,6 +114,14 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 /// @warning The value requested must be divisible by `4^mapSpread`.
 @property (nonatomic, strong, nullable) NSNumber *limit;
 
+/// Offset index of the place to start with. Practically usable as paging.
+///
+/// @note The default value is `0`. Accepted values: `0`--`10000`.
+///
+/// @note Setting a limit of `512` and offset `512` effectively returns
+///       the second page of results.
+@property (nonatomic, strong, nullable) NSNumber *offset;
+
 @end
 
 NS_ASSUME_NONNULL_END

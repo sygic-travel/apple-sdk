@@ -11,10 +11,12 @@
 #import <TravelKit/TKAPIDefinitions.h>
 
 #import <TravelKit/TKPlace.h>
+#import <TravelKit/TKCollection.h>
 #import <TravelKit/TKTour.h>
 #import <TravelKit/TKTrip.h>
 #import <TravelKit/TKMedium.h>
 #import <TravelKit/TKPlacesQuery.h>
+#import <TravelKit/TKCollectionsQuery.h>
 #import <TravelKit/TKToursQuery.h>
 #import <TravelKit/TKDirectionsManager.h>
 
@@ -39,6 +41,7 @@ typedef NS_ENUM(NSInteger, TKAPIRequestType)
 	TKAPIRequestTypePlacesQueryGET,
 	TKAPIRequestTypePlacesBatchGET,
 	TKAPIRequestTypePlaceGET,
+	TKAPIRequestTypeCollectionsQueryGET,
 	TKAPIRequestTypeToursQueryGET,
 	TKAPIRequestTypeMediaGET,
 	TKAPIRequestTypeFavoriteADD,
@@ -170,6 +173,13 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 
 - (instancetype)initAsPlaceRequestForItemWithID:(NSString *)itemID
 	success:(void (^)(TKDetailedPlace *place))success
+		failure:(TKAPIFailureBlock)failure;
+
+////////////////////
+// Collections Query
+
+- (instancetype)initAsCollectionsRequestForQuery:(TKCollectionsQuery *)query
+	success:(void (^)(NSArray<TKCollection *> *collections))success
 		failure:(TKAPIFailureBlock)failure;
 
 ////////////////////

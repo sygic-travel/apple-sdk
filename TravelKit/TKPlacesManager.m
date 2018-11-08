@@ -268,4 +268,20 @@
 	}] start];
 }
 
+- (void)placeCollectionsForQuery:(TKCollectionsQuery *)query
+	completion:(void (^)(NSArray<TKCollection *> * _Nullable, NSError * _Nullable))completion
+{
+	[[[TKAPIRequest alloc] initAsCollectionsRequestForQuery:query success:^(NSArray<TKCollection *> *collections) {
+
+		if (completion)
+			completion(collections, nil);
+
+	} failure:^(TKAPIError *error) {
+
+		if (completion)
+			completion(nil, error);
+
+	}] start];
+}
+
 @end
