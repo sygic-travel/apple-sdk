@@ -8,42 +8,45 @@
 
 #import "NSObject+Parsing.h"
 
+NS_ASSUME_NONNULL_BEGIN
 
 @implementation NSObject (Parsing)
 
 #pragma mark - Parsing procedures
 
-- (id)parsedArray
+- (nullable __kindof NSArray *)parsedArray
 {
-	return ([self isKindOfClass:[NSArray class]]) ? self : nil;
+	return ([self isKindOfClass:[NSArray class]]) ? (id)self : nil;
 }
 
-- (id)parsedDictionary
+- (nullable __kindof NSDictionary *)parsedDictionary
 {
-	return ([self isKindOfClass:[NSDictionary class]]) ? self : nil;
+	return ([self isKindOfClass:[NSDictionary class]]) ? (id)self : nil;
 }
 
-- (id)parsedString
+- (nullable __kindof NSString *)parsedString
 {
 	return ([self isKindOfClass:[NSString class]] &&
-	        [(NSString *)self length]) ? self : nil;
+	        [(NSString *)self length]) ? (id)self : nil;
 }
 
-- (id)parsedNumber
+- (nullable __kindof NSNumber *)parsedNumber
 {
-	return ([self isKindOfClass:[NSNumber class]]) ? self : nil;
+	return ([self isKindOfClass:[NSNumber class]]) ? (id)self : nil;
 }
 
 #pragma mark - Parsing procedures
 
-- (id)objectAtIndexedSubscript:(__unused NSUInteger)index
+- (nullable __kindof NSObject *)objectAtIndexedSubscript:(__unused NSUInteger)index
 {
 	return nil;
 }
 
-- (id)objectForKeyedSubscript:(__unused id)key
+- (nullable __kindof NSObject *)objectForKeyedSubscript:(__unused id)key
 {
 	return nil;
 }
 
 @end
+
+NS_ASSUME_NONNULL_END

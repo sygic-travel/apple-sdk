@@ -19,11 +19,31 @@ FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 #import <TravelKit/TKReference.h>
 #import <TravelKit/TKMedium.h>
 #import <TravelKit/TKTour.h>
+#import <TravelKit/TKTrip.h>
 #import <TravelKit/TKToursQuery.h>
 #import <TravelKit/TKMapRegion.h>
+#import <TravelKit/TKMapWorker.h>
 #import <TravelKit/TKMapPlaceAnnotation.h>
+#import <TravelKit/TKSession.h>
+
+#import <TravelKit/TKPlacesManager.h>
+#import <TravelKit/TKToursManager.h>
+#import <TravelKit/TKTripsManager.h>
+#import <TravelKit/TKFavoritesManager.h>
+#import <TravelKit/TKSessionManager.h>
+#import <TravelKit/TKSynchronizationManager.h>
+#import <TravelKit/TKDirectionsManager.h>
+#import <TravelKit/TKEventsManager.h>
+
+#import <TravelKit/Foundation+TravelKit.h>
+#import <TravelKit/NSDate+Tripomatic.h>
+#import <TravelKit/NSObject+Parsing.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+///---------------------------------------------------------------------------------------
+/// @name TravelKit SDK
+///---------------------------------------------------------------------------------------
 
 /**
  The main class currently used for authentication and data fetching. It provides a singleton
@@ -40,17 +60,46 @@ TravelKit *kit = [TravelKit sharedKit];
 // Set your API key
 kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
-// Ask kit for Eiffel Tower TKPlace object with details
-[kit detailedPlaceWithID:@"poi:530" completion:^(TKPlace *place, NSError *e) {
+// Ask kit for Eiffel Tower TKDetailedPlace object with details
+[kit.places detailedPlaceWithID:@"poi:530" completion:^(TKDetailedPlace *place, NSError *e) {
     if (place) NSLog(@"Let's visit %@!", place.name);
     else NSLog(@"Something went wrong :/");
 }];
 ```
+ 
+ ```swift
+ // Use shared instance to set your API key
+ TravelKit.shared.apiKey = "<YOUR_API_KEY_GOES_HERE>"
+ 
+ // Ask TKPlaceManager for Eiffel Tower TKDetailedPlace object with details
+ TravelKit.shared.places.detailedPlace(withID: "poi:530") { (place, e) in
+     if let place = place {
+        print("Let's visit \(place.name)")
+     }
+     else {
+        print("Something went wrong :/")
+     }
+ }
+ ```
 
- @warning API key must be provided, otherwise using any methods listed below will result
+ @warning API key must be provided, otherwise using any methods listed above will result
  in an error being returned in a call completion block.
  */
 @interface TravelKit : NSObject
+
+///---------------------------------------------------------------------------------------
+/// @name Initialisation
+///---------------------------------------------------------------------------------------
+
+/**
+ Shared singleton object to work with.
+
+ @warning Regular `-init` and `+new` methods are not available.
+ */
+@property (class, readonly, strong) TravelKit *sharedKit NS_SWIFT_NAME(shared);
+
+- (instancetype)init UNAVAILABLE_ATTRIBUTE;
+- (instancetype)new UNAVAILABLE_ATTRIBUTE;
 
 ///---------------------------------------------------------------------------------------
 /// @name Key properties
@@ -59,16 +108,24 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 /**
  Client API key you've obtained.
 
- @warning This needs to be set in order to perform data requests successfully.
+ @warning This needs to be set in order to perform static data requests successfully.
  */
 @property (nonatomic, copy, nullable) NSString *APIKey;
+
+/**
+ Client ID key you've obtained.
+
+ @warning This needs to be set in order to perform user-specific data requests successfully.
+ */
+@property (nonatomic, copy, nullable) NSString *clientID;
 
 /**
  Preferred language of response data to use.
 
  @note Supported language codes: **`en`**, **`fr`**, **`de`**, **`es`**, **`nl`**,
        **`pt`**, **`it`**, **`ru`**, **`cs`**, **`sk`**, **`pl`**, **`tr`**,
-       **`zh`**, **`ko`**.
+       **`zh`**, **`ko`**, **`ar`**, **`da`**, **`el`**, **`fi`**, **`he`**,
+       **`hu`**, **`no`**, **`ro`**, **`sv`**, **`th`**, **`uk`**.
  
  Default language code is `en`.
 
@@ -80,157 +137,132 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 @property (nonatomic, copy, null_resettable) NSString *language;
 
 ///---------------------------------------------------------------------------------------
-/// @name Initialisation
+/// @name Modules
 ///---------------------------------------------------------------------------------------
 
 /**
- Shared singleton object to work with.
-
- @return Singleton `TravelKit` object.
-
- @warning Regular `-init` and `+new` methods are not available.
+ Shared Place Manager instance to provide Places-related stuff.
  */
-+ (nonnull TravelKit *)sharedKit NS_SWIFT_NAME(shared());
+@property (nonatomic, strong, readonly) TKPlacesManager *places;
 
-- (instancetype)init UNAVAILABLE_ATTRIBUTE;
-- (instancetype)new UNAVAILABLE_ATTRIBUTE;
+/**
+ Shared Trips Manager instance to provide Trips-related stuff.
+ */
+@property (nonatomic, strong, readonly) TKTripsManager *trips;
+
+/**
+ Shared Trips Manager instance to provide Trips-related stuff.
+ */
+@property (nonatomic, strong, readonly) TKFavoritesManager *favorites;
+
+/**
+ Shared Tours Manager instance to provide Tours-related stuff.
+
+ @warning Experimental.
+ */
+@property (nonatomic, strong, readonly) TKToursManager *_tours
+	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
+
+/**
+ Shared Session Manager instance to provide Session-related stuff.
+ */
+@property (nonatomic, strong, readonly) TKSessionManager *session;
+
+/**
+ Shared Synchronization Manager instance to provide Sync-related stuff.
+ */
+@property (nonatomic, strong, readonly) TKSynchronizationManager *sync;
+
+/**
+ Shared Directions Manager instance to provide directions- & routing-related stuff.
+
+ @warning Experimental.
+ */
+@property (nonatomic, strong, readonly) TKDirectionsManager *_directions
+	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
+
+/**
+ Shared Events Manager instance to retain event handlers.
+ */
+@property (nonatomic, strong, readonly) TKEventsManager *events;
+
+@end
+
+///---------------------------------------------------------------------------------------
+/// @name Deprecated interface stuff
+///---------------------------------------------------------------------------------------
+
+/**
+ A set of deprecated stuff on `TravelKit` class.
+ */
+@interface TravelKit (NSDeprecated)
 
 ///---------------------------------------------------------------------------------------
 /// @name Place working queries
 ///---------------------------------------------------------------------------------------
 
-/**
- Returns a collection of `TKPlace` objects for the given query object.
+/// :nodoc:
 
- This method is good for fetching Places to use for lists, map annotations and other batch uses.
-
- @param query `TKPlacesQuery` object containing the desired attributes to look for.
- @param completion Completion block called on success or error.
- */
 - (void)placesForQuery:(TKPlacesQuery *)query
-	completion:(void (^)(NSArray<TKPlace *>  * _Nullable places, NSError * _Nullable error))completion;
+	completion:(void (^)(NSArray<TKPlace *>  * _Nullable places, NSError * _Nullable error))completion
+		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 
-/**
- Returns a collection of `TKPlace` objects for the given IDs.
-
- @param placeIDs Array of strings matching desired Place IDs.
- @param completion Completion block called on success or error.
- */
 - (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
-	completion:(void (^)(NSArray<TKPlace *> * _Nullable places, NSError * _Nullable error))completion;
+	completion:(void (^)(NSArray<TKDetailedPlace *> * _Nullable places, NSError * _Nullable error))completion
+		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 
-/**
- Returns a Detailed `TKPlace` object for the given global Place identifier.
-
- This method is good for fetching further Place information to use f.e. on Place Detail screen.
-
- @param placeID Global identifier of the desired Place.
- @param completion Completion block called on success or error.
- */
 - (void)detailedPlaceWithID:(NSString *)placeID
-	completion:(void (^)(TKPlace * _Nullable place, NSError * _Nullable error))completion;
+	completion:(void (^)(TKDetailedPlace * _Nullable place, NSError * _Nullable error))completion
+		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 
 ///---------------------------------------------------------------------------------------
 /// @name Media working queries
 ///---------------------------------------------------------------------------------------
 
-/**
- Returns a collection of `TKMedium` objects for the given global Place identifier.
+/// :nodoc:
 
- This method is used to fetch all Place media to be used f.e. for Gallery screen.
-
- @param placeID Global identifier of the desired Place.
- @param completion Completion block called on success or error.
- */
 - (void)mediaForPlaceWithID:(NSString *)placeID
-	completion:(void (^)(NSArray<TKMedium *> * _Nullable media, NSError * _Nullable error))completion;
-
-///---------------------------------------------------------------------------------------
-/// @name Tours working queries
-///---------------------------------------------------------------------------------------
-
-/**
- Returns a collection of `TKTour` objects for the given query object.
-
- This method is good for fetching Tours to use for lists and other batch uses.
-
- @param query `TKToursQuery` object containing the desired attributes to look for.
- @param completion Completion block called on success or error.
-
- @note Experimental.
- */
-- (void)toursForQuery:(TKToursQuery *)query
-	completion:(void (^)(NSArray<TKTour *>  * _Nullable tours, NSError * _Nullable error))completion;
+	completion:(void (^)(NSArray<TKMedium *> * _Nullable media, NSError * _Nullable error))completion
+		 DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
 
 ///---------------------------------------------------------------------------------------
 /// @name Favorites
 ///---------------------------------------------------------------------------------------
 
-/**
- Fetches an array of IDs of Places previously marked as favorite.
+/// :nodoc:
 
- @return Array of Place IDs.
- */
-- (NSArray<NSString *> *)favoritePlaceIDs;
+- (NSArray<NSString *> *)favoritePlaceIDs DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKSessionManager` instead.");
 
-/**
- Updates a favorite state for a specific Place ID.
-
- @param favoriteID Place ID to update.
- @param favorite Desired Favorite state, either `YES` or `NO`.
- */
-- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite;
+- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
+	DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKSessionManager` instead.");
 
 ///---------------------------------------------------------------------------------------
 /// @name Map-related methods
 ///---------------------------------------------------------------------------------------
 
-/**
- Naive method for fetching standardised quad keys for the given region.
+/// :nodoc:
 
- @param region Region to calculate quad keys for.
- @return Array of quad key strings.
- */
-- (NSArray<NSString *> *)quadKeysForMapRegion:(MKCoordinateRegion)region;
+- (NSArray<NSString *> *)quadKeysForMapRegion:(MKCoordinateRegion)region
+	DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKMapWorker` instead.");
 
-/**
- Spreading method calculating optimally spread `TKMapPlaceAnnotation` objects in 3 basic sizes.
-
- @param places Places to spread and create `TKMapPlaceAnnotation` objects for.
- @param region Region where to spread the annotations.
- @param size Standard size of the Map view. May be taken from either `-frame` or `-bounds`.
- @return Array of spread annotations.
- */
 - (NSArray<TKMapPlaceAnnotation *> *)spreadAnnotationsForPlaces:(NSArray<TKPlace *> *)places
-            mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size;
+            mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size
+	DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKMapWorker` instead.");
 
-/**
- Interpolating method for sorting Map annotations.
-
- @param newAnnotations Array of annotations you'd like to display.
- @param oldAnnotations Array of annotations currently displayed.
- @param toAdd Out array of annotations to add to the map.
- @param toKeep Out array of annotations to keep on the map.
- @param toRemove Out array of annotations to remove from the map.
- 
- @note `toAdd`, `toKeep` and `toRemove` are regular given mutable arrays this method will fill.
-       Annotations in `toAdd` array are meant to be used with `-addAnnotations:` or equivalent
-       method of your Map view, `toRemove` accordingly with `-removeAnnotations:` method.
- */
 - (void)interpolateNewAnnotations:(NSArray<TKMapPlaceAnnotation *> *)newAnnotations
                    oldAnnotations:(NSArray<TKMapPlaceAnnotation *> *)oldAnnotations
                             toAdd:(NSMutableArray<TKMapPlaceAnnotation *> *)toAdd
                            toKeep:(NSMutableArray<TKMapPlaceAnnotation *> *)toKeep
-                         toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove;
+                         toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove
+	DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKMapWorker` instead.");
 
 ///---------------------------------------------------------------------------------------
 /// @name Session-related methods
 ///---------------------------------------------------------------------------------------
 
-/**
- Clears all cached and persisting user data.
- */
-- (void)clearUserData;
+/// :nodoc:
+
+- (void)clearUserData DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKSessionManager` instead.");
 
 @end
 

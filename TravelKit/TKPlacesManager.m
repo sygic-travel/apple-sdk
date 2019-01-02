@@ -6,16 +6,8 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKPlacesManager+Private.h"
-#import "TKDatabaseManager+Private.h"
+#import "TKPlacesManager.h"
 #import "TKAPI+Private.h"
-
-
-@interface TKPlacesManager ()
-
-@property (nonatomic, strong) TKDatabaseManager *database;
-
-@end
 
 
 @implementation TKPlacesManager
@@ -25,7 +17,7 @@
 #pragma mark Initialization
 
 
-+ (instancetype)sharedManager
++ (TKPlacesManager *)sharedManager
 {
 	static TKPlacesManager *shared = nil;
 
@@ -40,9 +32,7 @@
 - (instancetype)init
 {
 	if (self = [super init])
-	{
-		_database = [TKDatabaseManager sharedInstance];
-	}
+	{}
 
 	return self;
 }
@@ -50,6 +40,19 @@
 + (NSCache<NSString *, TKPlace *> *)placeCache
 {
 	static NSCache<NSString *, TKPlace *> *placeCache = nil;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		placeCache = [NSCache new];
+		placeCache.countLimit = 200;
+	});
+
+	return placeCache;
+}
+
++ (NSCache<NSString *, TKDetailedPlace *> *)detailedPlaceCache
+{
+	static NSCache<NSString *, TKDetailedPlace *> *placeCache = nil;
 
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
@@ -166,36 +169,36 @@
 	}] start];
 }
 
-- (void)placesWithIDs:(NSArray<NSString *> *)placeIDs completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion
+- (void)detailedPlacesWithIDs:(NSArray<NSString *> *)placeIDs completion:(void (^)(NSArray<TKDetailedPlace *> *, NSError *))completion
 {
-	NSCache<NSString *, TKPlace *> *placeCache = [self.class placeCache];
+	NSCache<NSString *, TKDetailedPlace *> *placeCache = [self.class detailedPlaceCache];
 
-	NSMutableArray<TKPlace *> *ret = [NSMutableArray arrayWithCapacity:placeIDs.count];
-	NSMutableArray *requested = [placeIDs mutableCopy];
+	NSMutableArray<TKDetailedPlace *> *ret = [NSMutableArray arrayWithCapacity:placeIDs.count];
+	NSMutableArray<NSString *> *requestedIDs = [placeIDs mutableCopy];
 
-	TKPlace *place = nil;
+	TKDetailedPlace *place = nil;
 	for (NSString *placeID in placeIDs)
 		if ((place = [placeCache objectForKey:placeID]))
 		{
 			[ret addObject:place];
-			[requested removeObject:placeID];
+			[requestedIDs removeObject:placeID];
 		}
 
-	if (!requested.count) {
+	if (!requestedIDs.count) {
 		if (completion)
 			completion(ret, nil);
 		return;
 	}
 
-	[[[TKAPIRequest alloc] initAsPlacesRequestForIDs:requested success:^(NSArray<TKPlace *> *places) {
+	[[[TKAPIRequest alloc] initAsPlacesRequestForIDs:requestedIDs success:^(NSArray<TKDetailedPlace *> *places) {
 
-		for (TKPlace *p in places)
-			[placeCache setObject:place forKey:p.ID];
+		for (TKDetailedPlace *p in places)
+			[placeCache setObject:p forKey:p.ID];
 
-		[requested addObjectsFromArray:places];
+		[ret addObjectsFromArray:places];
 
 		if (completion)
-			completion(requested, nil);
+			completion(ret, nil);
 
 	} failure:^(TKAPIError *error) {
 
@@ -205,11 +208,11 @@
 	}] start];
 }
 
-- (void)detailedPlaceWithID:(NSString *)placeID completion:(void (^)(TKPlace *, NSError *))completion
+- (void)detailedPlaceWithID:(NSString *)placeID completion:(void (^)(TKDetailedPlace *, NSError *))completion
 {
-	NSCache<NSString *, TKPlace *> *placeCache = [self.class placeCache];
+	NSCache<NSString *, TKDetailedPlace *> *placeCache = [self.class detailedPlaceCache];
 
-	TKPlace *cached = [placeCache objectForKey:placeID];
+	TKDetailedPlace *cached = [placeCache objectForKey:placeID];
 
 	if (cached) {
 		if (completion)
@@ -217,7 +220,7 @@
 		return;
 	}
 
-	[[[TKAPIRequest alloc] initAsPlaceRequestForItemWithID:placeID success:^(TKPlace *place) {
+	[[[TKAPIRequest alloc] initAsPlaceRequestForItemWithID:placeID success:^(TKDetailedPlace *place) {
 
 		[placeCache setObject:place forKey:placeID];
 
@@ -258,6 +261,22 @@
 			completion(media, nil);
 
 	} failure:^(TKAPIError *error){
+
+		if (completion)
+			completion(nil, error);
+
+	}] start];
+}
+
+- (void)placeCollectionsForQuery:(TKCollectionsQuery *)query
+	completion:(void (^)(NSArray<TKCollection *> * _Nullable, NSError * _Nullable))completion
+{
+	[[[TKAPIRequest alloc] initAsCollectionsRequestForQuery:query success:^(NSArray<TKCollection *> *collections) {
+
+		if (completion)
+			completion(collections, nil);
+
+	} failure:^(TKAPIError *error) {
 
 		if (completion)
 			completion(nil, error);

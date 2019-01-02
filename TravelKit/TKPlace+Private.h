@@ -10,7 +10,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
 @interface TKPlace ()
 
 /// Dictionary with @(TKPlaceLevel) key and NSString* values
@@ -21,6 +20,14 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// TKPlace resolver from NSString*
 + (TKPlaceLevel)levelFromString:(NSString *)str;
+
+/// Initialiser
+- (nullable instancetype)initFromResponse:(NSDictionary *)response;
+
+@end
+
+
+@interface TKDetailedPlace ()
 
 /// Initialiser
 - (nullable instancetype)initFromResponse:(NSDictionary *)response;

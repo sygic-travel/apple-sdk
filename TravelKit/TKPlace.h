@@ -71,12 +71,34 @@ typedef NS_OPTIONS(NSUInteger, TKPlaceCategory) {
 	TKPlaceCategoryGoingOut       = 1 << 6,
 	/// Hiking.
 	TKPlaceCategoryHiking         = 1 << 7,
-	/// Sports.
-	TKPlaceCategorySports         = 1 << 8,
+	/// Doing sports.
+	TKPlaceCategoryDoingSports    = 1 << 8,
 	/// Relaxing.
 	TKPlaceCategoryRelaxing       = 1 << 9,
 	/// Sleeping.
 	TKPlaceCategorySleeping       = 1 << 10,
+};
+
+/**
+ Flag value indicating a source of a description.
+ */
+typedef NS_OPTIONS(NSUInteger, TKPlaceDescriptionProvider) {
+	/// No or in-house description.
+	TKPlaceDescriptionProviderNone           = 0,
+	/// Wikipedia description.
+	TKPlaceDescriptionProviderWikipedia      = 1 << 0,
+	/// Wikivoyage description.
+	TKPlaceDescriptionProviderWikivoyage     = 1 << 1,
+};
+
+/**
+ Flag value indicating a source of a translation.
+ */
+typedef NS_OPTIONS(NSUInteger, TKTranslationProvider) {
+	/// No or in-house translation.
+	TKTranslationProviderNone           = 0,
+	/// Google Translate.
+	TKTranslationProviderGoogle         = 1 << 0,
 };
 
 
@@ -100,6 +122,12 @@ NS_ASSUME_NONNULL_BEGIN
 ///----------------------
 
 /// Global identifier.
+///
+/// @note You can find IDs of countries in [Google Sheets](https://docs.google.com/spreadsheets/d/1qlTdvBlLDo3fxBTSqmbqQOQJXsynfukBHxI_Xpi2Srw/edit#gid=0)
+/// or [CSV file](https://admin.sygictraveldata.com/data-export/ijcw4rz32quouj3zwu1k70uhcgqfyp8g), you can also find IDs of top cities in [Google Sheets]
+/// (https://docs.google.com/spreadsheets/d/1qlTdvBlLDo3fxBTSqmbqQOQJXsynfukBHxI_Xpi2Srw/edit#gid=1588428987) and
+/// [CSV file](https://admin.sygictraveldata.com/data-export/zf8979vspcvz61dya3pyxbvsduyjtnh4) as well.
+
 @property (nonatomic, copy) NSString *ID NS_SWIFT_NAME(ID);
 
 /// Displayable name of the place, translated if possible. Example: _Buckingham Palace_.
@@ -108,7 +136,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Displayable name suffix. Example: _London, United Kingdom_.
 @property (nonatomic, copy, nullable) NSString *suffix;
 
-/// Denotable place level.
+/// Denotable place level. Each place has a level property that describes the type of the place by administration level.
+///
+/// @see `TKPlaceLevel`
 @property (atomic) TKPlaceLevel level;
 
 /// Short perex introducing the place.
@@ -117,10 +147,11 @@ NS_ASSUME_NONNULL_BEGIN
 /// Location of the place.
 @property (nonatomic, strong) CLLocation *location;
 
-/// 18-character Quad key.
+/// 18-character Quad key representing map tile coordinate using Mercator (Google/Bing) projection.
+/// For details see [Bing Maps](https://msdn.microsoft.com/en-us/library/bb259689.aspx) docs or [maptiler.org](www.maptiler.org/google-maps-coordinates-tile-bounds-projection/) .
 @property (nonatomic, copy, nullable) NSString *quadKey;
 
-/// Bounding box.
+/// Bounding box. Object with south-west and north-east point in degrees. Specifies bounds of places that have an area.
 @property (nonatomic, strong, nullable) TKMapRegion *boundingBox;
 
 /// Global rating value.
@@ -128,15 +159,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note Possible values: double in range `0`--`10.0`.
 @property (nonatomic, strong, nullable) NSNumber *rating;
 
-/// Marker identifier usable for displayable icon.
+/// Marker identifier usable for displayable icon. For more information please see [Sygic Travel API](http://docs.sygictravelapi.com/1.1/#section-places) .
+/// @note For a full list of all available markers see [Markers sheet](https://docs.google.com/spreadsheets/d/1mpP-aw6FrWBF4WQpgErCz2tsB_OhEp56co-y5VC80VY/edit#gid=0)
 @property (nonatomic, copy, nullable) NSString *marker;
 
-/// List of Category slugs assigned.
+/// List of Category slugs assigned. For more information please see [Sygic Travel API](http://docs.sygictravelapi.com/1.1/#section-places) .
 ///
 /// @see `TKPlaceCategory`
 @property (atomic) TKPlaceCategory categories;
 
-/// List of Parent IDs.
+/// List of Parent IDs. Parent IDs are IDs of other places. These parent places can be for example the geographical units the place is part of.
+/// This can be useful when working with a map, searching for cities by location, etc.
 @property (nonatomic, copy, nullable) NSArray<NSString *> *parents;
 
 /// List of custom flags.
@@ -145,15 +178,28 @@ NS_ASSUME_NONNULL_BEGIN
 /// Thumbnail URL to an image of size 150×150 pixels.
 @property (nonatomic, strong, nullable) NSURL *thumbnailURL;
 
-/// Place detail of `TKPlaceDetail` instance containing further attributes.
-@property (nonatomic, strong, nullable) TKPlaceDetail *detail;
-
 ///-------------------------
 /// @name Helping properties
 ///-------------------------
 
 /// Default _HEX_ colour value. Values `0x000000` through `0xFFFFFF`.
 @property (atomic, readonly) NSUInteger displayableHexColor;
+
+@end
+
+
+///-----------------------------------------------------------------------------
+#pragma mark -
+#pragma mark Detailed Place object
+///-----------------------------------------------------------------------------
+
+/**
+ Detailed Place object.
+ */
+@interface TKDetailedPlace : TKPlace
+
+/// Place detail of `TKPlaceDetail` instance containing further attributes.
+@property (nonatomic, strong, nullable) TKPlaceDetail *detail;
 
 @end
 
@@ -171,22 +217,14 @@ NS_ASSUME_NONNULL_BEGIN
 /// Full-length text description.
 @property (nonatomic, copy) NSString *text;
 
-/// Text slug of the description provider, if available.
-///
-/// @note Possible values: `wikipedia`, `wikivoyage`.
-///
-/// @note Descriptions without any `provider` set are provided by Sygic Travel.
-@property (nonatomic, copy, nullable) NSString *provider;
+/// Flag of the description provider.
+@property (atomic) TKPlaceDescriptionProvider provider;
 
 /// URL address of the description source.
-@property (nonatomic, copy, nullable) NSURL *link;
+@property (nonatomic, copy, nullable) NSURL *sourceURL;
 
-/// Text slug of the translation provider, if available.
-///
-/// @note Possible values: `google`.
-///
-/// @note Translations without any `translationProvider` set are provided by Sygic Travel.
-@property (nonatomic, copy, nullable) NSString *translationProvider;
+/// Flag of the translation provider.
+@property (atomic) TKTranslationProvider translationProvider;
 
 /// Flag indicating whether the description provided is translated.
 @property (atomic) BOOL translated;
@@ -226,13 +264,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// `TKPlaceDescription` instance object containing a detailed description.
 @property (nonatomic, strong, nullable) TKPlaceDescription *fullDescription;
 
-/// List of Place Tags.
+/// List of Place Tags. Each place can have multiple tags which describe it or it’s properties. Tags can be used to filter places.
+/// @note You can see list of available tags [here](docs.sygictravelapi.com/taglist.html) .
 @property (nonatomic, copy, nullable) NSArray<TKPlaceTag *> *tags;
 
 /// List of external References.
+
+/// References are entities that represent place's relations to other websites, articles, social networks, rentals,
+/// passes, ticket, tour, and accommodation providers, parking, transfers, and other information.
 @property (nonatomic, copy, nullable) NSArray<TKReference *> *references;
 
-/// List of main Media for use.
+/// List of main Media for use. Used for displaying a larger thumbnail or a cover photo.
 @property (nonatomic, copy, nullable) NSArray<TKMedium *> *mainMedia;
 
 /// Address string.
@@ -244,7 +286,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Email string.
 @property (nonatomic, copy, nullable) NSString *email;
 
-/// Average duration, in seconds.
+/// Estimated avarage time that people usually spend at this place in seconds.
 @property (nonatomic, strong, nullable) NSNumber *duration;
 
 /// Opening hours string.

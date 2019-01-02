@@ -21,15 +21,18 @@
 NSString * const kDatabaseFilename = @"database.sqlite";
 
 // Database scheme
-NSUInteger const kDatabaseSchemeVersionLatest = 20170621;
+NSUInteger const kDatabaseSchemeVersionLatest = 20171026;
 
 // Table names // ABI-EXPORTED
-NSString * const kDatabaseTablePlaces = @"places";
-NSString * const kDatabaseTablePlaceDetails = @"place_details";
-NSString * const kDatabaseTablePlaceParents = @"place_parents";
-NSString * const kDatabaseTableMedia = @"media";
-NSString * const kDatabaseTableReferences = @"references";
-NSString * const kDatabaseTableFavorites = @"favorites";
+//NSString * const kTKDatabaseTablePlaces = @"places";
+//NSString * const kTKDatabaseTablePlaceDetails = @"place_details";
+//NSString * const kTKDatabaseTablePlaceParents = @"place_parents";
+//NSString * const kTKDatabaseTableMedia = @"media";
+//NSString * const kTKDatabaseTableReferences = @"references";
+NSString * const kTKDatabaseTableFavorites = @"favorites";
+NSString * const kTKDatabaseTableTrips = @"trips";
+NSString * const kTKDatabaseTableTripDays = @"trip_days";
+NSString * const kTKDatabaseTableTripDayItems = @"trip_day_items";
 
 
 #pragma mark Private category
@@ -51,7 +54,7 @@ NSString * const kDatabaseTableFavorites = @"favorites";
 
 @implementation TKDatabaseManager
 
-+ (TKDatabaseManager *)sharedInstance
++ (TKDatabaseManager *)sharedManager
 {
     static dispatch_once_t once = 0;
     static TKDatabaseManager *shared = nil;
@@ -66,13 +69,18 @@ NSString * const kDatabaseTableFavorites = @"favorites";
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 
+		NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
+
 		path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
 
 #if TARGET_OS_MAC
-		NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
 		if (!bundleID) @throw @"Database initialization error";
 		path = [path stringByAppendingPathComponent:bundleID];
 #endif
+
+		// Handle Playground runtime a bit better
+		if ([bundleID containsString:@"com.apple.dt.Xcode"])
+			path = [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) firstObject];
 
 		path = [path stringByAppendingPathComponent:@"TravelKit"];
 		path = [path stringByAppendingPathComponent:kDatabaseFilename];
@@ -222,13 +230,50 @@ NSString * const kDatabaseTableFavorites = @"favorites";
 	if (currentScheme == kDatabaseSchemeVersionLatest)
 		return;
 
+#ifdef DEBUG
+	NSLog(@"[DATABASE] Updating Database scheme");
+#endif
+
 	//////////////
 	// Perform migration rules
 
 	// Favorites
 	if (currentScheme < 20170621) {
 		[self runUpdate:@"CREATE TABLE IF NOT EXISTS %@ "
-			"(id text PRIMARY KEY NOT NULL);" tableName:kDatabaseTableFavorites];
+			"(id text PRIMARY KEY NOT NULL);" tableName:kTKDatabaseTableFavorites];
+	}
+
+	// Favorites on server
+	if (currentScheme < 20171024) {
+		[self runUpdate:@"ALTER TABLE %@ ADD state INTEGER "
+			"NOT NULL DEFAULT 0;" tableName:kTKDatabaseTableFavorites];
+	}
+
+	// New Trips API -- new structure + migration
+	if (currentScheme < 20171026) {
+
+		[self runUpdate:@"CREATE TABLE IF NOT EXISTS %@ (id text PRIMARY KEY UNIQUE NOT NULL, "
+		 "name text, version integer, days integer, destination_ids text, owner_id text, starts_on text, "
+		 "updated_at text, changed integer, deleted integer, privacy integer, rights integer);"
+			  tableName:kTKDatabaseTableTrips];
+
+		[self runUpdate:@"CREATE TABLE IF NOT EXISTS %@ (trip_id text NOT NULL, "
+		 "day_index integer NOT NULL, note text, PRIMARY KEY(trip_id, day_index));"
+			  tableName:kTKDatabaseTableTripDays];
+
+		[self runUpdate:@"CREATE TABLE IF NOT EXISTS %@ ("
+		 "trip_id text NOT NULL, day_index integer NOT NULL, item_index integer NOT NULL, "
+		 "item_id text NOT NULL, start_time integer, duration integer, note text, "
+		 "transport_mode integer, transport_type integer, transport_avoid integer, "
+		 "transport_start_time integer, transport_duration integer, transport_note text, "
+		 "transport_polyline text, PRIMARY KEY(trip_id, day_index, item_index));"
+             tableName:kTKDatabaseTableTripDayItems];
+	}
+
+	// Missing Route ID attribute
+	if (currentScheme < 20181024) {
+		[self runUpdate:@"ALTER TABLE %@ ADD transport_route_id text;"
+			tableName:kTKDatabaseTableTripDayItems];
 	}
 
 	//////////////

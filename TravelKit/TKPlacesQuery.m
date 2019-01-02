@@ -22,24 +22,39 @@
 	return self;
 }
 
-- (NSUInteger)hash
+-(NSUInteger)hash
 {
-	NSMutableString *key = [NSMutableString string];
+	NSUInteger result = 1;
+	NSUInteger prime = 31;
+//	NSUInteger yesPrime = 1231;
+//	NSUInteger noPrime = 1237;
 
-	if (_levels) [key appendString:[@(_levels) stringValue]];
-	if (_searchTerm.length) [key appendString:_searchTerm];
-	if (_categories) [key appendString:[@(_categories) stringValue]];
-	if (_categoriesMatching) [key appendString:@"@"];
-	if (_tags.count) [key appendString:[_tags componentsJoinedByString:@"+"]];
-	if (_tagsMatching) [key appendString:@"@"];
-	if (_parentIDs.count) [key appendString:[_parentIDs componentsJoinedByString:@"+"]];
-	if (_parentIDsMatching) [key appendString:@"@"];
-	if (_quadKeys.count) [key appendString:[_quadKeys componentsJoinedByString:@"+"]];
-	if (_mapSpread) [key appendString:[_mapSpread stringValue]];
-	if (_limit) [key appendString:[_limit stringValue]];
-	if (_bounds) [key appendString:_bounds.description];
+//	// Add any object that already has a hash function (NSString)
+//	result = prime * result + [self.myObject hash];
+//
+//	// Add primitive variables (int)
+//	result = prime * result + self.primitiveVariable;
+//
+//	// Boolean values (BOOL)
+//	result = prime * result + self.isSelected?yesPrime:noPrime;
 
-	return key.hash;
+	result = prime * result + [_searchTerm hash];
+	result = prime * result + _levels;
+	result = prime * result + _categories;
+	result = prime * result + _categoriesMatching;
+	result = prime * result + [_tags hash];
+	result = prime * result + _tagsMatching;
+	result = prime * result + [_parentIDs hash];
+	result = prime * result + _parentIDsMatching;
+	result = prime * result + [_quadKeys hash];
+	result = prime * result + [_mapSpread hash];
+	result = prime * result + [_minimumRating hash];
+	result = prime * result + [_maximumRating hash];
+	result = prime * result + [_limit hash];
+	result = prime * result + [_offset hash];
+	result = prime * result + [_bounds.description hash];
+
+	return result;
 }
 
 - (id)copy
@@ -56,7 +71,10 @@
 	query.parentIDsMatching = _parentIDsMatching;
 	query.quadKeys = [_quadKeys copy];
 	query.mapSpread = _mapSpread;
+	query.minimumRating = _minimumRating;
+	query.maximumRating = _maximumRating;
 	query.limit = _limit;
+	query.offset = _offset;
 	query.bounds = _bounds;
 
 	return query;

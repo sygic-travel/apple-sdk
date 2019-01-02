@@ -56,46 +56,54 @@ NS_ASSUME_NONNULL_BEGIN
 ///---------------------------------------------------------------------------------------
 
 /// Global identifier.
-@property (nonatomic, copy) NSString *ID NS_SWIFT_NAME(ID);
+@property (nonatomic, copy, readonly) NSString *ID NS_SWIFT_NAME(ID);
 
 /// Medium type.
-@property (atomic) TKMediumType type;
+@property (atomic, readonly) TKMediumType type;
 
 /// Medium suitability.
-@property (atomic) TKMediumSuitability suitability;
+@property (atomic, readonly) TKMediumSuitability suitability;
 
 /// Medium width, if available.
-@property (atomic) CGFloat width;
+@property (atomic, readonly) CGFloat width;
 
 /// Medium height, if available.
-@property (atomic) CGFloat height;
+@property (atomic, readonly) CGFloat height;
+
+///---------------------------------------------------------------------------------------
+/// @name Attribution
+///---------------------------------------------------------------------------------------
 
 /// Medium title.
-@property (nonatomic, copy, nullable) NSString *title;
+@property (nonatomic, copy, nullable, readonly) NSString *title;
 
 /// Medium author, usually full name or similar.
-@property (nonatomic, copy, nullable) NSString *author;
+@property (nonatomic, copy, nullable, readonly) NSString *author;
 
 /// Medium provider.
-@property (nonatomic, copy, nullable) NSString *provider;
+@property (nonatomic, copy, nullable, readonly) NSString *provider;
 
 /// Medium license name.
-@property (nonatomic, copy, nullable) NSString *license;
+@property (nonatomic, copy, nullable, readonly) NSString *license;
 
 /// Medium source URL.
-@property (nonatomic, strong, nullable) NSURL *URL;
+///
+/// @note Use this url in `-displayableImageURLForSize:` to get standard size image.
+@property (nonatomic, strong, nullable, readonly) NSURL *URL;
 
 /// Medium source Preview URL.
-@property (nonatomic, strong, nullable) NSURL *previewURL;
+///
+/// @note Use this url in `-displayableImageURLForSize:` to get smaller size image for preview.
+@property (nonatomic, strong, nullable, readonly) NSURL *previewURL;
 
-/// Origin URL of the Medium.
-@property (nonatomic, strong, nullable) NSURL *originURL;
+/// URL for the original source of the image.
+@property (nonatomic, strong, nullable, readonly) NSURL *originURL;
 
 /// URL link to a Medium author.
-@property (nonatomic, strong, nullable) NSURL *authorURL;
+@property (nonatomic, strong, nullable, readonly) NSURL *authorURL;
 
 /// External ID of the Medium.
-@property (nonatomic, copy, nullable) NSString *externalID;
+@property (nonatomic, copy, nullable, readonly) NSString *externalID;
 
 ///---------------------------------------------------------------------------------------
 /// @name Helping methods

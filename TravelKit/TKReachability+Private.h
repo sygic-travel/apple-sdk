@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 typedef NS_ENUM(NSUInteger, TKNetworkStatus) {
 	TKNetworkStatusNotReachable = 0,
 	TKNetworkStatusReachableViaWiFi,
@@ -32,3 +34,5 @@ typedef NS_ENUM(NSUInteger, TKConnectionCellularType) {
 #endif
 
 @end
+
+NS_ASSUME_NONNULL_END

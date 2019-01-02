@@ -9,7 +9,7 @@
 #import "TKPlace+Private.h"
 #import "TKMedium+Private.h"
 #import "TKReference+Private.h"
-#import "TKMapWorker+Private.h"
+#import "TKMapWorker.h"
 #import "NSObject+Parsing.h"
 
 
@@ -30,7 +30,7 @@
 			@(TKPlaceCategoryTraveling): @"traveling",
 			@(TKPlaceCategoryGoingOut): @"going_out",
 			@(TKPlaceCategoryHiking): @"hiking",
-			@(TKPlaceCategorySports): @"sports",
+			@(TKPlaceCategoryDoingSports): @"doing_sports",
 			@(TKPlaceCategoryRelaxing): @"relaxing",
 			@(TKPlaceCategorySleeping): @"sleeping",
 		};
@@ -140,16 +140,12 @@
 					initWithSouthWestPoint:southWest northEastPoint:northEast];
 		}
 
-		// Activity details
-		if (dictionary[@"description"])
-			_detail = [[TKPlaceDetail alloc] initFromResponse:dictionary];
-
 		// Properties
 		_rating = [dictionary[@"rating"] parsedNumber];
 
 		// Parents
 		NSMutableArray *locationIDs = [NSMutableArray array];
-		for (NSString *parentID in [dictionary[@"parent_guids"] parsedArray])
+		for (NSString *parentID in [dictionary[@"parent_ids"] parsedArray])
 			if ([parentID parsedString]) [locationIDs addObject:parentID];
 		_parents = locationIDs;
 
@@ -185,7 +181,7 @@
 	if (_categories & TKPlaceCategoryTraveling)   return 0x6B91F6;
 	if (_categories & TKPlaceCategoryGoingOut)    return 0xE76CA0;
 	if (_categories & TKPlaceCategoryHiking)      return 0xD59B6B;
-	if (_categories & TKPlaceCategorySports)      return 0x68B277;
+	if (_categories & TKPlaceCategoryDoingSports) return 0x68B277;
 	if (_categories & TKPlaceCategoryRelaxing)    return 0xA06CF6;
 	if (_categories & TKPlaceCategorySleeping)    return 0xA4CB69;
 
@@ -200,6 +196,23 @@
 @end
 
 
+@implementation TKDetailedPlace
+
+- (instancetype)initFromResponse:(NSDictionary *)dictionary
+{
+	if (self = [super initFromResponse:dictionary])
+	{
+		// Place detail
+		if (dictionary[@"description"])
+			_detail = [[TKPlaceDetail alloc] initFromResponse:dictionary];
+	}
+
+	return self;
+}
+
+@end
+
+
 @implementation TKPlaceDescription
 
 - (instancetype)initFromResponse:(NSDictionary *)response
@@ -207,15 +220,23 @@
 	if (self = [super init])
 	{
 		_text = [response[@"text"] parsedString];
-		_provider = [response[@"provider"] parsedString];
 
 		if (!_text) return nil;
 
-		NSString *link = [response[@"link"] parsedString];
-		if (link) _link = [NSURL URLWithString:link];
+		NSString *provider = [response[@"provider"] parsedString];
+		if ([provider isEqualToString:@"wikipedia"])
+			_provider = TKPlaceDescriptionProviderWikipedia;
+		else if ([provider isEqualToString:@"wikivoyage"])
+			_provider = TKPlaceDescriptionProviderWikivoyage;
+
+		NSString *source = [response[@"link"] parsedString];
+		if (source) _sourceURL = [NSURL URLWithString:source];
 
 		_translated = [[response[@"is_translated"] parsedNumber] boolValue];
-		_translationProvider = [response[@"translation_provider"] parsedString];
+
+		provider = [response[@"translation_provider"] parsedString];
+		if ([provider isEqualToString:@"google"])
+			_translationProvider = TKTranslationProviderGoogle;
 	}
 
 	return self;

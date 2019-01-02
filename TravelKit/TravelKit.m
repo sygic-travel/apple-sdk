@@ -8,10 +8,8 @@
 
 #import "TravelKit.h"
 #import "TKAPI+Private.h"
-#import "TKPlacesManager+Private.h"
-#import "TKToursManager+Private.h"
-#import "TKSessionManager+Private.h"
-#import "TKMapWorker+Private.h"
+#import "TKSSOAPI+Private.h"
+#import "TKMapWorker.h"
 #import "Foundation+TravelKit.h"
 
 
@@ -30,6 +28,11 @@
 
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
+
+#ifdef DEBUG
+		NSLog(@"Running TravelKit in DEBUG mode.");
+#endif
+
 		shared = [self new];
 	});
 
@@ -43,8 +46,10 @@
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 		langs = @[ @"en", @"fr", @"de", @"es", @"nl",
-				   @"pt", @"it", @"ru", @"cs", @"sk",
-				   @"pl", @"tr", @"zh", @"ko", @"en-GB",
+		           @"pt", @"it", @"ru", @"cs", @"sk",
+		           @"pl", @"tr", @"zh", @"ko", @"ar",
+		           @"da", @"el", @"fi", @"he", @"hu",
+		           @"no", @"ro", @"sv", @"th", @"uk",
 		];
 	});
 
@@ -58,9 +63,12 @@
 
 - (void)setAPIKey:(NSString *)APIKey
 {
-	_APIKey = [APIKey copy];
+	[TKAPI sharedAPI].APIKey = _APIKey = [APIKey copy];
+}
 
-	[TKAPI sharedAPI].APIKey = _APIKey;
+- (void)setClientID:(NSString *)clientID
+{
+	[TKSSOAPI sharedAPI].clientID = _clientID = [clientID copy];
 }
 
 - (NSString *)language
@@ -85,13 +93,66 @@
 #pragma mark Generic methods
 
 
-- (void)clearUserData
+- (instancetype)init
 {
-	[[TKSessionManager sharedSession] clearUserData];
+	if (self = [super init])
+	{
+		_places = [TKPlacesManager sharedManager];
+		__tours = [TKToursManager sharedManager];
+//		_trips = [TKTripsManager sharedManager];
+//		_session = [TKSessionManager sharedManager];
+//		_favorites = [TKFavoritesManager sharedManager];
+//		_sync = [TKSynchronizationManager sharedManager];
+		__directions = [TKDirectionsManager sharedManager];
+		_events = [TKEventsManager sharedManager];
+	}
+
+	return self;
 }
 
 
 #pragma mark -
+#pragma mark Lazyfied modules
+
+
+- (TKTripsManager *)trips
+{
+	return [TKTripsManager sharedManager];
+}
+
+- (TKSessionManager *)session
+{
+	return [TKSessionManager sharedManager];
+}
+
+- (TKFavoritesManager *)favorites
+{
+	return [TKFavoritesManager sharedManager];
+}
+
+- (TKSynchronizationManager *)sync
+{
+	return [TKSynchronizationManager sharedManager];
+}
+
+@end
+
+
+#pragma mark -
+#pragma mark Deprecated namespace
+
+
+@implementation TravelKit (NSDeprecated)
+
+#pragma mark Session-related methods
+
+
+- (void)clearUserData
+{
+	[[self session] clearAllData];
+}
+
+
 #pragma mark Places
 
 
@@ -102,13 +163,13 @@
 }
 
 - (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
-           completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion
+           completion:(void (^)(NSArray<TKDetailedPlace *> *, NSError *))completion
 {
-	[[TKPlacesManager sharedManager] placesWithIDs:placeIDs completion:completion];
+	[[TKPlacesManager sharedManager] detailedPlacesWithIDs:placeIDs completion:completion];
 }
 
 - (void)detailedPlaceWithID:(NSString *)placeID
-                 completion:(void (^)(TKPlace *, NSError *))completion
+                 completion:(void (^)(TKDetailedPlace *, NSError *))completion
 {
 	[[TKPlacesManager sharedManager] detailedPlaceWithID:placeID completion:completion];
 }
@@ -120,33 +181,20 @@
 }
 
 
-#pragma mark -
-#pragma mark Tours
-
-
-- (void)toursForQuery:(TKToursQuery *)query
-           completion:(void (^)(NSArray<TKTour *> *, NSError *))completion
-{
-	[[TKToursManager sharedManager] toursForQuery:query completion:completion];
-}
-
-
-#pragma mark -
 #pragma mark Favorites
 
 
 - (NSArray<NSString *> *)favoritePlaceIDs
 {
-	return [[TKSessionManager sharedSession] favoritePlaceIDs];
+	return [self.favorites favoritePlaceIDs];
 }
 
 - (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
 {
-	[[TKSessionManager sharedSession] updateFavoritePlaceID:favoriteID setFavorite:favorite];
+	[self.favorites updateFavoritePlaceID:favoriteID setFavorite:favorite];
 }
 
 
-#pragma mark -
 #pragma mark Map
 
 

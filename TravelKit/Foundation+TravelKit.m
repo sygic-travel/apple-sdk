@@ -53,30 +53,48 @@
 	return nil;
 }
 
-- (NSArray *)mappedArrayUsingBlock:(id _Nullable (^)(id obj, NSUInteger idx))block
+- (NSArray *)mappedArrayUsingBlock:(id _Nullable (^)(id _Nonnull))block
 {
 	NSMutableArray *results = [NSMutableArray arrayWithCapacity:self.count];
 
-	[self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx,
+	[self enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger __unused idx,
 	  BOOL * _Nonnull __unused stop) {
-		id remapped = block(obj, idx);
+		id remapped = block(obj);
 		if (remapped) [results addObject:remapped];
 	}];
 
 	return results;
 }
 
-- (NSArray *)filteredArrayUsingBlock:(BOOL (^)(id obj, NSUInteger idx))block
+- (NSArray *)filteredArrayUsingBlock:(BOOL (^)(id _Nonnull))block
 {
 	NSMutableArray *filtered = [NSMutableArray arrayWithCapacity:self.count];
 
-	[self enumerateObjectsUsingBlock:^(id  _Nonnull obj, NSUInteger idx,
+	[self enumerateObjectsUsingBlock:^(id _Nonnull obj, NSUInteger __unused idx,
 	  BOOL * _Nonnull __unused stop) {
-		BOOL include = block(obj, idx);
+		BOOL include = block(obj);
 		if (include) [filtered addObject:obj];
 	}];
 
 	return filtered;
+}
+
+@end
+
+
+@implementation NSDictionary (TravelKit)
+
+- (NSString *)asJSONString
+{
+	NSData *jsonData = [self asJSONData];
+	return (jsonData) ? [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding] : nil;
+}
+
+- (NSData *)asJSONData
+{
+	NSError *err = nil;
+	NSData *jsonData = [NSJSONSerialization dataWithJSONObject:self options:kNilOptions error:&err];
+	return (!err) ? jsonData : nil;
 }
 
 @end
@@ -98,21 +116,49 @@
 		options:(NSMatchingOptions)0 range:NSMakeRange(0, self.length) withTemplate:@""];
 }
 
-@end
-
-
-@implementation NSDateFormatter (TravelKit)
-
-+ (NSDateFormatter *)shared8601DateTimeFormatter
+- (NSString *)substringToPosition:(NSUInteger)to
 {
-	static NSDateFormatter *shared = nil;
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		shared = [[NSDateFormatter alloc] init];
-		shared.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"en_US_POSIX"];
-		shared.dateFormat = @"yyyy-MM-dd'T'HH:mm:ssZZZZZ";
-	});
-	return shared;
+	NSUInteger max = MIN(to, self.length);
+	return [self substringToIndex:max];
+}
+
+- (NSString *)substringBetweenStarters:(NSArray<NSString *> *)starters andEnding:(NSString *)ending
+{
+	NSRange range = NSMakeRange(0, [self length]-1);
+
+	for (NSString *starter in starters) {
+		NSRange tmp = [self rangeOfString:starter options:0 range:range];
+		if (tmp.location == NSNotFound)
+			return nil;
+		range.length = range.length - (tmp.location - range.location) - [starter length];
+		range.location = tmp.location + [starter length];
+	}
+
+	NSRange tmp = [self rangeOfString:ending options:0 range:range];
+	if (tmp.location == NSNotFound)
+		return nil;
+	range.length = tmp.location - range.location;
+
+	return [self substringWithRange:range];
+}
+
+- (NSString *)stringByDeletingOccurrencesOfString:(NSString *)str
+{
+	return [self stringByReplacingOccurrencesOfString:str withString:@""];
 }
 
 @end
+
+
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wincomplete-implementation"
+
+@implementation NSString (TravelKitFoundationMutabilityType) @end
+
+@implementation NSArray (TravelKitFoundationMutabilityType) @end
+
+@implementation NSSet (TravelKitFoundationMutabilityType) @end
+
+@implementation NSDictionary (TravelKitFoundationMutabilityType) @end
+
+#pragma clang diagnostic pop

@@ -31,6 +31,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// MapKit-compatible coordinate region structure.
 @property (nonatomic, assign) MKCoordinateRegion coordinateRegion;
 
+/// Center location object.
+@property (readonly) CLLocation *centerPoint;
 /// South-west location object.
 @property (readonly) CLLocation *southWestPoint;
 /// North-east location object.
