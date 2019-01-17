@@ -81,7 +81,7 @@ toursQuery.parentID = "city:1"
 toursQuery.sortingType = .price
 toursQuery.descendingSortingOrder = true
 
-travelKit._tours.tours(for: toursQuery) { (tours, error) in
+travelKit.tours.tours(for: toursQuery) { (tours, error) in
 	printLock.lock()
 	print("\nMost Expensive Tours in London:\n")
 	tours?.forEach({ (tour) in
