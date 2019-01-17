@@ -42,11 +42,11 @@
 	result = prime * result + _levels;
 	result = prime * result + _categories;
 	result = prime * result + _categoriesMatching;
-	result = prime * result + [_tags hash];
+	result = prime * result + [_tags.description hash];
 	result = prime * result + _tagsMatching;
-	result = prime * result + [_parentIDs hash];
+	result = prime * result + [_parentIDs.description hash];
 	result = prime * result + _parentIDsMatching;
-	result = prime * result + [_quadKeys hash];
+	result = prime * result + [_quadKeys.description hash];
 	result = prime * result + [_mapSpread hash];
 	result = prime * result + [_minimumRating hash];
 	result = prime * result + [_maximumRating hash];
