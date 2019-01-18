@@ -26,7 +26,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///---------------------------------------------------------------------------------------
 
 /// Shared Tours managing instance.
-@property (class, readonly, strong) TKToursManager *sharedManager DEPRECATED_MSG_ATTRIBUTE("Experimental.");
+@property (class, readonly, strong) TKToursManager *sharedManager;
 
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
@@ -42,8 +42,6 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param query `TKToursViatorQuery` object containing the desired attributes to look for.
  @param completion Completion block called on success or error.
-
- @note Experimental.
  */
 - (void)toursForViatorQuery:(TKToursViatorQuery *)query
 	completion:(void (^)(NSArray<TKTour *>  * _Nullable places, NSError * _Nullable error))completion;
@@ -55,8 +53,6 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param query `TKToursGYGQuery` object containing the desired attributes to look for.
  @param completion Completion block called on success or error.
-
- @note Experimental.
  */
 - (void)toursForGYGQuery:(TKToursGYGQuery *)query
 	completion:(void (^)(NSArray<TKTour *>  * _Nullable places, NSError * _Nullable error))completion;

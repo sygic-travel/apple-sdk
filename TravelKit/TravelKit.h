@@ -157,11 +157,8 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
 /**
  Shared Tours Manager instance to provide Tours-related stuff.
-
- @warning Experimental.
  */
-@property (nonatomic, strong, readonly) TKToursManager *_tours
-	DEPRECATED_MSG_ATTRIBUTE("Experimental.");
+@property (nonatomic, strong, readonly) TKToursManager *tours;
 
 /**
  Shared Session Manager instance to provide Session-related stuff.

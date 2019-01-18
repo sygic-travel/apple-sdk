@@ -27,10 +27,10 @@
 //	result = prime * result + self.isSelected?yesPrime:noPrime;
 
 	result = prime * result + [_parentPlaceID hash];
-	result = prime * result + [_placeIDs hash];
+	result = prime * result + [_placeIDs.description hash];
 	result = prime * result + _placeIDsMatching;
-	result = prime * result + [_tags hash];
-	result = prime * result + [_tagsToOmit hash];
+	result = prime * result + [_tags.description hash];
+	result = prime * result + [_tagsToOmit.description hash];
 	result = prime * result + [_searchTerm hash];
 	result = prime * result + [_limit hash];
 	result = prime * result + [_offset hash];

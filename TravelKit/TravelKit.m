@@ -98,7 +98,7 @@
 	if (self = [super init])
 	{
 		_places = [TKPlacesManager sharedManager];
-		__tours = [TKToursManager sharedManager];
+		_tours = [TKToursManager sharedManager];
 //		_trips = [TKTripsManager sharedManager];
 //		_session = [TKSessionManager sharedManager];
 //		_favorites = [TKFavoritesManager sharedManager];
