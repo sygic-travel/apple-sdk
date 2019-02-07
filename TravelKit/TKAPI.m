@@ -202,7 +202,7 @@
 	}
 }
 
-- (NSString *)HTTPMethodForRequestType:(__unused TKAPIRequestType)type
+- (NSString *)HTTPMethodForRequestType:(TKAPIRequestType)type
 {
 	switch (type)
 	{
@@ -219,6 +219,24 @@
 			return @"DELETE";
 
 		default: return @"GET";
+	}
+}
+
+- (BOOL)authorizationRequiredForRequestType:(TKAPIRequestType)type
+{
+	switch (type)
+	{
+		case TKAPIRequestTypeFavoriteADD:
+		case TKAPIRequestTypeFavoriteDELETE:
+		case TKAPIRequestTypeTripGET:
+		case TKAPIRequestTypeTripNEW:
+		case TKAPIRequestTypeTripUPDATE:
+		case TKAPIRequestTypeTrashEMPTY:
+		case TKAPIRequestTypeTripsBatchGET:
+		case TKAPIRequestTypeChangesGET:
+			return YES;
+
+		default: return NO;
 	}
 }
 
@@ -350,9 +368,6 @@
 		[request setValue:[NSString stringWithFormat:@"%tu", _data.length] forHTTPHeaderField:@"Content-Length"];
 	}
 
-	for (NSString *header in _HTTPHeaders.allKeys)
-		[request setValue:_HTTPHeaders[header] forHTTPHeaderField:header];
-
 	NSString *apiKey = _APIKey ?: api.APIKey;
 	NSString *accessToken = _accessToken ?: api.accessToken;
 
@@ -360,8 +375,9 @@
 		[request setValue:apiKey forHTTPHeaderField:@"X-API-Key"];
 
 	if (accessToken.length)
-		[request setValue:[NSString stringWithFormat:@"Bearer %@", accessToken]
-			forHTTPHeaderField:@"Authorization"];
+		if ([api authorizationRequiredForRequestType:_type])
+			[request setValue:[NSString stringWithFormat:@"Bearer %@", accessToken]
+				forHTTPHeaderField:@"Authorization"];
 
 	for (NSString *header in _HTTPHeaders.allKeys)
 		[request setValue:_HTTPHeaders[header] forHTTPHeaderField:header];
