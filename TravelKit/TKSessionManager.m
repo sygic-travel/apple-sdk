@@ -49,12 +49,12 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 	{
 		__weak typeof(self) weakSelf = self;
 
+		_database = [TKDatabaseManager sharedManager];
+		_events = [TKEventsManager sharedManager];
+
 		_events.sessionExpirationHandler = ^{
 			[weakSelf refreshSession];
 		};
-
-		_database = [TKDatabaseManager sharedManager];
-		_events = [TKEventsManager sharedManager];
 
 		NSString *suiteName = @"com.tripomatic.travelkit";
 
@@ -73,7 +73,9 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 
 		[self loadState];
 
-		[self checkSession];
+		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
+			[self checkSession];
+		}];
 	}
 
 	return self;
