@@ -6,6 +6,8 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
+#import <pthread/pthread.h>
+
 #import "TKSessionManager+Private.h"
 #import "TKDatabaseManager+Private.h"
 #import "TKEventsManager+Private.h"
@@ -184,6 +186,11 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 
 - (void)refreshSession
 {
+	static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+
+	if (pthread_mutex_trylock(&lock) != EXIT_SUCCESS)
+		return;
+
 	NSString *token = _session.refreshToken;
 
 	if (!token) return;
@@ -191,12 +198,15 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 	[[TKSSOAPI sharedAPI] performSessionRefreshWithToken:token success:^(TKSession *session) {
 
 		self.session = session;
+		pthread_mutex_unlock(&lock);
 
 	} failure:^(TKAPIError *error) {
 
 		// TODO: More sophisticated solution?
 		if (error.code / 100 == 4)
 			self.session = nil;
+
+		pthread_mutex_unlock(&lock);
 
 	}];
 }
