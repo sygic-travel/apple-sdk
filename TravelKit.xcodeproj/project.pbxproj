@@ -900,7 +900,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = TK;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				ORGANIZATIONNAME = Tripomatic;
 				TargetAttributes = {
 					D6B2A1281E530AFD005509E8 = {
@@ -923,10 +923,10 @@
 			};
 			buildConfigurationList = D6C3D0461E4DD36200EBB54F /* Build configuration list for PBXProject "TravelKit" */;
 			compatibilityVersion = "Xcode 10.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
-				en,
+				Base,
 			);
 			mainGroup = D6C3D0421E4DD36200EBB54F;
 			productRefGroup = D6C3D04D1E4DD36200EBB54F /* Products */;
