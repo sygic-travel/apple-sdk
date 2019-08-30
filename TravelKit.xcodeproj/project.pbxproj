@@ -376,6 +376,7 @@
 		D6FEE02A1FA8B9E200996876 /* TKSynchronizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSynchronizationManager.m; sourceTree = "<group>"; };
 		EF0D9D681EFAAB7500C50AE2 /* TKDatabaseManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKDatabaseManager+Private.h"; sourceTree = "<group>"; };
 		EF0D9D691EFAAB7500C50AE2 /* TKDatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDatabaseManager.m; sourceTree = "<group>"; };
+		EF149E752319EA8C00360722 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		EFD791E320177EA2005E3027 /* TKEventsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKEventsManager.h; sourceTree = "<group>"; };
 		EFD791E420177EA2005E3027 /* TKEventsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKEventsManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -484,6 +485,7 @@
 				D6C3D04F1E4DD36200EBB54F /* TravelKit.h */,
 				D6C3D0851E5196CB00EBB54F /* TravelKit.m */,
 				D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */,
+				EF149E752319EA8C00360722 /* Config.xcconfig */,
 				D6C3D0501E4DD36200EBB54F /* Info.plist */,
 			);
 			path = TravelKit;
@@ -900,7 +902,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = TK;
-				LastUpgradeCheck = 1020;
+				LastUpgradeCheck = 1100;
 				ORGANIZATIONNAME = Tripomatic;
 				TargetAttributes = {
 					D6B2A1281E530AFD005509E8 = {
@@ -926,6 +928,7 @@
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				en,
 				Base,
 			);
 			mainGroup = D6C3D0421E4DD36200EBB54F;
@@ -1177,6 +1180,7 @@
 		};
 		D6C3D0521E4DD36200EBB54F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EF149E752319EA8C00360722 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1252,8 +1256,6 @@
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TK_BUNDLE_BUILD = 238;
-				TK_BUNDLE_VERSION = 2.0.3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1269,6 +1271,7 @@
 		};
 		D6C3D0531E4DD36200EBB54F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EF149E752319EA8C00360722 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1340,8 +1343,6 @@
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SKIP_INSTALL = YES;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TK_BUNDLE_BUILD = 238;
-				TK_BUNDLE_VERSION = 2.0.3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
