@@ -12,6 +12,6 @@ jobs:
         uses: actions/checkout@master
       - name: Build
         run: |
-          xcodebuild clean analyze -project TravelKit.xcodeproj -scheme TravelKit-iOS -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES
+          xcodebuild clean analyze -project TravelKit.xcodeproj -scheme TravelKit-iOS -destination "${destination}" CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO ONLY_ACTIVE_ARCH=YES GCC_TREAT_WARNINGS_AS_ERRORS=YES
         env:
          destination: ${{ matrix.destination }}
