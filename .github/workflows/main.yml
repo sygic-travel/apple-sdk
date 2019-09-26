@@ -6,7 +6,7 @@ jobs:
     runs-on: macOS-latest
     strategy:
         matrix:
-          destination: ['platform=iOS Simulator,OS=12.2,name=iPhone SE']
+          destination: ['platform=iOS Simulator,OS=12.4,name=iPhone SE']
     steps:
       - name: Checkout
         uses: actions/checkout@master
