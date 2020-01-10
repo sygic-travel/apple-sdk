@@ -15,14 +15,14 @@ rescue LoadError => e
 end
 
 begin
-  throw "This version of Jazzy is not verified" if
-    Gem.loaded_specs["jazzy"].version < Gem::Version.create('0.9') ||
-    Gem.loaded_specs["jazzy"].version > Gem::Version.create('0.9.100')
+  throw :TKJazzyUnsupportedVersion if
+    Gem.loaded_specs["jazzy"].version < Gem::Version.create('0.13') ||
+    Gem.loaded_specs["jazzy"].version > Gem::Version.create('0.13.100')
 end
 
 FileUtils.cd(File.dirname(File.expand_path(__FILE__)))
 
-$moduleVersion = `cat TravelKit.xcodeproj/project.pbxproj | grep TK_BUNDLE_VERSION | uniq | sed s/[^0-9.]//g`.strip
+$moduleVersion = `cat TravelKit/Config.xcconfig | grep TK_BUNDLE_VERSION | uniq`.strip.split(" = ")[-1] || 'staging'
 
 # HOWTO: https://github.com/realm/jazzy
 
@@ -30,16 +30,18 @@ $moduleVersion = `cat TravelKit.xcodeproj/project.pbxproj | grep TK_BUNDLE_VERSI
  --framework-root . \
  --sdk macosx \
  --module TravelKit \
- --module-version #{$moduleVersion} \
+ --module-version '#{$moduleVersion}' \
  --umbrella-header TravelKit/TravelKit.h \
- --author "Tripomatic" \
- --author_url "https://travel.sygic.com/en" \
- --github_url "https://github.com/sygic-travel/apple-sdk" \
- --documentation=Documentation/content_pages/*.md \
+ --author 'Tripomatic' \
+ --author_url 'https://travel.sygic.com/en' \
+ --github_url 'https://github.com/sygic-travel/apple-sdk' \
+ --documentation 'Documentation/content_pages/*.md' \
  --theme Documentation/theme \
  --min-acl public \
  --skip-undocumented \
  --output Documentation/html`
+
+throw :TKJazzyDocumentationBuildFailure if $? != 0
 
 # Update titles
 `find Documentation/html -name *.html -exec \
