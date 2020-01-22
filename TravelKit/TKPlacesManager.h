@@ -55,6 +55,9 @@ NS_ASSUME_NONNULL_BEGIN
 
  @param placeIDs Array of strings matching desired Place IDs.
  @param completion Completion block called on success or error.
+
+ @note Only a maximum number or `32` IDs will be processed.
+
  */
 - (void)detailedPlacesWithIDs:(NSArray<NSString *> *)placeIDs
 	completion:(void (^)(NSArray<TKDetailedPlace *> * _Nullable places, NSError * _Nullable error))completion;

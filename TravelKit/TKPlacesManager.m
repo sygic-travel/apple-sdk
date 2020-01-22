@@ -171,6 +171,9 @@
 
 - (void)detailedPlacesWithIDs:(NSArray<NSString *> *)placeIDs completion:(void (^)(NSArray<TKDetailedPlace *> *, NSError *))completion
 {
+	if (placeIDs.count > 32)
+		placeIDs = [placeIDs subarrayWithRange:NSMakeRange(0, 32)];
+
 	NSCache<NSString *, TKDetailedPlace *> *placeCache = [self.class detailedPlaceCache];
 
 	NSMutableArray<TKDetailedPlace *> *ret = [NSMutableArray arrayWithCapacity:placeIDs.count];
