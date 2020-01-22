@@ -302,9 +302,14 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 		if (changesTimestamp > 0) since = [NSDate dateWithTimeIntervalSince1970:changesTimestamp];
 
 		TKAPIRequest *listRequest = [[TKAPIRequest alloc] initAsChangesRequestSince:since
-		success:^(NSDictionary<NSString *,NSNumber *> *updatedTripsDict, NSArray<NSString *> *deletedTripIDs,
-		NSArray<NSString *> *updatedFavouriteIDs, NSArray<NSString *> *deletedFavouriteIDs,
-		BOOL __unused updatedSettings, NSDate *timestamp) {
+		success:^(TKAPIChangesResult *result) {
+
+			// Read result values
+			NSDictionary<NSString *,NSNumber *> *updatedTripsDict = result.updatedTripsDict;
+			NSArray<NSString *> *deletedTripIDs = result.deletedTripIDs;
+			NSArray<NSString *> *updatedFavouriteIDs = result.updatedFavouriteIDs;
+			NSArray<NSString *> *deletedFavouriteIDs = result.deletedFavouriteIDs;
+			NSDate *timestamp = result.timestamp;
 
 			// Report online statistics
 			SyncLog(@"Got list with %tu Trip updates and %tu Favourite updates",

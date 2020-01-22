@@ -35,6 +35,11 @@
 #define API_BASE_URL   "sygictravelapi.com"
 #define API_VERSION    "1.1"
 
+#define API_CALL_TIMEOUT_QUICK      8.0
+#define API_CALL_TIMEOUT_DEFAULT   16.0
+#define API_CALL_TIMEOUT_BATCH     32.0
+#define API_CALL_TIMEOUT_CHANGES   56.0
+
 typedef NS_ENUM(NSInteger, TKAPIRequestType)
 {
 	TKAPIRequestTypeUnknown = 0,
@@ -103,6 +108,29 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+#pragma mark - Changes API result -
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+@interface TKAPIChangesResult : NSObject
+
+@property (nonatomic, copy) NSDictionary<NSString *, NSNumber *> *updatedTripsDict;
+@property (nonatomic, copy) NSArray<NSString *> *deletedTripIDs;
+@property (nonatomic, copy) NSArray<NSString *> *updatedCustomPlaceIDs;
+@property (nonatomic, copy) NSArray<NSString *> *deletedCustomPlaceIDs;
+@property (nonatomic, copy) NSArray<NSString *> *updatedFavouriteIDs;
+@property (nonatomic, copy) NSArray<NSString *> *deletedFavouriteIDs;
+@property (atomic) BOOL updatedSettings;
+@property (nonatomic, strong) NSDate *timestamp;
+
+@end
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 #pragma mark - API request -
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -113,9 +141,12 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 
 @property (nonatomic, copy) NSString *APIKey; // Customizable
 @property (nonatomic, copy) NSString *accessToken; // Customizable
+
 @property (atomic) TKAPIRequestType type;
 @property (atomic) TKAPIRequestState state;
 @property (nonatomic) BOOL silent;
+
+@property (nonatomic, weak) NSOperationQueue *completionQueue; // Defaults to dedicated queue
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
@@ -131,10 +162,8 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 ////////////////////
 // Changes
 
-- (instancetype)initAsChangesRequestSince:(NSDate *)sinceDate success:(void (^)(
-	NSDictionary<NSString *, NSNumber *> *updatedTripsDict, NSArray<NSString *> *deletedTripIDs,
-	NSArray<NSString *> *updatedFavouriteIDs, NSArray<NSString *> *deletedFavouriteIDs,
-	BOOL updatedSettings, NSDate *timestamp))success failure:(TKAPIFailureBlock)failure;
+- (instancetype)initAsChangesRequestSince:(NSDate *)sinceDate
+	success:(void (^)(TKAPIChangesResult *result))success failure:(TKAPIFailureBlock)failure;
 
 ////////////////////
 // Trips
@@ -146,7 +175,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 	success:(void (^)(TKTrip *trip))success failure:(TKAPIFailureBlock)failure;
 
 - (instancetype)initAsUpdateTripRequestForTrip:(TKTrip *)trip
-	success:(void (^)(TKTrip *, TKTripConflict *))success failure:(void (^)(TKAPIError *))failure;
+	success:(void (^)(TKTrip *, TKTripConflict *))success failure:(TKAPIFailureBlock)failure;
 
 - (instancetype)initAsEmptyTrashRequestWithSuccess:(void (^)(NSArray<NSString *> *tripIDs))success
 	failure:(TKAPIFailureBlock)failure;

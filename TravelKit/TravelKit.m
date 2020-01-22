@@ -78,7 +78,10 @@
 
 - (void)setLanguage:(NSString *)language
 {
-	NSArray *supported = [[self class] supportedLanguages];
+	if      ([language hasPrefix:@"zh"]) language = @"zh";
+	else if ([language hasPrefix:@"en"]) language = @"en";
+
+	NSArray<NSString *> *supported = [[self class] supportedLanguages];
 	NSString *newLanguage = (language &&
 	  [supported containsObject:language]) ?
 		language : nil;
