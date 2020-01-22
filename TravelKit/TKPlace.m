@@ -10,6 +10,8 @@
 #import "TKMedium+Private.h"
 #import "TKReference+Private.h"
 #import "TKMapWorker.h"
+
+#import "Foundation+TravelKit.h"
 #import "NSObject+Parsing.h"
 
 
@@ -144,13 +146,16 @@
 		_rating = [dictionary[@"rating"] parsedNumber];
 
 		// Parents
+		NSString *parentID = nil;
 		NSMutableArray *locationIDs = [NSMutableArray array];
-		for (NSString *parentID in [dictionary[@"parent_ids"] parsedArray])
-			if ([parentID parsedString]) [locationIDs addObject:parentID];
+		for (NSString *parentDict in [dictionary[@"parent_ids"] parsedArray])
+			if ((parentID = [parentDict[@"id"] parsedString]))
+				[locationIDs addObject:parentID];
 		_parents = locationIDs;
 
 		// Feature marker
-		_marker = [dictionary[@"marker"] parsedString];
+		_kind = [dictionary[@"class"][@"name"] parsedString];
+ 		_marker = [dictionary[@"class"][@"slug"] parsedString];
 		if ([_marker isEqualToString:@"default"])
 			_marker = nil;
 
@@ -159,11 +164,11 @@
 
 		_categories = [[self class] categoriesFromSlugArray:[dictionary[@"categories"] parsedArray]];
 
-		if ([[dictionary[@"description"][@"is_translated"] parsedNumber] boolValue])
-			[flags addObject:@"translated_description"];
-
 		if ([[dictionary[@"description"][@"provider"] parsedString] isEqualToString:@"wikipedia"])
 			[flags addObject:@"wikipedia_description"];
+
+		if ([[dictionary[@"has_shape_geometry"] parsedNumber] boolValue])
+			[flags addObject:@"has_geometry"];
 
 		_flags = [flags array];
     }
@@ -223,20 +228,24 @@
 
 		if (!_text) return nil;
 
+		_languageID = [response[@"language_id"] parsedString];
+
 		NSString *provider = [response[@"provider"] parsedString];
 		if ([provider isEqualToString:@"wikipedia"])
 			_provider = TKPlaceDescriptionProviderWikipedia;
 		else if ([provider isEqualToString:@"wikivoyage"])
 			_provider = TKPlaceDescriptionProviderWikivoyage;
+		else if ([provider isEqualToString:@"booking.com"])
+			_provider = TKPlaceDescriptionProviderBookingCom;
 
 		NSString *source = [response[@"link"] parsedString];
 		if (source) _sourceURL = [NSURL URLWithString:source];
 
-		_translated = [[response[@"is_translated"] parsedNumber] boolValue];
-
 		provider = [response[@"translation_provider"] parsedString];
 		if ([provider isEqualToString:@"google"])
 			_translationProvider = TKTranslationProviderGoogle;
+		else if ([provider isEqualToString:@"bing"])
+			_translationProvider = TKTranslationProviderBing;
 	}
 
 	return self;
@@ -269,6 +278,14 @@
 {
 	if (self = [super init])
 	{
+		// Names
+		_localName = [response[@"name_local"] parsedString];
+		_translatedName = [response[@"name_translated"] parsedString];
+		_englishName = [response[@"name_en"] parsedString];
+
+		// Timezone
+		_timezone = [response[@"timezone"] parsedString];
+
 		// Tags
 		NSMutableOrderedSet<TKPlaceTag *> *tags = [NSMutableOrderedSet orderedSetWithCapacity:16];
 
@@ -305,9 +322,17 @@
 		_address = [response[@"address"] parsedString];
 		_phone = [response[@"phone"] parsedString];
 		_email = [response[@"email"] parsedString];
-		_duration = [response[@"duration"] parsedNumber];
-		_openingHours = [response[@"opening_hours"] parsedString];
+		_duration = [response[@"duration_estimate"] parsedNumber];
+		_openingHours = [response[@"opening_hours_raw"] parsedString];
+		_openingHoursNote = [response[@"opening_hours_note"] parsedString];
 		_admission = [response[@"admission"] parsedString];
+
+		NSDictionary *attributes = [response[@"attributes"] parsedDictionary];
+ 		Class attributesClass = [NSString class];
+
+ 		_attributes = [attributes filteredDictionaryUsingBlock:^BOOL(id key, id value) {
+ 			return [key isKindOfClass:attributesClass] && [value isKindOfClass:attributesClass];
+ 		}];
 	}
 
 	return self;

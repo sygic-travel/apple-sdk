@@ -81,6 +81,14 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSDictionary<KeyType, ObjectType> (TravelKit)
 
 /**
+ Dictionary method for quick filtering purposes.
+
+ @param block Block used to determine item inclusion in the dictionary returned.
+ @return Filtered dictionary.
+ */
+- (NSDictionary<KeyType, ObjectType> *)filteredDictionaryUsingBlock:(BOOL (^)(KeyType key, ObjectType value))block;
+
+/**
  Simple method used to convert the dictionary to JSON string.
 
  @return Resulting JSON string.

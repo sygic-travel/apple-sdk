@@ -67,20 +67,22 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 }];
 ```
  
- ```swift
- // Use shared instance to set your API key
- TravelKit.shared.apiKey = "<YOUR_API_KEY_GOES_HERE>"
- 
- // Ask TKPlaceManager for Eiffel Tower TKDetailedPlace object with details
- TravelKit.shared.places.detailedPlace(withID: "poi:530") { (place, e) in
-     if let place = place {
-        print("Let's visit \(place.name)")
-     }
-     else {
+```swift
+// Get shared instance
+let kit = TravelKit.shared
+
+// Set your API key
+kit.apiKey = "<YOUR_API_KEY_GOES_HERE>"
+
+// Ask kit for Eiffel Tower TKDetailedPlace object with details
+kit.places.detailedPlace(withID: "poi:530") { (place, e) in
+    if let place = place {
+        print("Let's visit \(place.name)!")
+    } else {
         print("Something went wrong :/")
-     }
- }
- ```
+    }
+}
+```
 
  @warning API key must be provided, otherwise using any methods listed above will result
  in an error being returned in a call completion block.
@@ -134,7 +136,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
  @warning This needs to be set in order to receive translated content.
  */
-@property (nonatomic, copy, null_resettable) NSString *language;
+@property (nonatomic, copy, null_resettable) NSString *languageID;
 
 ///---------------------------------------------------------------------------------------
 /// @name Modules

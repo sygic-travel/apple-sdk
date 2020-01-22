@@ -33,6 +33,9 @@ typedef NS_ENUM(NSUInteger, TKPlacesQueryMatching) {
 /// Search term to use. Usable for searching through English and localised names.
 @property (nonatomic, copy, nullable) NSString *searchTerm;
 
+/// Desired location to look around.
+@property (nonatomic, strong) CLLocation *preferredLocation;
+
 /// Desired levels of Places. Each place has a level property that describes the type of the place by administration
 /// level. You can see supported levels in TKPlaceLevel enum.
 ///

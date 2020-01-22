@@ -65,7 +65,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Returns a Detailed `TKPlace` object for the given global Place identifier.
 
- This method is good for fetching further Place information to use f.e. on Place Detail screen.
+ This method is good for fetching further Place information to use, for example on Place Detail screen.
 
  @param placeID Global identifier of the desired Place.
  @param completion Completion block called on success or error.
@@ -80,7 +80,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Returns a collection of `TKMedium` objects for the given global Place identifier.
 
- This method is used to fetch all Place media to be used f.e. for Gallery screen.
+ This method is used to fetch all Place media to be used, for example for Gallery screen.
 
  @param placeID Global identifier of the desired Place.
  @param completion Completion block called on success or error.

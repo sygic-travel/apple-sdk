@@ -63,7 +63,7 @@
 	if (![subdomain hasSuffix:@"."])
 		subdomain = [subdomain stringByAppendingString:@"."];
 
-	NSString *lang = _language ?: @"en";
+	NSString *lang = _languageID ?: @"en";
 
 	_apiURL = [NSString stringWithFormat:@"%@://%@%@/%@/%@",
 	//          http[s]://  api.      sygictravelapi.com  /    xyz   /   en
@@ -91,9 +91,9 @@
 	_APIKey = [APIKey copy];
 }
 
-- (void)setLanguage:(NSString *)language
+- (void)setLanguageID:(NSString *)languageID
 {
-	_language = [language copy];
+	_languageID = languageID;
 
 	[self refreshServerProperties];
 }
@@ -754,6 +754,12 @@
 
 			if (lstr.length) queryDict[@"levels"] = lstr;
 		}
+
+		if (query.preferredLocation)
+			queryDict[@"preferred_location"] = [NSString stringWithFormat:@"%f,%f",
+				query.preferredLocation.coordinate.latitude,
+				query.preferredLocation.coordinate.longitude
+			];
 
 		if (query.quadKeys.count)
 		{

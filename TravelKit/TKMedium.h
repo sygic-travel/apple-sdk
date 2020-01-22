@@ -47,7 +47,7 @@ typedef NS_OPTIONS(NSUInteger, TKMediumSuitability) {
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Entity preserving information about a remote displayable Medium, f.e. an Image or a Video.
+ Entity preserving information about a remote displayable Medium. An Image or a Video.
  */
 @interface TKMedium : NSObject
 

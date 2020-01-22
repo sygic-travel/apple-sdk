@@ -33,7 +33,7 @@
 #define API_PROTOCOL   "https"
 #define API_SUBDOMAIN  "api"
 #define API_BASE_URL   "sygictravelapi.com"
-#define API_VERSION    "1.1"
+#define API_VERSION    "1.2"
 
 #define API_CALL_TIMEOUT_QUICK      8.0
 #define API_CALL_TIMEOUT_DEFAULT   16.0
@@ -88,7 +88,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 
 @property (nonatomic, copy) NSString *APIKey;
 @property (nonatomic, copy) NSString *accessToken;
-@property (nonatomic, copy) NSString *language;
+@property (nonatomic, copy) NSString *languageID;
 @property (nonatomic, copy, readonly) NSString *hostname;
 @property (nonatomic, readonly) BOOL isAlphaEnvironment; // Private
 
@@ -257,7 +257,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 /**
  * Method for easier sending of GET requests by appending just a path
  *
- * @param path     URL path of a request, f.e. '/activity/poi:530' when asking for Activity detail
+ * @param path     URL path of a request, example: '/activity/poi:530' when asking for Activity detail
  * @param success  Success block receiving parsed JSON data in NSDictionary-subclass object
  * @param failure  Failure block
  * @return         API Request instance
@@ -268,7 +268,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 /**
  * Method for easier sending of POST requests by appending just a path
  *
- * @param path     URL path of a request, f.e. '/activity/' when submitting new Custom Place
+ * @param path     URL path of a request, example: '/activity/' when submitting new Custom Place
  * @param json     JSON string with data to be included in POST request
  * @param success  Success block receiving parsed JSON response in NSDictionary-subclass object
  * @param failure  Failure block
@@ -280,7 +280,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 /**
  * Method for easier sending of PUT requests by appending just a path
  *
- * @param path     URL path of a request, f.e. '/activity/c:12903' when submitting Custom Place udpate
+ * @param path     URL path of a request, example: '/activity/c:12903' when submitting Custom Place udpate
  * @param json     JSON string with data to be included in PUT request
  * @param success  Success block receiving parsed JSON response in NSDictionary-subclass object
  * @param failure  Failure block
@@ -292,7 +292,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 /**
  * Method for easier sending of DELETE requests by appending just a path
  *
- * @param path     URL path of a request, f.e. '/activity/c:12903' when submitting Custom Place udpate
+ * @param path     URL path of a request, example: '/activity/c:12903' when submitting Custom Place udpate
  * @param success  Success block receiving parsed JSON response in NSDictionary-subclass object
  * @param failure  Failure block
  * @return         API Request instance

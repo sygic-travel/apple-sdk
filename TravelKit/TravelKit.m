@@ -15,7 +15,7 @@
 
 @interface TravelKit ()
 {
-	NSString *_Nullable _language;
+	NSString *_Nullable _languageID;
 }
 @end
 
@@ -39,7 +39,7 @@
 	return shared;
 }
 
-+ (NSArray<NSString *> *)supportedLanguages
++ (NSArray<NSString *> *)supportedLanguageIDs
 {
 	static NSArray *langs = nil;
 
@@ -71,24 +71,24 @@
 	[TKSSOAPI sharedAPI].clientID = _clientID = [clientID copy];
 }
 
-- (NSString *)language
+- (NSString *)languageID
 {
-	return _language ?: @"en";
+	return _languageID ?: @"en";
 }
 
-- (void)setLanguage:(NSString *)language
+- (void)setLanguageID:(NSString *)languageID
 {
-	if      ([language hasPrefix:@"zh"]) language = @"zh";
-	else if ([language hasPrefix:@"en"]) language = @"en";
+	if      ([languageID hasPrefix:@"zh"]) languageID = @"zh";
+	else if ([languageID hasPrefix:@"en"]) languageID = @"en";
 
-	NSArray<NSString *> *supported = [[self class] supportedLanguages];
-	NSString *newLanguage = (language &&
-	  [supported containsObject:language]) ?
-		language : nil;
+	NSArray<NSString *> *supported = [[self class] supportedLanguageIDs];
+	NSString *newLanguageID = (languageID &&
+	  [supported containsObject:languageID]) ?
+		[languageID copy] : nil;
 
-	_language = [newLanguage copy];
+	_languageID = newLanguageID;
 
-	[TKAPI sharedAPI].language = language;
+	[TKAPI sharedAPI].languageID = newLanguageID;
 }
 
 

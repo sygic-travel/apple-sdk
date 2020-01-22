@@ -84,6 +84,19 @@
 
 @implementation NSDictionary (TravelKit)
 
+- (NSDictionary *)filteredDictionaryUsingBlock:(BOOL (^)(id _Nonnull, id _Nonnull))block
+{
+	NSMutableDictionary *dict = [NSMutableDictionary dictionaryWithCapacity:self.count];
+
+	[self enumerateKeysAndObjectsUsingBlock:^(id _Nonnull key, id _Nonnull obj,
+	  BOOL * _Nonnull __unused stop) {
+		if (block(key, obj))
+			dict[key] = obj;
+	}];
+
+	return dict;
+}
+
 - (NSString *)asJSONString
 {
 	NSData *jsonData = [self asJSONData];

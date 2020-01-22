@@ -13,7 +13,7 @@
 #import "NSObject+Parsing.h"
 #import "NSDate+Tripomatic.h"
 
-// NSLocalizedString(@"Trip to %@", @"Default trip name pattern -- f.e. Trip to London")
+// NSLocalizedString(@"Trip to %@", @"Default trip name pattern -- e.g. Trip to London")
 // NSLocalizedString(@"My Trip", @"Generic Trip name")
 
 
