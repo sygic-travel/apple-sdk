@@ -30,7 +30,7 @@
 
 + (instancetype)itemForPlaceWithID:(NSString *)placeID
 {
-	return [[self alloc] itemForPlaceWithID:placeID];
+	return [[self alloc] initForPlaceWithID:placeID];
 }
 
 - (instancetype)initForPlaceWithID:(NSString *)placeID
