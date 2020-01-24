@@ -148,7 +148,7 @@
 		// Parents
 		NSString *parentID = nil;
 		NSMutableArray *locationIDs = [NSMutableArray array];
-		for (NSString *parentDict in [dictionary[@"parent_ids"] parsedArray])
+		for (NSString *parentDict in [dictionary[@"parents"] parsedArray])
 			if ((parentID = [parentDict[@"id"] parsedString]))
 				[locationIDs addObject:parentID];
 		_parents = locationIDs;
@@ -171,9 +171,9 @@
 			[flags addObject:@"has_geometry"];
 
 		_flags = [flags array];
-    }
+	}
 
-    return self;
+	return self;
 }
 
 - (NSUInteger)displayableHexColor
