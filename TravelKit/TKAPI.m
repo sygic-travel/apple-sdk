@@ -807,11 +807,11 @@
 			queryDict[@"parents"] = [query.parentIDs componentsJoinedByString:operator];
 		}
 
-		if (query.minimumRating || query.maximumRating)
+		if (query.minimumRating != nil || query.maximumRating != nil)
 		{
-			NSString *minString = (query.minimumRating) ?
+			NSString *minString = (query.minimumRating != nil) ?
 				[NSString stringWithFormat:@"%.5f", query.minimumRating.floatValue] : @"";
-			NSString *maxString = (query.maximumRating) ?
+			NSString *maxString = (query.maximumRating != nil) ?
 				[NSString stringWithFormat:@"%.5f", query.maximumRating.floatValue] : @"";
 			queryDict[@"rating"] = [NSString stringWithFormat:@"%@:%@",
 				minString, maxString];
@@ -1023,7 +1023,7 @@
 			queryDict[@"sort_direction"] = direction;
 		}
 
-		if (query.pageNumber)
+		if (query.pageNumber != nil)
 		{
 			NSUInteger page = query.pageNumber.unsignedIntegerValue;
 			if (page > 1) queryDict[@"page"] = [query.pageNumber stringValue];
@@ -1091,13 +1091,13 @@
 		if (query.pageNumber.unsignedIntegerValue > 1)
 			queryDict[@"page"] = [query.pageNumber stringValue];
 
-		if (query.count)
+		if (query.count != nil)
 			queryDict[@"count"] = [query.count stringValue];
 
 		if (query.searchTerm)
 			queryDict[@"query"] = query.searchTerm;
 
-		if (query.minimalDuration || query.maximalDuration)
+		if (query.minimalDuration != nil || query.maximalDuration != nil)
 			queryDict[@"duration"] = [NSString stringWithFormat:@"%@:%@",
 				query.minimalDuration ?: @"", query.maximalDuration ?: @""];
 
@@ -1317,7 +1317,7 @@
 				NSString *code = [e[@"code"] parsedString];
 				NSNumber *rate = [e[@"rate"] parsedNumber];
 
-				if (code && rate)
+				if (code != nil && rate != nil)
 					exchangeRates[code] = rate;
 			}
 

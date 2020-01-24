@@ -745,7 +745,7 @@
 		NSDictionary *tripDict = [dictionary[@"trip"] parsedDictionary];
 		if (tripDict) _trip = [[TKTrip alloc] initFromResponse:tripDict];
 
-		if (!_ID || !_trip) return nil;
+		if (_ID == nil || !_trip) return nil;
 
 		_duration = [dictionary[@"duration"] parsedNumber] ?:
 		            @(_trip.days.count * 86400);

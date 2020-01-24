@@ -108,7 +108,7 @@
 		NSNumber *lat = [location[@"lat"] parsedNumber];
 		NSNumber *lng = [location[@"lng"] parsedNumber];
 
-		if (lat && lng) _location = [[CLLocation alloc]
+		if (lat != nil && lng != nil) _location = [[CLLocation alloc]
 			initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 
 		if (!_ID || !_name || !_location) return nil;
@@ -131,11 +131,11 @@
 		{
 			lat = [dictionary[@"south"] parsedNumber];
 			lng = [dictionary[@"west"] parsedNumber];
-			CLLocation *southWest = (lat && lng) ? [[CLLocation alloc]
+			CLLocation *southWest = (lat != nil && lng != nil) ? [[CLLocation alloc]
 				initWithLatitude:lat.doubleValue longitude:lng.doubleValue] : nil;
 			lat = [dictionary[@"north"] parsedNumber];
 			lng = [dictionary[@"east"] parsedNumber];
-			CLLocation *northEast = (lat && lng) ? [[CLLocation alloc]
+			CLLocation *northEast = (lat != nil && lng != nil) ? [[CLLocation alloc]
 				initWithLatitude:lat.doubleValue longitude:lng.doubleValue] : nil;
 			if (southWest && northEast)
 				_boundingBox = [[TKMapRegion alloc]

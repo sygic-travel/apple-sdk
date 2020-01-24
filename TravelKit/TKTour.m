@@ -34,7 +34,7 @@
 		_rating = [dictionary[@"rating"] parsedNumber];
 		_price = [dictionary[@"price"] parsedNumber];
 		_originalPrice = [dictionary[@"original_price"] parsedNumber];
-		if (_originalPrice.intValue == 0) _originalPrice = nil;
+		if (_originalPrice && _originalPrice.intValue == 0) _originalPrice = nil;
 		_reviewsCount = [dictionary[@"review_count"] parsedNumber];
 
 		_duration = [dictionary[@"duration"] parsedString];

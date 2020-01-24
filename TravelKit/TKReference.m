@@ -48,7 +48,7 @@
 
 #pragma clang diagnostic pop
 
-		if (!ID || !_title || !_type || !_onlineURL)
+		if (ID == nil || !_title || !_type || !_onlineURL)
 			return nil;
 
 		_supplier = [response[@"supplier"] parsedString];

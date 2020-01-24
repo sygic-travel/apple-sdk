@@ -86,10 +86,10 @@
 	{
 		NSNumber *lat = [dictionary[@"origin"][@"lat"] parsedNumber];
 		NSNumber *lng = [dictionary[@"origin"][@"lng"] parsedNumber];
-		if (lat && lng) _sourceLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat != nil && lng != nil) _sourceLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 		lat = [dictionary[@"destination"][@"lat"] parsedNumber];
 		lng = [dictionary[@"destination"][@"lng"] parsedNumber];
-		if (lat && lng) _destinationLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat != nil && lng != nil) _destinationLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 
 		if (!_sourceLocation || !_destinationLocation)
 			return nil;
@@ -212,12 +212,12 @@
 		_originName = [dictionary[@"origin"][@"name"] parsedString];
 		NSNumber *lat = [dictionary[@"origin"][@"location"][@"lat"] parsedNumber];
 		NSNumber *lng = [dictionary[@"origin"][@"location"][@"lng"] parsedNumber];
-		if (lat && lng) _originLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat != nil && lng != nil) _originLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 
 		_destinationName = [dictionary[@"destination"][@"name"] parsedString];
 		lat = [dictionary[@"destination"][@"location"][@"lat"] parsedNumber];
 		lng = [dictionary[@"destination"][@"location"][@"lng"] parsedNumber];
-		if (lat && lng) _destinationLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat != nil && lng != nil) _destinationLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 
 		_headsign = [dictionary[@"display_info"][@"headsign"] parsedString];
 		_shortName = [dictionary[@"display_info"][@"name_short"] parsedString];

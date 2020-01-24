@@ -506,19 +506,23 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 - (void)resolveTripConflicts
 {
-	if (!_tripConflicts.count) {
+	NSArray<TKTripConflict *> *conlicts = [_tripConflicts copy];
+
+	if (!conlicts.count) {
 		[self checkState];
 		return;
 	}
 
-	if (_events.tripConflictsHandler)
+	__auto_type handler = _events.tripConflictsHandler;
+
+	if (handler)
 	{
 		dispatch_semaphore_t sema = dispatch_semaphore_create(0);
 
 		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-			_events.tripConflictsHandler(_tripConflicts, ^{
+			handler(conlicts, ^{
 
-				for (TKTripConflict *conf in _tripConflicts)
+				for (TKTripConflict *conf in conlicts)
 				{
 					TKTrip *localTrip = conf.localTrip;
 
@@ -555,7 +559,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	}
 
 	else
-		for (TKTripConflict *conf in _tripConflicts.copy)
+		for (TKTripConflict *conf in conlicts)
 			[self processResponseWithTrip:conf.remoteTrip sentTripID:conf.localTrip.ID];
 
 	[self checkState];
