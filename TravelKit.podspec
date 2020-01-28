@@ -1,11 +1,11 @@
 Pod::Spec.new do |spec|
   spec.name         = 'TravelKit'
-  spec.version      = '3.0-alpha1'
+  spec.version      = '3.0-alpha2'
   spec.license      = 'MIT'
   spec.homepage     = 'https://github.com/sygic-travel/apple-sdk'
   spec.authors      = 'Tripomatic s.r.o.', 'Michal Zelinka'
   spec.summary      = 'Travel SDK for travelling projects'
-  spec.source       = { :http => 'https://github.com/sygic-travel/apple-sdk/releases/download/v3.0-alpha1/TravelKit-3.0-alpha1-iOS.zip' }
+  spec.source       = { :http => 'https://github.com/sygic-travel/apple-sdk/releases/download/v3.0-alpha2/TravelKit-3.0-alpha2-iOS.zip' }
   spec.documentation_url = 'http://docs.sygictravelapi.com/apple-sdk/latest'
   spec.module_name  = 'TravelKit'
 
