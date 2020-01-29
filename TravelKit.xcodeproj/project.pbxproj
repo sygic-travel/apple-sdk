@@ -82,6 +82,15 @@
 		D64B612F200652BF0098ADDF /* TKDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D64B6130200652BF0098ADDF /* TKDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D64B6131200652BF0098ADDF /* TKDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D65199F323E1ACAC00CC48AD /* TKEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F123E1ACAC00CC48AD /* TKEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D65199F423E1ACAC00CC48AD /* TKEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F123E1ACAC00CC48AD /* TKEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D65199F523E1ACAC00CC48AD /* TKEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F123E1ACAC00CC48AD /* TKEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D65199F623E1ACAC00CC48AD /* TKEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = D65199F223E1ACAC00CC48AD /* TKEnvironment.m */; };
+		D65199F723E1ACAC00CC48AD /* TKEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = D65199F223E1ACAC00CC48AD /* TKEnvironment.m */; };
+		D65199F823E1ACAC00CC48AD /* TKEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = D65199F223E1ACAC00CC48AD /* TKEnvironment.m */; };
+		D65199FA23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */; };
+		D65199FB23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */; };
+		D65199FC23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */; };
 		D660571821889046000ED0D3 /* TKCollectionsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D660571721889046000ED0D3 /* TKCollectionsQuery.m */; };
 		D660571921889046000ED0D3 /* TKCollectionsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D660571721889046000ED0D3 /* TKCollectionsQuery.m */; };
 		D660571A21889046000ED0D3 /* TKCollectionsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D660571721889046000ED0D3 /* TKCollectionsQuery.m */; };
@@ -304,6 +313,9 @@
 		D64B612620064D940098ADDF /* TKDirectionsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKDirectionsManager.h; sourceTree = "<group>"; };
 		D64B612720064D940098ADDF /* TKDirectionsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDirectionsManager.m; sourceTree = "<group>"; };
 		D64B612E200652BF0098ADDF /* TKDirection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKDirection.h; sourceTree = "<group>"; };
+		D65199F123E1ACAC00CC48AD /* TKEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKEnvironment.h; sourceTree = "<group>"; };
+		D65199F223E1ACAC00CC48AD /* TKEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKEnvironment.m; sourceTree = "<group>"; };
+		D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKEnvironment+Private.h"; sourceTree = "<group>"; };
 		D660571721889046000ED0D3 /* TKCollectionsQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKCollectionsQuery.m; sourceTree = "<group>"; };
 		D660571B21889326000ED0D3 /* TKCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKCollection.h; sourceTree = "<group>"; };
 		D660571C21889326000ED0D3 /* TKCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKCollection.m; sourceTree = "<group>"; };
@@ -450,6 +462,9 @@
 		D68E94801F06301F009E2C9C /* General */ = {
 			isa = PBXGroup;
 			children = (
+				D65199F123E1ACAC00CC48AD /* TKEnvironment.h */,
+				D65199F223E1ACAC00CC48AD /* TKEnvironment.m */,
+				D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */,
 				EFD791E320177EA2005E3027 /* TKEventsManager.h */,
 				EFD791E420177EA2005E3027 /* TKEventsManager.m */,
 				D6D1F770201892D4009E6249 /* TKEventsManager+Private.h */,
@@ -699,6 +714,7 @@
 				D6B0AD941FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D698319A1EF3D7F9002776BE /* TKTour.h in Headers */,
 				D61CB53C202C80AC00441FF6 /* TKFavoritesManager.h in Headers */,
+				D65199F523E1ACAC00CC48AD /* TKEnvironment.h in Headers */,
 				D69831AA1EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144D1F84D84500E59C95 /* TKSession.h in Headers */,
 				D64B6131200652BF0098ADDF /* TKDirection.h in Headers */,
@@ -720,6 +736,7 @@
 				D6F0E4891ED6EF5800A0D3D5 /* FMResultSet.h in Headers */,
 				EFD791E720177EA2005E3027 /* TKEventsManager.h in Headers */,
 				EF0D9D6E1EFAAF7500C50AE2 /* TKDatabaseManager+Private.h in Headers */,
+				D65199FC23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */,
 				D6745D6721888F79008A4364 /* TKCollectionsQuery.h in Headers */,
 				D664E6CA2194240B00169303 /* TKCollection+Private.h in Headers */,
 				D660571F21889326000ED0D3 /* TKCollection.h in Headers */,
@@ -755,6 +772,7 @@
 				D6B0AD921FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D69831981EF3D7F9002776BE /* TKTour.h in Headers */,
 				D61CB53A202C80AC00441FF6 /* TKFavoritesManager.h in Headers */,
+				D65199F323E1ACAC00CC48AD /* TKEnvironment.h in Headers */,
 				D69831A81EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144B1F84D84500E59C95 /* TKSession.h in Headers */,
 				D64B612F200652BF0098ADDF /* TKDirection.h in Headers */,
@@ -776,6 +794,7 @@
 				D6F0E47E1ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */,
 				EFD791E520177EA2005E3027 /* TKEventsManager.h in Headers */,
 				EF0D9D6A1EFAAF7400C50AE2 /* TKDatabaseManager+Private.h in Headers */,
+				D65199FA23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */,
 				D6745D6521888E87008A4364 /* TKCollectionsQuery.h in Headers */,
 				D6BEE6FF219422C200215DFA /* TKCollection+Private.h in Headers */,
 				D660571D21889326000ED0D3 /* TKCollection.h in Headers */,
@@ -811,6 +830,7 @@
 				D6B0AD931FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D69831991EF3D7F9002776BE /* TKTour.h in Headers */,
 				D61CB53B202C80AC00441FF6 /* TKFavoritesManager.h in Headers */,
+				D65199F423E1ACAC00CC48AD /* TKEnvironment.h in Headers */,
 				D69831A91EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144C1F84D84500E59C95 /* TKSession.h in Headers */,
 				D64B6130200652BF0098ADDF /* TKDirection.h in Headers */,
@@ -832,6 +852,7 @@
 				D6F0E47F1ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */,
 				EFD791E620177EA2005E3027 /* TKEventsManager.h in Headers */,
 				EF0D9D6C1EFAAF7400C50AE2 /* TKDatabaseManager+Private.h in Headers */,
+				D65199FB23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */,
 				D6745D6621888F79008A4364 /* TKCollectionsQuery.h in Headers */,
 				D664E6C92194240B00169303 /* TKCollection+Private.h in Headers */,
 				D660571E21889326000ED0D3 /* TKCollection.h in Headers */,
@@ -1015,6 +1036,7 @@
 				D6B2A1321E530B11005509E8 /* TKAPI.m in Sources */,
 				D660571A21889046000ED0D3 /* TKCollectionsQuery.m in Sources */,
 				D61B925C1ED4798200645489 /* TKReachability.m in Sources */,
+				D65199F823E1ACAC00CC48AD /* TKEnvironment.m in Sources */,
 				D6B2A1381E530B11005509E8 /* TKMapWorker.m in Sources */,
 				D69831A71EF7AE8A002776BE /* TKToursManager.m in Sources */,
 				D69831A21EF3F051002776BE /* TKTour.m in Sources */,
@@ -1057,6 +1079,7 @@
 				D61B925A1ED4798200645489 /* TKReachability.m in Sources */,
 				D660571821889046000ED0D3 /* TKCollectionsQuery.m in Sources */,
 				D6B2A1631E531097005509E8 /* TKMapWorker.m in Sources */,
+				D65199F623E1ACAC00CC48AD /* TKEnvironment.m in Sources */,
 				D69831A51EF7AE8A002776BE /* TKToursManager.m in Sources */,
 				D69831A01EF3F051002776BE /* TKTour.m in Sources */,
 				D68E947D1F05354E009E2C9C /* TKSessionManager.m in Sources */,
@@ -1099,6 +1122,7 @@
 				D6C3D0861E5196CB00EBB54F /* TravelKit.m in Sources */,
 				D660571921889046000ED0D3 /* TKCollectionsQuery.m in Sources */,
 				D61B925B1ED4798200645489 /* TKReachability.m in Sources */,
+				D65199F723E1ACAC00CC48AD /* TKEnvironment.m in Sources */,
 				D6C3D0631E4DDE2D00EBB54F /* TKMedium.m in Sources */,
 				D69831A61EF7AE8A002776BE /* TKToursManager.m in Sources */,
 				D69831A11EF3F051002776BE /* TKTour.m in Sources */,
