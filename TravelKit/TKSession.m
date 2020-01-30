@@ -22,15 +22,20 @@
 
 - (instancetype)initFromDictionary:(NSDictionary *)dictionary
 {
+	NSString *accessToken = [dictionary[@"accessToken"] parsedString] ?:
+		                    [dictionary[@"access_token"] parsedString];
+	NSString *refreshToken = [dictionary[@"refreshToken"] parsedString] ?:
+		                     [dictionary[@"refresh_token"] parsedString];
+
+	if (!accessToken || !refreshToken)
+		return nil;
+
 	if (self = [super init])
 	{
 		// Tokens parsing
 
-		_accessToken = [dictionary[@"accessToken"] parsedString] ?:
-		               [dictionary[@"access_token"] parsedString];
-
-		_refreshToken = [dictionary[@"refreshToken"] parsedString] ?:
-		                [dictionary[@"refresh_token"] parsedString];
+		_accessToken = accessToken;
+		_refreshToken = refreshToken;
 
 		// Expiration parsing
 		// Local part
@@ -48,7 +53,7 @@
 			if (expiration != nil) _expirationDate = [[NSDate new] dateByAddingTimeInterval:expiryInterval];
 		}
 
-		if (!_accessToken || !_refreshToken || !_expirationDate)
+		if (!_expirationDate)
 			return nil;
 	}
 

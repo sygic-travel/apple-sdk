@@ -15,13 +15,20 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)dictionary
 {
+	NSNumber *ID = [dictionary[@"id"] parsedNumber];
+	NSString *fullName = [dictionary[@"name_long"] parsedString];
+	NSString *parentID = [dictionary[@"parent_place_id"] parsedString];
+
+	if (!ID || !fullName || !parentID)
+		return nil;
+
 	if (self = [super init])
 	{
 		// Basic attributes
-		_ID = [dictionary[@"id"] parsedNumber];
+		_ID = ID;
 		_name = [dictionary[@"name_short"] parsedString];
-		_fullName = [dictionary[@"name_long"] parsedString];
-		_parentPlaceID = [dictionary[@"parent_place_id"] parsedString];
+		_fullName = fullName;
+		_parentPlaceID = parentID;
 
 		_placeIDs = [[dictionary[@"place_ids"] parsedArray] mappedArrayUsingBlock:^id(id obj) {
 			return [obj parsedString];

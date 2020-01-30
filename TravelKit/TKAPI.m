@@ -1101,11 +1101,13 @@
 			queryDict[@"duration"] = [NSString stringWithFormat:@"%@:%@",
 				query.minimalDuration ?: @"", query.maximalDuration ?: @""];
 
-		if (query.startDate)
-			queryDict[@"from"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:query.startDate] ?: @"";
+		NSDate *date = nil;
 
-		if (query.endDate)
-			queryDict[@"to"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:query.endDate] ?: @"";
+		if ((date = query.startDate))
+			queryDict[@"from"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:date] ?: @"";
+
+		if ((date = query.endDate))
+			queryDict[@"to"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:date] ?: @"";
 
 		if (query.bounds)
 			queryDict[@"bounds"] = [NSString stringWithFormat:@"%.5f,%.5f,%.5f,%.5f",
@@ -1262,10 +1264,12 @@
 		NSDateFormatter *df = [NSDateFormatter shared8601RelativeDateTimeFormatter];
 
 		id departure = nil, arrival = nil;
-		if (query.relativeDepartureDate)
-			departure = [df stringFromDate:query.relativeDepartureDate];
-		if (query.relativeArrivalDate)
-			arrival = [df stringFromDate:query.relativeArrivalDate];
+
+		NSDate *date = nil;
+		if ((date = query.relativeDepartureDate))
+			departure = [df stringFromDate:date];
+		if ((date = query.relativeArrivalDate))
+			arrival = [df stringFromDate:date];
 
 		NSDictionary *post = @{
 			@"modes": modeOpts,

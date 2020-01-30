@@ -236,9 +236,9 @@
 		D6F0E46C1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */; };
 		D6F0E46D1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */; };
 		D6F0E46E1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */; };
-		D6F0E46F1ED6EF5800A0D3D5 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type -Wno-sign-conversion -Wno-nonnull"; }; };
-		D6F0E4701ED6EF5800A0D3D5 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type -Wno-sign-conversion -Wno-nonnull"; }; };
-		D6F0E4711ED6EF5800A0D3D5 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type -Wno-sign-conversion -Wno-nonnull"; }; };
+		D6F0E46F1ED6EF5800A0D3D5 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type -Wno-nullable-to-nonnull-conversion -Wno-sign-conversion -Wno-nonnull"; }; };
+		D6F0E4701ED6EF5800A0D3D5 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type -Wno-nullable-to-nonnull-conversion -Wno-sign-conversion -Wno-nonnull"; }; };
+		D6F0E4711ED6EF5800A0D3D5 /* FMDatabase.m in Sources */ = {isa = PBXBuildFile; fileRef = D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */; settings = {COMPILER_FLAGS = "-Wno-explicit-ownership-type -Wno-nullable-to-nonnull-conversion -Wno-sign-conversion -Wno-nonnull"; }; };
 		D6F0E4721ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4621ED6EF5800A0D3D5 /* FMDatabaseAdditions.h */; };
 		D6F0E4731ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4621ED6EF5800A0D3D5 /* FMDatabaseAdditions.h */; };
 		D6F0E4741ED6EF5800A0D3D5 /* FMDatabaseAdditions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4621ED6EF5800A0D3D5 /* FMDatabaseAdditions.h */; };
@@ -1202,6 +1202,7 @@
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
@@ -1294,6 +1295,7 @@
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;

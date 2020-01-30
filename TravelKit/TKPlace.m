@@ -96,11 +96,14 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)dictionary
 {
-	if (self = [super init])
+	NSString *ID = [dictionary[@"id"] parsedString];
+	NSString *name = [dictionary[@"name"] parsedString];
+
+	if (ID && name && (self = [super init]))
 	{
 		// Basic attributes
-		_ID = [dictionary[@"id"] parsedString];
-		_name = [dictionary[@"name"] parsedString];
+		_ID = ID;
+		_name = name;
 		_suffix = [dictionary[@"name_suffix"] parsedString];
 
 		// Coordinates
@@ -114,7 +117,9 @@
 		if (!_ID || !_name || !_location) return nil;
 
 		_perex = [dictionary[@"perex"] parsedString];
-		_level = [[self class] levelFromString:[dictionary[@"level"] parsedString]];
+
+		NSString *level = [dictionary[@"level"] parsedString];
+		_level = [[self class] levelFromString:level];
 
 		NSString *thumbnail = [dictionary[@"thumbnail_url"] parsedString];
 		if (thumbnail) {
@@ -178,17 +183,19 @@
 
 - (NSUInteger)displayableHexColor
 {
-	if (_categories & TKPlaceCategorySightseeing) return 0xF6746C;
-	if (_categories & TKPlaceCategoryShopping)    return 0xE7A41C;
-	if (_categories & TKPlaceCategoryEating)      return 0xF6936C;
-	if (_categories & TKPlaceCategoryDiscovering) return 0x898F9A;
-	if (_categories & TKPlaceCategoryPlaying)     return 0x6CD8F6;
-	if (_categories & TKPlaceCategoryTraveling)   return 0x6B91F6;
-	if (_categories & TKPlaceCategoryGoingOut)    return 0xE76CA0;
-	if (_categories & TKPlaceCategoryHiking)      return 0xD59B6B;
-	if (_categories & TKPlaceCategoryDoingSports) return 0x68B277;
-	if (_categories & TKPlaceCategoryRelaxing)    return 0xA06CF6;
-	if (_categories & TKPlaceCategorySleeping)    return 0xA4CB69;
+	TKPlaceCategory cat = _categories;
+
+	if (cat & TKPlaceCategorySightseeing) return 0xF6746C;
+	if (cat & TKPlaceCategoryShopping)    return 0xE7A41C;
+	if (cat & TKPlaceCategoryEating)      return 0xF6936C;
+	if (cat & TKPlaceCategoryDiscovering) return 0x898F9A;
+	if (cat & TKPlaceCategoryPlaying)     return 0x6CD8F6;
+	if (cat & TKPlaceCategoryTraveling)   return 0x6B91F6;
+	if (cat & TKPlaceCategoryGoingOut)    return 0xE76CA0;
+	if (cat & TKPlaceCategoryHiking)      return 0xD59B6B;
+	if (cat & TKPlaceCategoryDoingSports) return 0x68B277;
+	if (cat & TKPlaceCategoryRelaxing)    return 0xA06CF6;
+	if (cat & TKPlaceCategorySleeping)    return 0xA4CB69;
 
 	return 0x999999;
 }
@@ -222,12 +229,11 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)response
 {
-	if (self = [super init])
+	NSString *text = [response[@"text"] parsedString];
+
+	if (text && (self = [super init]))
 	{
-		_text = [response[@"text"] parsedString];
-
-		if (!_text) return nil;
-
+		_text = text;
 		_languageID = [response[@"language_id"] parsedString];
 
 		NSString *provider = [response[@"provider"] parsedString];
@@ -258,9 +264,11 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)response
 {
-	if (self = [super init])
+	NSString *key = [response[@"key"] parsedString];
+
+	if (key && (self = [super init]))
 	{
-		_key = [response[@"key"] parsedString];
+		_key = key;
 		_name = [response[@"name"] parsedString];
 
 		if (!_key) return nil;

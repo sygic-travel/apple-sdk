@@ -16,14 +16,12 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)response
 {
-	if (self = [super init])
-	{
-		// If photo has its GUID, use it
-		_ID = [response[@"id"] parsedString];
+	NSString *ID = [response[@"id"] parsedString];
 
-		// Otherwise there's no way how to identify
-		if (!_ID)
-			return nil;
+	if (ID && (self = [super init]))
+	{
+		// GUID
+		_ID = ID;
 
 		// Deny initialization if only placeholder icon received
 		if (response[@"is_photo"] && [[response[@"is_photo"] parsedNumber] boolValue] == NO)

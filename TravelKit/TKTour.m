@@ -14,16 +14,19 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)dictionary
 {
-	if (self = [super init])
+	NSString *ID = [dictionary[@"id"] parsedString];
+	NSString *title = [dictionary[@"title"] parsedString];
+
+	if (ID && title && (self = [super init]))
 	{
 		// Basic attributes
-		_ID = [dictionary[@"id"] parsedString];
-		_title = [dictionary[@"title"] parsedString];
+		_ID = ID;
+		_title = title;
 
 		NSString *stored = [dictionary[@"url"] parsedString];
 		if (stored) _URL = [NSURL URLWithString:stored];
 
-		if (!_ID || !_title || !_URL) return nil;
+		if (!_URL) return nil;
 
 		_perex = [dictionary[@"perex"] parsedString];
 

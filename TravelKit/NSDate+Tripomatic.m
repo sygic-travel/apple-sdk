@@ -246,16 +246,6 @@ static NSCalendar *__NSCalendar__sharedCalendar = nil;
 	}
 }
 
-+ (NSDate *)beginDate
-{
-	return [NSDate dateWithTimeIntervalSince1970:0];
-}
-
-+ (NSDate *)endDate
-{
-	return [NSDate dateWithTimeIntervalSince1970:pow(2, 31)-1];
-}
-
 - (NSString *)dateString
 {
 	return [[NSDateFormatter sharedDateFormatter] stringFromDate:self];
