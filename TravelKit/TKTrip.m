@@ -74,7 +74,9 @@
 {
 	NSString *placeID = [dict[@"item_id"] parsedString];
 
-	if (placeID && (self = [super init]))
+	if (!placeID) return nil;
+
+	if (self = [super init])
 	{
 		_placeID = placeID;
 		_duration = [dict[@"duration"] parsedNumber];
@@ -98,7 +100,9 @@
 {
 	NSString *placeID = [dict[@"place_id"] parsedString];
 
-	if (placeID && (self = [super init]))
+	if (!placeID) return nil;
+
+	if (self = [super init])
 	{
 		_placeID = placeID;
 		_duration = [dict[@"duration"] parsedNumber];

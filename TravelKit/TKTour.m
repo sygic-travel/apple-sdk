@@ -17,7 +17,9 @@
 	NSString *ID = [dictionary[@"id"] parsedString];
 	NSString *title = [dictionary[@"title"] parsedString];
 
-	if (ID && title && (self = [super init]))
+	if (!ID || !title) return nil;
+
+	if (self = [super init])
 	{
 		// Basic attributes
 		_ID = ID;

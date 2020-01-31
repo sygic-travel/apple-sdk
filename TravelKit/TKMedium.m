@@ -18,7 +18,9 @@
 {
 	NSString *ID = [response[@"id"] parsedString];
 
-	if (ID && (self = [super init]))
+	if (!ID) return nil;
+
+	if (self = [super init])
 	{
 		// GUID
 		_ID = ID;

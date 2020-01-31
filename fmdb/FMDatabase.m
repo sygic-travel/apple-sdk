@@ -95,7 +95,8 @@ NS_ASSUME_NONNULL_END
 }
 
 - (NSURL *)databaseURL {
-    return _databasePath ? [NSURL fileURLWithPath:_databasePath] : nil;
+    NSString *path = _databasePath;
+    return path ? [NSURL fileURLWithPath:path] : nil;
 }
 
 + (NSString*)FMDBUserVersion {
@@ -540,7 +541,7 @@ static int FMDBDatabaseBusyHandler(void *f, int count) {
 #pragma mark Error routines
 
 - (NSString *)lastErrorMessage {
-    return [NSString stringWithUTF8String:sqlite3_errmsg(_db)];
+	return [NSString stringWithUTF8String:sqlite3_errmsg(_db)] ?: @"(unknown)";
 }
 
 - (BOOL)hadError {

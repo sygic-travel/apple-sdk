@@ -99,7 +99,9 @@
 	NSString *ID = [dictionary[@"id"] parsedString];
 	NSString *name = [dictionary[@"name"] parsedString];
 
-	if (ID && name && (self = [super init]))
+	if (!ID || !name) return nil;
+
+	if (self = [super init])
 	{
 		// Basic attributes
 		_ID = ID;
@@ -231,7 +233,9 @@
 {
 	NSString *text = [response[@"text"] parsedString];
 
-	if (text && (self = [super init]))
+	if (!text) return nil;
+
+	if (self = [super init])
 	{
 		_text = text;
 		_languageID = [response[@"language_id"] parsedString];
@@ -266,7 +270,9 @@
 {
 	NSString *key = [response[@"key"] parsedString];
 
-	if (key && (self = [super init]))
+	if (!key) return nil;
+
+	if (self = [super init])
 	{
 		_key = key;
 		_name = [response[@"name"] parsedString];
