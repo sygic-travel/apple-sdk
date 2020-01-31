@@ -61,7 +61,8 @@
 + (instancetype)reachabilityWithHostName:(NSString *)hostName
 {
 	TKReachability* returnValue = NULL;
-	SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL, [hostName UTF8String]);
+	const char *cHostName = [hostName UTF8String];
+	SCNetworkReachabilityRef reachability = SCNetworkReachabilityCreateWithName(NULL, cHostName);
 	if (reachability != NULL)
 	{
 		returnValue= [[self alloc] init];

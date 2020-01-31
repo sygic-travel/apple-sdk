@@ -95,18 +95,17 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 
 - (void)loadState
 {
-	_changesTimestamp = [_defaults doubleForKey:TKSettingsKeyChangesTimestamp];
-	_uniqueID = [_defaults stringForKey:TKSettingsKeyUniqueID];
-
 	// Unique ID
 
-	if (!_uniqueID)
-		_uniqueID = [[NSUUID UUID] UUIDString];
+	_uniqueID = [_defaults stringForKey:TKSettingsKeyUniqueID] ?:
+	            [[NSUUID UUID] UUIDString];
 
 	// Session
 
 	NSDictionary *session = [_defaults objectForKey:TKSettingsKeySession];
 	_session = [[TKSession alloc] initFromDictionary:session];
+
+	_changesTimestamp = [_defaults doubleForKey:TKSettingsKeyChangesTimestamp];
 
 	[TKAPI sharedAPI].accessToken = _session.accessToken;
 }

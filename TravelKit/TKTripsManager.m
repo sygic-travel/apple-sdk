@@ -154,7 +154,12 @@
 
 	id tripName = trip.name ?: [NSNull null];
 	id startDate = [trip.startDate dateString] ?: [NSNull null];
-	id lastUpdate = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:trip.lastUpdate] ?: [NSNull null];
+
+	NSDate *date = trip.lastUpdate;
+	id lastUpdate = [NSNull null];
+	if (date) lastUpdate = [[NSDateFormatter shared8601DateTimeFormatter]
+		stringFromDate:date] ?: lastUpdate;
+
 	id ownerID = trip.ownerID ?: [NSNull null];
 	id destinationIDs = [trip.destinationIDs componentsJoinedByString:@"|"] ?: [NSNull null];
 
@@ -417,7 +422,8 @@
 
 	if (endDate)
 	{
-		NSString *endFormat = [[NSDateFormatter sharedDateFormatter] stringFromDate:[endDate dateByAddingNumberOfDays:1]];
+		NSDate *realEndDate = [endDate dateByAddingNumberOfDays:1];
+		NSString *endFormat = [[NSDateFormatter sharedDateFormatter] stringFromDate:realEndDate];
 
 		if (includeOverlapping)
 			[whereClauses addObject:[NSString stringWithFormat:

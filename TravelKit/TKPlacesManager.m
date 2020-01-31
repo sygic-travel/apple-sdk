@@ -145,7 +145,8 @@
 			{
 				workingQuery.quadKeys = @[ quad ];
 				NSUInteger hash = workingQuery.hash;
-				[placesCache setObject:sorted[quad] forKey:@(hash)];
+				NSMutableArray<TKPlace *> *quadPlaces = sorted[quad];
+				[placesCache setObject:quadPlaces forKey:@(hash)];
 			}
 
 			places = [cachedPlaces sortedArrayUsingComparator:^NSComparisonResult(TKPlace *lhs, TKPlace *rhs) {

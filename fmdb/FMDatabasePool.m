@@ -46,7 +46,10 @@ typedef NS_ENUM(NSInteger, FMDBTransaction) {
 }
 
 + (instancetype)databasePoolWithURL:(NSURL *)url {
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wnullable-to-nonnull-conversion"
     return FMDBReturnAutoreleased([[self alloc] initWithPath:url.path]);
+#pragma clang diagnostic pop
 }
 
 + (instancetype)databasePoolWithPath:(NSString *)aPath flags:(int)openFlags {
