@@ -136,12 +136,12 @@
 		// Bounding box
 		if ((location = [dictionary[@"bounding_box"] parsedDictionary]))
 		{
-			lat = [dictionary[@"south"] parsedNumber];
-			lng = [dictionary[@"west"] parsedNumber];
+			lat = [location[@"south"] parsedNumber];
+			lng = [location[@"west"] parsedNumber];
 			CLLocation *southWest = (lat != nil && lng != nil) ? [[CLLocation alloc]
 				initWithLatitude:lat.doubleValue longitude:lng.doubleValue] : nil;
-			lat = [dictionary[@"north"] parsedNumber];
-			lng = [dictionary[@"east"] parsedNumber];
+			lat = [location[@"north"] parsedNumber];
+			lng = [location[@"east"] parsedNumber];
 			CLLocation *northEast = (lat != nil && lng != nil) ? [[CLLocation alloc]
 				initWithLatitude:lat.doubleValue longitude:lng.doubleValue] : nil;
 			if (southWest && northEast)
