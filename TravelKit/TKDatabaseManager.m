@@ -323,7 +323,8 @@ NSString * const kTKDatabaseTableTripDayItems = @"trip_day_items";
 
 			NSDictionary *dict = nil;
 			while ([resultSet next])
-				[results addObject:(dict = resultSet.resultDictionary)];
+				if ((dict = resultSet.resultDictionary))
+					[results addObject:dict];
 
 			[resultSet close];
 			resultSet = nil;
