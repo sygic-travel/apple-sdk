@@ -923,7 +923,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = TK;
-				LastUpgradeCheck = 1130;
+				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = Tripomatic;
 				TargetAttributes = {
 					D6B2A1281E530AFD005509E8 = {
