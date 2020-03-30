@@ -14,6 +14,8 @@ FOUNDATION_EXPORT double TravelKitVersionNumber;
 //! Project version string for TravelKit.
 FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 
+#import <TravelKit/TKEnvironment.h>
+
 #import <TravelKit/TKPlace.h>
 #import <TravelKit/TKPlacesQuery.h>
 #import <TravelKit/TKReference.h>
