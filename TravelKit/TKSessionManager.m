@@ -8,6 +8,7 @@
 
 #import <pthread/pthread.h>
 
+#import "TKEnvironment+Private.h"
 #import "TKSessionManager+Private.h"
 #import "TKDatabaseManager+Private.h"
 #import "TKEventsManager+Private.h"
@@ -58,19 +59,8 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 			[weakSelf refreshSession];
 		};
 
-		NSString *suiteName = @"com.tripomatic.travelkit";
+		NSString *suiteName = [TKEnvironment sharedEnvironment].defaultsSuiteName;
 
-		NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
-
-		// Handle Playground runtime a bit nicer
-		if ([bundleID containsString:@"com.apple.dt.Xcode"]) {
-			NSString *path = [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) firstObject];
-			path = [path stringByAppendingPathComponent:@"TravelKit"];
-			path = [path stringByAppendingPathComponent:suiteName];
-			suiteName = path;
-		}
-
-		// TODO: Check the resulting path on different platforms
 		_defaults = [[NSUserDefaults alloc] initWithSuiteName:suiteName];
 
 		[self loadState];
