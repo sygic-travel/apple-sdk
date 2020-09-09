@@ -385,17 +385,17 @@
 
 - (instancetype)initWithName:(NSString *)name
 {
-    if (self = [super init])
+	if (self = [super init])
 	{
 		_ID = [self.class randomTripID];
 		_name = name;
 		_version = 1;
-        _days = [NSMutableArray array];
+		_days = [NSMutableArray array];
 		_privacy = TKTripPrivacyPrivate;
 		_rights = TKTripRightsAllRights;
-    }
+	}
 
-    return self;
+	return self;
 }
 
 - (instancetype)initFromDatabase:(NSDictionary *)dict
@@ -505,9 +505,9 @@
 	return self;
 }
 
-- (BOOL)isEditable   { return (_rights & TKTripRightsEdit); }
-- (BOOL)isManageable { return (_rights & TKTripRightsManage); }
-- (BOOL)isDeletable  { return (_rights & TKTripRightsDelete); }
+- (BOOL)isEditable   { return (_rights & TKTripRightsEdit)   != 0; }
+- (BOOL)isManageable { return (_rights & TKTripRightsManage) != 0; }
+- (BOOL)isDeletable  { return (_rights & TKTripRightsDelete) != 0; }
 
 
 #pragma mark -
@@ -558,7 +558,8 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<Trip | ID: %@>\n\tName: %@\n\tVersion: %lu\n\tStart date: %@\n\tLast update: %@",
+	return [NSString stringWithFormat:@"<Trip | ID: %@>\n\t"
+		"Name: %@\n\tVersion: %lu\n\tStart date: %@\n\tLast update: %@",
 			_ID, _name, (unsigned long)_version, _startDate, _lastUpdate];
 }
 
@@ -683,9 +684,9 @@
 	return self;
 }
 
-- (BOOL)isEditable   { return (_rights & TKTripRightsEdit); }
-- (BOOL)isManageable { return (_rights & TKTripRightsManage); }
-- (BOOL)isDeletable  { return (_rights & TKTripRightsDelete); }
+- (BOOL)isEditable   { return (_rights & TKTripRightsEdit)   != 0; }
+- (BOOL)isManageable { return (_rights & TKTripRightsManage) != 0; }
+- (BOOL)isDeletable  { return (_rights & TKTripRightsDelete) != 0; }
 
 - (BOOL)isEqual:(TKTripInfo *)trip
 {
@@ -701,7 +702,8 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<Trip Info | ID: %@>\n\tName = %@\n\tVersion = %tu\n\tStart date = %@\n\tDays count = %tu\n\tChanged = %c",
+	return [NSString stringWithFormat:@"<Trip Info | ID: %@>\n\t"
+		"Name = %@\n\tVersion = %tu\n\tStart date = %@\n\tDays count = %tu\n\tChanged = %c",
 			_ID, _name, _version, _startDate, _daysCount, _changed];
 }
 

@@ -31,10 +31,10 @@
 
 + (TKTripsManager *)sharedManager
 {
-    static dispatch_once_t once = 0;
-    static TKTripsManager *shared = nil;
-    dispatch_once(&once, ^{ shared = [[self alloc] init]; });
-    return shared;
+	static dispatch_once_t once = 0;
+	static TKTripsManager *shared = nil;
+	dispatch_once(&once, ^{ shared = [[self alloc] init]; });
+	return shared;
 }
 
 

@@ -52,9 +52,9 @@
 		if ([flags containsObject:@"portable_ticket"]) _flags |= TKTourFlagPortableTicket;
 		if ([flags containsObject:@"wheelchair_access"]) _flags |= TKTourFlagWheelChairAccess;
 		if ([flags containsObject:@"skip_the_line"]) _flags |= TKTourFlagSkipTheLine;
-    }
+	}
 
-    return self;
+	return self;
 }
 
 - (NSString *)description

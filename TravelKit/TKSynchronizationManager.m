@@ -697,7 +697,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 - (BOOL)syncInProgress
 {
-    return (_state != TKSynchronizationStateStandby);
+	return (_state != TKSynchronizationStateStandby);
 }
 
 - (BOOL)hasChangesToSynchronize

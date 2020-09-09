@@ -36,7 +36,7 @@
 		else if ([stored isEqual:@"video360"]) _type = TKMediumTypeVideo360;
 		else return nil;
 
-        stored = [response[@"url_template"] parsedString];
+		stored = [response[@"url_template"] parsedString];
 		if (!stored) [response[@"url"] parsedString];
 		if (stored) stored = [stored stringByReplacingOccurrencesOfString:
 			@TKMEDIUM_SIZE_PLACEHOLDER_API withString:@TKMEDIUM_SIZE_PLACEHOLDER];
@@ -61,17 +61,16 @@
 			if (stored) stored = [stored stringByReplacingOccurrencesOfString:
 				@TKMEDIUM_SIZE_PLACEHOLDER_API withString:@TKMEDIUM_SIZE_PLACEHOLDER];
 			if (stored) _previewURL = [NSURL URLWithString:stored];
-
 		}
 
-        else if (_type == TKMediumTypeVideo)
+		else if (_type == TKMediumTypeVideo)
 		{
 			stored = [response[@"url"] parsedString];
 			if (stored) stored = [stored stringByReplacingOccurrencesOfString:
 				@TKMEDIUM_SIZE_PLACEHOLDER_API withString:@TKMEDIUM_SIZE_PLACEHOLDER];
-            if (stored) _URL = [NSURL URLWithString:stored];
-            else return nil;
-        }
+			if (stored) _URL = [NSURL URLWithString:stored];
+			else return nil;
+		}
 
 		_title = [response[@"attribution"][@"title"] parsedString];
 		_author = [response[@"attribution"][@"author"] parsedString];

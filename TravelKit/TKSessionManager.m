@@ -40,10 +40,10 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 
 + (TKSessionManager *)sharedManager
 {
-    static dispatch_once_t once = 0;
-    static TKSessionManager *shared = nil;
-    dispatch_once(&once, ^{ shared = [[self alloc] init]; });
-    return shared;
+	static dispatch_once_t once = 0;
+	static TKSessionManager *shared = nil;
+	dispatch_once(&once, ^{ shared = [[self alloc] init]; });
+	return shared;
 }
 
 - (instancetype)init
