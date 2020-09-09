@@ -44,6 +44,24 @@ typedef NS_OPTIONS(NSUInteger, TKMediumSuitability) {
 	TKMediumSuitabilityVideoPreview   = 1 << 3,
 };
 
+/**
+ Enum identifying content mode of the requested `TKMedium`.
+ */
+typedef NS_ENUM(NSUInteger, TKMediumContentMode) {
+	/// Crop the image. `200x200` will be returned with the exact size.
+	///
+	/// This is the default mode when omitted.
+	TKMediumContentModeCrop         = 0,
+	/// Don't crop the image and fit inside.
+	///
+	/// For `400x400`, larger size will be 400px, the other might be smaller.
+	TKMediumContentModeNoCropFit    = 1,
+	/// Don't crop the image and fill inside.
+	///
+	/// For `400x400`, larger size will be 400px, the other might be larger.
+	TKMediumContentModeNoCropFill   = 2,
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
@@ -113,8 +131,10 @@ NS_ASSUME_NONNULL_BEGIN
  Method for getting an URL to a Medium image with a given size.
 
  @param size Desired size of the image.
+ @param mode Content mode of the image.
  @return URL for loading the resized image.
  */
+- (nullable NSURL *)displayableImageURLForSize:(CGSize)size contentMode:(TKMediumContentMode)mode;
 - (nullable NSURL *)displayableImageURLForSize:(CGSize)size;
 
 @end

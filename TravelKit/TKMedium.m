@@ -110,11 +110,19 @@
 
 - (NSURL *)displayableImageURLForSize:(CGSize)size
 {
-	if (size.width < 20 || size.height < 20 ||
-	    size.width > 6000 || size.height > 6000)
-		return nil;
+	return [self displayableImageURLForSize:size contentMode:TKMediumContentModeCrop];
+}
 
-	NSString *sizeString = [NSString stringWithFormat:@"%.0fx%.0f", size.width, size.height];
+- (NSURL *)displayableImageURLForSize:(CGSize)size contentMode:(TKMediumContentMode)mode
+{
+	if (size.width < 24 || size.height < 24 ||
+	    size.width > 4096 || size.height > 4096)
+		return nil;
+	
+	NSString *modeString = (mode == TKMediumContentModeNoCropFit)  ? @"nc" :
+	                       (mode == TKMediumContentModeNoCropFill) ? @"ncfill" : @"";
+
+	NSString *sizeString = [NSString stringWithFormat:@"%.0fx%.0f%@", size.width, size.height, modeString];
 
 	NSString *urlString = [[_URL absoluteString] stringByReplacingOccurrencesOfString:
 	                       @TKMEDIUM_SIZE_PLACEHOLDER withString:sizeString];
