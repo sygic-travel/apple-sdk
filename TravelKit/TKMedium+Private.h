@@ -12,6 +12,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface TKMedium ()
 
+@property (nonatomic, strong, readonly) NSURL *templateURL;
+
 - (nullable instancetype)initFromResponse:(NSDictionary *)response;
 
 @end
