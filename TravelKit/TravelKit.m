@@ -15,7 +15,7 @@
 
 @interface TravelKit ()
 {
-	NSString *_Nullable _language;
+	NSString *_Nullable _languageID;
 }
 @end
 
@@ -39,7 +39,7 @@
 	return shared;
 }
 
-+ (NSArray<NSString *> *)supportedLanguages
++ (NSArray<NSString *> *)supportedLanguageIDs
 {
 	static NSArray *langs = nil;
 
@@ -71,21 +71,24 @@
 	[TKSSOAPI sharedAPI].clientID = _clientID = [clientID copy];
 }
 
-- (NSString *)language
+- (NSString *)languageID
 {
-	return _language ?: @"en";
+	return _languageID ?: @"en";
 }
 
-- (void)setLanguage:(NSString *)language
+- (void)setLanguageID:(NSString *)languageID
 {
-	NSArray *supported = [[self class] supportedLanguages];
-	NSString *newLanguage = (language &&
-	  [supported containsObject:language]) ?
-		language : nil;
+	if      ([languageID hasPrefix:@"zh"]) languageID = @"zh";
+	else if ([languageID hasPrefix:@"en"]) languageID = @"en";
 
-	_language = [newLanguage copy];
+	NSArray<NSString *> *supported = [[self class] supportedLanguageIDs];
+	NSString *newLanguageID = (languageID &&
+	  [supported containsObject:languageID]) ?
+		[languageID copy] : nil;
 
-	[TKAPI sharedAPI].language = language;
+	_languageID = newLanguageID;
+
+	[TKAPI sharedAPI].languageID = newLanguageID;
 }
 
 
@@ -133,91 +136,6 @@
 - (TKSynchronizationManager *)sync
 {
 	return [TKSynchronizationManager sharedManager];
-}
-
-@end
-
-
-#pragma mark -
-#pragma mark Deprecated namespace
-
-
-@implementation TravelKit (NSDeprecated)
-
-#pragma mark Session-related methods
-
-
-- (void)clearUserData
-{
-	[[self session] clearAllData];
-}
-
-
-#pragma mark Places
-
-
-- (void)placesForQuery:(TKPlacesQuery *)query
-            completion:(void (^)(NSArray<TKPlace *> *, NSError *))completion
-{
-	[[TKPlacesManager sharedManager] placesForQuery:query completion:completion];
-}
-
-- (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
-           completion:(void (^)(NSArray<TKDetailedPlace *> *, NSError *))completion
-{
-	[[TKPlacesManager sharedManager] detailedPlacesWithIDs:placeIDs completion:completion];
-}
-
-- (void)detailedPlaceWithID:(NSString *)placeID
-                 completion:(void (^)(TKDetailedPlace *, NSError *))completion
-{
-	[[TKPlacesManager sharedManager] detailedPlaceWithID:placeID completion:completion];
-}
-
-- (void)mediaForPlaceWithID:(NSString *)placeID
-                 completion:(void (^)(NSArray<TKMedium *> *, NSError *))completion
-{
-	[[TKPlacesManager sharedManager] mediaForPlaceWithID:placeID completion:completion];
-}
-
-
-#pragma mark Favorites
-
-
-- (NSArray<NSString *> *)favoritePlaceIDs
-{
-	return [self.favorites favoritePlaceIDs];
-}
-
-- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
-{
-	[self.favorites updateFavoritePlaceID:favoriteID setFavorite:favorite];
-}
-
-
-#pragma mark Map
-
-
-- (NSArray<NSString *> *)quadKeysForMapRegion:(MKCoordinateRegion)region
-{
-	return [TKMapWorker quadKeysForRegion:region];
-}
-
-- (NSArray<TKMapPlaceAnnotation *> *)spreadAnnotationsForPlaces:(NSArray<TKPlace *> *)places
-	mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size
-{
-	return [TKMapWorker spreadAnnotationsForPlaces:places mapRegion:region mapViewSize:size];
-}
-
-- (void)interpolateNewAnnotations:(NSArray<TKMapPlaceAnnotation *> *)newAnnotations
-				   oldAnnotations:(NSArray<TKMapPlaceAnnotation *> *)oldAnnotations
-							toAdd:(NSMutableArray<TKMapPlaceAnnotation *> *)toAdd
-						   toKeep:(NSMutableArray<TKMapPlaceAnnotation *> *)toKeep
-						 toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove
-{
-	[TKMapWorker interpolateNewAnnotations:newAnnotations
-	    oldAnnotations:oldAnnotations toAdd:toAdd
-		    toKeep:toKeep toRemove:toRemove];
 }
 
 @end

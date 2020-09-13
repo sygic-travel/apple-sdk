@@ -44,7 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion Completion block called on success or error.
  */
 - (void)toursForViatorQuery:(TKToursViatorQuery *)query
-	completion:(void (^)(NSArray<TKTour *>  * _Nullable places, NSError * _Nullable error))completion;
+	completion:(void (^)(NSArray<TKTour *>  * _Nullable tours, NSError * _Nullable error))completion;
 
 /**
  Returns a collection of `TKTour` objects for the given GetYourGuide query object.
@@ -55,7 +55,7 @@ NS_ASSUME_NONNULL_BEGIN
  @param completion Completion block called on success or error.
  */
 - (void)toursForGYGQuery:(TKToursGYGQuery *)query
-	completion:(void (^)(NSArray<TKTour *>  * _Nullable places, NSError * _Nullable error))completion;
+	completion:(void (^)(NSArray<TKTour *>  * _Nullable tours, NSError * _Nullable error))completion;
 
 @end
 

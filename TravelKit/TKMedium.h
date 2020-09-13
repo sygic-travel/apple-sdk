@@ -29,6 +29,18 @@ typedef NS_ENUM(NSUInteger, TKMediumType) {
 };
 
 /**
+ Enum identifying a video resolution of `TKMedium`.
+ */
+typedef NS_ENUM(NSUInteger, TKMediumVideoResolution) {
+	/// 720p resolution.
+	TKMediumVideoResolution720p   NS_SWIFT_NAME(res720p)  = 720,
+	/// 1080p resolution.
+	TKMediumVideoResolution1080p  NS_SWIFT_NAME(res1080p) = 1080,
+	/// 4K resolution.
+	TKMediumVideoResolution4K     NS_SWIFT_NAME(res4K)    = 4096,
+};
+
+/**
  Enum identifying a suitability of `TKMedium` for some basic use cases.
  */
 typedef NS_OPTIONS(NSUInteger, TKMediumSuitability) {
@@ -44,10 +56,32 @@ typedef NS_OPTIONS(NSUInteger, TKMediumSuitability) {
 	TKMediumSuitabilityVideoPreview   = 1 << 3,
 };
 
+/**
+ Enum identifying content mode of the requested `TKMedium`.
+ */
+typedef NS_ENUM(NSUInteger, TKMediumContentMode) {
+	/// Crop the image. `200x200` will be returned with the exact size, filling the given dimensions.
+    ///
+    /// @note Works as `UIViewContentModeScaleAspectFill` with bounds clipping.
+	TKMediumContentModeCrop         = 0,
+	/// Don't crop the image and fit inside.
+	///
+	/// For `400x400`, the larger image dimension will be 400px, the other might be smaller.
+    ///
+    /// @note Works as `UIViewContentModeScaleAspectFit` without clipping.
+	TKMediumContentModeNoCropFit    = 1,
+	/// Don't crop the image and fill inside.
+	///
+	/// For `400x400`, the larger image dimension will be 400px, the other might be larger.
+    ///
+    /// @note Works as `UIViewContentModeScaleAspectFill` without clipping.
+	TKMediumContentModeNoCropFill   = 2,
+};
+
 NS_ASSUME_NONNULL_BEGIN
 
 /**
- Entity preserving information about a remote displayable Medium, f.e. an Image or a Video.
+ Entity preserving information about a remote displayable Medium. An Image or a Video.
  */
 @interface TKMedium : NSObject
 
@@ -86,15 +120,12 @@ NS_ASSUME_NONNULL_BEGIN
 /// Medium license name.
 @property (nonatomic, copy, nullable, readonly) NSString *license;
 
-/// Medium source URL.
+/// Unmodified Medium URL.
 ///
-/// @note Use this url in `-displayableImageURLForSize:` to get standard size image.
-@property (nonatomic, strong, nullable, readonly) NSURL *URL;
-
-/// Medium source Preview URL.
+/// This URL links the original Medium file.
 ///
-/// @note Use this url in `-displayableImageURLForSize:` to get smaller size image for preview.
-@property (nonatomic, strong, nullable, readonly) NSURL *previewURL;
+/// @note To get a URL for different dimensions, use `-displayableImageURLForSize:contentMode:`.
+@property (nonatomic, strong, readonly) NSURL *URL;
 
 /// URL for the original source of the image.
 @property (nonatomic, strong, nullable, readonly) NSURL *originURL;
@@ -113,9 +144,19 @@ NS_ASSUME_NONNULL_BEGIN
  Method for getting an URL to a Medium image with a given size.
 
  @param size Desired size of the image.
+ @param mode Content mode of the image.
  @return URL for loading the resized image.
  */
+- (nullable NSURL *)displayableImageURLForSize:(CGSize)size contentMode:(TKMediumContentMode)mode;
 - (nullable NSURL *)displayableImageURLForSize:(CGSize)size;
+
+/**
+ Method for getting an URL to a Medium video with a given resolution.
+
+ @param resolution Desired resolution of the video.
+ @return URL for video playback.
+ */
+- (nullable NSURL *)displayableVideoURLForResolution:(TKMediumVideoResolution)resolution;
 
 @end
 

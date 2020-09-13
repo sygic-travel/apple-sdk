@@ -46,19 +46,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface NSDate (Tripomatic)
 
-- (NSDate *)dateByAddingNumberOfDays:(NSInteger)days;
+- (nullable NSDate *)dateByAddingNumberOfDays:(NSInteger)days;
 
-+ (NSDate *)dateFromDateTimeString:(NSString *)dateString;
-+ (NSDate *)dateFromGMTDateTimeString:(NSString *)dateString;
-+ (NSDate *)dateFromDateString:(NSString *)dateString;
-+ (NSDate *)dateFromGMTDateString:(NSString *)dateString;
-+ (NSDate *)dateFrom8601DateTimeString:(NSString *)datetimeString;
++ (nullable NSDate *)dateFromDateTimeString:(NSString *)dateString;
++ (nullable NSDate *)dateFromGMTDateTimeString:(NSString *)dateString;
++ (nullable NSDate *)dateFromDateString:(NSString *)dateString;
++ (nullable NSDate *)dateFromGMTDateString:(NSString *)dateString;
++ (nullable NSDate *)dateFrom8601DateTimeString:(NSString *)datetimeString;
 
 + (NSDate *)now;
 - (NSDate *)midnight;
-
-+ (NSDate *)beginDate;
-+ (NSDate *)endDate;
 
 - (NSString *)dateString;
 - (NSString *)dateTimeString;

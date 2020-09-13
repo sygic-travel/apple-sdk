@@ -8,6 +8,7 @@
 
 #import <pthread/pthread.h>
 
+#import "TKEnvironment+Private.h"
 #import "TKSessionManager+Private.h"
 #import "TKDatabaseManager+Private.h"
 #import "TKEventsManager+Private.h"
@@ -39,10 +40,10 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 
 + (TKSessionManager *)sharedManager
 {
-    static dispatch_once_t once = 0;
-    static TKSessionManager *shared = nil;
-    dispatch_once(&once, ^{ shared = [[self alloc] init]; });
-    return shared;
+	static dispatch_once_t once = 0;
+	static TKSessionManager *shared = nil;
+	dispatch_once(&once, ^{ shared = [[self alloc] init]; });
+	return shared;
 }
 
 - (instancetype)init
@@ -58,19 +59,8 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 			[weakSelf refreshSession];
 		};
 
-		NSString *suiteName = @"com.tripomatic.travelkit";
+		NSString *suiteName = [TKEnvironment sharedEnvironment].defaultsSuiteName;
 
-		NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
-
-		// Handle Playground runtime a bit nicer
-		if ([bundleID containsString:@"com.apple.dt.Xcode"]) {
-			NSString *path = [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) firstObject];
-			path = [path stringByAppendingPathComponent:@"TravelKit"];
-			path = [path stringByAppendingPathComponent:suiteName];
-			suiteName = path;
-		}
-
-		// TODO: Check the resulting path on different platforms
 		_defaults = [[NSUserDefaults alloc] initWithSuiteName:suiteName];
 
 		[self loadState];
@@ -95,18 +85,17 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 
 - (void)loadState
 {
-	_changesTimestamp = [_defaults doubleForKey:TKSettingsKeyChangesTimestamp];
-	_uniqueID = [_defaults stringForKey:TKSettingsKeyUniqueID];
-
 	// Unique ID
 
-	if (!_uniqueID)
-		_uniqueID = [[NSUUID UUID] UUIDString];
+	_uniqueID = [_defaults stringForKey:TKSettingsKeyUniqueID] ?:
+	            [[NSUUID UUID] UUIDString];
 
 	// Session
 
 	NSDictionary *session = [_defaults objectForKey:TKSettingsKeySession];
 	_session = [[TKSession alloc] initFromDictionary:session];
+
+	_changesTimestamp = [_defaults doubleForKey:TKSettingsKeyChangesTimestamp];
 
 	[TKAPI sharedAPI].accessToken = _session.accessToken;
 }

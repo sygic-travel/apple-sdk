@@ -14,16 +14,21 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)dictionary
 {
+	NSString *ID = [dictionary[@"id"] parsedString];
+	NSString *title = [dictionary[@"title"] parsedString];
+
+	if (!ID || !title) return nil;
+
 	if (self = [super init])
 	{
 		// Basic attributes
-		_ID = [dictionary[@"id"] parsedString];
-		_title = [dictionary[@"title"] parsedString];
+		_ID = ID;
+		_title = title;
 
 		NSString *stored = [dictionary[@"url"] parsedString];
 		if (stored) _URL = [NSURL URLWithString:stored];
 
-		if (!_ID || !_title || !_URL) return nil;
+		if (!_URL) return nil;
 
 		_perex = [dictionary[@"perex"] parsedString];
 
@@ -34,7 +39,7 @@
 		_rating = [dictionary[@"rating"] parsedNumber];
 		_price = [dictionary[@"price"] parsedNumber];
 		_originalPrice = [dictionary[@"original_price"] parsedNumber];
-		if (_originalPrice.intValue == 0) _originalPrice = nil;
+		if (_originalPrice && _originalPrice.intValue == 0) _originalPrice = nil;
 		_reviewsCount = [dictionary[@"review_count"] parsedNumber];
 
 		_duration = [dictionary[@"duration"] parsedString];
@@ -47,9 +52,9 @@
 		if ([flags containsObject:@"portable_ticket"]) _flags |= TKTourFlagPortableTicket;
 		if ([flags containsObject:@"wheelchair_access"]) _flags |= TKTourFlagWheelChairAccess;
 		if ([flags containsObject:@"skip_the_line"]) _flags |= TKTourFlagSkipTheLine;
-    }
+	}
 
-    return self;
+	return self;
 }
 
 - (NSString *)description

@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKMedium.h"
+#import "TKMedium+Private.h"
 #import "NSObject+Parsing.h"
 
 #define TKMEDIUM_SIZE_PLACEHOLDER_API     "{size}"
@@ -16,14 +16,14 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)response
 {
+	NSString *ID = [response[@"id"] parsedString];
+
+	if (!ID) return nil;
+
 	if (self = [super init])
 	{
-		// If photo has its GUID, use it
-		_ID = [response[@"id"] parsedString];
-
-		// Otherwise there's no way how to identify
-		if (!_ID)
-			return nil;
+		// GUID
+		_ID = ID;
 
 		// Deny initialization if only placeholder icon received
 		if (response[@"is_photo"] && [[response[@"is_photo"] parsedNumber] boolValue] == NO)
@@ -36,42 +36,17 @@
 		else if ([stored isEqual:@"video360"]) _type = TKMediumTypeVideo360;
 		else return nil;
 
-        stored = [response[@"url_template"] parsedString];
-		if (!stored) [response[@"url"] parsedString];
-		if (stored) stored = [stored stringByReplacingOccurrencesOfString:
-			@TKMEDIUM_SIZE_PLACEHOLDER_API withString:@TKMEDIUM_SIZE_PLACEHOLDER];
-		if (stored) _URL = [NSURL URLWithString:stored];
+		NSURL *url = nil;
+		
+		stored = [response[@"url"] parsedString];
+		if (stored && (url = [NSURL URLWithString:stored])) _URL = url;
 		else return nil;
 
 		stored = [response[@"url_template"] parsedString];
 		if (stored) stored = [stored stringByReplacingOccurrencesOfString:
 			@TKMEDIUM_SIZE_PLACEHOLDER_API withString:@TKMEDIUM_SIZE_PLACEHOLDER];
-		if (stored) _previewURL = [NSURL URLWithString:stored];
+		if (stored && (url = [NSURL URLWithString:stored])) _templateURL = url;
 		else return nil;
-
-		if (_type == TKMediumTypeVideo360)
-		{
-			stored = [response[@"url_template"] parsedString];
-			if (stored) stored = [stored stringByReplacingOccurrencesOfString:
-				@TKMEDIUM_SIZE_PLACEHOLDER_API withString:@TKMEDIUM_SIZE_PLACEHOLDER];
-			if (stored) _URL = [NSURL URLWithString:stored];
-			else return nil;
-
-			stored = [response[@"url_template"] parsedString];
-			if (stored) stored = [stored stringByReplacingOccurrencesOfString:
-				@TKMEDIUM_SIZE_PLACEHOLDER_API withString:@TKMEDIUM_SIZE_PLACEHOLDER];
-			if (stored) _previewURL = [NSURL URLWithString:stored];
-
-		}
-
-        else if (_type == TKMediumTypeVideo)
-		{
-			stored = [response[@"url"] parsedString];
-			if (stored) stored = [stored stringByReplacingOccurrencesOfString:
-				@TKMEDIUM_SIZE_PLACEHOLDER_API withString:@TKMEDIUM_SIZE_PLACEHOLDER];
-            if (stored) _URL = [NSURL URLWithString:stored];
-            else return nil;
-        }
 
 		_title = [response[@"attribution"][@"title"] parsedString];
 		_author = [response[@"attribution"][@"author"] parsedString];
@@ -111,14 +86,39 @@
 
 - (NSURL *)displayableImageURLForSize:(CGSize)size
 {
-	if (size.width < 20 || size.height < 20 ||
-	    size.width > 6000 || size.height > 6000)
+	return [self displayableImageURLForSize:size contentMode:TKMediumContentModeCrop];
+}
+
+- (NSURL *)displayableImageURLForSize:(CGSize)size contentMode:(TKMediumContentMode)mode
+{
+	if (size.width < 24 || size.height < 24 ||
+	    size.width > 4096 || size.height > 4096)
 		return nil;
 
-	NSString *sizeString = [NSString stringWithFormat:@"%.0fx%.0f", size.width, size.height];
+	NSString *modeString = (mode == TKMediumContentModeNoCropFit)  ? @"nc" :
+	                       (mode == TKMediumContentModeNoCropFill) ? @"ncfill" : @"";
 
-	NSString *urlString = [[_URL absoluteString] stringByReplacingOccurrencesOfString:
+	NSString *sizeString = [NSString stringWithFormat:@"%.0fx%.0f%@", size.width, size.height, modeString];
+
+	NSString *urlString = [[_templateURL absoluteString] stringByReplacingOccurrencesOfString:
 	                       @TKMEDIUM_SIZE_PLACEHOLDER withString:sizeString];
+
+	return [NSURL URLWithString:urlString];
+}
+
+- (NSURL *)displayableVideoURLForResolution:(TKMediumVideoResolution)resolution
+{
+	if (_type != TKMediumTypeVideo && _type != TKMediumTypeVideo360)
+		return nil;
+
+	NSString *resString = (resolution == TKMediumVideoResolution720p)  ? @"720p" :
+	                      (resolution == TKMediumVideoResolution1080p) ? @"1080p" :
+	                      (resolution == TKMediumVideoResolution4K)    ? @"4k" : nil;
+
+	if (!resString) return nil;
+
+	NSString *urlString = [[_templateURL absoluteString] stringByReplacingOccurrencesOfString:
+	                       @TKMEDIUM_SIZE_PLACEHOLDER withString:resString];
 
 	return [NSURL URLWithString:urlString];
 }

@@ -82,6 +82,15 @@
 		D64B612F200652BF0098ADDF /* TKDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D64B6130200652BF0098ADDF /* TKDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirection.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D64B6131200652BF0098ADDF /* TKDirection.h in Headers */ = {isa = PBXBuildFile; fileRef = D64B612E200652BF0098ADDF /* TKDirection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D65199F323E1ACAC00CC48AD /* TKEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F123E1ACAC00CC48AD /* TKEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D65199F423E1ACAC00CC48AD /* TKEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F123E1ACAC00CC48AD /* TKEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D65199F523E1ACAC00CC48AD /* TKEnvironment.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F123E1ACAC00CC48AD /* TKEnvironment.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D65199F623E1ACAC00CC48AD /* TKEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = D65199F223E1ACAC00CC48AD /* TKEnvironment.m */; };
+		D65199F723E1ACAC00CC48AD /* TKEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = D65199F223E1ACAC00CC48AD /* TKEnvironment.m */; };
+		D65199F823E1ACAC00CC48AD /* TKEnvironment.m in Sources */ = {isa = PBXBuildFile; fileRef = D65199F223E1ACAC00CC48AD /* TKEnvironment.m */; };
+		D65199FA23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */; };
+		D65199FB23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */; };
+		D65199FC23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */; };
 		D660571821889046000ED0D3 /* TKCollectionsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D660571721889046000ED0D3 /* TKCollectionsQuery.m */; };
 		D660571921889046000ED0D3 /* TKCollectionsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D660571721889046000ED0D3 /* TKCollectionsQuery.m */; };
 		D660571A21889046000ED0D3 /* TKCollectionsQuery.m in Sources */ = {isa = PBXBuildFile; fileRef = D660571721889046000ED0D3 /* TKCollectionsQuery.m */; };
@@ -304,6 +313,9 @@
 		D64B612620064D940098ADDF /* TKDirectionsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKDirectionsManager.h; sourceTree = "<group>"; };
 		D64B612720064D940098ADDF /* TKDirectionsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDirectionsManager.m; sourceTree = "<group>"; };
 		D64B612E200652BF0098ADDF /* TKDirection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKDirection.h; sourceTree = "<group>"; };
+		D65199F123E1ACAC00CC48AD /* TKEnvironment.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKEnvironment.h; sourceTree = "<group>"; };
+		D65199F223E1ACAC00CC48AD /* TKEnvironment.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKEnvironment.m; sourceTree = "<group>"; };
+		D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKEnvironment+Private.h"; sourceTree = "<group>"; };
 		D660571721889046000ED0D3 /* TKCollectionsQuery.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKCollectionsQuery.m; sourceTree = "<group>"; };
 		D660571B21889326000ED0D3 /* TKCollection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKCollection.h; sourceTree = "<group>"; };
 		D660571C21889326000ED0D3 /* TKCollection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKCollection.m; sourceTree = "<group>"; };
@@ -376,6 +388,7 @@
 		D6FEE02A1FA8B9E200996876 /* TKSynchronizationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKSynchronizationManager.m; sourceTree = "<group>"; };
 		EF0D9D681EFAAB7500C50AE2 /* TKDatabaseManager+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKDatabaseManager+Private.h"; sourceTree = "<group>"; };
 		EF0D9D691EFAAB7500C50AE2 /* TKDatabaseManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKDatabaseManager.m; sourceTree = "<group>"; };
+		EF149E752319EA8C00360722 /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		EFD791E320177EA2005E3027 /* TKEventsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKEventsManager.h; sourceTree = "<group>"; };
 		EFD791E420177EA2005E3027 /* TKEventsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKEventsManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -449,6 +462,9 @@
 		D68E94801F06301F009E2C9C /* General */ = {
 			isa = PBXGroup;
 			children = (
+				D65199F123E1ACAC00CC48AD /* TKEnvironment.h */,
+				D65199F223E1ACAC00CC48AD /* TKEnvironment.m */,
+				D65199F923E1B8DF00CC48AD /* TKEnvironment+Private.h */,
 				EFD791E320177EA2005E3027 /* TKEventsManager.h */,
 				EFD791E420177EA2005E3027 /* TKEventsManager.m */,
 				D6D1F770201892D4009E6249 /* TKEventsManager+Private.h */,
@@ -484,6 +500,7 @@
 				D6C3D04F1E4DD36200EBB54F /* TravelKit.h */,
 				D6C3D0851E5196CB00EBB54F /* TravelKit.m */,
 				D649BAA01ED6E23D003EF406 /* TravelKit-Prefix.pch */,
+				EF149E752319EA8C00360722 /* Config.xcconfig */,
 				D6C3D0501E4DD36200EBB54F /* Info.plist */,
 			);
 			path = TravelKit;
@@ -697,6 +714,7 @@
 				D6B0AD941FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D698319A1EF3D7F9002776BE /* TKTour.h in Headers */,
 				D61CB53C202C80AC00441FF6 /* TKFavoritesManager.h in Headers */,
+				D65199F523E1ACAC00CC48AD /* TKEnvironment.h in Headers */,
 				D69831AA1EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144D1F84D84500E59C95 /* TKSession.h in Headers */,
 				D64B6131200652BF0098ADDF /* TKDirection.h in Headers */,
@@ -718,6 +736,7 @@
 				D6F0E4891ED6EF5800A0D3D5 /* FMResultSet.h in Headers */,
 				EFD791E720177EA2005E3027 /* TKEventsManager.h in Headers */,
 				EF0D9D6E1EFAAF7500C50AE2 /* TKDatabaseManager+Private.h in Headers */,
+				D65199FC23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */,
 				D6745D6721888F79008A4364 /* TKCollectionsQuery.h in Headers */,
 				D664E6CA2194240B00169303 /* TKCollection+Private.h in Headers */,
 				D660571F21889326000ED0D3 /* TKCollection.h in Headers */,
@@ -753,6 +772,7 @@
 				D6B0AD921FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D69831981EF3D7F9002776BE /* TKTour.h in Headers */,
 				D61CB53A202C80AC00441FF6 /* TKFavoritesManager.h in Headers */,
+				D65199F323E1ACAC00CC48AD /* TKEnvironment.h in Headers */,
 				D69831A81EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144B1F84D84500E59C95 /* TKSession.h in Headers */,
 				D64B612F200652BF0098ADDF /* TKDirection.h in Headers */,
@@ -774,6 +794,7 @@
 				D6F0E47E1ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */,
 				EFD791E520177EA2005E3027 /* TKEventsManager.h in Headers */,
 				EF0D9D6A1EFAAF7400C50AE2 /* TKDatabaseManager+Private.h in Headers */,
+				D65199FA23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */,
 				D6745D6521888E87008A4364 /* TKCollectionsQuery.h in Headers */,
 				D6BEE6FF219422C200215DFA /* TKCollection+Private.h in Headers */,
 				D660571D21889326000ED0D3 /* TKCollection.h in Headers */,
@@ -809,6 +830,7 @@
 				D6B0AD931FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */,
 				D69831991EF3D7F9002776BE /* TKTour.h in Headers */,
 				D61CB53B202C80AC00441FF6 /* TKFavoritesManager.h in Headers */,
+				D65199F423E1ACAC00CC48AD /* TKEnvironment.h in Headers */,
 				D69831A91EF7AE8A002776BE /* TKToursManager.h in Headers */,
 				D6CB144C1F84D84500E59C95 /* TKSession.h in Headers */,
 				D64B6130200652BF0098ADDF /* TKDirection.h in Headers */,
@@ -830,6 +852,7 @@
 				D6F0E47F1ED6EF5800A0D3D5 /* FMDatabaseQueue.h in Headers */,
 				EFD791E620177EA2005E3027 /* TKEventsManager.h in Headers */,
 				EF0D9D6C1EFAAF7400C50AE2 /* TKDatabaseManager+Private.h in Headers */,
+				D65199FB23E1B8DF00CC48AD /* TKEnvironment+Private.h in Headers */,
 				D6745D6621888F79008A4364 /* TKCollectionsQuery.h in Headers */,
 				D664E6C92194240B00169303 /* TKCollection+Private.h in Headers */,
 				D660571E21889326000ED0D3 /* TKCollection.h in Headers */,
@@ -900,7 +923,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = TK;
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1170;
 				ORGANIZATIONNAME = Tripomatic;
 				TargetAttributes = {
 					D6B2A1281E530AFD005509E8 = {
@@ -923,10 +946,11 @@
 			};
 			buildConfigurationList = D6C3D0461E4DD36200EBB54F /* Build configuration list for PBXProject "TravelKit" */;
 			compatibilityVersion = "Xcode 10.0";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = D6C3D0421E4DD36200EBB54F;
 			productRefGroup = D6C3D04D1E4DD36200EBB54F /* Products */;
@@ -977,7 +1001,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "######################\n# Options\n######################\n\nREVEAL_ARCHIVE_IN_FINDER=true\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\n\n######################\n# Build Frameworks\n######################\n\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME}-iOS -sdk iphonesimulator -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\n\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME}-iOS -sdk iphoneos -configuration ${CONFIGURATION} clean build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\n\n\n######################\n# Copy files Framework\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\n\n\n######################\n# Make an universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\" | echo\n\n######################\n# On Release, copy the result to release directory\n######################\n\nOUTPUT_DIR=\"${PROJECT_DIR}/Output/${FRAMEWORK_NAME}-${CONFIGURATION}-iphoneuniversal/\"\n\nrm -rf \"$OUTPUT_DIR\"\nmkdir -p \"$OUTPUT_DIR\"\n\ncp -r \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\n\nif [ ${REVEAL_ARCHIVE_IN_FINDER} = true ]; then\n    open \"${OUTPUT_DIR}/\"\nfi\n";
+			shellScript = "######################\n# Options\n######################\n\nREVEAL_ARCHIVE_IN_FINDER=true\n\nFRAMEWORK_NAME=\"${PROJECT_NAME}\"\n\nSIMULATOR_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphonesimulator/${FRAMEWORK_NAME}.framework\"\nDEVICE_LIBRARY_PATH=\"${BUILD_DIR}/${CONFIGURATION}-iphoneos/${FRAMEWORK_NAME}.framework\"\n\nSIMULATOR_DSYM_PATH=\"${SIMULATOR_LIBRARY_PATH}.dSYM\"\nDEVICE_DSYM_PATH=\"${DEVICE_LIBRARY_PATH}.dSYM\"\n\nUNIVERSAL_LIBRARY_DIR=\"${BUILD_DIR}/${CONFIGURATION}-iphoneuniversal\"\n\nFRAMEWORK=\"${UNIVERSAL_LIBRARY_DIR}/${FRAMEWORK_NAME}.framework\"\nDSYM=\"${FRAMEWORK}.dSYM\"\n\n######################\n# Build Frameworks\n######################\n\n#xcodebuild clean\n\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME}-iOS -sdk iphonesimulator -configuration ${CONFIGURATION} build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphonesimulator 2>&1\n\nxcodebuild -workspace ${PROJECT_NAME}.xcworkspace -scheme ${PROJECT_NAME}-iOS -sdk iphoneos -configuration ${CONFIGURATION} build CONFIGURATION_BUILD_DIR=${BUILD_DIR}/${CONFIGURATION}-iphoneos 2>&1\n\n######################\n# Create directory for universal\n######################\n\nrm -rf \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${UNIVERSAL_LIBRARY_DIR}\"\n\nmkdir \"${FRAMEWORK}\"\nmkdir \"${DSYM}\"\n\n\n######################\n# Copy Device Framework files\n######################\n\ncp -r \"${DEVICE_LIBRARY_PATH}/.\" \"${FRAMEWORK}\"\ncp -r \"${DEVICE_DSYM_PATH}/.\" \"${DSYM}\"\n\n\n######################\n# Make a universal binary\n######################\n\nlipo \"${SIMULATOR_LIBRARY_PATH}/${FRAMEWORK_NAME}\" \"${DEVICE_LIBRARY_PATH}/${FRAMEWORK_NAME}\" -create -output \"${FRAMEWORK}/${FRAMEWORK_NAME}\"\n\nlipo \"${SIMULATOR_DSYM_PATH}/Contents/Resources/DWARF/${FRAMEWORK_NAME}\" \"${DEVICE_DSYM_PATH}/Contents/Resources/DWARF/${FRAMEWORK_NAME}\" -create -output \"${DSYM}/Contents/Resources/DWARF/${FRAMEWORK_NAME}\"\n\n######################\n# Copy the result to output directory\n######################\n\nOUTPUT_DIR=\"${PROJECT_DIR}/Output/${FRAMEWORK_NAME}-${CONFIGURATION}-iphoneuniversal/\"\n\nrm -rf \"$OUTPUT_DIR\"\nmkdir -p \"$OUTPUT_DIR\"\n\ncp -r \"${FRAMEWORK}\" \"$OUTPUT_DIR\"\ncp -r \"${DSYM}\" \"$OUTPUT_DIR\"\n\nif [ ${REVEAL_ARCHIVE_IN_FINDER} = true ]; then\n    open \"${OUTPUT_DIR}/\"\nfi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1012,6 +1036,7 @@
 				D6B2A1321E530B11005509E8 /* TKAPI.m in Sources */,
 				D660571A21889046000ED0D3 /* TKCollectionsQuery.m in Sources */,
 				D61B925C1ED4798200645489 /* TKReachability.m in Sources */,
+				D65199F823E1ACAC00CC48AD /* TKEnvironment.m in Sources */,
 				D6B2A1381E530B11005509E8 /* TKMapWorker.m in Sources */,
 				D69831A71EF7AE8A002776BE /* TKToursManager.m in Sources */,
 				D69831A21EF3F051002776BE /* TKTour.m in Sources */,
@@ -1054,6 +1079,7 @@
 				D61B925A1ED4798200645489 /* TKReachability.m in Sources */,
 				D660571821889046000ED0D3 /* TKCollectionsQuery.m in Sources */,
 				D6B2A1631E531097005509E8 /* TKMapWorker.m in Sources */,
+				D65199F623E1ACAC00CC48AD /* TKEnvironment.m in Sources */,
 				D69831A51EF7AE8A002776BE /* TKToursManager.m in Sources */,
 				D69831A01EF3F051002776BE /* TKTour.m in Sources */,
 				D68E947D1F05354E009E2C9C /* TKSessionManager.m in Sources */,
@@ -1096,6 +1122,7 @@
 				D6C3D0861E5196CB00EBB54F /* TravelKit.m in Sources */,
 				D660571921889046000ED0D3 /* TKCollectionsQuery.m in Sources */,
 				D61B925B1ED4798200645489 /* TKReachability.m in Sources */,
+				D65199F723E1ACAC00CC48AD /* TKEnvironment.m in Sources */,
 				D6C3D0631E4DDE2D00EBB54F /* TKMedium.m in Sources */,
 				D69831A61EF7AE8A002776BE /* TKToursManager.m in Sources */,
 				D69831A11EF3F051002776BE /* TKTour.m in Sources */,
@@ -1177,6 +1204,7 @@
 		};
 		D6C3D0521E4DD36200EBB54F /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EF149E752319EA8C00360722 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1198,6 +1226,7 @@
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
@@ -1251,9 +1280,8 @@
 				SKIP_INSTALL = YES;
 				STRIP_INSTALLED_PRODUCT = NO;
 				STRIP_SWIFT_SYMBOLS = NO;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TK_BUNDLE_BUILD = 238;
-				TK_BUNDLE_VERSION = 2.0.3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -1269,6 +1297,7 @@
 		};
 		D6C3D0531E4DD36200EBB54F /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EF149E752319EA8C00360722 /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1290,6 +1319,7 @@
 				CLANG_WARN_IMPLICIT_SIGN_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NULLABLE_TO_NONNULL_CONVERSION = YES;
 				CLANG_WARN_OBJC_EXPLICIT_OWNERSHIP_TYPE = YES;
 				CLANG_WARN_OBJC_IMPLICIT_ATOMIC_PROPERTIES = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
@@ -1339,9 +1369,8 @@
 				PRODUCT_NAME = TravelKit;
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SKIP_INSTALL = YES;
+				SUPPORTS_MACCATALYST = NO;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TK_BUNDLE_BUILD = 238;
-				TK_BUNDLE_VERSION = 2.0.3;
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -16,12 +16,19 @@
 {
 	if (!response) return nil;
 
+	NSNumber *ID = [response[@"id"] parsedNumber];
+	NSString *title = [response[@"title"] parsedString];
+	NSString *type = [response[@"type"] parsedString];
+	NSString *urlString = [response[@"url"] parsedString];
+
+	if (!ID || !title || !type || !urlString)
+		return nil;
+
 	if (self = [super init])
 	{
-		NSNumber *ID = [response[@"id"] parsedNumber];
 		_ID = [ID unsignedIntegerValue];
-		_title = [response[@"title"] parsedString];
-		_type = [response[@"type"] parsedString];
+		_title = title;
+		_type = type;
 		_languageID = [response[@"language_id"] parsedString];
 
 		NSMutableArray *flags = [NSMutableArray arrayWithCapacity:3];
@@ -40,16 +47,18 @@
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
-		NSString *url = [response[@"url"] parsedString];
-		if (url) _onlineURL = [NSURL URLWithString:url];
-		if (url && !_onlineURL)
-			_onlineURL = [NSURL URLWithString:
-				[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+		NSURL *url = [NSURL URLWithString:urlString];
+
+		if (!url) {
+			urlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+			url = [NSURL URLWithString:urlString];
+		}
+
+		if (!url) return nil;
+
+		_onlineURL = url;
 
 #pragma clang diagnostic pop
-
-		if (!ID || !_title || !_type || !_onlineURL)
-			return nil;
 
 		_supplier = [response[@"supplier"] parsedString];
 		_priority = [response[@"priority"] integerValue];
@@ -102,7 +111,7 @@
 		@"airport_transfer": @"menuicon-airplane",
 	};
 
-	return menuIconNames[_type];
+	return menuIconNames[_type] ?: menuIconNames[@"info"];
 }
 
 - (NSString *)description

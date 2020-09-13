@@ -22,15 +22,20 @@
 
 - (instancetype)initFromDictionary:(NSDictionary *)dictionary
 {
+	NSString *accessToken = [dictionary[@"accessToken"] parsedString] ?:
+		                    [dictionary[@"access_token"] parsedString];
+	NSString *refreshToken = [dictionary[@"refreshToken"] parsedString] ?:
+		                     [dictionary[@"refresh_token"] parsedString];
+
+	if (!accessToken || !refreshToken)
+		return nil;
+
 	if (self = [super init])
 	{
 		// Tokens parsing
 
-		_accessToken = [dictionary[@"accessToken"] parsedString] ?:
-		               [dictionary[@"access_token"] parsedString];
-
-		_refreshToken = [dictionary[@"refreshToken"] parsedString] ?:
-		                [dictionary[@"refresh_token"] parsedString];
+		_accessToken = accessToken;
+		_refreshToken = refreshToken;
 
 		// Expiration parsing
 		// Local part
@@ -38,17 +43,17 @@
 		NSNumber *refresh = [dictionary[@"refreshDate"] parsedNumber];
 		NSNumber *expiration = [dictionary[@"expirationDate"] parsedNumber];
 
-		if (refresh) _refreshDate = [NSDate dateWithTimeIntervalSince1970:floor(refresh.doubleValue)];
-		if (expiration) _expirationDate = [NSDate dateWithTimeIntervalSince1970:floor(expiration.doubleValue)];
+		if (refresh != nil) _refreshDate = [NSDate dateWithTimeIntervalSince1970:floor(refresh.doubleValue)];
+		if (expiration != nil) _expirationDate = [NSDate dateWithTimeIntervalSince1970:floor(expiration.doubleValue)];
 		else {
 			expiration = [dictionary[@"expires_in"] parsedNumber];
 			NSTimeInterval refreshInterval = floor(expiration.doubleValue * 0.8);
 			NSTimeInterval expiryInterval = floor(expiration.doubleValue);
-			if (expiration) _refreshDate = [[NSDate new] dateByAddingTimeInterval:refreshInterval];
-			if (expiration) _expirationDate = [[NSDate new] dateByAddingTimeInterval:expiryInterval];
+			if (expiration != nil) _refreshDate = [[NSDate new] dateByAddingTimeInterval:refreshInterval];
+			if (expiration != nil) _expirationDate = [[NSDate new] dateByAddingTimeInterval:expiryInterval];
 		}
 
-		if (!_accessToken || !_refreshToken || !_expirationDate)
+		if (!_expirationDate)
 			return nil;
 	}
 

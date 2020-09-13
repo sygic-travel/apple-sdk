@@ -33,7 +33,12 @@
 #define API_PROTOCOL   "https"
 #define API_SUBDOMAIN  "api"
 #define API_BASE_URL   "sygictravelapi.com"
-#define API_VERSION    "1.1"
+#define API_VERSION    "1.2"
+
+#define API_CALL_TIMEOUT_QUICK      8.0
+#define API_CALL_TIMEOUT_DEFAULT   16.0
+#define API_CALL_TIMEOUT_BATCH     32.0
+#define API_CALL_TIMEOUT_CHANGES   56.0
 
 typedef NS_ENUM(NSInteger, TKAPIRequestType)
 {
@@ -83,7 +88,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 
 @property (nonatomic, copy) NSString *APIKey;
 @property (nonatomic, copy) NSString *accessToken;
-@property (nonatomic, copy) NSString *language;
+@property (nonatomic, copy) NSString *languageID;
 @property (nonatomic, copy, readonly) NSString *hostname;
 @property (nonatomic, readonly) BOOL isAlphaEnvironment; // Private
 
@@ -103,6 +108,29 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+#pragma mark - Changes API result -
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+@interface TKAPIChangesResult : NSObject
+
+@property (nonatomic, copy) NSDictionary<NSString *, NSNumber *> *updatedTripsDict;
+@property (nonatomic, copy) NSArray<NSString *> *deletedTripIDs;
+@property (nonatomic, copy) NSArray<NSString *> *updatedCustomPlaceIDs;
+@property (nonatomic, copy) NSArray<NSString *> *deletedCustomPlaceIDs;
+@property (nonatomic, copy) NSArray<NSString *> *updatedFavouriteIDs;
+@property (nonatomic, copy) NSArray<NSString *> *deletedFavouriteIDs;
+@property (atomic) BOOL updatedSettings;
+@property (nonatomic, strong) NSDate *timestamp;
+
+@end
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 #pragma mark - API request -
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -113,9 +141,12 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 
 @property (nonatomic, copy) NSString *APIKey; // Customizable
 @property (nonatomic, copy) NSString *accessToken; // Customizable
+
 @property (atomic) TKAPIRequestType type;
 @property (atomic) TKAPIRequestState state;
 @property (nonatomic) BOOL silent;
+
+@property (nonatomic, weak) NSOperationQueue *completionQueue; // Defaults to dedicated queue
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new  UNAVAILABLE_ATTRIBUTE;
@@ -131,10 +162,8 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 ////////////////////
 // Changes
 
-- (instancetype)initAsChangesRequestSince:(NSDate *)sinceDate success:(void (^)(
-	NSDictionary<NSString *, NSNumber *> *updatedTripsDict, NSArray<NSString *> *deletedTripIDs,
-	NSArray<NSString *> *updatedFavouriteIDs, NSArray<NSString *> *deletedFavouriteIDs,
-	BOOL updatedSettings, NSDate *timestamp))success failure:(TKAPIFailureBlock)failure;
+- (instancetype)initAsChangesRequestSince:(NSDate *)sinceDate
+	success:(void (^)(TKAPIChangesResult *result))success failure:(TKAPIFailureBlock)failure;
 
 ////////////////////
 // Trips
@@ -146,7 +175,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 	success:(void (^)(TKTrip *trip))success failure:(TKAPIFailureBlock)failure;
 
 - (instancetype)initAsUpdateTripRequestForTrip:(TKTrip *)trip
-	success:(void (^)(TKTrip *, TKTripConflict *))success failure:(void (^)(TKAPIError *))failure;
+	success:(void (^)(TKTrip *, TKTripConflict *))success failure:(TKAPIFailureBlock)failure;
 
 - (instancetype)initAsEmptyTrashRequestWithSuccess:(void (^)(NSArray<NSString *> *tripIDs))success
 	failure:(TKAPIFailureBlock)failure;
@@ -228,7 +257,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 /**
  * Method for easier sending of GET requests by appending just a path
  *
- * @param path     URL path of a request, f.e. '/activity/poi:530' when asking for Activity detail
+ * @param path     URL path of a request, example: '/activity/poi:530' when asking for Activity detail
  * @param success  Success block receiving parsed JSON data in NSDictionary-subclass object
  * @param failure  Failure block
  * @return         API Request instance
@@ -239,7 +268,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 /**
  * Method for easier sending of POST requests by appending just a path
  *
- * @param path     URL path of a request, f.e. '/activity/' when submitting new Custom Place
+ * @param path     URL path of a request, example: '/activity/' when submitting new Custom Place
  * @param json     JSON string with data to be included in POST request
  * @param success  Success block receiving parsed JSON response in NSDictionary-subclass object
  * @param failure  Failure block
@@ -251,7 +280,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 /**
  * Method for easier sending of PUT requests by appending just a path
  *
- * @param path     URL path of a request, f.e. '/activity/c:12903' when submitting Custom Place udpate
+ * @param path     URL path of a request, example: '/activity/c:12903' when submitting Custom Place udpate
  * @param json     JSON string with data to be included in PUT request
  * @param success  Success block receiving parsed JSON response in NSDictionary-subclass object
  * @param failure  Failure block
@@ -263,7 +292,7 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 /**
  * Method for easier sending of DELETE requests by appending just a path
  *
- * @param path     URL path of a request, f.e. '/activity/c:12903' when submitting Custom Place udpate
+ * @param path     URL path of a request, example: '/activity/c:12903' when submitting Custom Place udpate
  * @param success  Success block receiving parsed JSON response in NSDictionary-subclass object
  * @param failure  Failure block
  * @return         API Request instance

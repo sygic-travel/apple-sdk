@@ -39,7 +39,7 @@ NS_ASSUME_NONNULL_BEGIN
 /// Potential price of the Reference if applicable. Value in `USD`.
 @property (nonatomic, copy, nullable, readonly) NSNumber *price;
 
-/// Reference language. See list of availabkle language IDs: `language`.
+/// Reference language. See list of available language IDs: `language`.
 ///
 /// @note May be `nil` if generic. 
 @property (nonatomic, copy, nullable, readonly) NSString *languageID;

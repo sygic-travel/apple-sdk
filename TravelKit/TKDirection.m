@@ -49,19 +49,23 @@
 		_sourceLocation.coordinate.latitude, _sourceLocation.coordinate.longitude,
 		_destinationLocation.coordinate.latitude, _destinationLocation.coordinate.longitude] mutableCopy];
 
-	if (_relativeDepartureDate)
-		[str appendFormat:@"|Depart:%@", [[NSDateFormatter
-			shared8601RelativeDateTimeFormatter] stringFromDate:_relativeDepartureDate]];
+	NSDate *date = nil;
 
-	if (_relativeArrivalDate)
+	if ((date = _relativeDepartureDate))
+		[str appendFormat:@"|Depart:%@", [[NSDateFormatter
+			shared8601RelativeDateTimeFormatter] stringFromDate:date]];
+
+	if ((date = _relativeArrivalDate))
 		[str appendFormat:@"|Arrive:%@", [[NSDateFormatter
-			shared8601RelativeDateTimeFormatter] stringFromDate:_relativeArrivalDate]];
+			shared8601RelativeDateTimeFormatter] stringFromDate:date]];
 
 	if (_avoidOption)
 		[str appendFormat:@"|Avoid:%tu", _avoidOption];
 
-	if (_waypoints.count)
-		[str appendFormat:@"|Poly:%@", [TKMapWorker polylineFromPoints:_waypoints]];
+	NSArray<CLLocation *> *waypoints = _waypoints;
+
+	if (waypoints.count)
+		[str appendFormat:@"|Poly:%@", [TKMapWorker polylineFromPoints:waypoints]];
 
 	return [str copy];
 }
@@ -86,10 +90,10 @@
 	{
 		NSNumber *lat = [dictionary[@"origin"][@"lat"] parsedNumber];
 		NSNumber *lng = [dictionary[@"origin"][@"lng"] parsedNumber];
-		if (lat && lng) _sourceLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat != nil && lng != nil) _sourceLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 		lat = [dictionary[@"destination"][@"lat"] parsedNumber];
 		lng = [dictionary[@"destination"][@"lng"] parsedNumber];
-		if (lat && lng) _destinationLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat != nil && lng != nil) _destinationLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 
 		if (!_sourceLocation || !_destinationLocation)
 			return nil;
@@ -133,12 +137,14 @@
 		_distance = [[dictionary[@"distance"] parsedNumber] doubleValue];
 		_duration = [[dictionary[@"duration"] parsedNumber] doubleValue];
 
+		NSString *mode = [dictionary[@"mode"] parsedString];
+
 		NSDictionary<NSString *, NSNumber *> *modes = @{
 			@"pedestrian": @(TKDirectionModeWalk),
 			@"car": @(TKDirectionModeCar),
 			@"public_transit": @(TKDirectionModePublicTransport),
 		};
-		_mode = modes[[dictionary[@"mode"] parsedString]].unsignedIntegerValue;
+		_mode = modes[mode].unsignedIntegerValue;
 
 		_steps = [[dictionary[@"legs"] parsedArray]
 		  mappedArrayUsingBlock:^TKDirectionStep *(NSDictionary *leg) {
@@ -158,13 +164,18 @@
 
 	for (TKDirectionStep *step in _steps)
 	{
-		if (step.polyline) {
-			NSArray<CLLocation *> *points = [TKMapWorker pointsFromPolyline:step.polyline] ?: @[ ];
+		NSString *polyline = step.polyline;
+
+		if (polyline) {
+			NSArray<CLLocation *> *points = [TKMapWorker pointsFromPolyline:polyline] ?: @[ ];
 			[coords addObjectsFromArray:points];
 		} else {
+			CLLocation *loc = nil;
 			if (step == _steps.firstObject)
-				[coords addObject:step.originLocation];
-			[coords addObject:step.destinationLocation];
+				if ((loc = step.originLocation))
+					[coords addObject:loc];
+			if ((loc = step.destinationLocation))
+				[coords addObject:loc];
 		}
 	}
 
@@ -192,6 +203,8 @@
 		_distance = [[dictionary[@"distance"] parsedNumber] doubleValue];
 		_duration = [[dictionary[@"duration"] parsedNumber] doubleValue];
 
+		NSString *mode = [dictionary[@"mode"] parsedString];
+
 		NSDictionary<NSString *, NSNumber *> *modes = @{
 			@"bike": @(TKDirectionStepModeBike),
 			@"boat": @(TKDirectionStepModeBoat),
@@ -205,19 +218,19 @@
 			@"train": @(TKDirectionStepModeTrain),
 			@"tram": @(TKDirectionStepModeTram),
 		};
-		_mode = modes[[dictionary[@"mode"] parsedString]].unsignedIntegerValue;
+		_mode = modes[mode].unsignedIntegerValue;
 
 		_polyline = [dictionary[@"polyline"] parsedString];
 
 		_originName = [dictionary[@"origin"][@"name"] parsedString];
 		NSNumber *lat = [dictionary[@"origin"][@"location"][@"lat"] parsedNumber];
 		NSNumber *lng = [dictionary[@"origin"][@"location"][@"lng"] parsedNumber];
-		if (lat && lng) _originLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat != nil && lng != nil) _originLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 
 		_destinationName = [dictionary[@"destination"][@"name"] parsedString];
 		lat = [dictionary[@"destination"][@"location"][@"lat"] parsedNumber];
 		lng = [dictionary[@"destination"][@"location"][@"lng"] parsedNumber];
-		if (lat && lng) _destinationLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
+		if (lat != nil && lng != nil) _destinationLocation = [[CLLocation alloc] initWithLatitude:lat.doubleValue longitude:lng.doubleValue];
 
 		_headsign = [dictionary[@"display_info"][@"headsign"] parsedString];
 		_shortName = [dictionary[@"display_info"][@"name_short"] parsedString];

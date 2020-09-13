@@ -302,9 +302,14 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 		if (changesTimestamp > 0) since = [NSDate dateWithTimeIntervalSince1970:changesTimestamp];
 
 		TKAPIRequest *listRequest = [[TKAPIRequest alloc] initAsChangesRequestSince:since
-		success:^(NSDictionary<NSString *,NSNumber *> *updatedTripsDict, NSArray<NSString *> *deletedTripIDs,
-		NSArray<NSString *> *updatedFavouriteIDs, NSArray<NSString *> *deletedFavouriteIDs,
-		BOOL __unused updatedSettings, NSDate *timestamp) {
+		success:^(TKAPIChangesResult *result) {
+
+			// Read result values
+			NSDictionary<NSString *,NSNumber *> *updatedTripsDict = result.updatedTripsDict;
+			NSArray<NSString *> *deletedTripIDs = result.deletedTripIDs;
+			NSArray<NSString *> *updatedFavouriteIDs = result.updatedFavouriteIDs;
+			NSArray<NSString *> *deletedFavouriteIDs = result.deletedFavouriteIDs;
+			NSDate *timestamp = result.timestamp;
 
 			// Report online statistics
 			SyncLog(@"Got list with %tu Trip updates and %tu Favourite updates",
@@ -501,19 +506,23 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 - (void)resolveTripConflicts
 {
-	if (!_tripConflicts.count) {
+	NSArray<TKTripConflict *> *conlicts = [_tripConflicts copy];
+
+	if (!conlicts.count) {
 		[self checkState];
 		return;
 	}
 
-	if (_events.tripConflictsHandler)
+	__auto_type handler = _events.tripConflictsHandler;
+
+	if (handler)
 	{
 		dispatch_semaphore_t sema = dispatch_semaphore_create(0);
 
 		[[NSOperationQueue mainQueue] addOperationWithBlock:^{
-			_events.tripConflictsHandler(_tripConflicts, ^{
+			handler(conlicts, ^{
 
-				for (TKTripConflict *conf in _tripConflicts)
+				for (TKTripConflict *conf in conlicts)
 				{
 					TKTrip *localTrip = conf.localTrip;
 
@@ -550,7 +559,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 	}
 
 	else
-		for (TKTripConflict *conf in _tripConflicts.copy)
+		for (TKTripConflict *conf in conlicts)
 			[self processResponseWithTrip:conf.remoteTrip sentTripID:conf.localTrip.ID];
 
 	[self checkState];
@@ -688,7 +697,7 @@ typedef NS_ENUM(NSUInteger, TKSynchronizationNotificationType) {
 
 - (BOOL)syncInProgress
 {
-    return (_state != TKSynchronizationStateStandby);
+	return (_state != TKSynchronizationStateStandby);
 }
 
 - (BOOL)hasChangesToSynchronize

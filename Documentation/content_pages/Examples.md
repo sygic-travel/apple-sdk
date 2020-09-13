@@ -8,25 +8,24 @@
 // Get and print the name and description of Eiffel Tower (poi:530)
 TKPlacesManager *manager = [[TravelKit sharedKit] places];
 
-[manager detailedPlaceWithID: @"poi:530" completion:^(TKDetailedPlace * _Nullable place, NSError * _Nullable error) {
+[manager detailedPlaceWithID:@"poi:530" completion:^(TKDetailedPlace * _Nullable place, NSError * _Nullable error) {
     if (place) {
         NSString *description = place.detail.fullDescription.text;
-        if (description) NSLog(@"Description of %@ is: %@", place.name, description);
-        else NSLog(@"Something went wrong :/");
+        NSLog(@"Description of %@ is: %@", place.name, description);
     }
+    else NSLog(@"Something went wrong :/");
 }];
 ```
 
 ```swift
 // Get and print the name and description of Eiffel Tower (poi:530)
-TravelKit.shared.places.detailedPlace(withID: "poi:530", completion:{ (detailedPlace, err) in
-    if let description = detailedPlace?.detail?.fullDescription?.text {
-        print("Description of \(detailedPlace.name) is: \(description)")
-    }
-    else {
+TravelKit.shared.places.detailedPlace(withID: "poi:530") { (detailedPlace, error) in
+    if let place = detailedPlace, let desc = place.detail?.fullDescription?.text {
+        print("Description of \(place.name) is:\n\n\(desc)")
+    } else {
         print("Something went wrong :/")
     }
-})
+}
 ```
 
 ### Get place media
@@ -50,7 +49,7 @@ TKPlacesManager *manager = [[TravelKit sharedKit] places];
 
 ```swift
 // Besides main media, we can get all media available for a certain place
-TravelKit.shared.places.mediaForPlace(withID: "poi:530", completion: { (media, err) in
+TravelKit.shared.places.mediaForPlace(withID: "poi:530") { (media, err) in
     if let media = media, let first = media.first {
         // Print medium title if it has one
         for m in media {
@@ -59,7 +58,7 @@ TravelKit.shared.places.mediaForPlace(withID: "poi:530", completion: { (media, e
         // To get the actual image from URL with certain size, we use method in TKMedium
         first.displayableImageURL(for: CGSize(width: first.width, height: first.height))
     }
-})
+}
 ```
 
 ## Tours module
@@ -93,7 +92,7 @@ query.minimalDuration = 3600
 query.count = 12
 
 // Perform query and print a message containing tour's title
-TravelKit.shared._tours.tours(for: query) { (tours, err) in
+TravelKit.shared.tours.tours(for: query) { (tours, err) in
     if let tours = tours {
         for tour in tours {
             print("\(tour.title)")
@@ -102,18 +101,18 @@ TravelKit.shared._tours.tours(for: query) { (tours, err) in
 }
 ```
 
-## Favorites module
+## Favourites module
 
-### Favorite & unfavorite places
+### Favourite & unfavourite places
 
 ```objc
 TKFavoritesManager *manager = [[TravelKit sharedKit] favorites];
 // Add Eiffel Tower to favorites
-[manager updateFavoritePlaceID:@"poi:530" setFavorite:TRUE];
+[manager updateFavoritePlaceID:@"poi:530" setFavorite:YES];
 // Get your favorites and print their IDs
 NSLog(@"%@", [manager favoritePlaceIDs]);
 // Remove Eiffel Tower from favorites
-[manager updateFavoritePlaceID:@"poi:530" setFavorite:FALSE];
+[manager updateFavoritePlaceID:@"poi:530" setFavorite:NO];
 ```
 
 ```swift

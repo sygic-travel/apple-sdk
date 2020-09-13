@@ -13,7 +13,7 @@
 #import "NSObject+Parsing.h"
 #import "NSDate+Tripomatic.h"
 
-// NSLocalizedString(@"Trip to %@", @"Default trip name pattern -- f.e. Trip to London")
+// NSLocalizedString(@"Trip to %@", @"Default trip name pattern -- e.g. Trip to London")
 // NSLocalizedString(@"My Trip", @"Generic Trip name")
 
 
@@ -30,7 +30,7 @@
 
 + (instancetype)itemForPlaceWithID:(NSString *)placeID
 {
-	return [[self alloc] itemForPlaceWithID:placeID];
+	return [[self alloc] initForPlaceWithID:placeID];
 }
 
 - (instancetype)initForPlaceWithID:(NSString *)placeID
@@ -72,9 +72,13 @@
 
 - (instancetype)initFromDatabase:(NSDictionary *)dict
 {
+	NSString *placeID = [dict[@"item_id"] parsedString];
+
+	if (!placeID) return nil;
+
 	if (self = [super init])
 	{
-		_placeID = [dict[@"item_id"] parsedString];
+		_placeID = placeID;
 		_duration = [dict[@"duration"] parsedNumber];
 		_note = [dict[@"note"] parsedString];
 		_startTime = [dict[@"start_time"] parsedNumber];
@@ -94,9 +98,13 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)dict
 {
+	NSString *placeID = [dict[@"place_id"] parsedString];
+
+	if (!placeID) return nil;
+
 	if (self = [super init])
 	{
-		_placeID = [dict[@"place_id"] parsedString];
+		_placeID = placeID;
 		_duration = [dict[@"duration"] parsedNumber];
 		_note = [dict[@"note"] parsedString];
 		_startTime = [dict[@"start_time"] parsedNumber];
@@ -180,12 +188,15 @@
 		trans[@"note"] = _transportNote ?: [NSNull null];
 		trans[@"route_id"] = _transportRouteID ?: [NSNull null];
 
-		NSArray<CLLocation *> *points = (_transportPolyline) ?
-			[TKMapWorker pointsFromPolyline:_transportPolyline] ?: @[ ] : @[ ];
+		NSString *polyline = _transportPolyline;
+		NSArray<CLLocation *> *points = nil;
+
+		if (polyline)
+			points = [TKMapWorker pointsFromPolyline:polyline];
 
 		trans[@"waypoints"] = [points mappedArrayUsingBlock:^id(CLLocation *l) {
 			return (l) ? @{ @"location": @{ @"lat": @(l.coordinate.latitude), @"lng": @(l.coordinate.longitude) } } : nil;
-		}];
+		}] ?: @[ ];
 
 		dict[@"transport_from_previous"] = trans;
 	}
@@ -374,28 +385,30 @@
 
 - (instancetype)initWithName:(NSString *)name
 {
-    if (self = [super init])
+	if (self = [super init])
 	{
 		_ID = [self.class randomTripID];
 		_name = name;
 		_version = 1;
-        _days = [NSMutableArray array];
+		_days = [NSMutableArray array];
 		_privacy = TKTripPrivacyPrivate;
 		_rights = TKTripRightsAllRights;
-    }
+	}
 
-    return self;
+	return self;
 }
 
 - (instancetype)initFromDatabase:(NSDictionary *)dict
                         dayDicts:(NSArray<NSDictionary *> *)dayDicts
                     dayItemDicts:(NSArray<NSDictionary *> *)dayItemDicts
 {
+	NSString *ID = [dict[@"id"] parsedString];
+
+	if (!ID) return nil;
+
 	if (self = [super init])
 	{
-		_ID = [dict[@"id"] parsedString];
-
-		if (!_ID) return nil;
+		_ID = ID;
 
 		// Basic attributes
 
@@ -443,11 +456,13 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)dict
 {
+	NSString *ID = [dict[@"id"] parsedString];
+
+	if (!ID) return nil;
+
 	if (self = [super init])
 	{
-		_ID = [dict[@"id"] parsedString];
-
-		if (!_ID) return nil;
+		_ID = ID;
 
 		// Basic attributes
 
@@ -490,9 +505,9 @@
 	return self;
 }
 
-- (BOOL)isEditable   { return (_rights & TKTripRightsEdit); }
-- (BOOL)isManageable { return (_rights & TKTripRightsManage); }
-- (BOOL)isDeletable  { return (_rights & TKTripRightsDelete); }
+- (BOOL)isEditable   { return (_rights & TKTripRightsEdit)   != 0; }
+- (BOOL)isManageable { return (_rights & TKTripRightsManage) != 0; }
+- (BOOL)isDeletable  { return (_rights & TKTripRightsDelete) != 0; }
 
 
 #pragma mark -
@@ -530,16 +545,21 @@
 	// Equality check performs all required
 	// fields indicating possible difference
 
+	NSInteger dateDiff = (NSInteger)floor(
+		self.lastUpdate.timeIntervalSince1970 -
+		trip.lastUpdate.timeIntervalSince1970);
+
 	return (self.class == trip.class &&
 	        self.version == trip.version &&
-	       [self.lastUpdate isEqualToDate:trip.lastUpdate] &&
+	        dateDiff == 0 &&
 	        self.rights == trip.rights &&
 	        self.privacy == trip.privacy);
 }
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<Trip | ID: %@>\n\tName: %@\n\tVersion: %lu\n\tStart date: %@\n\tLast update: %@",
+	return [NSString stringWithFormat:@"<Trip | ID: %@>\n\t"
+		"Name: %@\n\tVersion: %lu\n\tStart date: %@\n\tLast update: %@",
 			_ID, _name, (unsigned long)_version, _startDate, _lastUpdate];
 }
 
@@ -573,18 +593,15 @@
 	dict[@"base_version"] = @(_version);
 	if (_name) dict[@"name"] = _name;
 
-	if (_lastUpdate) dict[@"updated_at"] =
-		[[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:_lastUpdate];
+	NSDate *date = _lastUpdate;
 
-	if (_startDate) {
-		NSInteger daysCount = (NSInteger)_days.count;
-		NSDateFormatter *fmt = [NSDateFormatter sharedDateFormatter];
-		dict[@"starts_on"] = [fmt stringFromDate:_startDate];
-		dict[@"ends_on"] = [fmt stringFromDate:[_startDate dateByAddingNumberOfDays:daysCount-1]];
-	} else {
-		dict[@"starts_on"] = [NSNull null];
-		dict[@"ends_on"] = [NSNull null];
-	}
+	if (date) dict[@"updated_at"] =
+		[[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:date];
+
+	date = _startDate;
+
+	dict[@"starts_on"] = (date) ?
+		[[NSDateFormatter sharedDateFormatter] stringFromDate:date] : [NSNull null];
 
 	dict[@"privacy_level"] =
 	    (_privacy == TKTripPrivacyShareable) ? @"shareable" :
@@ -634,15 +651,20 @@
 
 - (instancetype)initFromDatabase:(NSDictionary *)dict
 {
-	if (!dict) return nil;
+	NSString *ID = [dict[@"id"] parsedString];
+	NSString *name = [dict[@"name"] parsedString];
+	NSString *ownerID = [dict[@"owner_id"] parsedString];
+
+	if (!ID || !name || !ownerID)
+		return nil;
 
 	if (self = [super init])
 	{
-		_ID = [dict[@"id"] parsedString];
-		_name = [dict[@"name"] parsedString];
+		_ID = ID;
+		_name = name;
 		_version = [[dict[@"version"] parsedNumber] unsignedIntegerValue];
 		_daysCount = [[dict[@"days"] parsedNumber] unsignedIntegerValue];
-		_ownerID = [dict[@"owner_id"] parsedString];
+		_ownerID = ownerID;
 
 		_destinationIDs = [[dict[@"destination_ids"] parsedString]
 			componentsSeparatedByString:@"|"] ?: @[ ];
@@ -662,9 +684,9 @@
 	return self;
 }
 
-- (BOOL)isEditable   { return (_rights & TKTripRightsEdit); }
-- (BOOL)isManageable { return (_rights & TKTripRightsManage); }
-- (BOOL)isDeletable  { return (_rights & TKTripRightsDelete); }
+- (BOOL)isEditable   { return (_rights & TKTripRightsEdit)   != 0; }
+- (BOOL)isManageable { return (_rights & TKTripRightsManage) != 0; }
+- (BOOL)isDeletable  { return (_rights & TKTripRightsDelete) != 0; }
 
 - (BOOL)isEqual:(TKTripInfo *)trip
 {
@@ -680,7 +702,8 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"<Trip Info | ID: %@>\n\tName = %@\n\tVersion = %tu\n\tStart date = %@\n\tDays count = %tu\n\tChanged = %c",
+	return [NSString stringWithFormat:@"<Trip Info | ID: %@>\n\t"
+		"Name = %@\n\tVersion = %tu\n\tStart date = %@\n\tDays count = %tu\n\tChanged = %c",
 			_ID, _name, _version, _startDate, _daysCount, _changed];
 }
 
@@ -700,11 +723,16 @@
 
 - (instancetype)initWithDictionary:(NSDictionary *)dictionary
 {
+	NSNumber *ID = [dictionary[@"id"] parsedNumber];
+	NSString *email = [dictionary[@"user_email"] parsedString];
+
+	if (!ID || !email) return nil;
+
 	if (self = [super init])
 	{
-		_ID = [dictionary[@"id"] parsedNumber];
+		_ID = ID;
+		_email = email;
 		_name = [dictionary[@"user_name"] parsedString];
-		_email = [dictionary[@"user_email"] parsedString];
 		_accepted = [[dictionary[@"accepted"] parsedNumber] boolValue];
 		_hasWriteAccess = [[dictionary[@"access_level"] parsedString] isEqual:@"read-write"];
 
@@ -737,16 +765,19 @@
 
 - (instancetype)initFromResponse:(NSDictionary *)dictionary
 {
+	NSNumber *ID = [dictionary[@"id"] parsedNumber];
+
+	TKTrip *trip = nil;
+	NSDictionary *tripDict = [dictionary[@"trip"] parsedDictionary];
+	if (tripDict) trip = [[TKTrip alloc] initFromResponse:tripDict];
+
+	if (!ID || !trip) return nil;
+
 	if (self = [super init])
 	{
-		_ID = [dictionary[@"id"] parsedNumber];
+		_ID = ID;
+		_trip = trip;
 		_perex = [dictionary[@"description"] parsedString];
-
-		NSDictionary *tripDict = [dictionary[@"trip"] parsedDictionary];
-		if (tripDict) _trip = [[TKTrip alloc] initFromResponse:tripDict];
-
-		if (!_ID || !_trip) return nil;
-
 		_duration = [dictionary[@"duration"] parsedNumber] ?:
 		            @(_trip.days.count * 86400);
 	}

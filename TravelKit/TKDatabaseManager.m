@@ -6,6 +6,7 @@
 //  Copyright (c) 2014 Tripomatic. All rights reserved.
 //
 
+#import "TKEnvironment+Private.h"
 #import "TKDatabaseManager+Private.h"
 
 #import "FMDatabase.h"
@@ -16,9 +17,6 @@
 
 #define NSStringMultiline(...) @#__VA_ARGS__
 
-
-// Database path
-NSString * const kDatabaseFilename = @"database.sqlite";
 
 // Database scheme
 NSUInteger const kDatabaseSchemeVersionLatest = 20171026;
@@ -64,29 +62,7 @@ NSString * const kTKDatabaseTableTripDayItems = @"trip_day_items";
 
 + (NSString *)databasePath
 {
-	static NSString *path = nil;
-
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-
-		NSString *bundleID = [[NSBundle mainBundle] bundleIdentifier];
-
-		path = [NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) firstObject];
-
-#if TARGET_OS_MAC
-		if (!bundleID) @throw @"Database initialization error";
-		path = [path stringByAppendingPathComponent:bundleID];
-#endif
-
-		// Handle Playground runtime a bit better
-		if ([bundleID containsString:@"com.apple.dt.Xcode"])
-			path = [NSSearchPathForDirectoriesInDomains(NSDesktopDirectory, NSUserDomainMask, YES) firstObject];
-
-		path = [path stringByAppendingPathComponent:@"TravelKit"];
-		path = [path stringByAppendingPathComponent:kDatabaseFilename];
-	});
-
-	return path;
+	return [TKEnvironment sharedEnvironment].databasePath;
 }
 
 - (instancetype)init
@@ -321,8 +297,10 @@ NSString * const kTKDatabaseTableTripDayItems = @"trip_day_items";
 				return;
 			}
 
+			NSDictionary *dict = nil;
 			while ([resultSet next])
-				[results addObject:resultSet.resultDictionary];
+				if ((dict = resultSet.resultDictionary))
+					[results addObject:dict];
 
 			[resultSet close];
 			resultSet = nil;

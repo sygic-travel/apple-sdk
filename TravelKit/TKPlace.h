@@ -89,6 +89,8 @@ typedef NS_OPTIONS(NSUInteger, TKPlaceDescriptionProvider) {
 	TKPlaceDescriptionProviderWikipedia      = 1 << 0,
 	/// Wikivoyage description.
 	TKPlaceDescriptionProviderWikivoyage     = 1 << 1,
+	/// Booking.com description.
+	TKPlaceDescriptionProviderBookingCom     = 1 << 2,
 };
 
 /**
@@ -99,6 +101,8 @@ typedef NS_OPTIONS(NSUInteger, TKTranslationProvider) {
 	TKTranslationProviderNone           = 0,
 	/// Google Translate.
 	TKTranslationProviderGoogle         = 1 << 0,
+	/// Bing Translation.
+	TKTranslationProviderBing           = 1 << 1,
 };
 
 
@@ -159,6 +163,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// @note Possible values: double in range `0`--`10.0`.
 @property (nonatomic, strong, nullable) NSNumber *rating;
 
+/// Stringified type intended to be shown in the UI, e.g. 'Playground', 'Post Office', 'ATM' etc.
+@property (nonatomic, copy, nullable) NSString *kind;
+
 /// Marker identifier usable for displayable icon. For more information please see [Sygic Travel API](http://docs.sygictravelapi.com/1.1/#section-places) .
 /// @note For a full list of all available markers see [Markers sheet](https://docs.google.com/spreadsheets/d/1mpP-aw6FrWBF4WQpgErCz2tsB_OhEp56co-y5VC80VY/edit#gid=0)
 @property (nonatomic, copy, nullable) NSString *marker;
@@ -217,6 +224,9 @@ NS_ASSUME_NONNULL_BEGIN
 /// Full-length text description.
 @property (nonatomic, copy) NSString *text;
 
+/// Language code of the description.
+@property (nonatomic, copy, nullable) NSString *languageID;
+
 /// Flag of the description provider.
 @property (atomic) TKPlaceDescriptionProvider provider;
 
@@ -225,9 +235,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 /// Flag of the translation provider.
 @property (atomic) TKTranslationProvider translationProvider;
-
-/// Flag indicating whether the description provided is translated.
-@property (atomic) BOOL translated;
 
 @end
 
@@ -277,6 +284,18 @@ NS_ASSUME_NONNULL_BEGIN
 /// List of main Media for use. Used for displaying a larger thumbnail or a cover photo.
 @property (nonatomic, copy, nullable) NSArray<TKMedium *> *mainMedia;
 
+/// Local name string.
+@property (nonatomic, copy, nullable) NSString *localName;
+
+/// Translated name string.
+@property (nonatomic, copy, nullable) NSString *translatedName;
+
+/// English name string.
+@property (nonatomic, copy, nullable) NSString *englishName;
+
+/// Time zone string.
+@property (nonatomic, copy, nullable) NSString *timezone;
+
 /// Address string.
 @property (nonatomic, copy, nullable) NSString *address;
 
@@ -289,11 +308,17 @@ NS_ASSUME_NONNULL_BEGIN
 /// Estimated avarage time that people usually spend at this place in seconds.
 @property (nonatomic, strong, nullable) NSNumber *duration;
 
-/// Opening hours string.
+/// Opening hours string in a structured OpenStreetMap format.
 @property (nonatomic, copy, nullable) NSString *openingHours;
+
+/// Opening hours note string.
+@property (nonatomic, copy, nullable) NSString *openingHoursNote;
 
 /// Admission string.
 @property (nonatomic, copy, nullable) NSString *admission;
+
+/// Additional attributes.
+@property (nonatomic, copy, nullable) NSDictionary<NSString *, NSString *> *attributes;
 
 @end
 

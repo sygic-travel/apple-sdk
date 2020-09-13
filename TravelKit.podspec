@@ -1,11 +1,13 @@
+
 Pod::Spec.new do |spec|
+
   spec.name         = 'TravelKit'
-  spec.version      = '2.0.3'
+  spec.version      = '3.0'
   spec.license      = 'MIT'
   spec.homepage     = 'https://github.com/sygic-travel/apple-sdk'
   spec.authors      = 'Tripomatic s.r.o.', 'Michal Zelinka'
   spec.summary      = 'Travel SDK for travelling projects'
-  spec.source       = { :http => 'https://github.com/sygic-travel/apple-sdk/releases/download/v2.0.3/TravelKit-2.0.3-iOS.zip' }
+  spec.source       = { :http => 'https://github.com/sygic-travel/apple-sdk/releases/download/v3.0/TravelKit-3.0-iOS.zip' }
   spec.documentation_url = 'http://docs.sygictravelapi.com/apple-sdk/latest'
   spec.module_name  = 'TravelKit'
 
@@ -14,7 +16,8 @@ Pod::Spec.new do |spec|
 
   spec.framework      = 'SystemConfiguration'
   spec.ios.framework  = 'CoreTelephony'
-  spec.ios.library = 'sqlite3'
+  spec.ios.library    = 'sqlite3'
 
   spec.ios.vendored_frameworks = 'TravelKit.framework'
+
 end

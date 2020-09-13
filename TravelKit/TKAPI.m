@@ -63,7 +63,7 @@
 	if (![subdomain hasSuffix:@"."])
 		subdomain = [subdomain stringByAppendingString:@"."];
 
-	NSString *lang = _language ?: @"en";
+	NSString *lang = _languageID ?: @"en";
 
 	_apiURL = [NSString stringWithFormat:@"%@://%@%@/%@/%@",
 	//          http[s]://  api.      sygictravelapi.com  /    xyz   /   en
@@ -91,9 +91,9 @@
 	_APIKey = [APIKey copy];
 }
 
-- (void)setLanguage:(NSString *)language
+- (void)setLanguageID:(NSString *)languageID
 {
-	_language = [language copy];
+	_languageID = languageID;
 
 	[self refreshServerProperties];
 }
@@ -122,13 +122,6 @@
 - (NSString *)URLStringForRequestType:(TKAPIRequestType)type path:(NSString *)path
 {
 	NSMutableString *ret = [_apiURL mutableCopy];
-
-//	BOOL useCDN = [self useCDNForRequestType:type];
-//
-//	// Switch to CDN URL
-//	if (useCDN)
-//		[ret replaceOccurrencesOfString:@"api." withString:@"api-cdn."
-//		    options:kNilOptions range:NSMakeRange(0, ret.length)];
 
 	// Append path
 
@@ -266,10 +259,9 @@
 @property (nonatomic, copy) NSString *identifier;
 @property (nonatomic, weak) id<TKAPIConnectionDelegate> delegate;
 
-@property (atomic, readonly) NSInteger responseStatus;
+@property (atomic) NSInteger responseStatus;
 @property (nonatomic, strong, readonly) NSURL *URL;
-@property (nonatomic, strong, readonly) NSMutableData *receivedData;
-@property (nonatomic, strong, readonly) NSURLConnection *connection;
+@property (nonatomic, strong, readonly) NSURLSessionTask *task;
 @property (nonatomic, strong, readonly) NSMutableURLRequest *request;
 
 @property (atomic) BOOL silent;
@@ -296,6 +288,8 @@
 
 @interface TKAPIRequest () <TKAPIConnectionDelegate>
 
+@property (class, nonatomic, readonly) NSOperationQueue *responseQueue;
+
 @property (nonatomic, copy) NSString *path;
 @property (nonatomic, copy) NSString *pathID;
 @property (nonatomic, copy) NSDictionary<NSString *, NSString *> *query;
@@ -309,6 +303,23 @@
 @end
 
 @implementation TKAPIRequest
+
+#pragma mark -
+#pragma mark Class stuff
+
++ (NSOperationQueue *)responseQueue
+{
+	static NSOperationQueue *queue = nil;
+
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		queue = [NSOperationQueue new];
+		queue.name = @"API Request-Response queue";
+		queue.qualityOfService = NSQualityOfServiceDefault;
+	});
+
+	return queue;
+}
 
 #pragma mark -
 #pragma mark Lifecycle
@@ -360,7 +371,14 @@
 	request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
 	request.HTTPMethod = [api HTTPMethodForRequestType:_type];
 
-	request.timeoutInterval = 10;
+	NSAssert(request != nil, @"[API] Failed to initiate API request: %@", urlString);
+
+	NSTimeInterval timeout = API_CALL_TIMEOUT_DEFAULT;
+	if (_type == TKAPIRequestTypePlacesQueryGET) timeout = API_CALL_TIMEOUT_QUICK;
+	else if (_type == TKAPIRequestTypeTripsBatchGET || _type == TKAPIRequestTypePlacesBatchGET) timeout = API_CALL_TIMEOUT_BATCH;
+	else if (_type == TKAPIRequestTypeChangesGET) timeout = API_CALL_TIMEOUT_CHANGES;
+
+	request.timeoutInterval = timeout;
 
 	if (_data.length) {
 		[request setHTTPBody:_data];
@@ -382,14 +400,24 @@
 	for (NSString *header in _HTTPHeaders.allKeys)
 		[request setValue:_HTTPHeaders[header] forHTTPHeaderField:header];
 
+	NSOperationQueue *queue = _completionQueue ?: [self.class responseQueue];
+
 	TKAPISuccessBlock success = ^(TKAPIResponse *response) {
-		_state = TKAPIRequestStateFinished;
-		if (_successBlock) _successBlock(response);
+		self->_state = TKAPIRequestStateFinished;
+		TKAPISuccessBlock successBlock = self->_successBlock;
+		if (successBlock)
+			[queue addOperationWithBlock:^{
+				successBlock(response);
+			}];
 	};
 
 	TKAPIFailureBlock failure = ^(TKAPIError *error) {
-		_state = TKAPIRequestStateFinished;
-		if (_failureBlock) _failureBlock(error);
+		self->_state = TKAPIRequestStateFinished;
+		TKAPIFailureBlock failureBlock = self->_failureBlock;
+		if (failureBlock)
+			[queue addOperationWithBlock:^{
+				failureBlock(error);
+			}];
 	};
 
 	_connection = [[TKAPIConnection alloc] initWithURLRequest:request success:success failure:failure];
@@ -431,26 +459,30 @@
 ////////////////////
 
 
-- (instancetype)initAsChangesRequestSince:(NSDate *)sinceDate success:(void (^)(
-	NSDictionary<NSString *, NSNumber *> *updatedTripsDict, NSArray<NSString *> *deletedTripIDs,
-	NSArray<NSString *> *updatedFavouriteIDs, NSArray<NSString *> *deletedFavouriteIDs,
-	BOOL updatedSettings, NSDate *timestamp))success failure:(TKAPIFailureBlock)failure
+- (instancetype)initAsChangesRequestSince:(NSDate *)sinceDate
+	success:(void (^)(TKAPIChangesResult *))success failure:(TKAPIFailureBlock)failure
 {
 	if (self = [super init])
 	{
 		_type = TKAPIRequestTypeChangesGET;
 
-		NSString *sinceString = (sinceDate) ? [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:sinceDate] : nil;
-
-		if (sinceString) _query = @{ @"since": sinceString };
+		if (sinceDate)
+		{
+			NSString *timestamp = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:sinceDate];
+			if (timestamp) _query = @{ @"since": timestamp };
+		}
 
 		_successBlock = ^(TKAPIResponse *response){
 
 			// Prepare structures for response data
-			NSMutableDictionary *updatedTripsDict = [NSMutableDictionary dictionaryWithCapacity:5];
-			NSMutableArray *deletedTripIDs = [NSMutableArray arrayWithCapacity:5],
-			               *updatedFavouriteItemIDs = [NSMutableArray arrayWithCapacity:5],
-			               *deletedFavouriteItemIDs = [NSMutableArray arrayWithCapacity:5];
+			NSMutableDictionary<NSString *, NSNumber *>
+			    *updatedTripsDict = [NSMutableDictionary dictionaryWithCapacity:5];
+			NSMutableArray<NSString *>
+			    *deletedTripIDs = [NSMutableArray arrayWithCapacity:5],
+			    *updatedCustomPlaceIDs = [NSMutableArray arrayWithCapacity:5],
+			    *deletedCustomPlaceIDs = [NSMutableArray arrayWithCapacity:5],
+			    *updatedFavouriteItemIDs = [NSMutableArray arrayWithCapacity:5],
+			    *deletedFavouriteItemIDs = [NSMutableArray arrayWithCapacity:5];
 			BOOL settingsUpdated = NO;
 
 			NSArray<NSDictionary *> *events = [response.data[@"changes"] parsedArray];
@@ -476,6 +508,17 @@
 						[deletedTripIDs addObject:ID];
 				}
 
+				// Custom Places updates
+
+				else if ([type isEqualToString:@"custom_place"])
+				{
+					if (!ID) continue;
+					if ([change isEqualToString:@"updated"])
+						[updatedCustomPlaceIDs addObject:ID];
+					else if (sinceDate && [change isEqualToString:@"deleted"])
+						[deletedCustomPlaceIDs addObject:ID];
+				}
+
 				// Favourites updates
 
 				else if ([type isEqualToString:@"favorite"])
@@ -497,9 +540,18 @@
 			// Get Changes timestamp
 			NSDate *datestamp = response.timestamp ?: [[NSDate now] dateByAddingTimeInterval:-5];
 
-			if (success)
-				success(updatedTripsDict, deletedTripIDs, updatedFavouriteItemIDs,
-				        deletedFavouriteItemIDs, settingsUpdated, datestamp);
+			// Fill in the result object
+			TKAPIChangesResult *result = [TKAPIChangesResult new];
+			result.updatedTripsDict = updatedTripsDict;
+			result.deletedTripIDs = deletedTripIDs;
+			result.updatedCustomPlaceIDs = updatedCustomPlaceIDs;
+			result.deletedCustomPlaceIDs = deletedCustomPlaceIDs;
+			result.updatedFavouriteIDs = updatedFavouriteItemIDs;
+			result.deletedFavouriteIDs = deletedFavouriteItemIDs;
+			result.updatedSettings = settingsUpdated;
+			result.timestamp = datestamp;
+
+			if (success) success(result);
 
 		}; _failureBlock = ^(TKAPIError *error){
 			if (failure) failure(error);
@@ -569,7 +621,7 @@
 }
 
 - (instancetype)initAsUpdateTripRequestForTrip:(TKTrip *)trip
-	success:(void (^)(TKTrip *, TKTripConflict *))success failure:(void (^)(TKAPIError *))failure
+	success:(void (^)(TKTrip *, TKTripConflict *))success failure:(TKAPIFailureBlock)failure
 {
 	if (self = [super init])
 	{
@@ -620,8 +672,8 @@
 		_successBlock = ^(TKAPIResponse *response) {
 
 			NSDictionary *data = [response.data parsedDictionary];
-			NSArray *tripIDs = [[data[@"deleted_trip_ids"] parsedArray]
-			  mappedArrayUsingBlock:^id(id obj) {
+			NSArray<NSString *> *tripIDs = [[data[@"deleted_trip_ids"] parsedArray]
+			  mappedArrayUsingBlock:^NSString *(id obj) {
 				return [obj parsedString];
 			}];
 
@@ -646,7 +698,7 @@
 		_successBlock = ^(TKAPIResponse *response){
 
 			NSArray *tripsArray = [response.data[@"trips"] parsedArray];
-			NSMutableArray *trips = [NSMutableArray array];
+			NSMutableArray<TKTrip *> *trips = [NSMutableArray array];
 
 			for (NSDictionary *dict in tripsArray)
 			{
@@ -680,14 +732,14 @@
 	{
 		_type = TKAPIRequestTypePlacesQueryGET;
 
-		NSMutableDictionary *queryDict = [NSMutableDictionary dictionaryWithCapacity:10];
+		NSMutableDictionary<NSString *, NSString *> *queryDict = [NSMutableDictionary dictionaryWithCapacity:10];
 
 		if (query.searchTerm.length)
 			queryDict[@"query"] = query.searchTerm;
 
 		if (query.levels)
 		{
-			NSMutableArray *levels = [NSMutableArray arrayWithCapacity:3];
+			NSMutableArray<NSString *> *levels = [NSMutableArray arrayWithCapacity:3];
 			NSDictionary<NSNumber *, NSString *> *supportedLevels = [TKPlace levelStrings];
 
 			for (NSNumber *sl in supportedLevels.allKeys)
@@ -702,6 +754,12 @@
 
 			if (lstr.length) queryDict[@"levels"] = lstr;
 		}
+
+		if (query.preferredLocation)
+			queryDict[@"preferred_location"] = [NSString stringWithFormat:@"%f,%f",
+				query.preferredLocation.coordinate.latitude,
+				query.preferredLocation.coordinate.longitude
+			];
 
 		if (query.quadKeys.count)
 		{
@@ -722,7 +780,7 @@
 
 		if (query.categories)
 		{
-			NSMutableArray *slugs = [NSMutableArray arrayWithCapacity:3];
+			NSMutableArray<NSString *> *slugs = [NSMutableArray arrayWithCapacity:3];
 			NSDictionary<NSNumber *, NSString *> *supportedSlugs = [TKPlace categorySlugs];
 
 			for (NSNumber *sl in supportedSlugs.allKeys)
@@ -749,11 +807,11 @@
 			queryDict[@"parents"] = [query.parentIDs componentsJoinedByString:operator];
 		}
 
-		if (query.minimumRating || query.maximumRating)
+		if (query.minimumRating != nil || query.maximumRating != nil)
 		{
-			NSString *minString = (query.minimumRating) ?
+			NSString *minString = (query.minimumRating != nil) ?
 				[NSString stringWithFormat:@"%.5f", query.minimumRating.floatValue] : @"";
-			NSString *maxString = (query.maximumRating) ?
+			NSString *maxString = (query.maximumRating != nil) ?
 				[NSString stringWithFormat:@"%.5f", query.maximumRating.floatValue] : @"";
 			queryDict[@"rating"] = [NSString stringWithFormat:@"%@:%@",
 				minString, maxString];
@@ -769,7 +827,7 @@
 
 		_successBlock = ^(TKAPIResponse *response){
 
-			NSMutableArray *stored = [NSMutableArray array];
+			NSMutableArray<TKPlace *> *stored = [NSMutableArray array];
 			NSArray *items = [response.data[@"places"] parsedArray];
 
 			for (NSDictionary *dict in items)
@@ -876,7 +934,7 @@
 	{
 		_type = TKAPIRequestTypeCollectionsQueryGET;
 
-		NSMutableDictionary *queryDict = [NSMutableDictionary dictionaryWithCapacity:10];
+		NSMutableDictionary<NSString *, NSString *> *queryDict = [NSMutableDictionary dictionaryWithCapacity:10];
 
 		if (query.searchTerm.length)
 			queryDict[@"query"] = query.searchTerm;
@@ -947,7 +1005,7 @@
 
 		_path = path;
 
-		NSMutableDictionary *queryDict = [NSMutableDictionary dictionaryWithCapacity:5];
+		NSMutableDictionary<NSString *, NSString *> *queryDict = [NSMutableDictionary dictionaryWithCapacity:5];
 
 		if (query.parentID)
 			queryDict[@"parent_place_id"] = query.parentID;
@@ -965,7 +1023,7 @@
 			queryDict[@"sort_direction"] = direction;
 		}
 
-		if (query.pageNumber)
+		if (query.pageNumber != nil)
 		{
 			NSUInteger page = query.pageNumber.unsignedIntegerValue;
 			if (page > 1) queryDict[@"page"] = [query.pageNumber stringValue];
@@ -975,7 +1033,7 @@
 
 		_successBlock = ^(TKAPIResponse *response){
 
-			NSMutableArray *stored = [NSMutableArray array];
+			NSMutableArray<TKTour *> *stored = [NSMutableArray array];
 			NSArray *items = [response.data[@"tours"] parsedArray];
 
 			for (NSDictionary *dict in items)
@@ -1011,7 +1069,7 @@
 
 		_path = path;
 
-		NSMutableDictionary *queryDict = [NSMutableDictionary dictionaryWithCapacity:10];
+		NSMutableDictionary<NSString *, NSString *> *queryDict = [NSMutableDictionary dictionaryWithCapacity:10];
 
 		if (query.parentID)
 			queryDict[@"parent_place_id"] = query.parentID;
@@ -1033,21 +1091,23 @@
 		if (query.pageNumber.unsignedIntegerValue > 1)
 			queryDict[@"page"] = [query.pageNumber stringValue];
 
-		if (query.count)
+		if (query.count != nil)
 			queryDict[@"count"] = [query.count stringValue];
 
 		if (query.searchTerm)
 			queryDict[@"query"] = query.searchTerm;
 
-		if (query.minimalDuration || query.maximalDuration)
+		if (query.minimalDuration != nil || query.maximalDuration != nil)
 			queryDict[@"duration"] = [NSString stringWithFormat:@"%@:%@",
 				query.minimalDuration ?: @"", query.maximalDuration ?: @""];
 
-		if (query.startDate)
-			queryDict[@"from"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:query.startDate] ?: @"";
+		NSDate *date = nil;
 
-		if (query.endDate)
-			queryDict[@"to"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:query.endDate] ?: @"";
+		if ((date = query.startDate))
+			queryDict[@"from"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:date] ?: @"";
+
+		if ((date = query.endDate))
+			queryDict[@"to"] = [[NSDateFormatter shared8601DateTimeFormatter] stringFromDate:date] ?: @"";
 
 		if (query.bounds)
 			queryDict[@"bounds"] = [NSString stringWithFormat:@"%.5f,%.5f,%.5f,%.5f",
@@ -1060,7 +1120,7 @@
 
 		_successBlock = ^(TKAPIResponse *response){
 
-			NSMutableArray *stored = [NSMutableArray array];
+			NSMutableArray<TKTour *> *stored = [NSMutableArray array];
 			NSArray *items = [response.data[@"tours"] parsedArray];
 
 			for (NSDictionary *dict in items)
@@ -1102,7 +1162,7 @@
 			NSDictionary *data = [response.data parsedDictionary];
 
 			NSArray *media = [data[@"media"] parsedArray];
-			NSMutableArray *ret = [NSMutableArray arrayWithCapacity:media.count];
+			NSMutableArray<TKMedium *> *ret = [NSMutableArray arrayWithCapacity:media.count];
 
 			for (NSDictionary *mediumDict in media)
 			{
@@ -1204,10 +1264,12 @@
 		NSDateFormatter *df = [NSDateFormatter shared8601RelativeDateTimeFormatter];
 
 		id departure = nil, arrival = nil;
-		if (query.relativeDepartureDate)
-			departure = [df stringFromDate:query.relativeDepartureDate];
-		if (query.relativeArrivalDate)
-			arrival = [df stringFromDate:query.relativeArrivalDate];
+
+		NSDate *date = nil;
+		if ((date = query.relativeDepartureDate))
+			departure = [df stringFromDate:date];
+		if ((date = query.relativeArrivalDate))
+			arrival = [df stringFromDate:date];
 
 		NSDictionary *post = @{
 			@"modes": modeOpts,
@@ -1259,7 +1321,7 @@
 				NSString *code = [e[@"code"] parsedString];
 				NSNumber *rate = [e[@"rate"] parsedNumber];
 
-				if (code && rate)
+				if (code != nil && rate != nil)
 					exchangeRates[code] = rate;
 			}
 
@@ -1406,6 +1468,20 @@
 ////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////
 
+#pragma mark - Changes API result -
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+
+@implementation TKAPIChangesResult
+
+@end
+
+
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 #pragma mark - API response -
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1477,7 +1553,7 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 {
 	NSString *ID = [response.metadata[@"error"][@"id"] parsedString] ?: @"error.unknown";
 
-	NSArray *args = [[response.metadata[@"error"][@"args"] parsedArray]
+	NSArray<NSString *> *args = [[response.metadata[@"error"][@"args"] parsedArray]
 	  filteredArrayUsingBlock:^BOOL(id obj) {
 		return [obj isKindOfClass:[NSString class]];
 	}];
@@ -1529,7 +1605,7 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 	static dispatch_once_t onceToken;
 	dispatch_once(&onceToken, ^{
 
-		NSMutableArray *concat = [NSMutableArray arrayWithCapacity:2];
+		NSMutableArray<NSString *> *concat = [NSMutableArray arrayWithCapacity:2];
 
 		NSString *appName = [[[NSBundle mainBundle] objectForInfoDictionaryKey:(id)kCFBundleNameKey] parsedString];
 		NSString *appVersion = [[[NSBundle mainBundle] objectForInfoDictionaryKey:(id)kCFBundleVersionKey] parsedString];
@@ -1571,31 +1647,34 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 	return agent;
 }
 
++ (NSURLSession *)sharedURLSession
+{
+	static NSURLSession *session = nil;
+	static dispatch_once_t onceToken;
+	dispatch_once(&onceToken, ^{
+		NSURLSessionConfiguration *config = [NSURLSessionConfiguration defaultSessionConfiguration];
+		config.requestCachePolicy = NSURLRequestReloadIgnoringCacheData;
+		config.timeoutIntervalForRequest = 4;
+		session = [NSURLSession sessionWithConfiguration:config];
+	});
+
+	return session;
+}
+
 - (instancetype)initWithURLRequest:(NSMutableURLRequest *)request
 	success:(TKAPISuccessBlock)success failure:(TKAPIFailureBlock)failure
 {
 	if (self = [super init])
 	{
+		_request = request;
+		_URL = request.URL;
 		_successBlock = success;
 		_failureBlock = failure;
-		_URL = request.URL;
 
 		request.cachePolicy = NSURLRequestReloadIgnoringLocalCacheData;
 
 		[request setValue:@"application/json" forHTTPHeaderField:@"Accept"];
 		[request setValue:[self.class userAgentString] forHTTPHeaderField:@"User-Agent"];
-
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wdeprecated-declarations"
-
-		_connection = [[NSURLConnection alloc] initWithRequest:request delegate:self startImmediately:NO];
-
-#pragma clang diagnostic pop
-
-#ifdef LOG_API
-		if (!_connection)
-			NSLog(@"[API REQUEST] Cannot initialize connection: %@", _URL);
-#endif
 	}
 
 	return self;
@@ -1604,8 +1683,7 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 - (void)dealloc
 {
 	_URL = nil;
-	_receivedData = nil;
-	_connection = nil;
+	_task = nil;
 	_successBlock = nil;
 	_failureBlock = nil;
 }
@@ -1617,28 +1695,47 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 - (BOOL)start
 {
 #ifdef LOG_API
-	NSString *loggedData = (_silent) ? @"(silenced)" : [[NSString alloc] initWithData:_connection.originalRequest.HTTPBody encoding:NSUTF8StringEncoding];
 
-	if (_connection.originalRequest.HTTPBody.length > 0)
-		NSLog(@"[API REQUEST] ID:%@ URL:%@  METHOD:%@  DATA:\n%@", _identifier, _URL, _connection.originalRequest.HTTPMethod, loggedData);
-	else
-		NSLog(@"[API REQUEST] ID:%@ URL:%@  METHOD:%@", _identifier, _URL, _connection.originalRequest.HTTPMethod);
+	NSString *loggedStr = [NSString stringWithFormat:@"ID:%@ URL:%@  METHOD:%@",
+		_identifier, _URL, _request.HTTPMethod];
+	NSData *bodyData = _request.HTTPBody;
+
+	if (bodyData.length)
+	{
+		NSString *sep = (_silent) ? @"" : @"\n";
+		NSString *loggedData = (_silent) ?
+			@"(...)" : [[NSString alloc] initWithData:bodyData encoding:NSUTF8StringEncoding];
+		loggedStr = [loggedStr stringByAppendingFormat:@"  DATA:%@%@", sep, loggedData];
+	}
+
+	NSLog(@"[API REQUEST] %@", loggedStr);
+
 #endif
 
-	static NSOperationQueue *connectionsQueue;
-
-	static dispatch_once_t onceToken;
-	dispatch_once(&onceToken, ^{
-		connectionsQueue = [NSOperationQueue new];
-		if ([connectionsQueue respondsToSelector:@selector(setQualityOfService:)])
-			connectionsQueue.qualityOfService = NSQualityOfServiceUtility;
-	});
-
-	if (_connection) {
-		_receivedData = [NSMutableData data];
+	if (_request)
+	{
 		_startTimestamp = [NSDate new];
-		[_connection setDelegateQueue:connectionsQueue];
-		[_connection start];
+
+		__auto_type __weak wself = self;
+
+		_task = [[TKAPIConnection sharedURLSession] dataTaskWithRequest:_request
+		  completionHandler:^(NSData *data, NSURLResponse *response, NSError *error) {
+
+			// Retain API connection
+			__auto_type sself = wself;
+
+			// Process the response
+
+			if ([response isKindOfClass:[NSHTTPURLResponse class]])
+				sself.responseStatus = [(NSHTTPURLResponse *)response statusCode];
+
+			if (error) [sself dataTaskDidFailWithError:error];
+			else [sself dataTaskDidFinishWithResponse:response data:data];
+
+		}];
+
+		[_task resume];
+
 		return YES;
 	}
 	else
@@ -1647,125 +1744,118 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 		NSLog(@"[API REQUEST] Cannot initialize connection ID:%@ (%@)", _identifier, _URL);
 #endif
 
+		TKAPIError *error = [TKAPIError errorWithDomain:TKAPIErrorDomain code:-123 userInfo:
+		  @{ NSDebugDescriptionErrorKey: @"Request initialisation failure" }];
+
 		if (_failureBlock)
-			_failureBlock(nil);
+			_failureBlock(error);
+
+		[self cleanupAndNotify];
+
 		return NO;
 	}
 }
 
 - (BOOL)cancel
 {
-	if (!_connection) return NO;
-	[_connection cancel];
+	if (!_task) return NO;
+	[_task cancel];
 	return YES;
 }
 
-
-#pragma mark - NSURLConnection delegate
-
-
-- (void)connection:(__unused NSURLConnection *)connection didReceiveData:(NSData *)data
+- (void)cleanupAndNotify
 {
-	// Append newly received data
-	[_receivedData appendData:data];
+	if ([_delegate respondsToSelector:@selector(connectionDidFinish:)])
+		[_delegate connectionDidFinish:self];
+
+	_successBlock = nil;
+	_failureBlock = nil;
 }
 
-- (void)connection:(__unused NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
-{
-	// Server response start reading data
-	// Needs to be cleared because request could have been forwarded
-	[_receivedData setLength:0];
 
-	// Process a response object
-	if ([response isKindOfClass:[NSHTTPURLResponse class]])
-		_responseStatus = [(NSHTTPURLResponse *)response statusCode];
-}
+#pragma mark - URL Session data task delegate
 
-- (void)connectionDidFinishLoading:(__unused NSURLConnection *)connection
+
+- (void)dataTaskDidFinishWithResponse:(__unused NSURLResponse *)response data:(NSData *)data
 {
 	// We've got all data from the server response
 	// Now it's time to parse and process it
 
-#ifdef LOG_API
-	NSTimeInterval duration = [[NSDate new] timeIntervalSinceDate:_startTimestamp];
-#endif
-
 	NSError *error = nil;
 
-	NSDictionary *jsonDictionary = [NSJSONSerialization
-		JSONObjectWithData:_receivedData options:(NSJSONReadingOptions)kNilOptions error:&error];
+	NSDictionary *dict = [[NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:&error] parsedDictionary];
 
-	if (!jsonDictionary || error) {
+	if (!dict || error) {
 
 		if (_responseStatus >= 400 || _responseStatus < 100)
-			error = [TKAPIError errorWithCode:_responseStatus userInfo:nil];
+			error = [TKAPIError errorWithDomain:TKAPIErrorDomain code:_responseStatus userInfo:nil];
 
 #ifdef LOG_API
+		NSTimeInterval duration = -[_startTimestamp timeIntervalSinceNow];
+		NSURLRequest *failingRequest = _task.originalRequest ?: _request;
 		NSDictionary *info = (error.userInfo.allKeys.count) ? error.userInfo : nil;
 		NSLog(@"[API REQUEST] ID:%@ FAILED URL:%@  TIME:%f  ERROR:%@  INFO: %@",
-		    _identifier, _connection.originalRequest.URL, duration, error.localizedDescription, info);
+		    _identifier, failingRequest.URL.absoluteString, duration, error.localizedDescription, info);
 #endif
 
 		if (_failureBlock) _failureBlock([TKAPIError errorWithError:error]);
 
+		[self cleanupAndNotify];
+
 		return;
 	}
 
-	TKAPIResponse *response = [[TKAPIResponse alloc] initWithDictionary:jsonDictionary];
+	TKAPIResponse *resp = [[TKAPIResponse alloc] initWithDictionary:dict];
+	NSInteger code = resp.code;
 
 #ifdef LOG_API
-	NSString *responseString = [[NSString alloc] initWithData:_receivedData encoding:NSUTF8StringEncoding];
-	responseString = [responseString stringByReplacingOccurrencesOfString:@"\r" withString:@""];
-	if (_silent) responseString = @"(silenced)";
-	NSString *dataSeparator = (_silent) ? @"":@"\n";
-	NSLog(@"[API RESPONSE] ID:%@ CODE:%zd DATA:%@%@", _identifier, response.code, dataSeparator, responseString);
+	NSString *responseString = [NSString stringWithFormat:@"[%luB]", (unsigned long)data.length];
+	NSString *dataSeparator = @"";
+
+	if (!_silent || code != 200) {
+		responseString = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+		responseString = [responseString stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+		dataSeparator = @"\n";
+	}
+
+	NSString *loggedStr = [NSString stringWithFormat:@"ID:%@ CODE:%ld", _identifier, (long)code];
+	loggedStr = [loggedStr stringByAppendingFormat:@" DATA:%@%@", dataSeparator, responseString];
+
+	NSLog(@"[API RESPONSE] %@", loggedStr);
 #endif
 
-	if (response.code != 200) {
+	if (code != 200) {
 
-		TKAPIError *e = [TKAPIError errorWithResponse:response];
+		TKAPIError *e = [TKAPIError errorWithResponse:resp];
 
-		if (response.code == 401) {
+		if (code == 401) {
 			TKEventsManager *events = [TKEventsManager sharedManager];
 			if (events.sessionExpirationHandler)
 				events.sessionExpirationHandler();
 		}
 
-		if (_failureBlock) _failureBlock(e);
-
-		return;
+		if (_failureBlock)
+			_failureBlock(e);
 	}
 
-	if (_successBlock)
-		_successBlock(response);
+	else if (_successBlock)
+		_successBlock(resp);
 
-	_successBlock = nil;
-	_failureBlock = nil;
-
-	if ([_delegate respondsToSelector:@selector(connectionDidFinish:)])
-		[_delegate connectionDidFinish:self];
+	[self cleanupAndNotify];
 }
 
-- (void)connection:(__unused NSURLConnection *)connection didFailWithError:(NSError *)error
+- (void)dataTaskDidFailWithError:(NSError *)error
 {
 #ifdef LOG_API
-	NSLog(@"[API REQUEST] ID:%@ FAILED URL:%@  ERROR:%@  USERINFO: %@", _identifier,
-		_connection.originalRequest.URL.path, error.localizedDescription, error.userInfo);
+	NSTimeInterval duration = -[_startTimestamp timeIntervalSinceNow];
+	NSURLRequest *failingRequest = _task.originalRequest ?: _request;
+	NSLog(@"[API REQUEST] ID:%@ FAILED URL:%@  ERROR:%@  USERINFO: %@  TIME:%lf", _identifier,
+		failingRequest.URL.absoluteString, error.localizedDescription, error.userInfo, duration);
 #endif
 
 	if (_failureBlock) _failureBlock([TKAPIError errorWithError:error]);
 
-	_successBlock = nil;
-	_failureBlock = nil;
-
-	if ([_delegate respondsToSelector:@selector(connectionDidFinish:)])
-		[_delegate connectionDidFinish:self];
-}
-
-- (NSCachedURLResponse *)connection:(__unused NSURLConnection *)connection
-	willCacheResponse:(__unused NSCachedURLResponse *)cachedResponse
-{
-	return nil;
+	[self cleanupAndNotify];
 }
 
 @end

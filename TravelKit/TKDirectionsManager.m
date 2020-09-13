@@ -54,11 +54,6 @@
 	return shared;
 }
 
-- (void)dealloc
-{
-	[[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
 
 #pragma mark - Directions stuff
 

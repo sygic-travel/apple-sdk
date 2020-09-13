@@ -14,6 +14,8 @@ FOUNDATION_EXPORT double TravelKitVersionNumber;
 //! Project version string for TravelKit.
 FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 
+#import <TravelKit/TKEnvironment.h>
+
 #import <TravelKit/TKPlace.h>
 #import <TravelKit/TKPlacesQuery.h>
 #import <TravelKit/TKReference.h>
@@ -67,20 +69,22 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 }];
 ```
  
- ```swift
- // Use shared instance to set your API key
- TravelKit.shared.apiKey = "<YOUR_API_KEY_GOES_HERE>"
- 
- // Ask TKPlaceManager for Eiffel Tower TKDetailedPlace object with details
- TravelKit.shared.places.detailedPlace(withID: "poi:530") { (place, e) in
-     if let place = place {
-        print("Let's visit \(place.name)")
-     }
-     else {
+```swift
+// Get shared instance
+let kit = TravelKit.shared
+
+// Set your API key
+kit.apiKey = "<YOUR_API_KEY_GOES_HERE>"
+
+// Ask kit for Eiffel Tower TKDetailedPlace object with details
+kit.places.detailedPlace(withID: "poi:530") { (place, e) in
+    if let place = place {
+        print("Let's visit \(place.name)!")
+    } else {
         print("Something went wrong :/")
-     }
- }
- ```
+    }
+}
+```
 
  @warning API key must be provided, otherwise using any methods listed above will result
  in an error being returned in a call completion block.
@@ -134,7 +138,7 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
 
  @warning This needs to be set in order to receive translated content.
  */
-@property (nonatomic, copy, null_resettable) NSString *language;
+@property (nonatomic, copy, null_resettable) NSString *languageID;
 
 ///---------------------------------------------------------------------------------------
 /// @name Modules
@@ -182,84 +186,6 @@ kit.APIKey = @"<YOUR_API_KEY_GOES_HERE>";
  Shared Events Manager instance to retain event handlers.
  */
 @property (nonatomic, strong, readonly) TKEventsManager *events;
-
-@end
-
-///---------------------------------------------------------------------------------------
-/// @name Deprecated interface stuff
-///---------------------------------------------------------------------------------------
-
-/**
- A set of deprecated stuff on `TravelKit` class.
- */
-@interface TravelKit (NSDeprecated)
-
-///---------------------------------------------------------------------------------------
-/// @name Place working queries
-///---------------------------------------------------------------------------------------
-
-/// :nodoc:
-
-- (void)placesForQuery:(TKPlacesQuery *)query
-	completion:(void (^)(NSArray<TKPlace *>  * _Nullable places, NSError * _Nullable error))completion
-		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
-
-- (void)placesWithIDs:(NSArray<NSString *> *)placeIDs
-	completion:(void (^)(NSArray<TKDetailedPlace *> * _Nullable places, NSError * _Nullable error))completion
-		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
-
-- (void)detailedPlaceWithID:(NSString *)placeID
-	completion:(void (^)(TKDetailedPlace * _Nullable place, NSError * _Nullable error))completion
-		DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
-
-///---------------------------------------------------------------------------------------
-/// @name Media working queries
-///---------------------------------------------------------------------------------------
-
-/// :nodoc:
-
-- (void)mediaForPlaceWithID:(NSString *)placeID
-	completion:(void (^)(NSArray<TKMedium *> * _Nullable media, NSError * _Nullable error))completion
-		 DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKPlacesManager` instead.");
-
-///---------------------------------------------------------------------------------------
-/// @name Favorites
-///---------------------------------------------------------------------------------------
-
-/// :nodoc:
-
-- (NSArray<NSString *> *)favoritePlaceIDs DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKSessionManager` instead.");
-
-- (void)updateFavoritePlaceID:(NSString *)favoriteID setFavorite:(BOOL)favorite
-	DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKSessionManager` instead.");
-
-///---------------------------------------------------------------------------------------
-/// @name Map-related methods
-///---------------------------------------------------------------------------------------
-
-/// :nodoc:
-
-- (NSArray<NSString *> *)quadKeysForMapRegion:(MKCoordinateRegion)region
-	DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKMapWorker` instead.");
-
-- (NSArray<TKMapPlaceAnnotation *> *)spreadAnnotationsForPlaces:(NSArray<TKPlace *> *)places
-            mapRegion:(MKCoordinateRegion)region mapViewSize:(CGSize)size
-	DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKMapWorker` instead.");
-
-- (void)interpolateNewAnnotations:(NSArray<TKMapPlaceAnnotation *> *)newAnnotations
-                   oldAnnotations:(NSArray<TKMapPlaceAnnotation *> *)oldAnnotations
-                            toAdd:(NSMutableArray<TKMapPlaceAnnotation *> *)toAdd
-                           toKeep:(NSMutableArray<TKMapPlaceAnnotation *> *)toKeep
-                         toRemove:(NSMutableArray<TKMapPlaceAnnotation *> *)toRemove
-	DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKMapWorker` instead.");
-
-///---------------------------------------------------------------------------------------
-/// @name Session-related methods
-///---------------------------------------------------------------------------------------
-
-/// :nodoc:
-
-- (void)clearUserData DEPRECATED_MSG_ATTRIBUTE("Use a method on `TKSessionManager` instead.");
 
 @end
 

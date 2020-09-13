@@ -22,7 +22,7 @@
 
 	if (_parentID) [key appendFormat:@"|parent:%@", _parentID];
 	[key appendFormat:@"|sort:%tu", _sortingType];
-	[key appendFormat:@"|desc:%tu", _descendingSortingOrder];
+	[key appendFormat:@"|desc:%d", _descendingSortingOrder];
 	[key appendFormat:@"|page:%tu", _pageNumber.unsignedIntegerValue];
 
 	return key.hash;
@@ -72,7 +72,7 @@
 
 	if (_parentID) [key appendFormat:@"|parent:%@", _parentID];
 	[key appendFormat:@"|sort:%tu", _sortingType];
-	[key appendFormat:@"|desc:%tu", _descendingSortingOrder];
+	[key appendFormat:@"|desc:%d", _descendingSortingOrder];
 	[key appendFormat:@"|page:%tu", _pageNumber.unsignedIntegerValue];
 	[key appendFormat:@"|count:%tu", _count.unsignedIntegerValue];
 	[key appendFormat:@"|duration:%@-%@", _minimalDuration, _maximalDuration];
