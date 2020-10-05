@@ -181,7 +181,7 @@
 	SCNetworkReachabilityFlags flags;
 
 	if (SCNetworkReachabilityGetFlags(_reachabilityRef, &flags))
-		return (flags & kSCNetworkReachabilityFlagsConnectionRequired);
+		return (flags & kSCNetworkReachabilityFlagsConnectionRequired) > 0;
 
 	return NO;
 }
