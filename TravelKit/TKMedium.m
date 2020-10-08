@@ -6,8 +6,8 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
+#import <TravelKit/NSObject+Parsing.h>
 #import "TKMedium+Private.h"
-#import "NSObject+Parsing.h"
 
 #define TKMEDIUM_SIZE_PLACEHOLDER_API     "{size}"
 

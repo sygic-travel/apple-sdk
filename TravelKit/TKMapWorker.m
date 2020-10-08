@@ -6,8 +6,8 @@
 //  Copyright © 2016 Tripomatic. All rights reserved.
 //
 
-#import "Foundation+TravelKit.h"
-#import "TKMapWorker.h"
+#import <TravelKit/Foundation+TravelKit.h>
+#import <TravelKit/TKMapWorker.h>
 
 #define MINMAX(a, x, b) MIN(MAX(a, x), b)
 

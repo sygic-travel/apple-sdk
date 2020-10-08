@@ -6,10 +6,11 @@
 //  Copyright © 2018 Tripomatic. All rights reserved.
 //
 
-#import "TKFavoritesManager.h"
+#import <TravelKit/Foundation+TravelKit.h>
+#import <TravelKit/NSObject+Parsing.h>
+#import <TravelKit/TKFavoritesManager.h>
+
 #import "TKDatabaseManager+Private.h"
-#import "Foundation+TravelKit.h"
-#import "NSObject+Parsing.h"
 
 @interface TKFavoritesManager ()
 

@@ -6,7 +6,7 @@
 //  Copyright © 2018 Tripomatic. All rights reserved.
 //
 
-#import "TKFavoritesManager.h"
+#import <TravelKit/TKFavoritesManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -6,15 +6,16 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
+#import <TravelKit/TKSynchronizationManager.h>
+#import <TravelKit/TKEventsManager.h>
+#import <TravelKit/Foundation+TravelKit.h>
+#import <TravelKit/NSDate+Tripomatic.h>
+#import <TravelKit/NSObject+Parsing.h>
+
 #import "TKAPI+Private.h"
-#import "TKSynchronizationManager.h"
-#import "TKEventsManager.h"
 #import "TKTripsManager+Private.h"
 #import "TKSessionManager+Private.h"
 #import "TKFavoritesManager+Private.h"
-#import "Foundation+TravelKit.h"
-#import "NSDate+Tripomatic.h"
-#import "NSObject+Parsing.h"
 
 #ifdef LOG_SYNC
 #define SyncLog(__FORMAT__, ...) NSLog(@"[SYNC] " __FORMAT__, ##__VA_ARGS__)

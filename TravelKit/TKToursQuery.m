@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKToursQuery.h"
+#import <TravelKit/TKToursQuery.h>
 
 @implementation TKToursViatorQuery
 

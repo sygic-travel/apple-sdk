@@ -8,25 +8,36 @@
 
 #import <Foundation/Foundation.h>
 
+#import <TravelKit/Version.h>
+
+#if !defined(SWIFT_PACKAGE)
+
 //! Project version number for TravelKit.
 FOUNDATION_EXPORT double TravelKitVersionNumber;
 
 //! Project version string for TravelKit.
 FOUNDATION_EXPORT const unsigned char TravelKitVersionString[];
 
+#endif
+
 #import <TravelKit/TKEnvironment.h>
 
 #import <TravelKit/TKPlace.h>
-#import <TravelKit/TKPlacesQuery.h>
 #import <TravelKit/TKReference.h>
 #import <TravelKit/TKMedium.h>
+#import <TravelKit/TKCollection.h>
 #import <TravelKit/TKTour.h>
 #import <TravelKit/TKTrip.h>
-#import <TravelKit/TKToursQuery.h>
+#import <TravelKit/TKSession.h>
+#import <TravelKit/TKDirection.h>
+
 #import <TravelKit/TKMapRegion.h>
 #import <TravelKit/TKMapWorker.h>
 #import <TravelKit/TKMapPlaceAnnotation.h>
-#import <TravelKit/TKSession.h>
+
+#import <TravelKit/TKPlacesQuery.h>
+#import <TravelKit/TKToursQuery.h>
+#import <TravelKit/TKCollectionsQuery.h>
 
 #import <TravelKit/TKPlacesManager.h>
 #import <TravelKit/TKToursManager.h>

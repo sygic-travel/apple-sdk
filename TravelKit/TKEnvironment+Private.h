@@ -6,7 +6,7 @@
 //  Copyright © 2020 Tripomatic. All rights reserved.
 //
 
-#import "TKEnvironment.h"
+#import <TravelKit/TKEnvironment.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
