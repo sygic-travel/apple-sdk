@@ -10,7 +10,7 @@
 
 #import <TravelKit/Version.h>
 
-#if !defined(SWIFT_PACKAGE)
+#ifndef USE_TRAVELKIT_AS_SPM_PACKAGE
 
 //! Project version number for TravelKit.
 FOUNDATION_EXPORT double TravelKitVersionNumber;

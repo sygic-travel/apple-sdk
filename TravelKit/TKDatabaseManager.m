@@ -11,7 +11,7 @@
 #import "TKEnvironment+Private.h"
 #import "TKDatabaseManager+Private.h"
 
-#if defined(USE_TRAVELKIT_AS_SPM) && USE_TRAVELKIT_AS_SPM == 1
+#ifdef USE_TRAVELKIT_AS_SPM_PACKAGE
 @import FMDB;
 #else
 #import "FMDatabase.h"

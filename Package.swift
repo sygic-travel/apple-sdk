@@ -12,17 +12,12 @@ let package = Package(
 		.watchOS(.v3)
 	],
 	products: [
-		.library(
-			name: "TravelKit",
-			targets: ["TravelKit"]),
-		.library(
-			name: "TravelKit-Dynamic",
-			type: .dynamic,
-			targets: ["TravelKit"]),
-		.library(
-			name: "TravelKit-Static",
-			type: .static,
-			targets: ["TravelKit"]),
+		.library(name: "TravelKit",
+		         targets: ["TravelKit"]),
+		.library(name: "TravelKit-Dynamic",
+		         type: .dynamic, targets: ["TravelKit"]),
+		.library(name: "TravelKit-Static",
+		         type: .static, targets: ["TravelKit"]),
 	],
 	dependencies: [
 	.package(name: "FMDB", url: "https://github.com/ccgus/fmdb", from: "2.7.7")
@@ -42,7 +37,7 @@ let package = Package(
 				.headerSearchPath("PublicHeaders"),
 				.define("USE_NSOBJECT_PARSING", to: "1"),
 				.define("USE_TRAVELKIT_FOUNDATION", to: "1"),
-				.define("USE_TRAVELKIT_AS_SPM", to: "1")
+				.define("USE_TRAVELKIT_AS_SPM_PACKAGE", to: "1")
 			]
 		),
 	]
