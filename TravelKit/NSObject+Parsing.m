@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Tripomatic. All rights reserved.
 //
 
-#import "NSObject+Parsing.h"
+#import <TravelKit/NSObject+Parsing.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

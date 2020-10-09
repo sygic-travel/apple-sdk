@@ -141,6 +141,9 @@
 		D69831A81EF7AE8A002776BE /* TKToursManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D69831A41EF7AE8A002776BE /* TKToursManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D69831A91EF7AE8A002776BE /* TKToursManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D69831A41EF7AE8A002776BE /* TKToursManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D69831AA1EF7AE8A002776BE /* TKToursManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D69831A41EF7AE8A002776BE /* TKToursManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6A6236B252F536E00D9B7CE /* Version.h in Headers */ = {isa = PBXBuildFile; fileRef = D6A6236A252F533200D9B7CE /* Version.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6A62370252F536F00D9B7CE /* Version.h in Headers */ = {isa = PBXBuildFile; fileRef = D6A6236A252F533200D9B7CE /* Version.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D6A62375252F536F00D9B7CE /* Version.h in Headers */ = {isa = PBXBuildFile; fileRef = D6A6236A252F533200D9B7CE /* Version.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6B0AD921FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6B0AD911FBAE35400E8CE12 /* TKAPIDefinitions.h */; };
 		D6B0AD931FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6B0AD911FBAE35400E8CE12 /* TKAPIDefinitions.h */; };
 		D6B0AD941FBAE35400E8CE12 /* TKAPIDefinitions.h in Headers */ = {isa = PBXBuildFile; fileRef = D6B0AD911FBAE35400E8CE12 /* TKAPIDefinitions.h */; };
@@ -330,6 +333,7 @@
 		D698319F1EF3F051002776BE /* TKTour.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKTour.m; sourceTree = "<group>"; };
 		D69831A31EF7AE8A002776BE /* TKToursManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKToursManager.m; sourceTree = "<group>"; };
 		D69831A41EF7AE8A002776BE /* TKToursManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKToursManager.h; sourceTree = "<group>"; };
+		D6A6236A252F533200D9B7CE /* Version.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Version.h; sourceTree = "<group>"; };
 		D6B0AD911FBAE35400E8CE12 /* TKAPIDefinitions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKAPIDefinitions.h; sourceTree = "<group>"; };
 		D6B2A1291E530AFD005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6B2A1541E530F60005509E8 /* TravelKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TravelKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -523,6 +527,7 @@
 				EF0D9D671EFAAB3800C50AE2 /* Database */,
 				D68E94801F06301F009E2C9C /* General */,
 				D6F2CCE520D3BFFD00E06245 /* Categories */,
+				D6A6236A252F533200D9B7CE /* Version.h */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -694,6 +699,7 @@
 				D6B2A1431E530B11005509E8 /* TKReference.h in Headers */,
 				D6E3B7BC1FA0A31700E1CCAC /* TKTrip.h in Headers */,
 				D6B2A13B1E530B11005509E8 /* TKMapRegion.h in Headers */,
+				D6A62375252F536F00D9B7CE /* Version.h in Headers */,
 				D698319E1EF3EB79002776BE /* TKTour+Private.h in Headers */,
 				D6B2A13F1E530B11005509E8 /* TKPlace.h in Headers */,
 				D6B2A1391E530B11005509E8 /* NSObject+Parsing.h in Headers */,
@@ -752,6 +758,7 @@
 				D6B2A16E1E531097005509E8 /* TKReference.h in Headers */,
 				D6E3B7B41FA0A00800E1CCAC /* TKTrip.h in Headers */,
 				D6B2A1661E531097005509E8 /* TKMapRegion.h in Headers */,
+				D6A6236B252F536E00D9B7CE /* Version.h in Headers */,
 				D698319C1EF3EB79002776BE /* TKTour+Private.h in Headers */,
 				D64B612820064D940098ADDF /* TKDirectionsManager.h in Headers */,
 				D6B2A16A1E531097005509E8 /* TKPlace.h in Headers */,
@@ -810,6 +817,7 @@
 				D6C3D0721E4DE7B400EBB54F /* TKAPI+Private.h in Headers */,
 				D6C3D0661E4DE29C00EBB54F /* NSObject+Parsing.h in Headers */,
 				D6E3B7B81FA0A31600E1CCAC /* TKTrip.h in Headers */,
+				D6A62370252F536F00D9B7CE /* Version.h in Headers */,
 				D698319D1EF3EB79002776BE /* TKTour+Private.h in Headers */,
 				D6C3D0511E4DD36200EBB54F /* TravelKit.h in Headers */,
 				D6C3D05A1E4DDAE500EBB54F /* TKPlace.h in Headers */,

@@ -6,6 +6,11 @@
 //  Copyright (c) 2013 Tripomatic. All rights reserved.
 //
 
+#import <TravelKit/TravelKit.h>
+#import <TravelKit/NSObject+Parsing.h>
+#import <TravelKit/NSDate+Tripomatic.h>
+#import <TravelKit/Foundation+TravelKit.h>
+
 #import "TKAPI+Private.h"
 #import "TKPlace+Private.h"
 #import "TKCollection+Private.h"
@@ -13,14 +18,8 @@
 #import "TKTrip+Private.h"
 #import "TKDirection+Private.h"
 #import "TKMedium+Private.h"
-#import "NSObject+Parsing.h"
-
-#import "NSDate+Tripomatic.h"
-#import "Foundation+TravelKit.h"
-
 #import "TKEventsManager+Private.h"
 
-#import "TravelKit.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -1617,7 +1616,7 @@ NSString * const TKAPIErrorDomain = @"TKAPIErrorDomain";
 			[concat addObject:[NSString stringWithFormat:@"%@/%@", appName, appVersion]];
 
 		NSString *sdkName = @"TravelKit";
-		NSString *sdkVersion = [@(TravelKitVersionNumber) stringValue];
+		NSString *sdkVersion = [NSString stringWithFormat:@"%d", TRAVELKIT_BUILD];
 
 		if (sdkName && sdkVersion)
 			[concat addObject:[NSString stringWithFormat:@"%@/%@", sdkName, sdkVersion]];

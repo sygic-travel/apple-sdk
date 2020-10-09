@@ -6,10 +6,11 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
+#import <TravelKit/NSObject+Parsing.h>
+#import <TravelKit/Foundation+TravelKit.h>
+
 #import "TKSSOAPI+Private.h"
 #import "TKSessionManager+Private.h"
-#import "NSObject+Parsing.h"
-#import "Foundation+TravelKit.h"
 
 
 ////////////////////////////////////////////////////////////////////////////////

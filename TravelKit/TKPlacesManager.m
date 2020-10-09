@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKPlacesManager.h"
+#import <TravelKit/TKPlacesManager.h>
 #import "TKAPI+Private.h"
 
 

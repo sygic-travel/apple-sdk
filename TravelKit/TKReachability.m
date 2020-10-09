@@ -20,7 +20,7 @@
 #import <CoreTelephony/CTTelephonyNetworkInfo.h>
 #endif
 
-#import <TravelKit/TKReachability+Private.h>
+#import "TKReachability+Private.h"
 
 
 #define kShouldPrintReachabilityFlags 0

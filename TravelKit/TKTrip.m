@@ -6,12 +6,12 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKMapWorker.h"
-#import "TKTrip+Private.h"
+#import <TravelKit/Foundation+TravelKit.h>
+#import <TravelKit/NSObject+Parsing.h>
+#import <TravelKit/NSDate+Tripomatic.h>
+#import <TravelKit/TKMapWorker.h>
 
-#import "Foundation+TravelKit.h"
-#import "NSObject+Parsing.h"
-#import "NSDate+Tripomatic.h"
+#import "TKTrip+Private.h"
 
 // NSLocalizedString(@"Trip to %@", @"Default trip name pattern -- e.g. Trip to London")
 // NSLocalizedString(@"My Trip", @"Generic Trip name")

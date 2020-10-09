@@ -6,11 +6,12 @@
 //  Copyright © 2018 Tripomatic. All rights reserved.
 //
 
-#import "TKDirectionsManager.h"
-#import "TKMapWorker.h"
+#import <TravelKit/TKDirectionsManager.h>
+#import <TravelKit/TKMapWorker.h>
+#import <TravelKit/NSObject+Parsing.h>
+
 #import "TKAPI+Private.h"
 #import "TKReachability+Private.h"
-#import "NSObject+Parsing.h"
 
 
 /////////////////////////////////

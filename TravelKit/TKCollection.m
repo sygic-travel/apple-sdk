@@ -6,10 +6,11 @@
 //  Copyright © 2018 Tripomatic. All rights reserved.
 //
 
-#import <TravelKit/TKCollection.h>
-#import <TravelKit/TKPlace+Private.h>
-#import <TravelKit/NSObject+Parsing.h>
 #import <TravelKit/Foundation+TravelKit.h>
+#import <TravelKit/NSObject+Parsing.h>
+#import <TravelKit/TKCollection.h>
+
+#import "TKPlace+Private.h"
 
 @implementation TKCollection
 

@@ -6,9 +6,9 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKSession.h"
-#import "NSObject+Parsing.h"
-#import "Foundation+TravelKit.h"
+#import <TravelKit/TKSession.h>
+#import <TravelKit/NSObject+Parsing.h>
+#import <TravelKit/Foundation+TravelKit.h>
 
 
 @interface TKSession ()

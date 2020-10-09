@@ -6,11 +6,12 @@
 //  Copyright © 2018 Tripomatic. All rights reserved.
 //
 
+#import <TravelKit/TKMapWorker.h>
+#import <TravelKit/NSDate+Tripomatic.h>
+#import <TravelKit/NSObject+Parsing.h>
+#import <TravelKit/Foundation+TravelKit.h>
+
 #import "TKDirection+Private.h"
-#import "TKMapWorker.h"
-#import "NSDate+Tripomatic.h"
-#import "NSObject+Parsing.h"
-#import "Foundation+TravelKit.h"
 
 
 /////////////////////////////////

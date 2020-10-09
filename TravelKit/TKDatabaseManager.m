@@ -6,14 +6,18 @@
 //  Copyright (c) 2014 Tripomatic. All rights reserved.
 //
 
+#import <TravelKit/NSObject+Parsing.h>
+
 #import "TKEnvironment+Private.h"
 #import "TKDatabaseManager+Private.h"
 
+#ifdef USE_TRAVELKIT_AS_SPM_PACKAGE
+@import FMDB;
+#else
 #import "FMDatabase.h"
 #import "FMDatabaseAdditions.h"
 #import "FMDatabaseQueue.h"
-
-#import "NSObject+Parsing.h"
+#endif
 
 #define NSStringMultiline(...) @#__VA_ARGS__
 
