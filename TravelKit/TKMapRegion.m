@@ -6,7 +6,7 @@
 //  Copyright (c) 2016- Tripomatic. All rights reserved.
 //
 
-#import "TKMapRegion.h"
+#import <TravelKit/TKMapRegion.h>
 
 
 #pragma mark Map Region wrapper -

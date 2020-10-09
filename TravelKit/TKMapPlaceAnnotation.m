@@ -6,7 +6,7 @@
 //  Copyright (c) 2017- Tripomatic. All rights reserved.
 //
 
-#import "TKMapPlaceAnnotation.h"
+#import <TravelKit/TKMapPlaceAnnotation.h>
 
 
 #pragma mark Map Annotation wrapper -

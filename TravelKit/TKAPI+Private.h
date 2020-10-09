@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-#import <TravelKit/TKAPIDefinitions.h>
+#import "TKAPIDefinitions.h"
 
 #import <TravelKit/TKPlace.h>
 #import <TravelKit/TKCollection.h>

@@ -6,6 +6,9 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
+#import <TravelKit/Foundation+TravelKit.h>
+#import <TravelKit/NSObject+Parsing.h>
+
 #import <pthread/pthread.h>
 
 #import "TKEnvironment+Private.h"
@@ -16,9 +19,6 @@
 #import "TKSSOAPI+Private.h"
 
 #import "TKReachability+Private.h"
-
-#import "Foundation+TravelKit.h"
-#import "NSObject+Parsing.h"
 
 
 // Session stuff

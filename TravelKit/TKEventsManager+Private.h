@@ -6,7 +6,7 @@
 //  Copyright © 2018 Tripomatic. All rights reserved.
 //
 
-#import "TKEventsManager.h"
+#import <TravelKit/TKEventsManager.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

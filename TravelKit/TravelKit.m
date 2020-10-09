@@ -6,11 +6,12 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TravelKit.h"
+#import <TravelKit/TravelKit.h>
+#import <TravelKit/TKMapWorker.h>
+#import <TravelKit/Foundation+TravelKit.h>
+
 #import "TKAPI+Private.h"
 #import "TKSSOAPI+Private.h"
-#import "TKMapWorker.h"
-#import "Foundation+TravelKit.h"
 
 
 @interface TravelKit ()

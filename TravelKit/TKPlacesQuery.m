@@ -6,7 +6,7 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
-#import "TKPlacesQuery.h"
+#import <TravelKit/TKPlacesQuery.h>
 
 @implementation TKPlacesQuery
 

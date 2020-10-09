@@ -7,7 +7,7 @@
 //
 
 #import <objc/runtime.h>
-#import "Foundation+TravelKit.h"
+#import <TravelKit/Foundation+TravelKit.h>
 
 
 @implementation NSObject (TravelKit)

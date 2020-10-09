@@ -6,8 +6,8 @@
 //  Copyright © 2017 Tripomatic. All rights reserved.
 //
 
+#import <TravelKit/NSObject+Parsing.h>
 #import "TKTour+Private.h"
-#import "NSObject+Parsing.h"
 
 
 @implementation TKTour

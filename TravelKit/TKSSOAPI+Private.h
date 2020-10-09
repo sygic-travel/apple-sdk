@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "TKSession.h"
+#import <TravelKit/TKSession.h>
 #import "TKAPIDefinitions.h"
 
 

@@ -10,7 +10,7 @@
 //  http://www.unicode.org/reports/tr35/tr35-31/tr35-dates.html#Date_Format_Patterns
 //
 
-#import "NSDate+Tripomatic.h"
+#import <TravelKit/NSDate+Tripomatic.h>
 
 
 @implementation NSLocale (Tripomatic)

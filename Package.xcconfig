@@ -1,0 +1,3 @@
+
+// Include TravelKit config
+#include 'TravelKit/Config.xcconfig'
