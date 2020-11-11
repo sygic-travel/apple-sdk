@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 
-#define TKMEDIUM_SIZE_PLACEHOLDER   "__SIZE__"
-
 
 /**
  Enum identifying a basic type of `TKMedium`.
@@ -37,7 +35,7 @@ typedef NS_ENUM(NSUInteger, TKMediumVideoResolution) {
 	/// 1080p resolution.
 	TKMediumVideoResolution1080p  NS_SWIFT_NAME(res1080p) = 1080,
 	/// 4K resolution.
-	TKMediumVideoResolution4K     NS_SWIFT_NAME(res4K)    = 4096,
+	TKMediumVideoResolution4K     NS_SWIFT_NAME(res4K)    = 2160,
 };
 
 /**
@@ -60,19 +58,20 @@ typedef NS_OPTIONS(NSUInteger, TKMediumSuitability) {
  Enum identifying content mode of the requested `TKMedium`.
  */
 typedef NS_ENUM(NSUInteger, TKMediumContentMode) {
-	/// Crop the image. `200x200` will be returned with the exact size, filling the given dimensions.
+	/// Crop the image. `200x200` will be returned with the exact size, filling the given
+	/// dimensions so the longer image dimension will be cropped.
     ///
     /// @note Works as `UIViewContentModeScaleAspectFill` with bounds clipping.
 	TKMediumContentModeCrop         = 0,
-	/// Don't crop the image and fit inside.
+	/// Don't crop the image and fit inside the given dimensions.
 	///
-	/// For `400x400`, the larger image dimension will be 400px, the other might be smaller.
+	/// For `400x400`, the longer image dimension will be 400px, the other might be shorter.
     ///
     /// @note Works as `UIViewContentModeScaleAspectFit` without clipping.
 	TKMediumContentModeNoCropFit    = 1,
-	/// Don't crop the image and fill inside.
+	/// Don't crop the image and fill inside the given dimensions.
 	///
-	/// For `400x400`, the larger image dimension will be 400px, the other might be larger.
+	/// For `400x400`, the shorter image dimension will be 400px, the other might be longer.
     ///
     /// @note Works as `UIViewContentModeScaleAspectFill` without clipping.
 	TKMediumContentModeNoCropFill   = 2,
