@@ -9,5 +9,5 @@
 // Configuration settings file format documentation can be found at:
 // https://help.apple.com/xcode/#/dev745c5c974
 
-TK_BUNDLE_VERSION   = 3.0
-TK_BUNDLE_BUILD     = 300
+TK_BUNDLE_VERSION   = 3.1
+TK_BUNDLE_BUILD     = 302

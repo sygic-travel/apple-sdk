@@ -10,6 +10,7 @@
 #import "TKMedium+Private.h"
 
 #define TKMEDIUM_SIZE_PLACEHOLDER_API     "{size}"
+#define TKMEDIUM_SIZE_PLACEHOLDER   "__SIZE__"
 
 @implementation TKMedium
 
