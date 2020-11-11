@@ -9,7 +9,7 @@
 #ifndef Version_h
 #define Version_h
 
-#define TRAVELKIT_VERSION   "3.0"
-#define TRAVELKIT_BUILD     300
+#define TRAVELKIT_VERSION   "3.1"
+#define TRAVELKIT_BUILD     302
 
 #endif /* Version_h */
