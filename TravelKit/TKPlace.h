@@ -132,58 +132,58 @@ NS_ASSUME_NONNULL_BEGIN
 /// (https://docs.google.com/spreadsheets/d/1qlTdvBlLDo3fxBTSqmbqQOQJXsynfukBHxI_Xpi2Srw/edit#gid=1588428987) and
 /// [CSV file](https://admin.sygictraveldata.com/data-export/zf8979vspcvz61dya3pyxbvsduyjtnh4) as well.
 
-@property (nonatomic, copy) NSString *ID NS_SWIFT_NAME(ID);
+@property (nonatomic, copy, readonly) NSString *ID NS_SWIFT_NAME(ID);
 
 /// Displayable name of the place, translated if possible. Example: _Buckingham Palace_.
-@property (nonatomic, copy) NSString *name;
+@property (nonatomic, copy, readonly) NSString *name;
 
 /// Displayable name suffix. Example: _London, United Kingdom_.
-@property (nonatomic, copy, nullable) NSString *suffix;
+@property (nonatomic, copy, nullable, readonly) NSString *suffix;
 
 /// Denotable place level. Each place has a level property that describes the type of the place by administration level.
 ///
 /// @see `TKPlaceLevel`
-@property (atomic) TKPlaceLevel level;
+@property (atomic, readonly) TKPlaceLevel level;
 
 /// Short perex introducing the place.
-@property (nonatomic, copy, nullable) NSString *perex;
+@property (nonatomic, copy, nullable, readonly) NSString *perex;
 
 /// Location of the place.
-@property (nonatomic, strong) CLLocation *location;
+@property (nonatomic, strong, readonly) CLLocation *location;
 
 /// 18-character Quad key representing map tile coordinate using Mercator (Google/Bing) projection.
 /// For details see [Bing Maps](https://msdn.microsoft.com/en-us/library/bb259689.aspx) docs or [maptiler.org](www.maptiler.org/google-maps-coordinates-tile-bounds-projection/) .
-@property (nonatomic, copy, nullable) NSString *quadKey;
+@property (nonatomic, copy, nullable, readonly) NSString *quadKey;
 
 /// Bounding box. Object with south-west and north-east point in degrees. Specifies bounds of places that have an area.
-@property (nonatomic, strong, nullable) TKMapRegion *boundingBox;
+@property (nonatomic, strong, nullable, readonly) TKMapRegion *boundingBox;
 
 /// Global rating value.
 ///
 /// @note Possible values: double in range `0`--`10.0`.
-@property (nonatomic, strong, nullable) NSNumber *rating;
+@property (nonatomic, strong, nullable, readonly) NSNumber *rating;
 
 /// Stringified type intended to be shown in the UI, e.g. 'Playground', 'Post Office', 'ATM' etc.
-@property (nonatomic, copy, nullable) NSString *kind;
+@property (nonatomic, copy, nullable, readonly) NSString *kind;
 
 /// Marker identifier usable for displayable icon. For more information please see [Sygic Travel API](http://docs.sygictravelapi.com/1.1/#section-places) .
 /// @note For a full list of all available markers see [Markers sheet](https://docs.google.com/spreadsheets/d/1mpP-aw6FrWBF4WQpgErCz2tsB_OhEp56co-y5VC80VY/edit#gid=0)
-@property (nonatomic, copy, nullable) NSString *marker;
+@property (nonatomic, copy, nullable, readonly) NSString *marker;
 
 /// List of Category slugs assigned. For more information please see [Sygic Travel API](http://docs.sygictravelapi.com/1.1/#section-places) .
 ///
 /// @see `TKPlaceCategory`
-@property (atomic) TKPlaceCategory categories;
+@property (atomic, readonly) TKPlaceCategory categories;
 
 /// List of Parent IDs. Parent IDs are IDs of other places. These parent places can be for example the geographical units the place is part of.
 /// This can be useful when working with a map, searching for cities by location, etc.
-@property (nonatomic, copy, nullable) NSArray<NSString *> *parents;
+@property (nonatomic, copy, nullable, readonly) NSArray<NSString *> *parents;
 
 /// List of custom flags.
-@property (nonatomic, copy, nullable) NSArray<NSString *> *flags;
+@property (nonatomic, copy, nullable, readonly) NSArray<NSString *> *flags;
 
 /// Thumbnail URL to an image of size 150×150 pixels.
-@property (nonatomic, strong, nullable) NSURL *thumbnailURL;
+@property (nonatomic, strong, nullable, readonly) NSURL *thumbnailURL;
 
 ///-------------------------
 /// @name Helping properties
@@ -206,7 +206,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKDetailedPlace : TKPlace
 
 /// Place detail of `TKPlaceDetail` instance containing further attributes.
-@property (nonatomic, strong, nullable) TKPlaceDetail *detail;
+@property (nonatomic, strong, nullable, readonly) TKPlaceDetail *detail;
 
 @end
 
@@ -222,19 +222,19 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKPlaceDescription : NSObject
 
 /// Full-length text description.
-@property (nonatomic, copy) NSString *text;
+@property (nonatomic, copy, readonly) NSString *text;
 
 /// Language code of the description.
-@property (nonatomic, copy, nullable) NSString *languageID;
+@property (nonatomic, copy, nullable, readonly) NSString *languageID;
 
 /// Flag of the description provider.
-@property (atomic) TKPlaceDescriptionProvider provider;
+@property (atomic, readonly) TKPlaceDescriptionProvider provider;
 
 /// URL address of the description source.
-@property (nonatomic, copy, nullable) NSURL *sourceURL;
+@property (nonatomic, copy, nullable, readonly) NSURL *sourceURL;
 
 /// Flag of the translation provider.
-@property (atomic) TKTranslationProvider translationProvider;
+@property (atomic, readonly) TKTranslationProvider translationProvider;
 
 @end
 
@@ -250,10 +250,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKPlaceTag : NSObject
 
 /// Displayable key, always in English.
-@property (nonatomic, copy, nonnull) NSString *key;
+@property (nonatomic, copy, nonnull, readonly) NSString *key;
 
 /// Displayable value, translated if available.
-@property (nonatomic, copy, nullable) NSString *name;
+@property (nonatomic, copy, nullable, readonly) NSString *name;
 
 @end
 
@@ -269,56 +269,56 @@ NS_ASSUME_NONNULL_BEGIN
 @interface TKPlaceDetail : NSObject
 
 /// `TKPlaceDescription` instance object containing a detailed description.
-@property (nonatomic, strong, nullable) TKPlaceDescription *fullDescription;
+@property (nonatomic, strong, nullable, readonly) TKPlaceDescription *fullDescription;
 
 /// List of Place Tags. Each place can have multiple tags which describe it or it’s properties. Tags can be used to filter places.
 /// @note You can see list of available tags [here](docs.sygictravelapi.com/taglist.html) .
-@property (nonatomic, copy, nullable) NSArray<TKPlaceTag *> *tags;
+@property (nonatomic, copy, nullable, readonly) NSArray<TKPlaceTag *> *tags;
 
 /// List of external References.
 
 /// References are entities that represent place's relations to other websites, articles, social networks, rentals,
 /// passes, ticket, tour, and accommodation providers, parking, transfers, and other information.
-@property (nonatomic, copy, nullable) NSArray<TKReference *> *references;
+@property (nonatomic, copy, nullable, readonly) NSArray<TKReference *> *references;
 
 /// List of main Media for use. Used for displaying a larger thumbnail or a cover photo.
-@property (nonatomic, copy, nullable) NSArray<TKMedium *> *mainMedia;
+@property (nonatomic, copy, nullable, readonly) NSArray<TKMedium *> *mainMedia;
 
 /// Local name string.
-@property (nonatomic, copy, nullable) NSString *localName;
+@property (nonatomic, copy, nullable, readonly) NSString *localName;
 
 /// Translated name string.
-@property (nonatomic, copy, nullable) NSString *translatedName;
+@property (nonatomic, copy, nullable, readonly) NSString *translatedName;
 
 /// English name string.
-@property (nonatomic, copy, nullable) NSString *englishName;
+@property (nonatomic, copy, nullable, readonly) NSString *englishName;
 
 /// Time zone string.
-@property (nonatomic, copy, nullable) NSString *timezone;
+@property (nonatomic, copy, nullable, readonly) NSString *timezone;
 
 /// Address string.
-@property (nonatomic, copy, nullable) NSString *address;
+@property (nonatomic, copy, nullable, readonly) NSString *address;
 
 /// Phone number string.
-@property (nonatomic, copy, nullable) NSString *phone;
+@property (nonatomic, copy, nullable, readonly) NSString *phone;
 
 /// Email string.
-@property (nonatomic, copy, nullable) NSString *email;
+@property (nonatomic, copy, nullable, readonly) NSString *email;
 
 /// Estimated avarage time that people usually spend at this place in seconds.
-@property (nonatomic, strong, nullable) NSNumber *duration;
+@property (nonatomic, strong, nullable, readonly) NSNumber *duration;
 
 /// Opening hours string in a structured OpenStreetMap format.
-@property (nonatomic, copy, nullable) NSString *openingHours;
+@property (nonatomic, copy, nullable, readonly) NSString *openingHours;
 
 /// Opening hours note string.
-@property (nonatomic, copy, nullable) NSString *openingHoursNote;
+@property (nonatomic, copy, nullable, readonly) NSString *openingHoursNote;
 
 /// Admission string.
-@property (nonatomic, copy, nullable) NSString *admission;
+@property (nonatomic, copy, nullable, readonly) NSString *admission;
 
 /// Additional attributes.
-@property (nonatomic, copy, nullable) NSDictionary<NSString *, NSString *> *attributes;
+@property (nonatomic, copy, nullable, readonly) NSDictionary<NSString *, NSString *> *attributes;
 
 @end
 
