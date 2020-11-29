@@ -162,42 +162,43 @@ NSString * const TKSettingsKeyChangesTimestamp = @"ChangesTimestamp";
 	if (!_session)
 		return;
 
-//	// Fetch if User credentials missing
-//
-//	if (!_credentials)
-//		[self fetchCredentials];
-
 	// Refresh if token is about to expire
-
 	else if (_session.isExpiring)
 		[self refreshSession];
 }
 
 - (void)refreshSession
 {
-	static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
+	dispatch_async(dispatch_get_main_queue(), ^{
 
-	if (pthread_mutex_trylock(&lock) != EXIT_SUCCESS)
-		return;
+		static pthread_mutex_t lock = PTHREAD_MUTEX_INITIALIZER;
 
-	NSString *token = _session.refreshToken;
+		if (pthread_mutex_trylock(&lock) != EXIT_SUCCESS)
+			return;
 
-	if (!token) return;
+		NSString *token = _session.refreshToken;
 
-	[[TKSSOAPI sharedAPI] performSessionRefreshWithToken:token success:^(TKSession *session) {
+		if (!token) return;
 
-		self.session = session;
-		pthread_mutex_unlock(&lock);
+		[[TKSSOAPI sharedAPI] performSessionRefreshWithToken:token success:^(TKSession *session) {
 
-	} failure:^(TKAPIError *error) {
+			self.session = session;
+			dispatch_async(dispatch_get_main_queue(), ^{
+				pthread_mutex_unlock(&lock);
+			});
 
-		// TODO: More sophisticated solution?
-		if (error.code / 100 == 4)
-			self.session = nil;
+		} failure:^(TKAPIError *error) {
 
-		pthread_mutex_unlock(&lock);
+			if (error.code / 100 == 4)
+				self.session = nil;
 
-	}];
+			dispatch_async(dispatch_get_main_queue(), ^{
+				pthread_mutex_unlock(&lock);
+			});
+
+		}];
+
+	});
 }
 
 
