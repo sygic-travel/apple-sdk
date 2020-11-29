@@ -80,7 +80,7 @@ query.limit = 10;
 
 ```swift
 // Set your API key
-TravelKit.shared().apiKey = "<YOUR_API_KEY_GOES_HERE>"
+TravelKit.shared.apiKey = "<YOUR_API_KEY_GOES_HERE>"
 	
 // Create query to get Top 10 Sightseeing Places in London
 let query = TKPlacesQuery()
@@ -90,7 +90,7 @@ query.categories = [.sightseeing]
 query.limit = 10
 	
 // Perform query and print a message containing the first item
-TravelKit.shared().places(for: query) { (places, error) in
+TravelKit.shared.places.places(for: query) { (places, error) in
 	if let place = places?.first { print("Let's visit \(place.name)!") }
 	else { print("Something went wrong :/") }
 }

@@ -230,47 +230,47 @@ typedef NS_ENUM(NSUInteger, TKDirectionStepMode) {
 ///----------------------
 
 /// Calculated duration of the step.
-@property (atomic) NSTimeInterval duration;
+@property (atomic, readonly) NSTimeInterval duration;
 /// Calculated distance of the step.
-@property (atomic) CLLocationDistance distance;
+@property (atomic, readonly) CLLocationDistance distance;
 
 /// Mode of the step.
-@property (atomic) TKDirectionStepMode mode;
+@property (atomic, readonly) TKDirectionStepMode mode;
 /// Polyline of the step.
-@property (nonatomic, copy, nullable) NSString *polyline;
+@property (nonatomic, copy, nullable, readonly) NSString *polyline;
 
 /// Optional name of the origin location.
-@property (nonatomic, copy, nullable) NSString *originName;
+@property (nonatomic, copy, nullable, readonly) NSString *originName;
 /// Optional coordinate of the origin location.
-@property (nonatomic, strong, nullable) CLLocation *originLocation;
+@property (nonatomic, strong, nullable, readonly) CLLocation *originLocation;
 
 /// Optional name of the destination location.
-@property (nonatomic, copy, nullable) NSString *destinationName;
+@property (nonatomic, copy, nullable, readonly) NSString *destinationName;
 /// Optional coordinate of the destination location.
-@property (nonatomic, strong, nullable) CLLocation *destinationLocation;
+@property (nonatomic, strong, nullable, readonly) CLLocation *destinationLocation;
 
 /// Optional stops along the step.
-@property (nonatomic, copy) NSArray<TKDirectionIntermediateStop *> *intermediateStops;
+@property (nonatomic, copy, readonly) NSArray<TKDirectionIntermediateStop *> *intermediateStops;
 
 /// Optional short name of the public transport line. Examples: _6_, _X12_, _B_, _Bakerloo Line_, …
-@property (nonatomic, copy, nullable) NSString *shortName;
+@property (nonatomic, copy, nullable, readonly) NSString *shortName;
 /// Optional long name of the public transport line, usually describing the route. Example: _Brooklyn - Manhattan - Staten Island_
-@property (nonatomic, copy, nullable) NSString *longName;
+@property (nonatomic, copy, nullable, readonly) NSString *longName;
 /// Optional headsign. Mainly used for public transport. Examples: _Moorgate, _Chesham_, _Aldgate_, …
-@property (nonatomic, copy, nullable) NSString *headsign;
+@property (nonatomic, copy, nullable, readonly) NSString *headsign;
 /// Optional public transport line color. Provided in RGB HEX.
-@property (nonatomic, strong, nullable) NSNumber *lineColor;
+@property (nonatomic, strong, nullable, readonly) NSNumber *lineColor;
 /// Attribution string.
-@property (nonatomic, copy, nullable) NSString *attribution;
+@property (nonatomic, copy, nullable, readonly) NSString *attribution;
 
 // Departure date of the step.
-@property (nonatomic, strong, nullable) NSDate *departureDate;
+@property (nonatomic, strong, nullable, readonly) NSDate *departureDate;
 /// Departure date string. ISO-8601 format without the timezone.
-@property (nonatomic, copy, nullable) NSString *departureLocalString;
+@property (nonatomic, copy, nullable, readonly) NSString *departureLocalString;
 // Arrival date of the step.
-@property (nonatomic, strong, nullable) NSDate *arrivalDate;
+@property (nonatomic, strong, nullable, readonly) NSDate *arrivalDate;
 /// Arrival date string. ISO-8601 format without the timezone.
-@property (nonatomic, copy, nullable) NSString *arrivalLocalString;
+@property (nonatomic, copy, nullable, readonly) NSString *arrivalLocalString;
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
@@ -292,22 +292,22 @@ typedef NS_ENUM(NSUInteger, TKDirectionStepMode) {
 ///----------------------
 
 /// Optional stop name.
-@property (nonatomic, copy, nullable) NSString *name;
+@property (nonatomic, copy, nullable, readonly) NSString *name;
 
 /// Location of the stop.
-@property (nonatomic, strong) CLLocation *location;
+@property (nonatomic, strong, readonly) CLLocation *location;
 
 /// Calculated arrival date.
-@property (nonatomic, strong, nullable) NSDate *arrivalDate;
+@property (nonatomic, strong, nullable, readonly) NSDate *arrivalDate;
 
 /// Calculated arrival date string. ISO-8601 format without the timezone.
-@property (nonatomic, copy, nullable) NSString *arrivalLocalString;
+@property (nonatomic, copy, nullable, readonly) NSString *arrivalLocalString;
 
 /// Calculated departure date.
-@property (nonatomic, strong, nullable) NSDate *departureDate;
+@property (nonatomic, strong, nullable, readonly) NSDate *departureDate;
 
 /// Calculated departure date string. ISO-8601 format without the timezone.
-@property (nonatomic, copy, nullable) NSString *departureLocalString;
+@property (nonatomic, copy, nullable, readonly) NSString *departureLocalString;
 
 - (instancetype)init UNAVAILABLE_ATTRIBUTE;
 + (instancetype)new UNAVAILABLE_ATTRIBUTE;
