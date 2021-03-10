@@ -700,7 +700,7 @@
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"<Trip Info | ID: %@>\n\t"
-		"Name = %@\n\tVersion = %tu\n\tStart date = %@\n\tDays count = %tu\n\tChanged = %c",
+		"Name = %@\n\tVersion = %tu\n\tStart date = %@\n\tDays count = %tu\n\tChanged = %d",
 			_ID, _name, _version, _startDate, _daysCount, _changed];
 }
 
