@@ -12,12 +12,12 @@ Pod::Spec.new do |spec|
   spec.module_name  = 'TravelKit'
 
   spec.platform = :ios
-  spec.ios.deployment_target  = '8.2'
+  spec.ios.deployment_target  = '9.0'
 
   spec.framework      = 'SystemConfiguration'
   spec.ios.framework  = 'CoreTelephony'
   spec.ios.library    = 'sqlite3'
 
-  spec.ios.vendored_frameworks = 'TravelKit.framework'
+  spec.ios.vendored_frameworks = 'TravelKit.xcframework'
 
 end
