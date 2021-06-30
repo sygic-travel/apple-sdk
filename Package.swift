@@ -1,4 +1,4 @@
-// swift-tools-version:5.3
+// swift-tools-version:5.4
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -9,7 +9,7 @@ let package = Package(
 		.macOS(.v10_10),
 		.iOS(.v9),
 		.tvOS(.v9),
-		.watchOS(.v3)
+		.watchOS(.v3),
 	],
 	products: [
 		.library(name: "TravelKit",
@@ -20,7 +20,7 @@ let package = Package(
 		         type: .static, targets: ["TravelKit"]),
 	],
 	dependencies: [
-	.package(name: "FMDB", url: "https://github.com/ccgus/fmdb", from: "2.7.7")
+		.package(name: "FMDB", url: "https://github.com/ccgus/fmdb", from: "2.7.7"),
 	],
 	targets: [
 		.target(
@@ -30,14 +30,14 @@ let package = Package(
 			exclude: [
 				"Info.plist",
 				"Config.xcconfig",
-				"TravelKit-Prefix.pch"
+				"TravelKit-Prefix.pch",
 			],
 			publicHeadersPath: "PublicHeaders",
 			cSettings: [
 				.headerSearchPath("PublicHeaders"),
 				.define("USE_NSOBJECT_PARSING", to: "1"),
 				.define("USE_TRAVELKIT_FOUNDATION", to: "1"),
-				.define("USE_TRAVELKIT_AS_SPM_PACKAGE", to: "1")
+				.define("USE_TRAVELKIT_AS_SPM_PACKAGE", to: "1"),
 			]
 		),
 	]
