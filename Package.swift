@@ -1,5 +1,4 @@
-// swift-tools-version:5.4
-// The swift-tools-version declares the minimum version of Swift required to build this package.
+// swift-tools-version: 5.9
 
 import PackageDescription
 
@@ -20,12 +19,14 @@ let package = Package(
 		         type: .static, targets: ["TravelKit"]),
 	],
 	dependencies: [
-		.package(name: "FMDB", url: "https://github.com/ccgus/fmdb", from: "2.7.7"),
+		.package(url: "https://github.com/ccgus/fmdb.git", from: "2.7.7"),
 	],
 	targets: [
 		.target(
 			name: "TravelKit",
-			dependencies: ["FMDB"],
+			dependencies: [
+				.product(name: "FMDB", package: "fmdb"),
+			],
 			path: "TravelKit",
 			exclude: [
 				"Info.plist",

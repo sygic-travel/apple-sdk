@@ -57,8 +57,6 @@
 		062A721D2B80CE6B002C0C71 /* TKPlace.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0591E4DDAE500EBB54F /* TKPlace.m */; };
 		062A721E2B80CE6B002C0C71 /* TKDatabaseManager.m in Sources */ = {isa = PBXBuildFile; fileRef = EF0D9D691EFAAB7500C50AE2 /* TKDatabaseManager.m */; };
 		062A721F2B80CE6B002C0C71 /* TKMapRegion.m in Sources */ = {isa = PBXBuildFile; fileRef = D6C3D0881E51A09200EBB54F /* TKMapRegion.m */; };
-		062A72222B80CE6B002C0C71 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92651ED47B5B00645489 /* SystemConfiguration.framework */; };
-		062A72232B80CE6B002C0C71 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E21ED6E7F100A0D3D5 /* libsqlite3.tbd */; };
 		062A72252B80CE6B002C0C71 /* TKMedium.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0601E4DDE2D00EBB54F /* TKMedium.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		062A72262B80CE6B002C0C71 /* TKMapWorker.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0781E4DFACB00EBB54F /* TKMapWorker.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		062A72272B80CE6B002C0C71 /* TKAPI+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6C3D0701E4DE7B400EBB54F /* TKAPI+Private.h */; };
@@ -111,6 +109,15 @@
 		062A72562B80CE6B002C0C71 /* TKCollectionsQuery.h in Headers */ = {isa = PBXBuildFile; fileRef = D6745D6421888E87008A4364 /* TKCollectionsQuery.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		062A72572B80CE6B002C0C71 /* TKCollection+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D6BEE6FE219422C200215DFA /* TKCollection+Private.h */; };
 		062A72582B80CE6B002C0C71 /* TKCollection.h in Headers */ = {isa = PBXBuildFile; fileRef = D660571B21889326000ED0D3 /* TKCollection.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		062A72642B80D44C002C0C71 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92691ED4803D00645489 /* CoreTelephony.framework */; };
+		062A72652B80D450002C0C71 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92631ED47B5600645489 /* SystemConfiguration.framework */; };
+		062A72662B80D450002C0C71 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92631ED47B5600645489 /* SystemConfiguration.framework */; };
+		062A72672B80D451002C0C71 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92631ED47B5600645489 /* SystemConfiguration.framework */; };
+		062A72682B80D452002C0C71 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92631ED47B5600645489 /* SystemConfiguration.framework */; };
+		062A72692B80D454002C0C71 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */; };
+		062A726A2B80D455002C0C71 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */; };
+		062A726B2B80D455002C0C71 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */; };
+		062A726C2B80D456002C0C71 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */; };
 		D608D0C51E77D66400A1CA41 /* TKPlace+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */; };
 		D608D0C61E77D6D000A1CA41 /* TKPlace+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */; };
 		D608D0C71E77D6D100A1CA41 /* TKPlace+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = D608D0C41E77D66400A1CA41 /* TKPlace+Private.h */; };
@@ -137,10 +144,6 @@
 		D61B925A1ED4798200645489 /* TKReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D61B92561ED4798200645489 /* TKReachability.m */; };
 		D61B925B1ED4798200645489 /* TKReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D61B92561ED4798200645489 /* TKReachability.m */; };
 		D61B925C1ED4798200645489 /* TKReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = D61B92561ED4798200645489 /* TKReachability.m */; };
-		D61B92641ED47B5600645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92631ED47B5600645489 /* SystemConfiguration.framework */; };
-		D61B92661ED47B5B00645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92651ED47B5B00645489 /* SystemConfiguration.framework */; };
-		D61B92681ED47B6100645489 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92671ED47B6100645489 /* SystemConfiguration.framework */; };
-		D61B926A1ED4803D00645489 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D61B92691ED4803D00645489 /* CoreTelephony.framework */; };
 		D61CB53A202C80AC00441FF6 /* TKFavoritesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D61CB53B202C80AC00441FF6 /* TKFavoritesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D61CB53C202C80AC00441FF6 /* TKFavoritesManager.h in Headers */ = {isa = PBXBuildFile; fileRef = D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -332,9 +335,6 @@
 		D6EF38F41EB9EB7000260E82 /* TKMapPlaceAnnotation.h in Headers */ = {isa = PBXBuildFile; fileRef = D6EF38E71EB9D11400260E82 /* TKMapPlaceAnnotation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		D6EF38F51EB9EB7800260E82 /* TKMapPlaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EF38E81EB9D11400260E82 /* TKMapPlaceAnnotation.m */; };
 		D6EF38F61EB9EB7800260E82 /* TKMapPlaceAnnotation.m in Sources */ = {isa = PBXBuildFile; fileRef = D6EF38E81EB9D11400260E82 /* TKMapPlaceAnnotation.m */; };
-		D6F0E3E11ED6E7DB00A0D3D5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */; };
-		D6F0E3E31ED6E7F100A0D3D5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E21ED6E7F100A0D3D5 /* libsqlite3.tbd */; };
-		D6F0E3E51ED6E81000A0D3D5 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D6F0E3E41ED6E81000A0D3D5 /* libsqlite3.tbd */; };
 		D6F0E46C1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */; };
 		D6F0E46D1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */; };
 		D6F0E46E1ED6EF5800A0D3D5 /* FMDatabase.h in Headers */ = {isa = PBXBuildFile; fileRef = D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */; };
@@ -395,8 +395,6 @@
 		D61B92551ED4798200645489 /* TKReachability+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "TKReachability+Private.h"; sourceTree = "<group>"; };
 		D61B92561ED4798200645489 /* TKReachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKReachability.m; sourceTree = "<group>"; };
 		D61B92631ED47B5600645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.12.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
-		D61B92651ED47B5B00645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
-		D61B92671ED47B6100645489 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.1.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		D61B92691ED4803D00645489 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
 		D61CB538202C80AC00441FF6 /* TKFavoritesManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKFavoritesManager.h; sourceTree = "<group>"; };
 		D61CB539202C80AC00441FF6 /* TKFavoritesManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKFavoritesManager.m; sourceTree = "<group>"; };
@@ -466,8 +464,6 @@
 		D6EF38EB1EB9EA6E00260E82 /* Foundation+TravelKit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Foundation+TravelKit.h"; sourceTree = "<group>"; };
 		D6EF38EC1EB9EA6E00260E82 /* Foundation+TravelKit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "Foundation+TravelKit.m"; sourceTree = "<group>"; };
 		D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		D6F0E3E21ED6E7F100A0D3D5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
-		D6F0E3E41ED6E81000A0D3D5 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS10.1.sdk/usr/lib/libsqlite3.tbd; sourceTree = DEVELOPER_DIR; };
 		D6F0E4601ED6EF5800A0D3D5 /* FMDatabase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabase.h; sourceTree = "<group>"; };
 		D6F0E4611ED6EF5800A0D3D5 /* FMDatabase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FMDatabase.m; sourceTree = "<group>"; };
 		D6F0E4621ED6EF5800A0D3D5 /* FMDatabaseAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FMDatabaseAdditions.h; sourceTree = "<group>"; };
@@ -493,8 +489,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				062A72222B80CE6B002C0C71 /* SystemConfiguration.framework in Frameworks */,
-				062A72232B80CE6B002C0C71 /* libsqlite3.tbd in Frameworks */,
+				062A726C2B80D456002C0C71 /* libsqlite3.tbd in Frameworks */,
+				062A72682B80D452002C0C71 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -502,8 +498,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D61B92681ED47B6100645489 /* SystemConfiguration.framework in Frameworks */,
-				D6F0E3E51ED6E81000A0D3D5 /* libsqlite3.tbd in Frameworks */,
+				062A726B2B80D455002C0C71 /* libsqlite3.tbd in Frameworks */,
+				062A72672B80D451002C0C71 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -511,8 +507,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D61B92641ED47B5600645489 /* SystemConfiguration.framework in Frameworks */,
-				D6F0E3E11ED6E7DB00A0D3D5 /* libsqlite3.tbd in Frameworks */,
+				062A72692B80D454002C0C71 /* libsqlite3.tbd in Frameworks */,
+				062A72652B80D450002C0C71 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -520,9 +516,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D61B926A1ED4803D00645489 /* CoreTelephony.framework in Frameworks */,
-				D61B92661ED47B5B00645489 /* SystemConfiguration.framework in Frameworks */,
-				D6F0E3E31ED6E7F100A0D3D5 /* libsqlite3.tbd in Frameworks */,
+				062A726A2B80D455002C0C71 /* libsqlite3.tbd in Frameworks */,
+				062A72662B80D450002C0C71 /* SystemConfiguration.framework in Frameworks */,
+				062A72642B80D44C002C0C71 /* CoreTelephony.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -586,6 +582,7 @@
 				D6C3D0801E4DFE2800EBB54F /* Frameworks */,
 			);
 			sourceTree = "<group>";
+			usesTabs = 1;
 		};
 		D6C3D04D1E4DD36200EBB54F /* Products */ = {
 			isa = PBXGroup;
@@ -638,11 +635,7 @@
 			children = (
 				D61B92691ED4803D00645489 /* CoreTelephony.framework */,
 				D61B92631ED47B5600645489 /* SystemConfiguration.framework */,
-				D61B92651ED47B5B00645489 /* SystemConfiguration.framework */,
-				D61B92671ED47B6100645489 /* SystemConfiguration.framework */,
 				D6F0E3E01ED6E7DB00A0D3D5 /* libsqlite3.tbd */,
-				D6F0E3E21ED6E7F100A0D3D5 /* libsqlite3.tbd */,
-				D6F0E3E41ED6E81000A0D3D5 /* libsqlite3.tbd */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -1108,8 +1101,9 @@
 		D6C3D0431E4DD36200EBB54F /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = TK;
-				LastUpgradeCheck = 1410;
+				LastUpgradeCheck = 1520;
 				ORGANIZATIONNAME = Tripomatic;
 				TargetAttributes = {
 					D6B2A1281E530AFD005509E8 = {
@@ -1552,8 +1546,6 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				RUN_CLANG_STATIC_ANALYZER = YES;
 				SKIP_INSTALL = YES;
-				STRIP_INSTALLED_PRODUCT = NO;
-				STRIP_SWIFT_SYMBOLS = NO;
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
