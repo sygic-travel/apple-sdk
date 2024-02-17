@@ -21,6 +21,7 @@ typedef NS_ENUM(NSUInteger, TKConnectionCellularType) {
 	TKConnectionCellularType2G,
 	TKConnectionCellularType3G,
 	TKConnectionCellularTypeLTE,
+	TKConnectionCellularType5G,
 };
 
 @interface TKReachability : NSObject

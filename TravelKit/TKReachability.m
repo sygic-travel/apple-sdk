@@ -258,12 +258,16 @@
 	if (![self isCellular]) return TKConnectionCellularTypeUnknown;
 
 	CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
-	NSString *technology = netinfo.currentRadioAccessTechnology;
+    NSSet<NSString *> *technology = [NSSet setWithArray:netinfo.serviceCurrentRadioAccessTechnology.allValues ?: @[ ]];
 
-	if ([technology isEqualToString:CTRadioAccessTechnologyLTE])
+	if (@available(iOS 14.1, *))
+		if ([technology containsObject:CTRadioAccessTechnologyNR] ||
+			[technology containsObject:CTRadioAccessTechnologyNRNSA])
+			return TKConnectionCellularType5G;
+	if ([technology containsObject:CTRadioAccessTechnologyLTE])
 		return TKConnectionCellularTypeLTE;
-	if ([technology isEqualToString:CTRadioAccessTechnologyGPRS] ||
-		[technology isEqualToString:CTRadioAccessTechnologyEdge])
+	if ([technology containsObject:CTRadioAccessTechnologyGPRS] ||
+		[technology containsObject:CTRadioAccessTechnologyEdge])
 		return TKConnectionCellularType2G;
 	if (technology) return TKConnectionCellularType3G;
 
