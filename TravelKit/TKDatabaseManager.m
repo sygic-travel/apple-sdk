@@ -338,7 +338,7 @@ NSString * const kTKDatabaseTableTripDayItems = @"trip_day_items";
 
 	__block BOOL isUpdateOk = YES;
 	__block NSError *error = nil;
-	__block int changes = 0;
+	__block __unused int changes = 0;
 
 	[_databaseQueue inDatabase:^(FMDatabase *database){
 
