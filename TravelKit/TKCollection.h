@@ -9,19 +9,20 @@
 #import <Foundation/Foundation.h>
 #import <TravelKit/TKPlace.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
+NS_SWIFT_SENDABLE
 @interface TKCollection : NSObject
 
-@property (nonatomic, strong) NSNumber *ID NS_SWIFT_NAME(ID);
-@property (nonatomic, copy, nullable) NSString *name;
-@property (nonatomic, copy) NSString *fullName;
-@property (nonatomic, copy, nullable) NSString *perex;
-@property (nonatomic, copy) NSString *parentPlaceID;
+@property (nonatomic, copy, readonly) NSNumber *ID NS_SWIFT_NAME(ID);
+@property (nonatomic, copy, nullable, readonly) NSString *name;
+@property (nonatomic, copy, readonly) NSString *fullName;
+@property (nonatomic, copy, nullable, readonly) NSString *perex;
+@property (nonatomic, copy, readonly) NSString *parentPlaceID;
 
-@property (nonatomic, copy) NSArray<TKPlaceTag *> *tags;
-@property (nonatomic, copy) NSArray<NSString *> *placeIDs;
+@property (nonatomic, copy, readonly) NSArray<TKPlaceTag *> *tags;
+@property (nonatomic, copy, readonly) NSArray<NSString *> *placeIDs;
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

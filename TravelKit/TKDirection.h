@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreLocation/CoreLocation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 ///-----------------------------------------------------------------------------
 #pragma mark -
@@ -146,6 +146,7 @@ typedef NS_ENUM(NSUInteger, TKDirectionStepMode) {
 /**
  A set of directions usable for display.
  */
+NS_SWIFT_SENDABLE
 @interface TKDirectionsSet : NSObject
 
 ///----------------------
@@ -189,6 +190,7 @@ typedef NS_ENUM(NSUInteger, TKDirectionStepMode) {
 /**
  A particular direction variant carrying information about a route, its distance and duration.
  */
+NS_SWIFT_SENDABLE
 @interface TKDirection : NSObject
 
 ///----------------------
@@ -223,6 +225,7 @@ typedef NS_ENUM(NSUInteger, TKDirectionStepMode) {
 /**
  A particular direction step containing an information about a specific route segment.
  */
+NS_SWIFT_SENDABLE
 @interface TKDirectionStep : NSObject
 
 ///----------------------
@@ -285,6 +288,7 @@ typedef NS_ENUM(NSUInteger, TKDirectionStepMode) {
 /**
  A significant, intermediate stop on the route.
  */
+NS_SWIFT_SENDABLE
 @interface TKDirectionIntermediateStop : NSObject
 
 ///----------------------
@@ -322,6 +326,7 @@ typedef NS_ENUM(NSUInteger, TKDirectionStepMode) {
 /**
  An object containing estimate directions info usable for display.
  */
+NS_SWIFT_SENDABLE
 @interface TKEstimateDirectionsInfo : NSObject
 
 ///----------------------
@@ -363,4 +368,4 @@ typedef NS_ENUM(NSUInteger, TKDirectionStepMode) {
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

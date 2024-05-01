@@ -13,6 +13,8 @@
 #import <TravelKit/TKReference.h>
 #import <TravelKit/TKMedium.h>
 
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
+
 /**
  Flag value denoting level value of a `TKPlace`.
  */
@@ -105,9 +107,6 @@ typedef NS_OPTIONS(NSUInteger, TKTranslationProvider) {
 	TKTranslationProviderBing           = 1 << 1,
 };
 
-
-NS_ASSUME_NONNULL_BEGIN
-
 @class TKPlaceTag, TKPlaceDetail;
 
 
@@ -119,6 +118,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Basic Place model keeping various information about its properties.
  */
+NS_SWIFT_SENDABLE
 @interface TKPlace : NSObject
 
 ///----------------------
@@ -203,6 +203,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Detailed Place object.
  */
+NS_SWIFT_SENDABLE
 @interface TKDetailedPlace : TKPlace
 
 /// Place detail of `TKPlaceDetail` instance containing further attributes.
@@ -219,6 +220,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Place description object.
  */
+NS_SWIFT_SENDABLE
 @interface TKPlaceDescription : NSObject
 
 /// Full-length text description.
@@ -247,6 +249,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Place tag object.
  */
+NS_SWIFT_SENDABLE
 @interface TKPlaceTag : NSObject
 
 /// Displayable key, always in English.
@@ -266,6 +269,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  Detail object containing further attributes about the Place.
  */
+NS_SWIFT_SENDABLE
 @interface TKPlaceDetail : NSObject
 
 /// `TKPlaceDescription` instance object containing a detailed description.
@@ -322,4 +326,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

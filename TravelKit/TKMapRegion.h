@@ -10,11 +10,9 @@
 #import <CoreLocation/CoreLocation.h>
 #import <MapKit/MapKit.h>
 
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 #pragma mark - Map Region wrapper
-
-
-NS_ASSUME_NONNULL_BEGIN
 
 
 /**
@@ -22,6 +20,7 @@ NS_ASSUME_NONNULL_BEGIN
  
  This is a simple object whose main purpose is to wrap up the `MKCoordinateRegion` structure.
  */
+NS_SWIFT_SENDABLE
 @interface TKMapRegion : NSObject
 
 ///---------------------------------------------------------------------------------------
@@ -29,7 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///---------------------------------------------------------------------------------------
 
 /// MapKit-compatible coordinate region structure.
-@property (nonatomic, assign) MKCoordinateRegion coordinateRegion;
+@property (nonatomic, assign, readonly) MKCoordinateRegion coordinateRegion;
 
 /// Center location object.
 @property (readonly) CLLocation *centerPoint;
@@ -71,4 +70,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

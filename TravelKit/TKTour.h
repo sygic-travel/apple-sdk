@@ -8,6 +8,8 @@
 
 #import <Foundation/Foundation.h>
 
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
+
 /**
  Flag value denoting some additional options of a `TKTour`.
  */
@@ -21,9 +23,6 @@ typedef NS_OPTIONS(NSUInteger, TKTourFlag) {
 };
 
 
-NS_ASSUME_NONNULL_BEGIN
-
-
 ///---------------------------------------------------------------------------------------
 /// @name Tour Model
 ///---------------------------------------------------------------------------------------
@@ -34,6 +33,7 @@ NS_ASSUME_NONNULL_BEGIN
  Basic Tour model keeping various information about its properties.
  */
 
+NS_SWIFT_SENDABLE
 @interface TKTour : NSObject
 
 ///---------------------------------------------------------------------------------------
@@ -89,4 +89,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

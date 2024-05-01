@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 /**
  Entity handling basic information about additional linked content. References are entities that
@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
  tickets, tours, accomodation providers, parkings, transfers and other services.
  For more information please see [Sygic Travel API](http://docs.sygictravelapi.com/1.1/#section-references)
  */
+NS_SWIFT_SENDABLE
 @interface TKReference : NSObject <NSCopying>
 
 ///---------------------------------------------------------------------------------------
@@ -58,4 +59,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)

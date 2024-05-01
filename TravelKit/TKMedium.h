@@ -9,6 +9,7 @@
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
 
+NS_HEADER_AUDIT_BEGIN(nullability, sendability)
 
 /**
  Enum identifying a basic type of `TKMedium`.
@@ -77,11 +78,10 @@ typedef NS_ENUM(NSUInteger, TKMediumContentMode) {
 	TKMediumContentModeNoCropFill   = 2,
 };
 
-NS_ASSUME_NONNULL_BEGIN
-
 /**
  Entity preserving information about a remote displayable Medium. An Image or a Video.
  */
+NS_SWIFT_SENDABLE
 @interface TKMedium : NSObject
 
 ///---------------------------------------------------------------------------------------
@@ -159,4 +159,4 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
+NS_HEADER_AUDIT_END(nullability, sendability)
