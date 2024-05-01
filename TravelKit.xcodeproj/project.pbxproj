@@ -1103,7 +1103,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				CLASSPREFIX = TK;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1530;
 				ORGANIZATIONNAME = Tripomatic;
 				TargetAttributes = {
 					D6B2A1281E530AFD005509E8 = {
