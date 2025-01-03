@@ -72,6 +72,16 @@
 	[TKSSOAPI sharedAPI].clientID = _clientID = [clientID copy];
 }
 
+- (void)setOverrideBaseURL:(NSString *)overrideBaseURL
+{
+	[TKAPI sharedAPI].overrideBaseURL = _overrideBaseURL = [overrideBaseURL copy];
+}
+
+- (void)setOverrideVersion:(NSString *)overrideVersion
+{
+	[TKAPI sharedAPI].overrideVersion = _overrideVersion = [overrideVersion copy];
+}
+
 - (NSString *)languageID
 {
 	return _languageID ?: @"en";

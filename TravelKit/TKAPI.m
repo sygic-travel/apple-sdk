@@ -55,19 +55,14 @@
 
 - (void)refreshServerProperties
 {
-	NSString *subdomain = @API_SUBDOMAIN;
-
-	subdomain = [subdomain stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-
-	if (![subdomain hasSuffix:@"."])
-		subdomain = [subdomain stringByAppendingString:@"."];
-
+	NSString *baseURL = _overrideBaseURL ?: @ API_BASE_URL;
+	NSString *version = _overrideVersion ?: @ API_VERSION;
 	NSString *lang = _languageID ?: @"en";
 
-	_apiURL = [NSString stringWithFormat:@"%@://%@%@/%@/%@",
-	//          http[s]://  api.      sygictravelapi.com  /    xyz   /   en
-	//             |         |              |                   |        |
-	    @API_PROTOCOL,   subdomain,    @API_BASE_URL,    @API_VERSION,   lang];
+	_apiURL = [NSString stringWithFormat:@"%@://%@/%@/%@",
+	//          http[s]://  api.sygictravelapi.com  /    xyz   /   en
+	//             |                 |                    |        |
+	    @API_PROTOCOL,            baseURL,             version,   lang];
 
 //	_isAlphaEnvironment = [_apiURL containsSubstring:@"alpha"];
 }

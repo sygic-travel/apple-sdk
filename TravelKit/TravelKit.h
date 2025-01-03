@@ -151,6 +151,9 @@ kit.places.detailedPlace(withID: "poi:530") { (place, e) in
  */
 @property (nonatomic, copy, null_resettable) NSString *languageID;
 
+@property (nonatomic, copy, nullable) NSString *overrideBaseURL;
+@property (nonatomic, copy, nullable) NSString *overrideVersion;
+
 ///---------------------------------------------------------------------------------------
 /// @name Modules
 ///---------------------------------------------------------------------------------------

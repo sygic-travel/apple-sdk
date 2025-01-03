@@ -31,8 +31,7 @@
 
 
 #define API_PROTOCOL   "https"
-#define API_SUBDOMAIN  "api"
-#define API_BASE_URL   "sygictravelapi.com"
+#define API_BASE_URL   "api.sygictravelapi.com"
 #define API_VERSION    "1.2"
 
 #define API_CALL_TIMEOUT_QUICK      8.0
@@ -88,6 +87,8 @@ FOUNDATION_EXPORT NSString * const TKAPIErrorDomain;
 
 @property (nonatomic, copy) NSString *APIKey;
 @property (nonatomic, copy) NSString *accessToken;
+@property (nonatomic, copy) NSString *overrideBaseURL;
+@property (nonatomic, copy) NSString *overrideVersion;
 @property (nonatomic, copy) NSString *languageID;
 @property (nonatomic, copy, readonly) NSString *hostname;
 @property (nonatomic, readonly) BOOL isAlphaEnvironment; // Private
